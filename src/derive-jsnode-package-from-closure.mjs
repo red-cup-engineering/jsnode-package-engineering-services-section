@@ -30,7 +30,7 @@ import { inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspe
 import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
 import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-services-section/admit-npm-package-version";
-import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
+import { projectJsnodeModules, projectJsnodeModulePaths } from "./project-jsnode-modules.mjs";
 
 const TASK_CLASS = "code-fabrication";
 
@@ -58,8 +58,7 @@ export const JSNODE_MODULE_MEANING_CLOSURE_SCHEMA = Object.freeze({
 });
 const moduleMeaningClosure = schemaFrom(JSNODE_MODULE_MEANING_CLOSURE_SCHEMA);
 
-/** Fabricate module proposals from canonical work data, without package birth. */
-export async function deriveJsnodeModules(candidate, carriers = {}) {
+function moduleFabricationPlan(candidate) {
   let phase = "artifact-specification-admission", workOrder;
   const refuse = cause => Object.freeze({
     type: "JsnodeModuleDerivationRefusal", version: 1, phase,
@@ -105,6 +104,35 @@ export async function deriveJsnodeModules(candidate, carriers = {}) {
       projectionIds: [projection.id], acceptanceObligationIds: workOrder.acceptanceObligations.map(item => item.id),
     });
     if (plan.type !== "ArtifactFabricationRealizationPlan") return refuse(plan);
+    return {workOrder, closure, plan};
+  } catch (error) { return refuse({name: error.name, message: error.message}); }
+}
+
+/** Admit the original order and project every output path without inference or filesystem effects. */
+export function planJsnodeModules(candidate) {
+  const admitted = moduleFabricationPlan(candidate);
+  if (admitted.type === "JsnodeModuleDerivationRefusal") return admitted;
+  const {workOrder, closure, plan} = admitted;
+  const paths = [...projectJsnodeModulePaths(closure), ...testsOfClosure(closure).map(test => test.path)];
+  if (new Set(paths).size !== paths.length) throw new TypeError("fabrication output paths are duplicated");
+  return Object.freeze({type: "JsnodeModuleFabricationPlan", version: 1,
+    workOrderSpecificationDigest: workOrder.specificationDigest, realizationPlan: plan,
+    paths: Object.freeze(paths.sort((left, right) => left.localeCompare(right)))});
+}
+
+/** Fabricate module proposals from canonical work data, without package birth. */
+export async function deriveJsnodeModules(candidate, carriers = {}) {
+  let phase = "artifact-specification-admission", workOrder;
+  const refuse = cause => Object.freeze({
+    type: "JsnodeModuleDerivationRefusal", version: 1, phase,
+    code: cause.code ?? "FABRICATION_FAILED", message: cause.question ?? cause.evidence ?? cause.message ?? String(cause),
+    cause, ...(workOrder ? { workOrderSpecificationDigest: workOrder.specificationDigest, source: workOrder.source } : {}),
+  });
+  try {
+    const admitted = moduleFabricationPlan(candidate);
+    if (admitted.type === "JsnodeModuleDerivationRefusal") return admitted;
+    const {closure, plan} = admitted;
+    workOrder = admitted.workOrder;
     phase = "derivation";
     if (typeof carriers.infer !== "function") return refuse({ code: "NO_DERIVATION_CARRIER", message: "no inference carrier was composed" });
     const derivation = await deriveJsnodePackageFromClosure(workOrder, carriers);

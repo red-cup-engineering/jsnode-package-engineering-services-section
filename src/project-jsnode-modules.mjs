@@ -66,6 +66,21 @@ function cliText(cli, operations) {
   return `${imports.concat(schemas).join("\n")}\n\nexport const catalog = Object.freeze({\n  name: ${JSON.stringify(cli.name)},\n  description: ${JSON.stringify(cli.description)},\n  operations: {\n${definitions}\n  },\n});\n`;
 }
 
+/** Project source-free output paths from the same schema and module rules as emitted files. */
+export function projectJsnodeModulePaths({ operations }) {
+  const paths = [...new Set(operations.map(operation => operation.module))];
+  for (const module of paths) confined(module, "src");
+  for (const operation of operations) for (const side of ["input", "output"]) {
+    if (Object.hasOwn(operation, `${side}Schema`) && !Object.hasOwn(operation, `${side}SchemaPath`)) {
+      const target = schemaPath(operation, side);
+      confined(target, "data");
+      if (paths.includes(target)) throw new TypeError(`projected path is duplicated: ${target}`);
+      paths.push(target);
+    }
+  }
+  return Object.freeze(paths.sort((left, right) => left.localeCompare(right)));
+}
+
 /** Projects shared ESM source carriers, their explicit schemas, and one optional catalog declaration that the code layer runs. */
 export function projectJsnodeModules(specification) {
   const validation = specificationContract.validate(specification);
@@ -93,10 +108,11 @@ export function projectJsnodeModules(specification) {
     if (!namedExports(source.text, source.path).has(operation.exportName)) throw new TypeError(`operation export is not present: ${operation.module}#${operation.exportName}`);
   }
   if (specification.cli) confined(specification.cli.path, "apps");
+  const outputPaths = new Set(projectJsnodeModulePaths(specification));
   const files = [...specification.sources.map((source) => textFile(source.path, source.text))];
   for (const operation of specification.operations) {
-    if (Object.hasOwn(operation, "inputSchema") && !Object.hasOwn(operation, "inputSchemaPath")) files.push(textFile(schemaPath(operation, "input"), json(operation.inputSchema)));
-    if (Object.hasOwn(operation, "outputSchema") && !Object.hasOwn(operation, "outputSchemaPath")) files.push(textFile(schemaPath(operation, "output"), json(operation.outputSchema)));
+    if (Object.hasOwn(operation, "inputSchema") && !Object.hasOwn(operation, "inputSchemaPath") && outputPaths.has(schemaPath(operation, "input"))) files.push(textFile(schemaPath(operation, "input"), json(operation.inputSchema)));
+    if (Object.hasOwn(operation, "outputSchema") && !Object.hasOwn(operation, "outputSchemaPath") && outputPaths.has(schemaPath(operation, "output"))) files.push(textFile(schemaPath(operation, "output"), json(operation.outputSchema)));
   }
   if (specification.cli) files.push(textFile(specification.cli.path, cliText(specification.cli, specification.operations)));
   const paths = new Set();
