@@ -11,7 +11,7 @@ import { readFileText } from "@red-cup-engineering/file-services/read-file";
 import { writeFileText } from "@red-cup-engineering/file-services/write-file";
 import { serializeLines } from "@red-cup-engineering/jsonl-services-section";
 import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/file-services/admit-text-file-creation-projection-set";
-import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
+import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-data-service/integrity";
 
 class StagingRefusal extends Error {
   constructor(code, message, refusedPath = null) {

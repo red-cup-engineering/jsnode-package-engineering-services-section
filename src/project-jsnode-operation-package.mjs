@@ -4,7 +4,7 @@ import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/file-se
 import { projectJsnodeOperationPackageReadme } from "./project-jsnode-operation-package-readme.mjs";
 import { projectJsnodeOperationTests } from "./project-jsnode-operation-tests.mjs";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
-import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
+import { sha256Digest } from "@red-cup-engineering/cryptographic-data-service/integrity";
 
 /** Projects an admitted operation specification without npm packaging or installation. */
 export function projectJsnodeOperationModules(specification) {
