@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { admitOperationMeaningClosure } from "@red-cup-engineering/computer-data-services-section/artifact-fabrication";
+import { admitOperationMeaningClosure } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { deriveJsnodePackageFromClosure, jsnodeClosureOfOperationClosure } from "../src/derive-jsnode-package-from-closure.mjs";
 
 // Fabrication line stage 2: one language-neutral order, bound to Node by convention, fabricated by the
