@@ -22,9 +22,10 @@ test("a neutral operation order binds to the jsnode module closure", () => {
 });
 
 test("the bound order is fabricated: examples assay the derived source", async () => {
-  const closure = jsnodeClosureOfOperationClosure(order, { packageName: "@scope/doubling" });
+  const requirements = [{ id: "double-result", statement: "The operation returns twice its input." }];
+  const closure = jsnodeClosureOfOperationClosure(order, { packageName: "@scope/doubling", requirements });
   const infer = async (request) => (request.taskClass === "code-fabrication-assays"
-    ? { text: JSON.stringify({ cases: [{ operation: "double-value", name: "double-two", clauses: [], input: 2, output: 4, throws: null }], question: null }), lot: { id: "a", model: "assayer" } }
+    ? { text: JSON.stringify({ cases: [{ operation: "double-value", name: "double-two", clauses: ["double-result"], input: 2, output: 4, throws: null }], question: null }), lot: { id: "a", model: "assayer" } }
     : { text: JSON.stringify({ source: "export function doubleValue(n) { return n + n; }", question: null }), lot: { id: "w", model: "writer" } });
   const derived = await deriveJsnodePackageFromClosure(closure, { infer });
   assert.equal(derived.type, undefined, JSON.stringify(derived).slice(0, 500));

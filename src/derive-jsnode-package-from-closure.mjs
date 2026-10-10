@@ -207,16 +207,18 @@ export function testsOfClosure(closure, derivedCases = []) {
  * The Node binding of a language-neutral operation closure (artifact-fabrication
  * `OperationMeaningClosure`, fabrication line stage 2): the same order any language binds, given its
  * module paths and export names by the Node convention and admitted as this line's module closure.
- * Returns the closure with `packageName`, or the binding's refusal.
+ * `requirements` and `prohibitions` are the order's settled clauses (ArtifactFabricationSpecification),
+ * which the clause assays must cover. Returns the closure with `packageName`, or the binding's refusal.
  */
-export function jsnodeClosureOfOperationClosure(closure, { packageName } = {}) {
+export function jsnodeClosureOfOperationClosure(closure, { packageName, requirements = [], prohibitions = [] } = {}) {
   const bound = bindOperationMeaningClosure(closure, "javascript-node");
   if (bound.type !== "BoundOperationMeaningClosure") return bound;
   const jsnode = moduleMeaningClosure.assert({
     operations: bound.operations.map(({ symbol, ...operation }) => ({ ...operation, exportName: symbol })),
     examples: bound.examples, dependencies: bound.dependencies,
   });
-  return Object.freeze({ ...jsnode, packageName: packageName ?? "operation-closure", closureDigest: bound.closureDigest });
+  // The order's settled clauses travel with it: clause assays must cover every one of them.
+  return Object.freeze({ ...jsnode, packageName: packageName ?? "operation-closure", requirements, prohibitions, closureDigest: bound.closureDigest });
 }
 
 /** Clause assays are data, never provider-supplied executable test programs. */
