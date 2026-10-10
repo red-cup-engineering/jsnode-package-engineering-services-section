@@ -35,7 +35,8 @@
     "./workspace/workspace-declaration": "./src/workspace/workspace-declaration.mjs",
     "./derive-jsnode-package-from-closure": "./src/derive-jsnode-package-from-closure.mjs",
     "./package-imports": "./src/package-imports.mjs",
-    "./sync-package-manifest": "./src/sync-package-manifest.mjs"
+    "./sync-package-manifest": "./src/sync-package-manifest.mjs",
+    "./package-tree": "./src/package-tree.mjs"
   },
   "files": [
     "apps",
