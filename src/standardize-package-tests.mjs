@@ -10,8 +10,8 @@
 /** The standard test command, and the check command every standard check begins with. */
 export const STANDARD_TEST = "run-package-tests";
 export const STANDARD_CHECK = "check-package-syntax";
-/** The package that carries both commands. */
-export const TEST_PLAN_PACKAGE = "@red-cup-engineering/package-test-plan";
+/** The package that carries both commands: the owner of the test plan. */
+export const TEST_PLAN_PACKAGE = "@red-cup-engineering/jsnode-package-services-section";
 
 const NODE_TEST = /^node((?:\s+--[\w-]+(?:=\S+)?)*)\s*(.*)$/u;
 const NO_OP = /^(?:echo\b[^&|;]*(?:(?:&&|;)\s*exit 0)?|true|exit 0)$/u;
@@ -69,7 +69,7 @@ function standardCheckFor(previous) {
  * devDependency on the test-plan package gets. Returns `{ manifest, changed, test, check, newlyRun, kept }`.
  */
 export function standardizePackageTests(manifest, plan, { range }) {
-  if (manifest?.name === TEST_PLAN_PACKAGE) return { manifest, changed: false, test: null, check: null, newlyRun: [], kept: "the test-plan package runs its own scripts directly" };
+  if (manifest?.name === TEST_PLAN_PACKAGE) return { manifest, changed: false, test: null, check: null, newlyRun: [], kept: "the test plan's owner runs its own scripts directly" };
   const scripts = { ...(manifest.scripts ?? {}) };
   const previousTest = scripts.test, previousCheck = scripts.check;
   let test = null, check = null, kept = null, newlyRun = [];
