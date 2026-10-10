@@ -9,15 +9,15 @@ import { basename, dirname, relative, resolve } from "node:path";
 // absence, so this one restore-on-gate-failure path unlinks a schema file this run created.
 import { appendFile, readFile, unlink } from "node:fs/promises";
 import { argument } from "@red-cup-engineering/javascript-node-services-section/argv";
-import { constitute, decode, encode } from "@red-cup-engineering/eavt";
+import { constitute, decode, encode } from "@red-cup-engineering/eavt-services-section";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { canonicalChecked } from "@red-cup-engineering/json-services-section";
 import { makeNiUri } from "@red-cup-engineering/uri-services-section/ni-uri";
 import { walkPosixPaths } from "@red-cup-engineering/computer-filepath-engineering-services-section/walk-posix-paths";
 import { isDeadOperationRuntimeImport, projectJsnodeOperationSourceFromArguments } from "../src/project-jsnode-operation-source-from-arguments.mjs";
 import { readJsnodeOperationArguments } from "@red-cup-engineering/javascript-node-services-section/syntax";
-import { readTextFile } from "@red-cup-engineering/file-services/read-text-file";
-import { writeTextFile } from "@red-cup-engineering/file-services/write-text-file";
+import { readTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/read-text-file";
+import { writeTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/write-text-file";
 import { parseJavaScript } from "@red-cup-engineering/javascript-node-services-section/javascript-parser";
 
 

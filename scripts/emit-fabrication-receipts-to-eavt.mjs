@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // One effect: fold each complete admitted fabrication receipt into world rows.
 import { resolve } from "node:path";
-import { execute as executeEavt } from "@red-cup-engineering/eavt";
+import { execute as executeEavt } from "@red-cup-engineering/eavt-services-section";
 import { foldFabricationReceiptIntoWorldRows } from "@red-cup-engineering/jsnode-package-services-section/fabrication-receipts";
 import { walkPosixPaths } from "@red-cup-engineering/computer-filepath-engineering-services-section/walk-posix-paths";
-import { readTextFile } from "@red-cup-engineering/file-services/read-text-file";
+import { readTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/read-text-file";
 import { runJavascriptNodeOperation } from "@red-cup-engineering/javascript-node-services-section/operation";
 
 const RECEIPT_PATH_PATTERN = /\/data\/records\/\d{4}-\d{2}-\d{2}-.*fabrication-receipt\.json$/u;

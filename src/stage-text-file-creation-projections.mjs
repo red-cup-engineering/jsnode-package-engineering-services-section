@@ -2,15 +2,15 @@
 // the stage back and proves every path, byte, and mode matches what was staged, before the caller
 // (create-jsnode-operation-package.mjs) assays and publishes it. This is the one place in the
 // package-creation pipeline that touches a staging directory's files directly; every actual file
-// read or write goes through @red-cup-engineering/file-services, and only directory walking
+// read or write goes through @red-cup-engineering/computer-file-engineering-services-section, and only directory walking
 // (mkdtemp/mkdir/readdir/lstat/rm) calls node:fs directly, since file-services owns file content,
 // not directories.
 import { lstat, mkdir, mkdtemp, readdir, rm } from "node:fs/promises";
 import path from "node:path";
-import { readFileText } from "@red-cup-engineering/file-services/read-file";
-import { writeFileText } from "@red-cup-engineering/file-services/write-file";
+import { readFileText } from "@red-cup-engineering/computer-file-engineering-services-section/read-file";
+import { writeFileText } from "@red-cup-engineering/computer-file-engineering-services-section/write-file";
 import { serializeLines } from "@red-cup-engineering/jsonl-services-section";
-import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/file-services/admit-text-file-creation-projection-set";
+import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
 class StagingRefusal extends Error {

@@ -7,7 +7,7 @@ import { parseJavascriptArgv } from "@red-cup-engineering/javascript-node-servic
 import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-services-section";
 import { readJavascriptFileExportDocumentation } from "@red-cup-engineering/read-javascript-file-export-documentation-service";
 import { admitJavascriptExportDescription } from "@red-cup-engineering/read-javascript-file-export-documentation-service/description";
-import { requireTextFileRead } from "@red-cup-engineering/file-services/require-text-file-read";
+import { requireTextFileRead } from "@red-cup-engineering/computer-file-engineering-services-section/require-text-file-read";
 
 const LOOSE_COMMENT_MAX_LINES = 4;
 const COMMENT_TO_CODE_RATIO_MAX = 0.3;
