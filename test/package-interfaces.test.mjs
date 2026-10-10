@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { exportAdditions, packageInterfaceFindings, specifierParts } from "../src/workspace/package-interfaces.mjs";
+import { PACKAGE_INTERFACE_CLASSES, exportAdditions, packageInterfaceFindings, specifierParts } from "../src/workspace/package-interfaces.mjs";
 
 const isHouse = (name) => name.startsWith("@house/");
 const pkg = (name, dir, exports, files) => ({ name, dir, manifest: { name, exports }, files: new Set(files) });
@@ -93,4 +93,10 @@ test("a dist target of a package that builds is an unchecked build output, not a
   const { findings, diagnostics } = packageInterfaceFindings({ packages: [built, unbuilt], imports: [], isHouse });
   assert.deepEqual(findings.map((row) => [row.class, row.package]), [["export-target-missing", "@house/unbuilt"]]);
   assert.deepEqual(diagnostics, [{ reason: "built-target-unchecked", package: "@house/built", subpath: ".", target: "./dist/index.mjs" }]);
+});
+
+test("every finding class comes from the one exported class list", () => {
+  const odd = pkg("@house/odd", "s/odd", { "./gone": "./src/gone.mjs", "./old": "./lib/legacy/old.mjs" }, ["package.json", "lib/legacy/old.mjs"]);
+  const { findings } = packageInterfaceFindings({ packages: [odd, host], isHouse, imports: [{ importer: "@house/host", file: "a.mjs", specifier: "@house/odd/absent" }] });
+  assert.deepEqual([...new Set(findings.map((row) => row.class))].sort(), [...PACKAGE_INTERFACE_CLASSES].sort());
 });

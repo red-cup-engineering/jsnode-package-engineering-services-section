@@ -18,6 +18,10 @@
  */
 import { exportTargets, resolveExportSubpath } from "./exports/resolve.mjs";
 
+/** Every finding class this checker can emit: break classes guix-machine-release-service's BREAK_CLASSES also names. */
+export const PACKAGE_INTERFACE_CLASSES = Object.freeze(["export-target-missing", "export-into-retired-tree", "unexported-interface"]);
+const [TARGET_MISSING, INTO_RETIRED, UNEXPORTED] = PACKAGE_INTERFACE_CLASSES;
+
 const RETIRED = new Set(["legacy", "test"]);
 const SUBPATH_FILES = (rest) => [`src/${rest}.mjs`, `src/${rest}/index.mjs`, `scripts/${rest}.mjs`, `${rest}.mjs`, `${rest}/index.mjs`, `lib/${rest}.mjs`];
 
@@ -55,13 +59,13 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
       if (conditions.includes("types") && !/\.m?js$/u.test(target)) continue;
       const path = normalTarget(target);
       if (path.split("/").some((segment) => RETIRED.has(segment))) {
-        findings.push({ class: "export-into-retired-tree", package: pkg.name, dir: pkg.dir, subpath, conditions, target });
+        findings.push({ class: INTO_RETIRED, package: pkg.name, dir: pkg.dir, subpath, conditions, target });
       }
       const present = target.includes("*") ? patternFiles(target, pkg.files) : pkg.files.has(path);
       if (present) continue;
       // A build output is never tracked: under a package that builds, it is read as unchecked, not missing.
       if (path.startsWith("dist/") && typeof pkg.manifest.scripts?.build === "string") diagnostics.push({ reason: "built-target-unchecked", package: pkg.name, subpath, target });
-      else findings.push({ class: "export-target-missing", package: pkg.name, dir: pkg.dir, subpath, conditions, target });
+      else findings.push({ class: TARGET_MISSING, package: pkg.name, dir: pkg.dir, subpath, conditions, target });
     }
   }
   for (const { importer, file, specifier } of imports) {
@@ -74,7 +78,7 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
     const reading = resolveExportSubpath(provider.manifest.exports, subpath);
     if (reading.status === "exported") continue;
     findings.push({
-      class: "unexported-interface", importer, file, specifier, provider: name, subpath,
+      class: UNEXPORTED, importer, file, specifier, provider: name, subpath,
       ...(reading.status === "excluded" ? { excludedBy: reading.key } : {}),
       providerSource: local ? { repository: true, dir: local.dir } : { repository: false, source: outside.source },
     });
@@ -96,7 +100,7 @@ export function exportAdditions(findings, packages) {
   const byName = new Map(packages.map((pkg) => [pkg.name, pkg]));
   const additions = new Map(), refusals = [];
   for (const finding of findings) {
-    if (finding.class !== "unexported-interface" || !finding.providerSource.repository || finding.excludedBy) continue;
+    if (finding.class !== UNEXPORTED || !finding.providerSource.repository || finding.excludedBy) continue;
     const key = `${finding.provider}\0${finding.subpath}`;
     if (additions.has(key) || finding.subpath === ".") continue;
     const pkg = byName.get(finding.provider);

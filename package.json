@@ -25,6 +25,7 @@
     "./workspace/exports/resolve": "./src/workspace/exports/resolve.mjs",
     "./workspace/lockfile": "./src/workspace/lockfile.mjs",
     "./workspace/package-manifest": "./src/workspace/package-manifest.mjs",
+    "./workspace/package-interfaces": "./src/workspace/package-interfaces.mjs",
     "./workspace/package-surface": "./src/workspace/package-surface.mjs",
     "./workspace/pnpm-lockfile": "./src/workspace/pnpm-lockfile.mjs",
     "./workspace/publication-status": "./src/workspace/publication-status.mjs",
