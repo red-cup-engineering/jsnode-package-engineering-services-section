@@ -56,7 +56,6 @@
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*",
     "@red-cup-engineering/eavt": "workspace:*",
     "@red-cup-engineering/execute-javascript-node-command-service": "workspace:*",
-    "@red-cup-engineering/feltos": "0.18.3",
     "@red-cup-engineering/file-services": "workspace:*",
     "@red-cup-engineering/inspect-installed-npm-package-service": "workspace:*",
     "@red-cup-engineering/javascript-node-services-section": "workspace:*",
