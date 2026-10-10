@@ -7,7 +7,7 @@
  *   node scripts/check-package-interfaces.mjs --write [REPOSITORY]   also add the exports house code imports and
  *                                                                    exactly one conventional file carries
  *
- * Packages are the tracked package.json files outside legacy, vendor, node_modules and test fixtures. A house
+ * Packages and the files each owns come from the shared package tree (src/package-tree.mjs). A house
  * provider outside the repository is read where Node would resolve it, a node_modules directory from the
  * importing package up to the repository root, at its installed version; one found nowhere is a diagnostic.
  * Classes are the composition gate's break classes (guix-machine-release-service assembly-breaks BREAK_CLASSES).
@@ -15,26 +15,23 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
+import { nestedRootsOf, ownedFiles, packageRoots } from "../src/package-tree.mjs";
 import { formatManifestLike } from "../src/sync-package-manifest.mjs";
 import { PACKAGE_INTERFACE_CLASSES, exportAdditions, houseImportsOfFiles, packageInterfaceFindings } from "../src/workspace/package-interfaces.mjs";
 
 const mode = process.argv.includes("--write") ? "write" : "check";
 const repository = resolve(process.argv.slice(2).find((argument) => !argument.startsWith("--")) ?? ".");
 const tracked = execFileSync("git", ["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
-const NOT_PACKAGE = /(?:^|\/)(?:legacy|vendor|vendored|node_modules|test|tests|__tests__|fixtures|examples)\//u;
-const roots = tracked.filter((file) => /(?:^|\/)package\.json$/u.test(file) && !NOT_PACKAGE.test(file)).map((file) => file.replace(/\/?package\.json$/u, "") || ".");
-const under = (root, file) => root === "." || file.startsWith(`${root}/`);
-const local = (root, file) => (root === "." ? file : file.slice(root.length + 1));
+const roots = packageRoots(tracked);
 
 const packages = [], imports = [];
 for (const root of roots) {
   const manifest = JSON.parse(readFileSync(join(repository, root, "package.json"), "utf8"));
   if (typeof manifest.name !== "string") continue;
-  const nestedRoots = roots.filter((other) => other !== root && other !== "." && under(root, other)).map((other) => local(root, other));
-  const own = tracked.filter((file) => under(root, file) && !nestedRoots.some((nested) => under(nested, local(root, file))));
-  packages.push({ name: manifest.name, dir: root, manifest, files: new Set(own.map((file) => local(root, file))) });
-  const code = own.filter((file) => /\.(?:[cm]?[jt]s|[jt]sx)$/u.test(file))
-    .map((file) => ({ path: local(root, file), text: readFileSync(join(repository, file), "utf8") }));
+  const nestedRoots = nestedRootsOf(root, roots), own = ownedFiles(root, roots, tracked);
+  packages.push({ name: manifest.name, dir: root, manifest, files: new Set(own.map(({ path }) => path)) });
+  const code = own.filter(({ path }) => /\.(?:[cm]?[jt]s|[jt]sx)$/u.test(path))
+    .map(({ path, file }) => ({ path, text: readFileSync(join(repository, file), "utf8") }));
   imports.push(...houseImportsOfFiles(manifest.name, root, code, { nestedRoots }));
 }
 
