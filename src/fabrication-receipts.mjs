@@ -1,6 +1,6 @@
 import { assayCasesOfDelivery, testsOfClosure } from "./derive-jsnode-package-from-closure.mjs";
 import { constitute } from "@red-cup-engineering/eavt";
-import { admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-services-section/artifact-fabrication";
+import { admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { semanticId } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
 

@@ -28,7 +28,7 @@ import path from "node:path";
 import { parseJsonValue } from "@red-cup-engineering/json-services-section";
 import { inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";
 import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
-import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-services-section/artifact-fabrication";
+import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-services-section/admit-npm-package-version";
 import { projectJsnodeModules, projectJsnodeModulePaths } from "./project-jsnode-modules.mjs";
 
