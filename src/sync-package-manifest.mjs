@@ -28,18 +28,19 @@ export function loadsByNameOf(manifest) {
 
 /**
  * The manifest with its house wiring synchronized to `imports` ({ runtime, test } from `importsOfFiles`).
- * `rangeOf(name)` supplies the range for a house package used but not yet declared; when it returns nothing
- * the package is reported unresolved and left undeclared, never guessed.
- * Returns `{ manifest, changes, unresolved }`; `changes` is empty when the manifest is already in sync.
+ * A house package used but not declared is added only with `add` (fabrication is subtractive: a declaration is
+ * removed or moved by default, never invented); otherwise it is reported in `undeclared`. `rangeOf(name)` supplies
+ * the range to add it with; when it returns nothing the package is reported unresolved, never guessed.
+ * Returns `{ manifest, changes, undeclared, unresolved }`; `changes` is empty when the manifest is already in sync.
  */
-export function syncPackageManifest(manifest, imports, { rangeOf = () => null } = {}) {
+export function syncPackageManifest(manifest, imports, { rangeOf = () => null, add: adding = true } = {}) {
   const self = manifest.name;
   const wantRuntime = new Set([...imports.runtime.keys(), ...scriptNamedPackages(manifest), ...loadsByNameOf(manifest)].filter((name) => name !== self));
   const wantTest = new Set([...imports.test.keys()].filter((name) => name !== self && !wantRuntime.has(name)));
   const peers = manifest.peerDependencies ?? {};
   const rangeDeclared = (name) => [...RUNTIME_SECTIONS, "devDependencies", "peerDependencies"].map((s) => manifest[s]?.[name]).find((r) => r !== undefined);
   const next = structuredClone(manifest);
-  const changes = [], unresolved = [];
+  const changes = [], undeclared = [], unresolved = [];
   const section = (key) => (next[key] ??= {});
 
   for (const key of [...RUNTIME_SECTIONS, "devDependencies"]) {
@@ -63,6 +64,7 @@ export function syncPackageManifest(manifest, imports, { rangeOf = () => null } 
   const add = (key, name) => {
     const range = rangeDeclared(name) ?? rangeOf(name);
     if (range === undefined || range === null) { unresolved.push({ dependency: name, wanted: key }); return; }
+    if (!adding) { undeclared.push({ dependency: name, wanted: key, range }); return; }
     section(key)[name] = range;
     changes.push({ dependency: name, action: "added", to: key, range });
   };
@@ -70,7 +72,7 @@ export function syncPackageManifest(manifest, imports, { rangeOf = () => null } 
   for (const name of [...wantTest].sort()) if (next.devDependencies?.[name] === undefined && peers[name] === undefined) add("devDependencies", name);
   for (const key of [...RUNTIME_SECTIONS, "devDependencies"]) if (next[key] && Object.keys(next[key]).length === 0 && manifest[key] === undefined) delete next[key];
   for (const key of [...RUNTIME_SECTIONS, "devDependencies"]) if (next[key] && Object.keys(next[key]).length === 0 && Object.keys(manifest[key] ?? {}).some((name) => HOUSE_SCOPE.test(name))) delete next[key];
-  return Object.freeze({ manifest: next, changes: Object.freeze(changes), unresolved: Object.freeze(unresolved) });
+  return Object.freeze({ manifest: next, changes: Object.freeze(changes), undeclared: Object.freeze(undeclared), unresolved: Object.freeze(unresolved) });
 }
 
 /** A manifest serialized the way `original` was written: its indent, its `\uXXXX` escapes and its trailing whitespace. */

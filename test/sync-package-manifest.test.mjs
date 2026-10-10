@@ -38,3 +38,10 @@ test("a rewritten manifest keeps its indent, escapes and trailing whitespace", (
   const original = '{\n    "description": "a \\u2014 b",\n    "dependencies": {}\n}\n\n';
   assert.equal(formatManifestLike(original, { description: "a — b", dependencies: {} }), original);
 });
+
+test("without add, a used but undeclared house package is reported, not declared", () => {
+  const { manifest: synced, changes, undeclared } = syncPackageManifest(manifest, imports, { rangeOf: () => "workspace:*", add: false });
+  assert.equal(synced.dependencies[`${R}undeclared`], undefined);
+  assert.ok(!changes.some((change) => change.action === "added"));
+  assert.deepEqual(undeclared.map(({ dependency, wanted }) => [dependency.slice(R.length), wanted]), [["undeclared", "dependencies"], ["unknown-test", "devDependencies"]]);
+});
