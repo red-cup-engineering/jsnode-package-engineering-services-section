@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { PACKAGE_INTERFACE_CLASSES, exportAdditions, packageInterfaceFindings, specifierParts } from "../src/workspace/package-interfaces.mjs";
+import { PACKAGE_INTERFACE_CLASSES, exportAdditions, houseImportsOfFiles, isHousePackage, packageInterfaceFindings, specifierParts } from "../src/workspace/package-interfaces.mjs";
 
 const isHouse = (name) => name.startsWith("@house/");
 const pkg = (name, dir, exports, files) => ({ name, dir, manifest: { name, exports }, files: new Set(files) });
@@ -74,6 +74,7 @@ test("--write adds an export only for one existing conventional file, never for 
     { importer: "@house/host", file: "a.mjs", specifier: "@house/engine/dispatch/work-inference-coordinate" },
     { importer: "@house/host", file: "b.mjs", specifier: "@house/engine/dispatch/work-inference-coordinate" },
     { importer: "@house/host", file: "a.mjs", specifier: "@house/engine/absent" },
+    { importer: "@house/host", file: "b.mjs", specifier: "@house/engine/absent" },
     { importer: "@house/host", file: "a.mjs", specifier: "@house/twice/x" },
     { importer: "@house/host", file: "a.mjs", specifier: "@house/closed/private/p" },
   ];
@@ -99,4 +100,21 @@ test("every finding class comes from the one exported class list", () => {
   const odd = pkg("@house/odd", "s/odd", { "./gone": "./src/gone.mjs", "./old": "./lib/legacy/old.mjs" }, ["package.json", "lib/legacy/old.mjs"]);
   const { findings } = packageInterfaceFindings({ packages: [odd, host], isHouse, imports: [{ importer: "@house/host", file: "a.mjs", specifier: "@house/odd/absent" }] });
   assert.deepEqual([...new Set(findings.map((row) => row.class))].sort(), [...PACKAGE_INTERFACE_CLASSES].sort());
+});
+
+test("house imports come from the shared reader with subpaths, test code marked and nested packages left out", () => {
+  const rows = houseImportsOfFiles("@red-cup-engineering/host", "apps/host", [
+    { path: "src/agency-work.mjs", text: 'import { workInferenceCoordinate } from "@red-cup-engineering/computer-inference-engine/dispatch/work-inference-coordinate";\nimport yaml from "yaml";' },
+    { path: "src/route.mjs", text: 'const handler = "@red-cup-engineering/organizing/agency:readAgency";' },
+    { path: "test/host.test.mjs", text: 'import "@red-cup-engineering/computer-web-server/platform-http/operation-serving";' },
+    { path: "lib/legacy/old.mjs", text: 'import "@red-cup-engineering/relating/writing";' },
+    { path: "vendor-pkg/src/x.mjs", text: 'import "@red-cup-engineering/nested-only";' },
+  ], { nestedRoots: ["vendor-pkg"] });
+  assert.deepEqual(rows.map(({ file, specifier, role }) => [file, specifier, role]), [
+    ["apps/host/src/agency-work.mjs", "@red-cup-engineering/computer-inference-engine/dispatch/work-inference-coordinate", "runtime"],
+    ["apps/host/src/route.mjs", "@red-cup-engineering/organizing/agency", "runtime"],
+    ["apps/host/test/host.test.mjs", "@red-cup-engineering/computer-web-server/platform-http/operation-serving", "test"],
+  ]);
+  assert.equal(isHousePackage("@red-cup-engineering/organizing"), true);
+  assert.equal(isHousePackage("yaml"), false);
 });

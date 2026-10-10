@@ -16,6 +16,7 @@
  * pass. `exportAdditions` proposes the one export each in-repository `unexported-interface` needs,
  * only where exactly one conventional file carries the subpath.
  */
+import { HOUSE_SCOPE, codeRole, houseSpecifiersOfText } from "../package-imports.mjs";
 import { exportTargets, resolveExportSubpath } from "./exports/resolve.mjs";
 
 /** Every finding class this checker can emit: break classes guix-machine-release-service's BREAK_CLASSES also names. */
@@ -41,17 +42,42 @@ const patternFiles = (target, files) => {
 };
 
 /**
+ * The house imports a package's own code makes, one row per file and specifier, read with the house import
+ * reader (`package-imports`): subpaths kept, test code marked, nested packages' files left to them.
+ * @param {string} importer the package's name
+ * @param {string} dir the package's repository-relative directory
+ * @param {ReadonlyArray<{ path: string, text: string }>} files package-relative paths and their text
+ * @param {{ nestedRoots?: ReadonlyArray<string> }} [options]
+ * @returns {Array<{ importer: string, file: string, specifier: string, role: "runtime" | "test" }>}
+ */
+export function houseImportsOfFiles(importer, dir, files, { nestedRoots = [] } = {}) {
+  const nested = nestedRoots.filter((root) => root && root !== ".");
+  const rows = [];
+  for (const { path, text } of files) {
+    if (nested.some((root) => path === root || path.startsWith(`${root}/`))) continue;
+    const role = codeRole(path);
+    if (!role) continue;
+    const file = dir === "." || dir === "" ? path : `${dir}/${path}`;
+    for (const specifier of houseSpecifiersOfText(text)) rows.push({ importer, file, specifier, role });
+  }
+  return rows;
+}
+
+/** Whether a package name is in a house scope. */
+export const isHousePackage = (name) => HOUSE_SCOPE.test(`${name}/`);
+
+/**
  * Findings for one repository.
  * @param {{
  *   packages: ReadonlyArray<{ name: string, dir: string, manifest: object, files: ReadonlySet<string> }>,
  *   imports: ReadonlyArray<{ importer: string, file: string, specifier: string }>,
  *   resolved?: ReadonlyMap<string, { manifest: object, source: string }>,
- *   isHouse: (name: string) => boolean,
+ *   isHouse?: (name: string) => boolean,
  * }} input packages with their package-relative tracked files; the house imports their files make;
  *   providers resolved outside the repository (from an install), keyed by name
  * @returns {{ findings: object[], diagnostics: object[] }}
  */
-export function packageInterfaceFindings({ packages, imports, resolved = new Map(), isHouse }) {
+export function packageInterfaceFindings({ packages, imports, resolved = new Map(), isHouse = isHousePackage }) {
   const findings = [], diagnostics = [];
   const byName = new Map(packages.map((pkg) => [pkg.name, pkg]));
   for (const pkg of packages) {
@@ -68,7 +94,7 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
       else findings.push({ class: TARGET_MISSING, package: pkg.name, dir: pkg.dir, subpath, conditions, target });
     }
   }
-  for (const { importer, file, specifier } of imports) {
+  for (const { importer, file, specifier, role } of imports) {
     if (specifier.startsWith(".") || specifier.startsWith("node:") || specifier.startsWith("/")) continue;
     const { name, subpath } = specifierParts(specifier);
     if (!isHouse(name) || name === importer) continue;
@@ -78,7 +104,7 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
     const reading = resolveExportSubpath(provider.manifest.exports, subpath);
     if (reading.status === "exported") continue;
     findings.push({
-      class: UNEXPORTED, importer, file, specifier, provider: name, subpath,
+      class: UNEXPORTED, importer, file, specifier, provider: name, subpath, ...(role === undefined ? {} : { role }),
       ...(reading.status === "excluded" ? { excludedBy: reading.key } : {}),
       providerSource: local ? { repository: true, dir: local.dir } : { repository: false, source: outside.source },
     });
@@ -98,14 +124,14 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
  */
 export function exportAdditions(findings, packages) {
   const byName = new Map(packages.map((pkg) => [pkg.name, pkg]));
-  const additions = new Map(), refusals = [];
+  const additions = new Map(), refusals = [], refused = new Set();
   for (const finding of findings) {
     if (finding.class !== UNEXPORTED || !finding.providerSource.repository || finding.excludedBy) continue;
     const key = `${finding.provider}\0${finding.subpath}`;
-    if (additions.has(key) || finding.subpath === ".") continue;
+    if (additions.has(key) || refused.has(key) || finding.subpath === ".") continue;
     const pkg = byName.get(finding.provider);
     const candidates = SUBPATH_FILES(finding.subpath.slice(2)).filter((file) => pkg.files.has(file));
-    if (candidates.length !== 1) { refusals.push({ provider: finding.provider, subpath: finding.subpath, reason: candidates.length ? "ambiguous-target" : "no-target-file", candidates }); continue; }
+    if (candidates.length !== 1) { refused.add(key); refusals.push({ provider: finding.provider, subpath: finding.subpath, reason: candidates.length ? "ambiguous-target" : "no-target-file", candidates }); continue; }
     additions.set(key, { package: pkg.name, dir: pkg.dir, subpath: finding.subpath, target: `./${candidates[0]}` });
   }
   return { additions: [...additions.values()], refusals };
