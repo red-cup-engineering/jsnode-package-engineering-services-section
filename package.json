@@ -37,7 +37,8 @@
     "./package-imports": "./src/package-imports.mjs",
     "./sync-package-manifest": "./src/sync-package-manifest.mjs",
     "./package-tree": "./src/package-tree.mjs",
-    "./standardize-package-tests": "./src/standardize-package-tests.mjs"
+    "./standardize-package-tests": "./src/standardize-package-tests.mjs",
+    "./package-test-plan": "./src/package-test-plan.mjs"
   },
   "files": [
     "apps",
@@ -73,7 +74,8 @@
     "@red-cup-engineering/relating": "workspace:*",
     "@red-cup-engineering/uri-services-section": "workspace:*",
     "@red-cup-engineering/yaml-frontmatter-codec-service": "workspace:*",
-    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*"
+    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/package-test-plan": "workspace:*"
   },
   "engines": {
     "node": ">=24"

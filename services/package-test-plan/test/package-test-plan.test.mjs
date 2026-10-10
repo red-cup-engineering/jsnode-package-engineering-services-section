@@ -81,12 +81,15 @@ test("run-package-tests runs the plan, reports an unmet requirement as requires,
   const ok = spawnSync(process.execPath, [runner], { cwd: root, encoding: "utf8", env: { ...process.env, TEST_NETWORK: "" } });
   assert.equal(ok.status, 0, ok.stdout + ok.stderr);
   assert.match(ok.stderr, /requires test\/host\.test\.mjs: host /u);
-  const summary = JSON.parse(ok.stderr.split("\n").find((line) => line.startsWith("package-test-plan ")).slice("package-test-plan ".length));
-  assert.deepEqual({ tests: summary.tests, run: summary.run, requires: summary.requires.map(({ test }) => test) }, { tests: 3, run: 2, requires: ["test/host.test.mjs"] });
+  const report = (stdout) => JSON.parse(stdout.trim().split("\n").at(-1));
+  const first = report(ok.stdout);
+  assert.deepEqual({ kind: first.kind, planned: first.planned, files: first.files, ran: first.ran, passed: first.passed, failed: first.failed, requires: first.requires.map(({ test }) => test) },
+    { kind: "package-test-run.v1", planned: 3, files: 2, ran: 2, passed: 2, failed: 0, requires: ["test/host.test.mjs"] });
   // Where the requirement is met, the test runs, and its failure is a failure.
   mkdirSync(join(root, "absent-corpus"));
   const met = spawnSync(process.execPath, [runner], { cwd: root, encoding: "utf8" });
   assert.notEqual(met.status, 0);
+  assert.deepEqual((({ ran, passed, failed, requires }) => ({ ran, passed, failed, requires }))(report(met.stdout)), { ran: 3, passed: 2, failed: 1, requires: [] });
   // check-package-syntax reads the same own files.
   const check = spawnSync(process.execPath, [fileURLToPath(new URL("../scripts/check-package-syntax.mjs", import.meta.url))], { cwd: root, encoding: "utf8" });
   assert.equal(check.status, 0, check.stderr);
