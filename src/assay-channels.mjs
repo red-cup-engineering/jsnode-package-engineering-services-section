@@ -75,6 +75,7 @@ export function proofingOfDerivation({ workOrder, assayLot, writerLots = [], exa
     ...(assayLot === undefined ? [] : [{ channel: assayChannel({ method: "clause-assays", carrier: carrierOfLot(assayLot), evidence: workOrder }), seenByWriter: false }]),
     { channel: assayChannel({ method: "module-set-composition", carrier: "node-test-runner", evidence: { method: "compose-and-run" } }), seenByWriter: false },
     { channel: assayChannel({ method: "delivery-admission", carrier: "jsnode-delivery-schema", evidence: { method: "admit-delivery" } }), seenByWriter: false },
+    { channel: assayChannel({ method: "fold-check", carrier: "jsnode-misfold-reader", evidence: { method: "read-misfolds" } }), seenByWriter: false },
   ];
   const channels = checks.map(({ channel, seenByWriter }) => Object.freeze({ ...channel, ...independenceFromWriter(channel, writer, { seenByWriter }) }));
   const byMethod = new Map(channels.map((channel) => [channel.method, channel]));
