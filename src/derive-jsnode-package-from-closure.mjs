@@ -31,6 +31,7 @@ import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/co
 import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-services-section/artifact-fabrication";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-services-section/admit-npm-package-version";
 import { projectJsnodeModules, projectJsnodeModulePaths } from "./project-jsnode-modules.mjs";
+import { channelOfPreAssayFailure, proofingOfDerivation } from "./assay-channels.mjs";
 
 const TASK_CLASS = "code-fabrication";
 
@@ -385,9 +386,16 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
   }
   derivations.push({ phase: "clause-assays", outcome: "derived", lot: assayDelivery.lot, cases: assayCases.cases });
   const tests = testsOfClosure(closure, assayCases.cases);
+  // Kinetic proofing: which channels examined the source, their independence from its writer, and
+  // which channel caught which defect (assay-channels.mjs).
+  const catches = [];
+  const proofing = () => proofingOfDerivation({
+    workOrder, assayLot: assayDelivery.lot, examples: closure.examples,
+    writerLots: derivations.filter(item => item.module && item.lot !== undefined).map(item => item.lot), catches,
+  });
   const refused = (code, operation, detail = {}) => Object.freeze({
     type: "JsnodeClosureDerivationRefusal", version: 1, code,
-    ...(operation === undefined ? {} : { operation: operation.name }), ...detail, derivations: Object.freeze(derivations),
+    ...(operation === undefined ? {} : { operation: operation.name }), ...detail, derivations: Object.freeze(derivations), proofing: proofing(),
   });
   const modules = new Map();
   for (const operation of closure.operations) {
@@ -414,6 +422,7 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
     }
     if (read.source === undefined) {
       derivations.push({ ...record, outcome: "refused", evidence: read.refused, excerpt: delivery.text.slice(0, 400), judged: await told(delivery.lot, "refused", read.refused) });
+      catches.push({ defect: read.refused, method: "delivery-admission" });
       return refused("DERIVATION_REJECTED", operation);
     }
     derivations.push({ ...record, outcome: "derived" });
@@ -442,10 +451,11 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
     for (const record of derivations.filter(item => item.module)) Object.assign(record, {
       outcome: "composition-refused", evidence: assay.failure, dependencyResolutions,
     });
+    catches.push({ defect: assay.failure, method: channelOfPreAssayFailure(assay.failure) });
     return refused("DERIVATION_REJECTED", undefined, { scope: "module-set", evidence: assay.failure });
   }
   for (const record of derivations.filter(item => item.module)) Object.assign(record, {
     outcome: "pre-assayed", evidence: "complete declared module set: admitted examples and prior clause assays", dependencyResolutions,
   });
-  return Object.freeze({ sources: Object.freeze(sources), tests: Object.freeze(tests), derivations: Object.freeze(derivations) });
+  return Object.freeze({ sources: Object.freeze(sources), tests: Object.freeze(tests), derivations: Object.freeze(derivations), proofing: proofing() });
 }
