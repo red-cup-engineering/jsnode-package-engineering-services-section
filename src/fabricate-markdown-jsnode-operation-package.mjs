@@ -321,7 +321,7 @@ export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, 
     jsnodeOperationPackageCreationReceipt: creationReceipt,
     jsnodeOperationPackageRegistryPublication: registryPublication,
     artifactFabricationRealizationReceipt: realizationReceipt,
-    ...(derivation === undefined ? {} : { derivation: { type: "JsnodeClosureDerivation", version: 3, workOrderSpecification, workOrderSpecificationDigest: workOrderSpecification.specificationDigest, tests: "admitted examples and separately derived requirement/prohibition assays, before source; hidden from source derivation", attempts: derivation.derivations } }),
+    ...(derivation === undefined ? {} : { derivation: { type: "JsnodeClosureDerivation", version: 3, workOrderSpecification, workOrderSpecificationDigest: workOrderSpecification.specificationDigest, tests: "admitted examples and separately derived requirement/prohibition assays, before source; hidden from source derivation", attempts: derivation.derivations, proofing: derivation.proofing } }),
     receiptPath,
     });
     try {
