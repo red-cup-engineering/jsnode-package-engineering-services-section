@@ -10,7 +10,7 @@ import { completeClosureTranslation, translateMarkdownJsnodeOperationPackageSpec
 import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operation-package-specification.mjs";
 import { projectJsnodeOperationModules } from "./project-jsnode-operation-package.mjs";
 import { deriveJsnodePackageFromClosure } from "./derive-jsnode-package-from-closure.mjs";
-import { writeTextFile } from "@red-cup-engineering/file-services/write-text-file";
+import { writeTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/write-text-file";
 import { admitMarkdownJsnodeOperationPackageFabricationReceipt } from "@red-cup-engineering/jsnode-package-services-section/fabrication-receipts";
 import { semanticId } from "@red-cup-engineering/computer-content-engineering-services-section/semiotic-content-address";
 

@@ -22,10 +22,8 @@
     "./workspace/bins": "./src/workspace/bins/index.mjs",
     "./workspace/bins/script-catalog": "./src/workspace/bins/script-catalog.mjs",
     "./workspace/exports": "./src/workspace/exports/index.mjs",
-    "./workspace/exports/resolve": "./src/workspace/exports/resolve.mjs",
     "./workspace/lockfile": "./src/workspace/lockfile.mjs",
     "./workspace/package-manifest": "./src/workspace/package-manifest.mjs",
-    "./workspace/package-interfaces": "./src/workspace/package-interfaces.mjs",
     "./workspace/package-surface": "./src/workspace/package-surface.mjs",
     "./workspace/pnpm-lockfile": "./src/workspace/pnpm-lockfile.mjs",
     "./workspace/publication-status": "./src/workspace/publication-status.mjs",
@@ -38,7 +36,9 @@
     "./derive-jsnode-package-from-closure": "./src/derive-jsnode-package-from-closure.mjs",
     "./package-imports": "./src/package-imports.mjs",
     "./sync-package-manifest": "./src/sync-package-manifest.mjs",
-    "./package-tree": "./src/package-tree.mjs"
+    "./package-tree": "./src/package-tree.mjs",
+    "./workspace/exports/resolve": "./src/workspace/exports/resolve.mjs",
+    "./workspace/package-interfaces": "./src/workspace/package-interfaces.mjs"
   },
   "files": [
     "apps",
@@ -61,9 +61,9 @@
     "@red-cup-engineering/computer-filepath-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-text-content-engineering-services-section": "workspace:*",
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/eavt": "workspace:*",
+    "@red-cup-engineering/eavt-services-section": "workspace:*",
     "@red-cup-engineering/execute-javascript-node-command-service": "workspace:*",
-    "@red-cup-engineering/file-services": "workspace:*",
+    "@red-cup-engineering/computer-file-engineering-services-section": "workspace:*",
     "@red-cup-engineering/inspect-installed-npm-package-service": "workspace:*",
     "@red-cup-engineering/javascript-node-services-section": "workspace:*",
     "@red-cup-engineering/json-schema-services-section": "workspace:*",

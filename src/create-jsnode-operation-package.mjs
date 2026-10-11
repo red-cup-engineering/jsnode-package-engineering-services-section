@@ -10,9 +10,9 @@ import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-services-
 import { packNpmPackage } from "@red-cup-engineering/npm-package-services-section/pack-npm-package";
 import { inspectInstalledNpmPackage, inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";
 import { projectJsnodeOperationPackage } from "./project-jsnode-operation-package.mjs";
-import { publishStagedDirectoryAtAbsentPath } from "@red-cup-engineering/file-services/publish-staged-directory-at-absent-path";
+import { publishStagedDirectoryAtAbsentPath } from "@red-cup-engineering/computer-file-engineering-services-section/publish-staged-directory-at-absent-path";
 import { stageTextFileCreationProjections } from "./stage-text-file-creation-projections.mjs";
-import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/file-services/admit-text-file-creation-projection-set";
+import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { validateJsonSchema } from "@red-cup-engineering/json-schema-services-section/validation";
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
