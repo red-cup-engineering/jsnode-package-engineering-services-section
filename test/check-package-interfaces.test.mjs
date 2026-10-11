@@ -63,3 +63,47 @@ test("--write adds the imported export in the manifest's own formatting and keep
   const again = run("--check", root);
   assert.deepEqual(again.report.findings["unexported-interface"], []);
 });
+
+test("--write never reports refused root-sugar exports as added or closes their findings", (t) => {
+  const root = repository(t);
+  const file = join(root, "apps/engine/package.json");
+  const manifest = JSON.parse(readFileSync(file, "utf8"));
+  manifest.exports = "./src/index.mjs";
+  put(root, "apps/engine/src/index.mjs", "export {};\n");
+  const before = `${JSON.stringify(manifest, null, 2)}\n`;
+  writeFileSync(file, before);
+  assert.equal(spawnSync("git", ["-C", root, "add", "-A"]).status, 0);
+  const { status, report } = run("--write", root);
+  assert.equal(status, 1);
+  assert.deepEqual(report.added, []);
+  assert.equal(report.refused.length, 2);
+  assert.ok(report.refused.every(row => row.reason === "exports-not-a-subpath-map"));
+  assert.equal(readFileSync(file, "utf8"), before);
+  const again = run("--check", root);
+  assert.equal(again.status, 1);
+  assert.equal(again.report.findings["unexported-interface"].length, 2);
+});
+
+test("--write accounts separately for written and refused provider additions", (t) => {
+  const root = repository(t);
+  const file = join(root, "apps/engine/package.json");
+  const manifest = JSON.parse(readFileSync(file, "utf8"));
+  manifest.exports = { import: "./src/index.mjs" };
+  put(root, "apps/engine/src/index.mjs", "export {};\n");
+  const before = `${JSON.stringify(manifest, null, 2)}\n`;
+  writeFileSync(file, before);
+  put(root, "apps/ready/package.json", JSON.stringify({ name: "@red-cup-engineering/ready", exports: {} }));
+  put(root, "apps/ready/src/x.mjs", "export {};\n");
+  const host = join(root, "apps/host/src/index.mjs");
+  writeFileSync(host, readFileSync(host, "utf8") + '\nimport "@red-cup-engineering/ready/x";\n');
+  assert.equal(spawnSync("git", ["-C", root, "add", "-A"]).status, 0);
+  const { status, report } = run("--write", root);
+  assert.equal(status, 1);
+  assert.deepEqual(report.added, [{ package: "@red-cup-engineering/ready", dir: "apps/ready", subpath: "./x", target: "./src/x.mjs" }]);
+  assert.equal(report.refused.length, 2);
+  assert.equal(readFileSync(file, "utf8"), before);
+  assert.equal(JSON.parse(readFileSync(join(root, "apps/ready/package.json"), "utf8")).exports["./x"], "./src/x.mjs");
+  const again = run("--check", root);
+  assert.equal(again.status, 1);
+  assert.equal(again.report.findings["unexported-interface"].length, 2);
+});

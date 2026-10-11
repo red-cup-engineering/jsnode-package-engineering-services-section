@@ -45,3 +45,45 @@ test("every target a map names is listed with its subpath and condition path", (
     ["./*", "", "./src/*.mjs"],
   ]);
 });
+
+test("array null fallback and pattern precedence agree with actual Node ESM resolution", async (t) => {
+  const { spawnSync } = await import("node:child_process");
+  const { mkdtempSync, writeFileSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const { join } = await import("node:path");
+  const { pathToFileURL } = await import("node:url");
+  const root = mkdtempSync(join(tmpdir(), "exports-node-conformance-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const cases = [
+    [[null, "./ok.mjs"], ".", "./ok.mjs"],
+    [[null, { worker: "./worker.mjs" }, "./ok.mjs"], ".", "./ok.mjs"],
+    [[[null], "./ok.mjs"], ".", "./ok.mjs"],
+    [[[], "./ok.mjs"], ".", "./ok.mjs"],
+    [{ "./x": [] }, "./x", null],
+    [{ "./x": [null, { worker: "./worker.mjs" }] }, "./x", null],
+    [{ "./x": { import: null, default: "./ok.mjs" } }, "./x", null],
+    [{ "./x": [{ import: null, default: "./wrong.mjs" }, "./ok.mjs"] }, "./x", "./ok.mjs"],
+    [{ "./features/*": "./generic/*.mjs", "./features/*.js": "./specific/*.mjs" }, "./features/a.js", "./specific/a.mjs"],
+    [{ "./features/*.js": "./specific/*.mjs", "./features/*": "./generic/*.mjs" }, "./features/a.js", "./specific/a.mjs"],
+    [{ "./features/*": "./generic/*.mjs", "./features/*.js": null }, "./features/a.js", null],
+    [{ "./features/*": "./generic/*.mjs", "./features/deep/*": "./deep/*.mjs" }, "./features/deep/a", "./deep/a.mjs"],
+    [{ "./x*": "./target*.mjs" }, "./x", null],
+    [{ "./x*.js": "./target*.mjs" }, "./x.js", null],
+    [{ "./x/*": "./pattern/*.mjs", "./x/a": "./exact.mjs" }, "./x/a", "./exact.mjs"],
+  ];
+  for (const [exports, subpath, target] of cases) {
+    writeFileSync(join(root, "package.json"), JSON.stringify({ name: "@house/resolve-probe", type: "module", exports }));
+    const specifier = `@house/resolve-probe${subpath === "." ? "" : subpath.slice(1)}`;
+    writeFileSync(join(root, "probe.mjs"), `try { console.log(JSON.stringify({url:import.meta.resolve(${JSON.stringify(specifier)})})); } catch(error) { console.log(JSON.stringify({code:error.code})); }\n`);
+    const child = spawnSync(process.execPath, [join(root, "probe.mjs")], { encoding: "utf8" });
+    assert.equal(child.status, 0, child.stderr);
+    const actual = JSON.parse(child.stdout), reading = resolveExportSubpath(exports, subpath);
+    if (target === null) {
+      assert.equal(actual.code, "ERR_PACKAGE_PATH_NOT_EXPORTED", JSON.stringify({ exports, subpath, actual }));
+      assert.notEqual(reading.status, "exported");
+    } else {
+      assert.equal(actual.url, new URL(target, pathToFileURL(`${root}/`)).href);
+      assert.equal(reading.target, target);
+    }
+  }
+});

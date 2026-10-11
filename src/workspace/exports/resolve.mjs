@@ -5,7 +5,8 @@
  *
  * `exportSubpaths` lists the subpaths a map declares; `resolveExportSubpath` answers which file
  * one requested subpath reaches under a condition set (exact keys first, then the longest `*`
- * pattern prefix; condition objects in key order; arrays first-match; `null` excludes); and
+ * pattern prefix, then longest suffix; condition objects in key order; arrays try each
+ * non-null match; direct `null` excludes); and
  * `exportTargets` lists every file target a map can name, under any condition, so a checker can
  * confirm each exists.
  */
@@ -40,11 +41,16 @@ function targetOf(value, conditions, replacement) {
   if (typeof value === "string") return replacement === undefined ? value : value.replaceAll("*", replacement);
   if (value === null) return null;
   if (Array.isArray(value)) {
+    // PACKAGE_TARGET_RESOLVE skips null within arrays, but preserves an all-null
+    // (or empty) array as an exclusion. A null condition outside an array stops.
+    let last = value.length === 0 ? null : undefined;
     for (const item of value) {
       const target = targetOf(item, conditions, replacement);
-      if (target !== undefined) return target;
+      if (target === undefined) continue;
+      if (target === null) { last = null; continue; }
+      return target;
     }
-    return undefined;
+    return last;
   }
   if (isConditionObject(value)) {
     for (const [condition, nested] of Object.entries(value)) {
@@ -66,15 +72,17 @@ function targetOf(value, conditions, replacement) {
 export function resolveExportSubpath(exportsValue, subpath, conditions = IMPORT_CONDITIONS) {
   const map = subpathMap(exportsValue);
   let key, replacement;
-  if (Object.hasOwn(map, subpath) && !subpath.includes("*")) key = subpath;
+  if (Object.hasOwn(map, subpath) && !subpath.includes("*") && !subpath.endsWith("/")) key = subpath;
   else {
-    let best = -1;
+    let bestPrefix = -1, bestLength = -1;
     for (const candidate of Object.keys(map)) {
       const star = candidate.indexOf("*");
       if (star < 0 || candidate.indexOf("*", star + 1) >= 0) continue;
       const prefix = candidate.slice(0, star), suffix = candidate.slice(star + 1);
-      if (subpath.length >= candidate.length - 1 && subpath.startsWith(prefix) && subpath.endsWith(suffix) && prefix.length > best) {
-        best = prefix.length;
+      if (subpath.length >= candidate.length && subpath.startsWith(prefix) && subpath.endsWith(suffix) &&
+          (prefix.length > bestPrefix || (prefix.length === bestPrefix && candidate.length > bestLength))) {
+        bestPrefix = prefix.length;
+        bestLength = candidate.length;
         key = candidate;
         replacement = subpath.slice(prefix.length, subpath.length - suffix.length);
       }

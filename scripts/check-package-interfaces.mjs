@@ -55,6 +55,7 @@ for (const { importer, specifier } of imports) {
 
 const { findings, diagnostics } = packageInterfaceFindings({ packages, imports, resolved });
 const { additions, refusals } = exportAdditions(findings, packages);
+const written = [];
 if (mode === "write") {
   for (const [dir, rows] of Map.groupBy(additions, (row) => row.dir)) {
     const file = join(repository, dir, "package.json");
@@ -65,13 +66,14 @@ if (mode === "write") {
     if (exportsMap === null) { refusals.push(...rows.map((row) => ({ provider: row.package, subpath: row.subpath, reason: "exports-not-a-subpath-map" }))); continue; }
     for (const row of rows) exportsMap[row.subpath] = row.target;
     writeFileSync(file, formatManifestLike(text, { ...manifest, exports: exportsMap }));
+    written.push(...rows);
   }
 }
 const byClass = Object.fromEntries(PACKAGE_INTERFACE_CLASSES.map((name) => [name, findings.filter((row) => row.class === name)]));
 process.stdout.write(JSON.stringify({
   kind: "check-package-interfaces", mode, repository, packages: packages.length, imports: imports.length,
-  findings: byClass, diagnostics, ...(mode === "write" ? { added: additions, refused: refusals } : { proposed: additions, refused: refusals }),
+  findings: byClass, diagnostics, ...(mode === "write" ? { added: written, refused: refusals } : { proposed: additions, refused: refusals }),
 }, null, 2) + "\n");
-const added = mode === "write" ? new Set(additions.map((row) => `${row.package}\0${row.subpath}`)) : new Set();
+const added = mode === "write" ? new Set(written.map((row) => `${row.package}\0${row.subpath}`)) : new Set();
 const open = findings.filter((row) => !(row.class === "unexported-interface" && added.has(`${row.provider}\0${row.subpath}`)));
 if (open.length) process.exitCode = 1;
