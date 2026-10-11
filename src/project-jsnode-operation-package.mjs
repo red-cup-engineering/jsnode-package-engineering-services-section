@@ -1,6 +1,6 @@
 import { freezeJson } from "@red-cup-engineering/json-services-section";
 import { serializeLines } from "@red-cup-engineering/jsonl-services-section";
-import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/file-services/admit-text-file-creation-projection-set";
+import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { projectJsnodeOperationPackageReadme } from "./project-jsnode-operation-package-readme.mjs";
 import { projectJsnodeOperationTests } from "./project-jsnode-operation-tests.mjs";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
