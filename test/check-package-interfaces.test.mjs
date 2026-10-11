@@ -107,3 +107,28 @@ test("--write accounts separately for written and refused provider additions", (
   assert.equal(again.status, 1);
   assert.equal(again.report.findings["unexported-interface"].length, 2);
 });
+
+test("--write preserves exact and pattern conditional exports and actual require resolution", (t) => {
+  for (const exports of [{ "./x": { require: "./src/x.cjs" } }, { "./*": { require: "./src/*.cjs" } }]) {
+    const root = repository(t), file = join(root, "apps/engine/package.json");
+    const manifest = JSON.parse(readFileSync(file, "utf8"));
+    manifest.exports = exports;
+    const before = JSON.stringify(manifest, null, 2) + '\n';
+    writeFileSync(file, before);
+    put(root, "apps/engine/src/x.mjs", "export const value = 'esm';\n");
+    put(root, "apps/engine/src/x.cjs", "module.exports = 'original-cjs';\n");
+    put(root, "apps/engine/probe.cjs", 'console.log(JSON.stringify(require("@red-cup-engineering/engine/x")));\n');
+    put(root, "apps/host/src/index.mjs", 'import "@red-cup-engineering/engine/x";\n');
+    assert.equal(spawnSync("git", ["-C", root, "add", "-A"]).status, 0);
+    const probe = () => spawnSync(process.execPath, [join(root, "apps/engine/probe.cjs")], { encoding: "utf8" });
+    assert.equal(JSON.parse(probe().stdout), 'original-cjs');
+    const { status, report } = run("--write", root);
+    assert.equal(status, 1);
+    assert.deepEqual(report.added, []);
+    assert.equal(report.refused[0].reason, 'existing-export-declaration');
+    assert.equal(readFileSync(file, "utf8"), before);
+    const after = probe();
+    assert.equal(after.status, 0, after.stderr);
+    assert.equal(JSON.parse(after.stdout), 'original-cjs');
+  }
+});

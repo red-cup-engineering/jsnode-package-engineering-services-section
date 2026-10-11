@@ -118,3 +118,28 @@ test("house imports come from the shared reader with subpaths, test code marked 
   assert.equal(isHousePackage("@red-cup-engineering/organizing"), true);
   assert.equal(isHousePackage("yaml"), false);
 });
+
+test("repeated wildcard targets require the same capture and imported members must exist", () => {
+  const provider = pkg("@house/pattern", "provider", { "./*": "./src/*/copy-*.mjs" }, ["src/a/copy-a.mjs"]);
+  const check = name => packageInterfaceFindings({ packages: [provider], isHouse,
+    imports: [{ importer: "@house/consumer", file: "src/index.mjs", specifier: `@house/pattern/${name}` }] });
+  assert.deepEqual(check("a").findings, []);
+  assert.deepEqual(check("b").findings.map(({ class: kind, subpath, target }) => [kind, subpath, target]), [
+    ["export-target-missing", "./b", "./src/b/copy-b.mjs"]
+  ]);
+  provider.files = new Set(["src/a/copy-b.mjs"]);
+  assert.equal(check("a").findings.some(row => row.subpath === "./*" && row.class === "export-target-missing"), true);
+});
+
+test("valid invalid-target fallbacks do not create spurious missing-file findings", () => {
+  const provider = pkg("@house/fallback", "provider", { ".": ["invalid", "./ok.mjs"] }, ["ok.mjs"]);
+  assert.deepEqual(packageInterfaceFindings({ packages: [provider], isHouse,
+    imports: [{ importer: "@house/consumer", file: "src/index.mjs", specifier: "@house/fallback" }] }).findings, []);
+});
+
+
+test("repeated wildcard followed by digits cannot become a larger backreference", () => {
+  const provider = pkg("@house/pattern", "provider", { "./*": "./src/*/copy-*2.mjs" }, ["src/a/copy-a2.mjs"]);
+  assert.deepEqual(packageInterfaceFindings({ packages: [provider], isHouse,
+    imports: [{ importer: "@house/consumer", file: "src/index.mjs", specifier: "@house/pattern/a" }] }).findings, []);
+});

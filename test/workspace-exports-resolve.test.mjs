@@ -56,6 +56,13 @@ test("array null fallback and pattern precedence agree with actual Node ESM reso
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const cases = [
     [[null, "./ok.mjs"], ".", "./ok.mjs"],
+    [["invalid", "./ok.mjs"], ".", "./ok.mjs"],
+    [[null, "invalid"], ".", { error: "ERR_INVALID_PACKAGE_TARGET" }],
+    [{ ".": { "0": "./zero.mjs", import: "./ok.mjs" } }, ".", { error: "ERR_INVALID_PACKAGE_CONFIG" }],
+    [{ ".": "./ok.mjs", import: "./other.mjs" }, ".", { error: "ERR_INVALID_PACKAGE_CONFIG" }],
+    [{ "module-sync": "./sync.mjs", default: "./fallback.mjs" }, ".", "./sync.mjs"],
+    [{ "node-addons": "./native.node", default: "./fallback.mjs" }, ".", "./native.node"],
+    [{ "module-sync": "./sync.mjs", import: "./import.mjs" }, ".", "./sync.mjs"],
     [[null, { worker: "./worker.mjs" }, "./ok.mjs"], ".", "./ok.mjs"],
     [[[null], "./ok.mjs"], ".", "./ok.mjs"],
     [[[], "./ok.mjs"], ".", "./ok.mjs"],
@@ -71,13 +78,22 @@ test("array null fallback and pattern precedence agree with actual Node ESM reso
     [{ "./x*.js": "./target*.mjs" }, "./x.js", null],
     [{ "./x/*": "./pattern/*.mjs", "./x/a": "./exact.mjs" }, "./x/a", "./exact.mjs"],
   ];
+  for (const capture of ["dollar$&", "dollar$$", "dollar$`", "dollar$'"]) {
+    cases.push([{ "./*": "./src/*/copy-*.mjs" }, `./${capture}`, `./src/${capture}/copy-${capture}.mjs`]);
+  }
   for (const [exports, subpath, target] of cases) {
     writeFileSync(join(root, "package.json"), JSON.stringify({ name: "@house/resolve-probe", type: "module", exports }));
     const specifier = `@house/resolve-probe${subpath === "." ? "" : subpath.slice(1)}`;
     writeFileSync(join(root, "probe.mjs"), `try { console.log(JSON.stringify({url:import.meta.resolve(${JSON.stringify(specifier)})})); } catch(error) { console.log(JSON.stringify({code:error.code})); }\n`);
     const child = spawnSync(process.execPath, [join(root, "probe.mjs")], { encoding: "utf8" });
     assert.equal(child.status, 0, child.stderr);
-    const actual = JSON.parse(child.stdout), reading = resolveExportSubpath(exports, subpath);
+    const actual = JSON.parse(child.stdout);
+    if (target?.error) {
+      assert.equal(actual.code, target.error);
+      assert.throws(() => resolveExportSubpath(exports, subpath), { code: target.error });
+      continue;
+    }
+    const reading = resolveExportSubpath(exports, subpath);
     if (target === null) {
       assert.equal(actual.code, "ERR_PACKAGE_PATH_NOT_EXPORTED", JSON.stringify({ exports, subpath, actual }));
       assert.notEqual(reading.status, "exported");
@@ -86,4 +102,14 @@ test("array null fallback and pattern precedence agree with actual Node ESM reso
       assert.equal(reading.target, target);
     }
   }
+});
+
+
+test("target listing excludes invalid array alternatives while rejecting malformed configuration", () => {
+  assert.deepEqual(exportTargets({ ".": ["invalid", "./ok.mjs"] }), [{ subpath: ".", conditions: [], target: "./ok.mjs" }]);
+  for (const value of [{ ".": "./ok.mjs", import: "./other.mjs" }, { ".": { "0": "./zero.mjs", import: "./ok.mjs" } }]) {
+    assert.throws(() => exportTargets(value), { code: "ERR_INVALID_PACKAGE_CONFIG" });
+  }
+  assert.throws(() => resolveExportSubpath({ ".": [null, "../outside.mjs"] }, "."), { code: "ERR_INVALID_PACKAGE_TARGET" });
+  assert.equal(resolveExportSubpath({ ".": ["../outside.mjs", "./ok.mjs"] }, ".").target, "./ok.mjs");
 });

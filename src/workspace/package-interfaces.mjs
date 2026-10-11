@@ -17,7 +17,7 @@
  * only where exactly one conventional file carries the subpath.
  */
 import { HOUSE_SCOPE, codeRole, houseSpecifiersOfText } from "../package-imports.mjs";
-import { exportTargets, resolveExportSubpath } from "./exports/resolve.mjs";
+import { exportKeyForSubpath, exportTargets, resolveExportSubpath } from "./exports/resolve.mjs";
 
 /** Every finding class this checker can emit: break classes guix-machine-release-service's BREAK_CLASSES also names. */
 export const PACKAGE_INTERFACE_CLASSES = Object.freeze(["export-target-missing", "export-into-retired-tree", "unexported-interface"]);
@@ -37,8 +37,10 @@ export function specifierParts(specifier) {
 
 const normalTarget = (target) => target.replace(/^\.\//u, "");
 const patternFiles = (target, files) => {
-  const [prefix, suffix] = normalTarget(target).split("*");
-  return [...files].some((file) => file.startsWith(prefix) && file.endsWith(suffix) && file.length > prefix.length + suffix.length);
+  const parts = normalTarget(target).split("*");
+  const escape = text => text.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+  const pattern = new RegExp(`^${parts.map(escape).join("\u0000").replace("\u0000", "(.+)").replaceAll("\u0000", "(?:\\1)")}$`, "u");
+  return [...files].some(file => pattern.test(file));
 };
 
 /**
@@ -102,7 +104,19 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
     const provider = local ?? outside;
     if (provider === undefined) { diagnostics.push({ reason: "provider-unresolved", importer, file, specifier, provider: name }); continue; }
     const reading = resolveExportSubpath(provider.manifest.exports, subpath);
-    if (reading.status === "exported") continue;
+    if (reading.status === "exported") {
+      // A wildcard having some tracked member does not prove this imported
+      // member exists. Outside providers need their own installed-file assay.
+      if (local && !local.files.has(normalTarget(reading.target))) {
+        const row = { package: name, dir: local.dir, subpath, conditions: [], target: reading.target, importer, file };
+        if (normalTarget(reading.target).startsWith("dist/") && typeof local.manifest.scripts?.build === "string") {
+          diagnostics.push({ reason: "built-target-unchecked", ...row });
+        } else if (!findings.some(f => f.class === TARGET_MISSING && f.package === name && f.subpath === subpath && f.target === reading.target)) {
+          findings.push({ class: TARGET_MISSING, ...row });
+        }
+      }
+      continue;
+    }
     findings.push({
       class: UNEXPORTED, importer, file, specifier, provider: name, subpath, ...(role === undefined ? {} : { role }),
       ...(reading.status === "excluded" ? { excludedBy: reading.key } : {}),
@@ -130,6 +144,13 @@ export function exportAdditions(findings, packages) {
     const key = `${finding.provider}\0${finding.subpath}`;
     if (additions.has(key) || refused.has(key) || finding.subpath === ".") continue;
     const pkg = byName.get(finding.provider);
+    // An import-unavailable condition is not an undeclared interface. Adding an
+    // unconditional exact key would overwrite it or shadow its pattern for require.
+    if (exportKeyForSubpath(pkg.manifest.exports, finding.subpath) !== undefined) {
+      refused.add(key);
+      refusals.push({ provider: finding.provider, subpath: finding.subpath, reason: "existing-export-declaration" });
+      continue;
+    }
     const candidates = SUBPATH_FILES(finding.subpath.slice(2)).filter((file) => pkg.files.has(file));
     if (candidates.length !== 1) { refused.add(key); refusals.push({ provider: finding.provider, subpath: finding.subpath, reason: candidates.length ? "ambiguous-target" : "no-target-file", candidates }); continue; }
     additions.set(key, { package: pkg.name, dir: pkg.dir, subpath: finding.subpath, target: `./${candidates[0]}` });
