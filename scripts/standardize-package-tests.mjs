@@ -6,10 +6,11 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { ownedFiles, packageRoots } from "../src/package-tree.mjs";
+import { packageRoots } from "../src/package-tree.mjs";
 import { formatManifestLike } from "../src/sync-package-manifest.mjs";
 import { standardizePackageTests } from "../src/standardize-package-tests.mjs";
 import { testPlan } from "../src/package-test-plan.mjs";
+import { packageFiles } from "../src/package-files.mjs";
 
 const argv = process.argv.slice(2);
 const write = argv.includes("--write");
@@ -23,9 +24,14 @@ const report = { repository, range, packages: [] };
 for (const root of roots) {
   let text; try { text = readFileSync(manifests.get(root), "utf8"); } catch { continue; }
   const manifest = JSON.parse(text);
-  const files = ownedFiles(root, roots, tracked).map(({ path }) => path);
-  const plan = testPlan({ files, manifest, nestedRoots: [] });
-  const result = standardizePackageTests(manifest, plan, { range });
+  // Compare against the runner's actual file view, including untracked files and nested packages.
+  // Ownership exclusions belong to the plan; migration must still see files those exclusions omit.
+  const files = packageFiles(join(repository, root));
+  const plan = testPlan({ files, manifest });
+  // Git-ignored paths may still be selected by the original node command. Do not crawl or enroll them:
+  // an incomplete listing means wildcard/default selection cannot be proven safe to replace.
+  const ignored = execFileSync("git", ["-C", join(repository, root), "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory", "--", "."], { encoding: "utf8", maxBuffer: 1 << 30 });
+  const result = standardizePackageTests(manifest, plan, { range, selectionComplete: ignored.length === 0 });
   if (plan.problems.length || result.changed || result.kept) {
     report.packages.push({ root, name: manifest.name ?? null, tests: plan.tests.length, problems: plan.problems, test: result.test, check: result.check, newlyRun: result.newlyRun, kept: result.kept });
   }

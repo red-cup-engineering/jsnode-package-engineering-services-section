@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { isStandardCheck, isStandardTest, standardizePackageTests, testsRunBy, TEST_PLAN_PACKAGE } from "../src/standardize-package-tests.mjs";
 
-const plan = (tests, check = tests) => ({ tests, check, requirements: {}, problems: [] });
+const plan = (tests, check = tests) => ({ files: [...new Set([...tests, ...check])], tests, check, requirements: {}, problems: [] });
 const TESTS = ["src/a.test.mjs", "test/one.test.mjs", "test/deep/two.test.mjs"];
 
 test("the standard forms: run-package-tests with node flags only, a check that begins with check-package-syntax", () => {
@@ -20,7 +20,7 @@ test("what an old command ran: quoted globs are node's, unquoted ** is the shell
   assert.deepEqual([...testsRunBy("node --test test/**/*.test.mjs", TESTS)], ["test/deep/two.test.mjs"]);
   assert.deepEqual([...testsRunBy("node --test test/one.test.mjs src/a.test.mjs", TESTS)].sort(), ["src/a.test.mjs", "test/one.test.mjs"]);
   assert.deepEqual([...testsRunBy("node --test", TESTS)].length, 3);
-  assert.deepEqual([...testsRunBy("node --test test", TESTS)].sort(), ["test/deep/two.test.mjs", "test/one.test.mjs"]);
+  assert.deepEqual([...testsRunBy("node --test test", TESTS)], []);
 });
 
 test("a node --test command becomes the standard one, keeping its node flags and naming the tests it never ran", () => {

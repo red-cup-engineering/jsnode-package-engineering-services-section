@@ -77,7 +77,8 @@ export function admitTestRequires(testRequires, tests) {
 
 /**
  * A package's test plan from its files (package-relative paths, as a tracked listing gives them) and its
- * manifest. Returns `{ tests, requirements, check, problems }`: `tests` every test in the plan, sorted;
+ * manifest. Returns `{ files, tests, requirements, check, problems }`: `tests` every test in the plan, sorted;
+ * `files` retains the complete input listing so migration can detect tests the plan would omit;
  * `requirements` the declared requirement of each test that has one; `check` the code files `check` reads.
  */
 export function testPlan({ files, manifest = {}, nestedRoots } = {}) {
@@ -86,7 +87,7 @@ export function testPlan({ files, manifest = {}, nestedRoots } = {}) {
   const tests = own.filter((path) => TEST_FILE.test(path)).sort();
   const { requirements, problems } = admitTestRequires(manifest.testRequires, tests);
   const check = own.filter((path) => CHECKED_FILE.test(path)).sort();
-  return Object.freeze({ tests: Object.freeze(tests), requirements: Object.freeze(requirements), check: Object.freeze(check), problems: Object.freeze(problems) });
+  return Object.freeze({ files: Object.freeze(files.map(posix)), tests: Object.freeze(tests), requirements: Object.freeze(requirements), check: Object.freeze(check), problems: Object.freeze(problems) });
 }
 
 /**
