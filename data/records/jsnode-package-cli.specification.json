@@ -16,6 +16,9 @@
       "path": "src/project-jsnode-modules.mjs"
     },
     {
+      "path": "src/project-jsnode-module-paths.mjs"
+    },
+    {
       "path": "src/project-jsnode-operation-package-readme.mjs"
     },
     {
@@ -113,6 +116,7 @@
     "node:path",
     "node:test",
     "node:url",
-    "typescript"
+    "typescript",
+    "../data/records/schema/jsnode-module-specification.schema.json"
   ]
 }

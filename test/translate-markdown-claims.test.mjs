@@ -98,3 +98,23 @@ test("a definitionally exact constant is a placeholder without a claim", () => {
   assert.equal(admitted.type, "ArtifactFabricationSpecification", `${admitted.code} ${admitted.message}`);
   assert.equal(admitted.requirements[0].parameters.find(({ name }) => name === "seconds-per-minute").exact, "seconds-per-minute");
 });
+
+test("a leading YAML front matter block is accepted and counted in every source span", () => {
+  const front = "---\ntitle: forecast order\nowner: climate\n---\n";
+  const plain = translate(claimedOrder());
+  const framed = translate(front + claimedOrder());
+  assert.equal(framed.type, "MarkdownJsnodeOperationPackageSpecificationTranslation", JSON.stringify(framed));
+  const spans = (t) => t.artifactSpecificationCandidate.requirements.map((c) => c.sourceSpan.startLine);
+  assert.deepEqual(spans(framed), spans(plain).map((n) => n + 4));
+  assert.equal(framed.artifactSpecificationCandidate.claims[0].sourceSpan.startLine, plain.artifactSpecificationCandidate.claims[0].sourceSpan.startLine + 4);
+  assert.equal(admitArtifactFabricationSpecification(framed.artifactSpecificationCandidate).type, "ArtifactFabricationSpecification");
+  const refusal = translate(front + claimedOrder().replace("## Package", "## Package\nstray"));
+  assert.equal(refusal.type, "MarkdownJsnodeOperationPackageSpecificationTranslationRefusal");
+  assert.ok(refusal.sourceSpan.startLine > 4, "a refusal's span counts the front matter lines");
+});
+
+test("an unterminated front matter block is refused", () => {
+  const refused = translate("---\ntitle: open\n" + claimedOrder());
+  assert.equal(refused.type, "MarkdownJsnodeOperationPackageSpecificationTranslationRefusal");
+  assert.equal(refused.code, "INVALID_FRONT_MATTER");
+});

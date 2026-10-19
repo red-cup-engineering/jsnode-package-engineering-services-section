@@ -22,8 +22,20 @@ function frozen(value) {
   return value;
 }
 
+// Lines a leading YAML front matter block occupies; spans count them so they stay line numbers of the whole source.
+let frontMatterLines = 0;
+
 function span(startLine, endLine = startLine) {
-  return { type: "ArtifactFabricationSourceSpan", startLine, endLine };
+  return { type: "ArtifactFabricationSourceSpan", startLine: startLine + frontMatterLines, endLine: endLine + frontMatterLines };
+}
+
+/** Removes a leading `---` YAML front matter block from the lines and returns how many lines it occupied. */
+function stripFrontMatter(lines) {
+  if (lines[0] !== "---") return 0;
+  const close = lines.findIndex((line, index) => index > 0 && (line === "---" || line === "..."));
+  if (close < 0) refuse("INVALID_FRONT_MATTER", "a leading --- front matter block is never closed", { type: "ArtifactFabricationSourceSpan", startLine: 1, endLine: lines.length });
+  lines.splice(0, close + 1);
+  return close + 1;
 }
 
 function slug(value, context, line) {
@@ -322,6 +334,7 @@ export function completeClosureTranslation(translation, { sources, tests }) {
  * @returns {object} A MarkdownJsnodeOperationPackageSpecificationTranslation or a MarkdownJsnodeOperationPackageSpecificationTranslationRefusal.
  */
 export function translateMarkdownJsnodeOperationPackageSpecification(request) {
+  frontMatterLines = 0;
   try {
     exactKeys(request, ["type", "version", "source"], "request", 1);
     if (request.type !== "MarkdownJsnodeOperationPackageSpecificationTranslationRequest" || request.version !== 1) refuse("INVALID_REQUEST", "request must be MarkdownJsnodeOperationPackageSpecificationTranslationRequest@1", span(1));
@@ -330,6 +343,7 @@ export function translateMarkdownJsnodeOperationPackageSpecification(request) {
     const source = request.source;
     const lines = source.text.replace(/\r\n/gu, "\n").split("\n");
     if (lines.at(-1) === "") lines.pop();
+    frontMatterLines = stripFrontMatter(lines);
     if (lines.includes("## Modules") || lines.includes("## Sources") || lines.includes("## Operations")) return translateV2(source, lines);
     if (!lines.includes("## Claims")) refuse("MISSING_CLAIMS", "a work order states the claims its clauses rest on in a ## Claims section (candidate version 1 is retired)", span(1));
     const claimed = true;
