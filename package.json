@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/red-cup-engineering/jsnode-package-services-section.git"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "exports": {
     "./fabrication-receipts": "./src/fabrication-receipts.mjs",
     "./admit-jsnode-operation-package-specification": "./src/admit-jsnode-operation-package-specification.mjs",
@@ -97,5 +97,9 @@
     "run-package-tests": "./scripts/run-package-tests.mjs",
     "check-package-syntax": "./scripts/check-package-syntax.mjs",
     "standardize-package-tests": "./scripts/standardize-package-tests.mjs"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
   }
 }
