@@ -125,3 +125,52 @@ test("double-value: clause assay negative",()=>{});`);
   assert.equal(result.code,"ASSAY_TEST_FAILED");
   assert.match(result.failure,/not ok/u);
 });
+
+
+test("root test plan and sequential ordinals are proof obligations, not decorative TAP strings", () => {
+  const counters = [
+    "# tests 2", "# pass 2", "# fail 0",
+    "# cancelled 0", "# skipped 0", "# todo 0",
+  ].join("\n");
+  const good = [
+    "TAP version 13",
+    "ok 1 - " + expected[0],
+    "ok 2 - " + expected[1],
+    "1..2", counters,
+  ].join("\n");
+  assert.equal(testRunCompletedAllAssays(good, expected), true);
+  const variants = [
+    {name: "no root plan; arbitrary ordinal labels", body: [
+      "TAP version 13", "ok 21 - " + expected[0],
+      "ok 48 - " + expected[1], counters,
+    ].join("\n")},
+    {name: "root plan contradicts the observed results", body: good.replace("1..2", "1..0")},
+    {name: "duplicate test ordinal", body: good.replace("ok 2 - ", "ok 1 - ")},
+    {name: "root tests not consecutively numbered", body: good.replace("ok 2 - ", "ok 3 - ")},
+    {name: "indented nested results pose as root tests", body: good.replaceAll("\nok ", "\n    ok ")},
+    {name: "repeated root plan", body: good.replace("1..2", "1..2\n1..2")},
+  ];
+  for (const {name, body} of variants) {
+    assert.equal(testRunCompletedAllAssays(body, expected), false, name);
+    const received = receiveIsolatedAssayOutcome({
+      isolated: true, status: 0, stdout: body, stderr: "",
+      timedOut: false, truncated: false, signal: null,
+    }, expected);
+    assert.equal(received.passed, false, name);
+    assert.equal(received.code, "ASSAY_INCOMPLETE", name);
+  }
+});
+
+test("host assay text limits apply to captured UTF-8 bytes, not JavaScript character counts", () => {
+  const observed=run('import test from "node:test";\ntest("double-value: positive",()=>{});\ntest("double-value: clause assay negative",()=>{});');
+  assert.equal(observed.status,0);
+  assert.equal(testRunCompletedAllAssays(observed.stdout,expected),true);
+  const received = receiveIsolatedAssayOutcome({
+    isolated: true, status: 0, stdout: observed.stdout,
+    // Over 2 MiB in UTF-8 but under 2 million UTF-16 string units.
+    stderr: "é".repeat(1_100_000), timedOut: false, truncated: false,
+    signal: null,
+  }, expected);
+  assert.equal(received.passed,false);
+  assert.equal(received.code,"ASSAY_EXECUTION_REFUSED");
+});
