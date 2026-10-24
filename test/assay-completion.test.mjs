@@ -140,17 +140,17 @@ test("root test plan and sequential ordinals are proof obligations, not decorati
   ].join("\n");
   assert.equal(testRunCompletedAllAssays(good, expected), true);
   const variants = [
-    {name: "no root plan; arbitrary ordinal labels", body: [
+    {name: "no root plan; arbitrary ordinal labels", reason: "ROOT_PLAN_MISSING_OR_REPEATED", body: [
       "TAP version 13", "ok 21 - " + expected[0],
       "ok 48 - " + expected[1], counters,
     ].join("\n")},
-    {name: "root plan contradicts the observed results", body: good.replace("1..2", "1..0")},
-    {name: "duplicate test ordinal", body: good.replace("ok 2 - ", "ok 1 - ")},
-    {name: "root tests not consecutively numbered", body: good.replace("ok 2 - ", "ok 3 - ")},
-    {name: "indented nested results pose as root tests", body: good.replaceAll("\nok ", "\n    ok ")},
-    {name: "repeated root plan", body: good.replace("1..2", "1..2\n1..2")},
+    {name: "root plan contradicts the observed results", reason: "ROOT_PLAN_COUNT_MISMATCH", body: good.replace("1..2", "1..0")},
+    {name: "duplicate test ordinal", reason: "ROOT_ORDINAL_MISMATCH", body: good.replace("ok 2 - ", "ok 1 - ")},
+    {name: "root tests not consecutively numbered", reason: "ROOT_ORDINAL_MISMATCH", body: good.replace("ok 2 - ", "ok 3 - ")},
+    {name: "indented nested results pose as root tests", reason: "ROOT_RESULTS_INCOMPLETE", body: good.replaceAll("\nok ", "\n    ok ")},
+    {name: "repeated root plan", reason: "ROOT_PLAN_MISSING_OR_REPEATED", body: good.replace("1..2", "1..2\n1..2")},
   ];
-  for (const {name, body} of variants) {
+  for (const {name, body, reason} of variants) {
     assert.equal(testRunCompletedAllAssays(body, expected), false, name);
     const received = receiveIsolatedAssayOutcome({
       isolated: true, status: 0, stdout: body, stderr: "",
@@ -158,6 +158,7 @@ test("root test plan and sequential ordinals are proof obligations, not decorati
     }, expected);
     assert.equal(received.passed, false, name);
     assert.equal(received.code, "ASSAY_INCOMPLETE", name);
+    assert.equal(received.reason,reason,"typed proof source: "+name);
   }
 });
 
@@ -173,4 +174,5 @@ test("host assay text limits apply to captured UTF-8 bytes, not JavaScript chara
   }, expected);
   assert.equal(received.passed,false);
   assert.equal(received.code,"ASSAY_EXECUTION_REFUSED");
+  assert.equal(received.reason,"CAPTURED_OUTPUT_TOO_LARGE");
 });
