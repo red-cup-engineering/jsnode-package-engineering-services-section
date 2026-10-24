@@ -18,11 +18,13 @@ const valid={
  'src/double.mjs':'export function doubleValue(n){if(typeof n!=="number"||!Number.isFinite(n))throw new TypeError();return n+n;}',
  'src/increment.mjs':'import {doubleValue} from "./double.mjs"; export function incrementValue(n){return doubleValue(n)+1;}',
 };
-async function exercise(sources){
+async function exercise(sources,{lotCarriers=[]}={}){
  const calls=[],judgments=[];
  const result=await deriveJsnodeModules(order,{infer:async request=>{
   calls.push(request);const module=JSON.parse(request.messages[1].content).selectedModule;
-  return {text:JSON.stringify(module===undefined?{cases,question:null}:{source:sources[module],question:null}),lot:{id:'controlled:'+calls.length}};
+  const carrier=lotCarriers[calls.length-1];
+  return {text:JSON.stringify(module===undefined?{cases,question:null}:{source:sources[module],question:null}),
+    lot:{id:'controlled:'+calls.length,...(carrier?{model:carrier}:{})}};
  },judge:async(...args)=>judgments.push(args),isolatedAssayExecutor:controlledLocalAssayFixture});
  return {result,calls,judgments};
 }
@@ -52,6 +54,17 @@ assert.ok(bad.result.cause.derivations.filter(d=>d.module).every(d=>d.outcome===
 // Kinetic proofing: the controlled lots name no carrier, so no channel is shown independent of the
 // writer; the composition failure is recorded against the channel that caught it.
 assert.equal(good.result.derivation.proofing.independentBehavioralChannels,0);
+// Real original inference-delivery path: clause assays from one of two source
+// writers may not be promoted to an independent check by concatenating their names.
+const repeated=await exercise(valid,{lotCarriers:['model-a','model-a','model-b']});
+assert.equal(repeated.result.type,'JsnodeModuleProposal',JSON.stringify(repeated.result));
+assert.deepEqual(repeated.result.derivation.proofing.sourceWriters.map(x=>x.carrier),['model-a','model-b']);
+assert.equal(repeated.result.derivation.proofing.independentBehavioralChannels,0);
+const separate=await exercise(valid,{lotCarriers:['model-c','model-a','model-b']});
+assert.equal(separate.result.type,'JsnodeModuleProposal',JSON.stringify(separate.result));
+assert.equal(separate.result.derivation.proofing.independentBehavioralChannels,1);
+assert.equal(separate.result.derivation.proofing.independentlyReceived,false,
+  'source-carrier identity difference is not independent verifier authentication');
 assert.equal(bad.result.cause.proofing.catches.length,1);
 assert.ok(['clause-assays','admitted-examples'].includes(bad.result.cause.proofing.catches[0].method),JSON.stringify(bad.result.cause.proofing.catches));
 assert.ok(bad.result.cause.proofing.catches[0].caughtBy);
