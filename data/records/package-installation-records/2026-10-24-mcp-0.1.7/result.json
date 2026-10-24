@@ -1,0 +1,10 @@
+{
+  "startedAt": "2026-10-24T23:37:20.561Z",
+  "finishedAt": "2026-10-24T23:37:35.939Z",
+  "status": 0,
+  "signal": null,
+  "stdout": "\nadded 116 packages in 15s\n",
+  "stderr": "",
+  "destination": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7",
+  "newCash": false
+}
