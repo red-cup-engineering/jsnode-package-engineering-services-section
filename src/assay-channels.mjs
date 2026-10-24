@@ -94,7 +94,10 @@ export function proofingOfDerivation({ workOrder, assayLot, writerLots = [], exa
     evidence: workOrder });
   const checks = [
     { channel: assayChannel({ method: "admitted-examples", carrier: "work-order-author", evidence: examples }), seenByWriter: true },
-    ...(assayLot === undefined ? [] : [{ channel: assayChannel({ method: "clause-assays", carrier: carrierOfLot(assayLot), evidence: workOrder }), seenByWriter: false }]),
+    // A clause-assay method can run without an attributed market lot. Keep
+    // its real detection channel with unknown carrier; the absence of a lot
+    // denies *independence*, not the fact that Node observed a failing case.
+    { channel: assayChannel({ method: "clause-assays", carrier: carrierOfLot(assayLot), evidence: workOrder }), seenByWriter: false },
     { channel: assayChannel({ method: "module-set-composition", carrier: "node-test-runner", evidence: { method: "compose-and-run" } }), seenByWriter: false },
     { channel: assayChannel({ method: "delivery-admission", carrier: "jsnode-delivery-schema", evidence: { method: "admit-delivery" } }), seenByWriter: false },
     { channel: assayChannel({ method: "fold-check", carrier: "jsnode-misfold-reader", evidence: { method: "read-misfolds" } }), seenByWriter: false },
