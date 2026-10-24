@@ -66,7 +66,14 @@ assert.equal(separate.result.derivation.proofing.independentBehavioralChannels,1
 assert.equal(separate.result.derivation.proofing.independentlyReceived,false,
   'source-carrier identity difference is not independent verifier authentication');
 assert.equal(bad.result.cause.proofing.catches.length,1);
-assert.ok(['clause-assays','admitted-examples'].includes(bad.result.cause.proofing.catches[0].method),JSON.stringify(bad.result.cause.proofing.catches));
+const failedCase=bad.result.cause.proofing.catches[0];
+assert.ok(['clause-assays','admitted-examples','module-set-composition'].includes(failedCase.method),
+  JSON.stringify(bad.result.cause.proofing.catches));
+// When a trusted Node runner exits nonzero without a named failing TAP case,
+// its failure is an observed *composition* failure. It must NOT masquerade as
+// a particular independent clause assay or admitted example.
+if (failedCase.method==='module-set-composition')
+  assert.match(failedCase.defect,/isolated assay process exited status/u);
 assert.ok(bad.result.cause.proofing.catches[0].caughtBy);
 // A source module can call process.exit(0) at import time; the Node test
 // runner can then pass its file-wrapper without executing even one assay.
