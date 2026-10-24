@@ -178,11 +178,30 @@ from an arbitrary model-supplied object. The boolean is a host-observation
 claim, **not itself a proof of sandbox security**.
 
 The pure recipient rejects abnormal/partial execution, missing expected
-tests, test skips, and the Node early-exit-zero false positive. A controlled
-local Node runner exists solely in `test/fixtures/` for fixed test source;
-it is **not** a production execution alternative. Host integration and real
-negative controls remain required before treating untrusted generated source
-as safely executable.
+tests, test skips, and the Node early-exit-zero false positive. As a
+**Fabrication Friday proofing requirement**, the source-owned Node TAP
+reporter must additionally produce exactly one root `1..N` plan, exactly
+`N` consecutively numbered root results (nested/indented results do not
+qualify), distinct names matching the original work order, and the
+consistent passed/failed/skipped/cancelled/TODO counters. Both captured
+stdout and stderr are bounded by actual **UTF-8 bytes**, not JavaScript
+string-character counts. A structurally plausible but incomplete log is
+`ASSAY_INCOMPLETE`; a bounded-host/byte violation is
+`ASSAY_EXECUTION_REFUSED`. These checks are *necessary observations of
+one isolated attempt*, not a proof that a provider is authentic, that
+independent semantic validation succeeded, that a BOINC replication quorum
+was met, or that a customer accepted the output.
+
+The existing proof receiver and all its native regressions are exercised
+by the original package's tests; its focused, dependency-free
+`assay-proof-native` workflow runs the **actual original proof-stage
+source** and `test/assay-completion.test.mjs` on independent Node 24.
+This does not replace the original full fabrication suite, the separate
+host isolation proof, the qualified source/design revision proof gate, or
+downstream Work/customer receiving. A controlled local Node runner exists
+solely in `test/fixtures/` for fixed test source; it is **not** a production
+execution alternative. Host integration and real negative controls remain
+required before treating untrusted generated source as safely executable.
 
 
 
