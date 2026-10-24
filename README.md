@@ -187,7 +187,19 @@ consistent passed/failed/skipped/cancelled/TODO counters. Both captured
 stdout and stderr are bounded by actual **UTF-8 bytes**, not JavaScript
 string-character counts. A structurally plausible but incomplete log is
 `ASSAY_INCOMPLETE`; a bounded-host/byte violation is
-`ASSAY_EXECUTION_REFUSED`. These checks are *necessary observations of
+`ASSAY_EXECUTION_REFUSED`. The original receiving operation now also emits
+one stable source-qualified `reason` on refusal: bad/missing/repeated
+root plan, mismatched plan count, missing or misnumbered root result,
+unexpected/failed name, premature plan, inconsistent runner counters,
+unqualified host result, or captured output too large. The **same single
+parser** backs both the original boolean `testRunCompletedAllAssays` and
+the detailed receiving refusal, so clients do not maintain competing
+assay-completion or proof vocabularies. These reasons let the next
+Engineering pass select the correct original proof/host defect without
+misclassifying it as failed customer code or automatically purchasing
+another generated source.
+
+These checks are *necessary observations of
 one isolated attempt*, not a proof that a provider is authentic, that
 independent semantic validation succeeded, that a BOINC replication quorum
 was met, or that a customer accepted the output.
