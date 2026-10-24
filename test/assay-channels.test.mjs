@@ -155,3 +155,16 @@ test("blank or boundary-whitespace market lot names cannot claim separate proven
   ]) assert.throws(() => assayChannel({ ...sample, evidence: order }),
     /nonblank original method and carrier/u);
 });
+
+test("a missing clause-assay market lot retains its real detection method without making it independent", () => {
+  const result = proofingOfDerivation({ workOrder: order, writerLots: [], assayLot: undefined,
+    examples: order.examples,
+    catches: [{ defect: "not ok 1 - operation: clause assay negative", method: "clause-assays" }],
+  });
+  const channel = result.channels.find(item => item.method === "clause-assays");
+  assert.ok(channel);
+  assert.equal(channel.carrier, "unnamed-carrier");
+  assert.equal(channel.independent, false);
+  assert.equal(result.independentBehavioralChannels, 0);
+  assert.equal(result.catches[0].caughtBy, channel.id);
+});
