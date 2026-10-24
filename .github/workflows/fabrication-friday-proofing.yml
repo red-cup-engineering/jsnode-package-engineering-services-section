@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
 
+# New source revisions supersede older proofing runs for the same review.
+# Keep main-release receiving separate from pull-request candidate receiving.
+concurrency:
+  group: fabrication-friday-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
