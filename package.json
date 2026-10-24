@@ -1,11 +1,11 @@
 {
-  "name": "@red-cup-engineering/jsnode-package-services-section",
+  "name": "@red-cup-engineering/jsnode-package-engineering-services-section",
   "version": "0.5.0",
   "type": "module",
   "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/red-cup-engineering/jsnode-package-services-section.git"
+    "url": "git+https://github.com/red-cup-engineering/jsnode-package-engineering-services-section.git"
   },
   "license": "MIT",
   "exports": {
