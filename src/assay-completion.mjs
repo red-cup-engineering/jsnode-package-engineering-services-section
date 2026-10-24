@@ -77,8 +77,14 @@ export function receiveIsolatedAssayOutcome(run, expectedNames) {
     failure: "assay-incomplete: host runner exited zero without executing every admitted example and clause test",
   };
   const lines = run.stdout.trim().split("\n");
-  const failureAt = lines.findIndex(line => line.startsWith("not ok"));
+  const failureAt = lines.findIndex(line => /^\\s*not ok \\d+ - /u.test(line));
   const said = failureAt >= 0 ? lines.slice(failureAt, failureAt + 16).join("\n")
-    : run.stderr.trim().split("\n").slice(-3).join(" ");
-  return { passed: false, code: "ASSAY_TEST_FAILED", failure: said.slice(0, 600) };
+    : run.stderr.trim().split("\n").slice(-3).join(" ").trim();
+  // A failed trusted execution may expose no individual failing TAP case or
+  // stderr, e.g. a partial crash of Node's enclosing test process. Such a
+  // result is STILL an observable execution refusal: record its exact exit
+  // status as context, but never invent a test or an independently detected
+  // semantic violation to fill an otherwise empty receipt.
+  const observed = said.trim() || `isolated assay process exited status ${run.status}; no attributable TAP failure or stderr was supplied`;
+  return { passed: false, code: "ASSAY_TEST_FAILED", failure: observed.slice(0, 600) };
 }
