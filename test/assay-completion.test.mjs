@@ -125,3 +125,30 @@ test("double-value: clause assay negative",()=>{});`);
   assert.equal(result.code,"ASSAY_TEST_FAILED");
   assert.match(result.failure,/not ok/u);
 });
+
+test("unattributed failing Node process produces an honest nonempty receipt, not a fabricated test failure", () => {
+  for (const stdout of [
+    "TAP version 13\\n# tests 1\\n# fail 1\\n",
+    "TAP version 13\\n# Subtest: interrupted\\n# tests 0\\n",
+    "",
+  ]) {
+    const result = receiveIsolatedAssayOutcome({
+      isolated: true, status: 1, stdout, stderr: "",
+    }, expected);
+    assert.equal(result.passed, false);
+    assert.equal(result.code, "ASSAY_TEST_FAILED");
+    assert.match(result.failure, /exited status 1; no attributable TAP failure or stderr/u);
+    assert.doesNotMatch(result.failure, /not ok/u,
+      "unknown failure may not impersonate a particular test case");
+  }
+});
+
+test("indented Node TAP failure remains correctly attributed to the observed case", () => {
+  const result = receiveIsolatedAssayOutcome({
+    isolated: true, status: 1, stderr: "",
+    stdout: "TAP version 13\\n    not ok 1 - double-value: clause assay negative\\n# tests 1\\n# fail 1\\n",
+  }, expected);
+  assert.equal(result.passed, false);
+  assert.equal(result.code, "ASSAY_TEST_FAILED");
+  assert.match(result.failure, /not ok 1 - double-value: clause assay negative/u);
+});
