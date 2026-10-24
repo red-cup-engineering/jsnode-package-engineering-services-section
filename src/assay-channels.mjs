@@ -19,12 +19,17 @@ import { semanticId } from "@red-cup-engineering/computer-content-address-engine
 /** The carrier a market lot names, or the one a deterministic procedure is. */
 export function carrierOfLot(lot) {
   const named = lot?.model ?? lot?.carrier ?? lot?.provider;
-  return typeof named === "string" && named.length > 0 ? named : "unnamed-carrier";
+  // Market lot display fields are not authenticated identities. At minimum,
+  // blank or boundary-whitespace names cannot establish a distinct carrier.
+  return typeof named === "string" && named.length > 0 && named.trim() === named
+    ? named : "unnamed-carrier";
 }
 
 /** One assay channel: method, carrier and the content address of the evidence it was given. */
 export function assayChannel({ method, carrier, evidence }) {
-  if (typeof method !== "string" || typeof carrier !== "string") throw new TypeError("an assay channel names its method and carrier");
+  if (typeof method !== "string" || method.trim() !== method || !method ||
+      typeof carrier !== "string" || carrier.trim() !== carrier || !carrier)
+    throw new TypeError("an assay channel names a nonblank original method and carrier");
   const evidenceAddress = semanticId(evidence ?? null);
   return Object.freeze({ id: semanticId({ carrier, evidence: evidenceAddress }), method, carrier, evidence: evidenceAddress });
 }
