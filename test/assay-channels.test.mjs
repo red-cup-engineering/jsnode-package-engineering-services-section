@@ -139,3 +139,19 @@ test("finite original writer/checker truth table retains same-evidence and seen-
     }
   }
 });
+
+test("blank or boundary-whitespace market lot names cannot claim separate provenance", () => {
+  for (const model of ["  ", "model-a ", " model-a", "\t"]) {
+    assert.equal(carrierOfLot({ model }), "unnamed-carrier");
+    const proofing = proofingOfDerivation({ workOrder: order,
+      writerLots: [{ model }], assayLot: { model: "model-b" } });
+    assert.equal(proofing.independentBehavioralChannels, 0);
+  }
+  for (const sample of [
+    { method: "", carrier: "a" },
+    { method: "assay ", carrier: "a" },
+    { method: "assay", carrier: " " },
+    { method: "assay", carrier: " b" },
+  ]) assert.throws(() => assayChannel({ ...sample, evidence: order }),
+    /nonblank original method and carrier/u);
+});
