@@ -55,7 +55,7 @@ consumer receiving remain distinct. Package orders retain their own obligations.
 For an existing consumer, call fabrication MCP `derive_jsnode_modules` with
 `{ "workOrder": <ArtifactFabricationSpecificationCandidate> }`. The canonical
 order's artifact kind and sole projection ID are `jsnode-modules`; its target is
-`@red-cup-engineering/jsnode-package-services-section/derive-jsnode-package-from-closure`.
+`@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure`.
 The projection configuration contains only `operations`, `examples`, and exact
 `dependencies`. Operations require input and output schemas; examples contain
 `name`, `operation`, `input`, and `output`. The original requirements,
