@@ -25,16 +25,32 @@ export function testRunCompletedAllAssays(tap, expectedNames) {
   const lines = tap.replaceAll("\r\n", "\n").split("\n");
   if (lines[0] !== "TAP version 13") return false;
 
-  // Test outcome lines, not # Subtest announcement or arbitrary console
-  // output; Node escapes a test module's console.log as "# ..." comments.
-  const results = [];
-  for (const line of lines) {
-    const entry = /^\s*(ok|not ok) \d+ - (.*)$/u.exec(line);
-    if (entry) results.push({ pass: entry[1] === "ok", name: entry[2] });
+  // Proof-stage requirement: a real Node TAP reporter emits ONE root
+  // plan 1..N and root results 1, 2, ..., N. Counting anonymous or indented
+  // "ok" tokens, or trusting a matching footer without the root plan, lets
+  // a plausible but incomplete transcript pass as observed execution.
+  // Indented child/subtest results are NOT independent root results.
+  const results = [], rootPlans = [];
+  for (const [lineNumber, line] of lines.entries()) {
+    const entry = /^(ok|not ok) ([1-9][0-9]*) - (.*)$/u.exec(line);
+    if (entry) {
+      const ordinal = Number(entry[2]);
+      if (!Number.isSafeInteger(ordinal)) return false;
+      results.push({ ordinal, pass: entry[1] === "ok", name: entry[3], lineNumber });
+    }
+    const rootPlan = /^1\.\.([0-9]+)$/u.exec(line);
+    if (rootPlan) {
+      const count = Number(rootPlan[1]);
+      if (!Number.isSafeInteger(count)) return false;
+      rootPlans.push({ count, lineNumber });
+    }
   }
   if (results.length !== expectedNames.length ||
-      results.some(result => !result.pass || !expectedNames.includes(result.name)) ||
-      new Set(results.map(result => result.name)).size !== expectedNames.length)
+      results.some((result, index) => result.ordinal !== index + 1 ||
+        !result.pass || !expectedNames.includes(result.name)) ||
+      new Set(results.map(result => result.name)).size !== expectedNames.length ||
+      rootPlans.length !== 1 || rootPlans[0].count !== expectedNames.length ||
+      rootPlans[0].lineNumber <= results.at(-1).lineNumber)
     return false;
 
   // Require the outer runner's accounting, not only its exit status:
@@ -66,7 +82,9 @@ export function receiveIsolatedAssayOutcome(run, expectedNames) {
   if (!run || run.isolated !== true ||
       !Number.isInteger(run.status) ||
       typeof run.stdout !== "string" || typeof run.stderr !== "string" ||
-      run.stdout.length > 2 * 1024 * 1024 || run.stderr.length > 2 * 1024 * 1024 ||
+      // The actual host cap is in captured bytes, not UTF-16 code units.
+      Buffer.byteLength(run.stdout, "utf8") > 2 * 1024 * 1024 ||
+      Buffer.byteLength(run.stderr, "utf8") > 2 * 1024 * 1024 ||
       run.truncated === true || run.timedOut === true || run.signal)
     return { passed: false, code: "ASSAY_EXECUTION_REFUSED",
       failure: "isolated host did not provide a complete bounded execution outcome" };
