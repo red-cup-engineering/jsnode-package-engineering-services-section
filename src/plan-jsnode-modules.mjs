@@ -32,7 +32,7 @@ export const JSNODE_MODULE_MEANING_CLOSURE_SCHEMA = Object.freeze({
       properties: { name: { type: "string", minLength: 1 }, operation: { type: "string", minLength: 1 }, input: {}, output: {} },
     } },
     dependencies: { type: "object", additionalProperties: {
-      type: "string", pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      type: "string",
     } },
   },
 });
