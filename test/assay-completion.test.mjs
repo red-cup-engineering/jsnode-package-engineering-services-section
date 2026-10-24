@@ -123,13 +123,15 @@ test("double-value: clause assay negative",()=>{});`);
     stdout:observed.stdout,stderr:observed.stderr,signal:observed.signal}, expected);
   assert.equal(result.passed,false);
   assert.equal(result.code,"ASSAY_TEST_FAILED");
-  assert.match(result.failure,/not ok/u);
+  assert.match(result.failure,/not ok/u,
+    "When actual Node TAP contains a failure case the receiver must retain it. Observed host stdout: "+
+      JSON.stringify(observed.stdout.slice(0,1800)));
 });
 
 test("unattributed failing Node process produces an honest nonempty receipt, not a fabricated test failure", () => {
   for (const stdout of [
-    "TAP version 13\\n# tests 1\\n# fail 1\\n",
-    "TAP version 13\\n# Subtest: interrupted\\n# tests 0\\n",
+    "TAP version 13\n# tests 1\n# fail 1\n",
+    "TAP version 13\n# Subtest: interrupted\n# tests 0\n",
     "",
   ]) {
     const result = receiveIsolatedAssayOutcome({
@@ -146,7 +148,7 @@ test("unattributed failing Node process produces an honest nonempty receipt, not
 test("indented Node TAP failure remains correctly attributed to the observed case", () => {
   const result = receiveIsolatedAssayOutcome({
     isolated: true, status: 1, stderr: "",
-    stdout: "TAP version 13\\n    not ok 1 - double-value: clause assay negative\\n# tests 1\\n# fail 1\\n",
+    stdout: "TAP version 13\n    not ok 1 - double-value: clause assay negative\n# tests 1\n# fail 1\n",
   }, expected);
   assert.equal(result.passed, false);
   assert.equal(result.code, "ASSAY_TEST_FAILED");
