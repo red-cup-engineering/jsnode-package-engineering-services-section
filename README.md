@@ -184,6 +184,60 @@ it is **not** a production execution alternative. Host integration and real
 negative controls remain required before treating untrusted generated source
 as safely executable.
 
+### Native host factories and existing source context
+
+A `jsnode-modules` operation can declare `nativeProfile` instead of runtime
+`inputSchema`/`outputSchema`. A native profile is source-free data: its stable
+`id`, original source `locator` and SHA-256 `digest`, explicit native `contract`,
+and the `scenarioSchema`/`observationSchema` of its receiver-owned fixture. The
+examples and independently derived clause cases describe that fixture's
+scenarios and observations. They do not serialize factory arguments, function
+ports, `BigInt`, byte arrays, live handles or object identity. The source writer
+receives the native contract and the original complete order. A native export
+cannot acquire the optional JSON CLI command face.
+
+The trusted host imports `bindNativeAssayProfile` from the existing
+`derive-jsnode-package-from-closure` entry and supplies
+`nativeAssayBindings: [bindNativeAssayProfile(profile, projectFixture)]` beside
+its `isolatedAssayExecutor`. The private binding captures an immutable profile
+using the existing content-address owner. A JSON copy carries only the
+declaration and cannot acquire the executable projector. An absent, changed,
+duplicate or copied binding refuses before inference. A profile identity binds
+the declaration; it does not authenticate its stated source or grant authority.
+The host remains responsible for selecting the original qualified fixture.
+
+`projectFixture` receives frozen `{operation, profile, identity, cases}` data.
+Each case includes its original scenario, observation or expected error, and
+the exact `testName` checked by the existing TAP recipient. The projector must
+synchronously return one bounded Node test-source string. It constructs actual
+native values and filesystem lifecycle observations inside the existing
+isolated runner. Its executable bytes are held by the host, not the work order
+or source-writing supplier. The producer projects the complete test lot once,
+before source delivery, and reuses those exact bytes for pre-assay. Success and
+source refusal retain the profile identity and test-source digest. These
+receipts do not upgrade source-reported inference lot identities to independent
+authentication.
+
+An existing consumer may also retain original sibling ESM modules, rather than
+asking the writer to generate them. The host holds bounded records
+`{path, text, source: {locator, digest}}`; `nativeAssaySourceClosure(records)`
+projects their read-only paths and source identities for `profile.sourceClosure`.
+Bind the matching bytes with
+`bindNativeAssayProfile(profile, projectFixture, {sourceFiles: records})`.
+Paths remain confined beneath `src/`, byte digests must agree, and the profile's
+closure identity must match the held originals. Generated targets cannot
+overwrite retained files. The original module projector validates the complete
+generated-plus-retained import closure; the existing isolated pre-assay stages
+both under its read-only workspace policy. Retained originals are excluded from
+the generated proposal and source-delivery records. Missing imports, changed
+bytes, path escapes, conflicting originals and overlap refuse. No second source
+resolver, filesystem walker or sandbox is introduced.
+
+This profile supports module fabrication into an existing owner. The package
+birth/JSON operation-package profile remains unchanged. Producer unit tests use
+the existing explicitly controlled literal-source fixture; real generated code
+still requires the selected isolated host and an actual inference delivery.
+
 
 
 A `jsnode-modules` order declares every operation, its module, schemas, examples,
