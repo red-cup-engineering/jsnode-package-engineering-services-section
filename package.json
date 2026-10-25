@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/jsnode-package-services-section",
-  "version": "0.5.1-dev.2",
+  "version": "0.5.1-dev.3",
   "type": "module",
   "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
   "repository": {
@@ -55,7 +55,9 @@
     "package.json",
     "data/records/schema",
     "data/records/jsnode-package-cli.specification.json",
+    "data/records/2026-09-04-jsnode-script-reprojection-rule.json",
     "examples",
+    "content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
     "test"
   ],
   "scripts": {
