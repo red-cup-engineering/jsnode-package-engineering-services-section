@@ -34,6 +34,7 @@ import { misfoldRefusal, misfoldsOfModule } from "./misfold.mjs";
 
 import { moduleMeaningClosure, moduleFabricationPlan, testsOfClosure, assayInputSchemaOf, assayOutputSchemaOf } from "./plan-jsnode-modules.mjs";
 import { nativeAssayData, nativeBindingsFor, nativeAssayProfileIdentity, retainedNativeSources } from "./native-assay-profile.mjs";
+import { closedAssaySchema } from "./closed-assay-schema.mjs";
 export { bindNativeAssayProfile, nativeAssayProfileIdentity, nativeAssaySourceClosure } from "./native-assay-profile.mjs";
 export { JSNODE_MODULE_MEANING_CLOSURE_SCHEMA, planJsnodeModules, testsOfClosure } from "./plan-jsnode-modules.mjs";
 
@@ -106,9 +107,19 @@ export function jsnodeClosureOfOperationClosure(closure, { packageName, requirem
   return Object.freeze({ ...jsnode, packageName: packageName ?? "operation-closure", requirements, prohibitions, closureDigest: bound.closureDigest });
 }
 
-/** Clause assays are data, never provider-supplied executable test programs. */
+/** Clause assays are data, never provider-supplied executable test programs.
+ * Native slots are transport data: their independent schema documents remain
+ * in the complete work order, rather than being relocated into this envelope.
+ * Compile each original universe before inference and validate its received
+ * values separately in assayCasesOfDelivery. JSON operation carriers retain
+ * their existing schema projection.
+ */
 export function assayDeliverySchema(closure) {
   const clauseIds = [...closure.requirements, ...closure.prohibitions].map(item => item.id);
+  for (const op of closure.operations) if (op.nativeProfile !== undefined) {
+    closedAssaySchema(assayInputSchemaOf(op));
+    closedAssaySchema(assayOutputSchemaOf(op));
+  }
   return {
     type: "object", required: ["cases", "question"], additionalProperties: false,
     properties: {
@@ -120,8 +131,8 @@ export function assayDeliverySchema(closure) {
           properties: {
             operation: { const: op.name }, name: { type: "string", minLength: 1 },
             clauses: { type: "array", minItems: 1, uniqueItems: true, items: { enum: clauseIds } },
-            input: assayInputSchemaOf(op),
-            output: { anyOf: [assayOutputSchemaOf(op), { type: "null" }] },
+            input: op.nativeProfile === undefined ? assayInputSchemaOf(op) : {},
+            output: op.nativeProfile === undefined ? { anyOf: [assayOutputSchemaOf(op), { type: "null" }] } : {},
             throws: { enum: [null, "Error", "TypeError", "RangeError", "SyntaxError"] },
           },
         })),
@@ -138,8 +149,11 @@ export function assayCasesOfDelivery(text, closure) {
   for (const item of delivery.cases) {
     if (item.throws !== null && item.output !== null) throw new TypeError("a refusal assay cannot also declare a returned output");
     const op = closure.operations.find(op => op.name === item.operation);
-    if (op.nativeProfile !== undefined) nativeAssayData(item);
-    if (item.throws === null) schemaFrom(assayOutputSchemaOf(op)).assert(item.output);
+    if (op.nativeProfile !== undefined) {
+      nativeAssayData(item);
+      closedAssaySchema(assayInputSchemaOf(op)).assert(item.input);
+      if (item.throws === null) closedAssaySchema(assayOutputSchemaOf(op)).assert(item.output);
+    } else if (item.throws === null) schemaFrom(assayOutputSchemaOf(op)).assert(item.output);
     const name = item.operation + ":" + item.name;
     if (names.has(name)) throw new TypeError("duplicate clause assay name");
     names.add(name); item.clauses.forEach(id => covered.add(id));
@@ -156,7 +170,7 @@ export function assayCasesOfDelivery(text, closure) {
  */
 export function assayMessagesOf(workOrder) {
   return [
-    { role: "system", content: "Derive behavioral assay cases from the closed work order's requirements and prohibitions before any source is written. The workOrder carrier is the entire order; its projection configuration declares the operations, schemas, examples and dependencies. Return only the supplied JSON carrier. Cases must be determined by the clauses and cover every clause by ID. For a JSON operation, use inputs admitted by its input schema. For a nativeProfile operation, input/output are source-free fixture scenarios and observations admitted by its scenarioSchema/observationSchema; its native contract is exercised by a separately trusted host fixture. They are never serialized native function ports, factory arguments or handles. Do not invent requirements. Include cases beyond the supplied examples. Returned outputs and thrown error names are exclusive. If a required expectation is not determined, return cases null and a nonempty question. No executable source, tool calls or repository access." },
+    { role: "system", content: "Derive behavioral assay cases from the closed work order's requirements and prohibitions before any source is written. The workOrder carrier is the entire order; its projection configuration declares the operations, schemas, examples and dependencies. Return only the supplied JSON carrier. Cases must be determined by the clauses and cover every clause by ID. For a JSON operation, use inputs admitted by its input schema. For a nativeProfile operation, input/output are source-free fixture scenarios and observations admitted by its scenarioSchema/observationSchema; its native contract is exercised by a separately trusted host fixture. The transport schema deliberately leaves native input/output slots open; obey each original scenarioSchema and observationSchema in the complete workOrder independently, without resolving references against the transport envelope or another operation. The receiver validates those exact contracts before source writing. They are never serialized native function ports, factory arguments or handles. Do not invent requirements. Include cases beyond the supplied examples. Returned outputs and thrown error names are exclusive. If a required expectation is not determined, return cases null and a nonempty question. No executable source, tool calls or repository access." },
     { role: "user", content: JSON.stringify({ workOrder }) },
   ];
 }
@@ -347,7 +361,9 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
   const catches = [];
   const proofing = () => proofingOfDerivation({
     workOrder, assayLot: assayDelivery.lot, examples: closure.examples,
-    writerLots: derivations.filter(item => item.module && item.lot !== undefined).map(item => item.lot), catches,
+    // Every delivered source module participates, including one whose market
+    // lot is absent. The proofing owner retains that writer as unknown.
+    writerLots: derivations.filter(item => item.module).map(item => item.lot), catches,
   });
   const refused = (code, operation, detail = {}) => Object.freeze({
     type: "JsnodeClosureDerivationRefusal", version: 1, code,

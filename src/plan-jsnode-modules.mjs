@@ -1,19 +1,10 @@
 /** Pure source-addressable JSNode module planning, shared with derivation. */
 import path from "node:path";
-import { schemaFromGraph } from "@red-cup-engineering/json-schema-services-section/contracts";
 import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
 import { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
 import { admitNativeAssayProfile, nativeAssayData, nativeBindingsFor, projectNativeAssays } from "./native-assay-profile.mjs";
-
-// Each example is judged in its own explicit schema universe. Earlier plans
-// cannot register a schema that changes a later plan's meaning.
-function closedSchema(schema) {
-  const id = typeof schema === "object" && schema !== null && schema.$id !== undefined
-    ? schema.$id : "urn:561:jsnode-plan:inline-schema";
-  const root = typeof schema === "boolean" ? { $id: id, allOf: [schema] } : { ...schema, $id: id };
-  return schemaFromGraph({ root: id, schemas: [{ id, schema: root }] });
-}
+import { closedAssaySchema } from "./closed-assay-schema.mjs";
 
 // The module projector already owns operation names, export bindings and paths.
 // A meaning closure supplies examples and exact dependencies, never source,
@@ -40,7 +31,7 @@ export const JSNODE_MODULE_MEANING_CLOSURE_SCHEMA = Object.freeze({
     } },
   },
 });
-export const moduleMeaningClosure = closedSchema(JSNODE_MODULE_MEANING_CLOSURE_SCHEMA);
+export const moduleMeaningClosure = closedAssaySchema(JSNODE_MODULE_MEANING_CLOSURE_SCHEMA);
 
 export function moduleFabricationPlan(candidate) {
   let phase = "artifact-specification-admission", workOrder;
@@ -76,8 +67,8 @@ export function moduleFabricationPlan(candidate) {
       if (!op || examples.has(example.operation + ":" + example.name)) throw new TypeError("unknown operation or duplicate example");
       examples.add(example.operation + ":" + example.name);
       if (op.nativeProfile !== undefined) nativeAssayData(example);
-      closedSchema(assayInputSchemaOf(op)).assert(example.input);
-      closedSchema(assayOutputSchemaOf(op)).assert(example.output);
+      closedAssaySchema(assayInputSchemaOf(op)).assert(example.input);
+      closedAssaySchema(assayOutputSchemaOf(op)).assert(example.output);
     }
     for (const [name, version] of Object.entries(closure.dependencies)) {
       if (!/^(?:@[a-z0-9._-]+\/)?[a-z0-9][a-z0-9._-]*$/u.test(name)) throw new TypeError("invalid dependency name");

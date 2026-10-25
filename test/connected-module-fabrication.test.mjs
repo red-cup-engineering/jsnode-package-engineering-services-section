@@ -18,11 +18,13 @@ const valid={
  'src/double.mjs':'export function doubleValue(n){if(typeof n!=="number"||!Number.isFinite(n))throw new TypeError();return n+n;}',
  'src/increment.mjs':'import {doubleValue} from "./double.mjs"; export function incrementValue(n){return doubleValue(n)+1;}',
 };
-async function exercise(sources){
+async function exercise(sources,{lotCarriers=[],missingLotAt}={}){
  const calls=[],judgments=[];
  const result=await deriveJsnodeModules(order,{infer:async request=>{
   calls.push(request);const module=JSON.parse(request.messages[1].content).selectedModule;
-  return {text:JSON.stringify(module===undefined?{cases,question:null}:{source:sources[module],question:null}),lot:{id:'controlled:'+calls.length}};
+  const carrier=lotCarriers[calls.length-1];
+  return {text:JSON.stringify(module===undefined?{cases,question:null}:{source:sources[module],question:null}),
+    ...(calls.length-1===missingLotAt?{}:{lot:{id:'controlled:'+calls.length,...(carrier?{model:carrier}:{})}})};
  },judge:async(...args)=>judgments.push(args),isolatedAssayExecutor:controlledLocalAssayFixture});
  return {result,calls,judgments};
 }
@@ -52,8 +54,43 @@ assert.ok(bad.result.cause.derivations.filter(d=>d.module).every(d=>d.outcome===
 // Kinetic proofing: the controlled lots name no carrier, so no channel is shown independent of the
 // writer; the composition failure is recorded against the channel that caught it.
 assert.equal(good.result.derivation.proofing.independentBehavioralChannels,0);
+// Real original inference-delivery path: clause assays from one of two source
+// writers may not be promoted to an independent check by concatenating their names.
+const repeated=await exercise(valid,{lotCarriers:['model-a','model-a','model-b']});
+assert.equal(repeated.result.type,'JsnodeModuleProposal',JSON.stringify(repeated.result));
+assert.deepEqual(repeated.result.derivation.proofing.sourceWriters.map(x=>x.carrier),['model-a','model-b']);
+assert.equal(repeated.result.derivation.proofing.independentBehavioralChannels,0);
+const separate=await exercise(valid,{lotCarriers:['model-c','model-a','model-b']});
+assert.equal(separate.result.type,'JsnodeModuleProposal',JSON.stringify(separate.result));
+assert.equal(separate.result.derivation.proofing.independentBehavioralChannels,1);
+assert.equal(separate.result.derivation.proofing.independentlyReceived,false,
+  'source-carrier identity difference is not independent verifier authentication');
+// A missing lot on either actual source delivery is unknown provenance. It
+// must not disappear at the caller while the other named writer survives.
+for (const missingLotAt of [1,2]) {
+ const missingLot=await exercise(valid,{lotCarriers:['model-c','model-a','model-b'],missingLotAt});
+ assert.equal(missingLot.result.type,'JsnodeModuleProposal',JSON.stringify(missingLot.result));
+ const records=missingLot.result.derivation.derivations.filter(item=>item.module);
+ assert.equal(records.length,2);
+ assert.equal(records[missingLotAt-1].lot,undefined);
+ const proofing=missingLot.result.derivation.proofing;
+ assert.deepEqual(proofing.sourceWriters.map(item=>item.carrier),
+   [missingLotAt===1?'model-b':'model-a','unnamed-carrier']);
+ assert.equal(proofing.independentBehavioralChannels,0);
+ assert.equal(proofing.channels.find(item=>item.method==='clause-assays').independent,false);
+ assert.equal(proofing.sourceLotAuthentication,'unverified-market-lot-declarations');
+ assert.equal(proofing.independentlyReceived,false);
+ assert.ok(missingLot.calls.slice(1).every(call=>cases.every(item=>!JSON.stringify(call.messages).includes(item.name))));
+}
 assert.equal(bad.result.cause.proofing.catches.length,1);
-assert.ok(['clause-assays','admitted-examples'].includes(bad.result.cause.proofing.catches[0].method),JSON.stringify(bad.result.cause.proofing.catches));
+const failedCase=bad.result.cause.proofing.catches[0];
+assert.ok(['clause-assays','admitted-examples','module-set-composition'].includes(failedCase.method),
+  JSON.stringify(bad.result.cause.proofing.catches));
+// When a trusted Node runner exits nonzero without a named failing TAP case,
+// its failure is an observed *composition* failure. It must NOT masquerade as
+// a particular independent clause assay or admitted example.
+if (failedCase.method==='module-set-composition')
+  assert.match(failedCase.defect,/isolated assay process exited status/u);
 assert.ok(bad.result.cause.proofing.catches[0].caughtBy);
 // A source module can call process.exit(0) at import time; the Node test
 // runner can then pass its file-wrapper without executing even one assay.

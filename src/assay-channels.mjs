@@ -19,12 +19,17 @@ import { semanticId } from "@red-cup-engineering/computer-content-address-engine
 /** The carrier a market lot names, or the one a deterministic procedure is. */
 export function carrierOfLot(lot) {
   const named = lot?.model ?? lot?.carrier ?? lot?.provider;
-  return typeof named === "string" && named.length > 0 ? named : "unnamed-carrier";
+  // Market lot display fields are not authenticated identities. At minimum,
+  // blank or boundary-whitespace names cannot establish a distinct carrier.
+  return typeof named === "string" && named.length > 0 && named.trim() === named
+    ? named : "unnamed-carrier";
 }
 
 /** One assay channel: method, carrier and the content address of the evidence it was given. */
 export function assayChannel({ method, carrier, evidence }) {
-  if (typeof method !== "string" || typeof carrier !== "string") throw new TypeError("an assay channel names its method and carrier");
+  if (typeof method !== "string" || method.trim() !== method || !method ||
+      typeof carrier !== "string" || carrier.trim() !== carrier || !carrier)
+    throw new TypeError("an assay channel names a nonblank original method and carrier");
   const evidenceAddress = semanticId(evidence ?? null);
   return Object.freeze({ id: semanticId({ carrier, evidence: evidenceAddress }), method, carrier, evidence: evidenceAddress });
 }
@@ -43,13 +48,23 @@ export function distinctChannels(channels) {
  * Whether a checking channel is independent of the writer: a different channel (carrier or evidence
  * differs) whose checks the writer was not shown. Returns the reason either way.
  */
-export function independenceFromWriter(channel, writer, { seenByWriter = false } = {}) {
-  if (channel.id === writer.id) return Object.freeze({ independent: false, reason: "same carrier on the same evidence as the writer: one channel" });
-  if (seenByWriter) return Object.freeze({ independent: false, reason: "the writer was shown these checks" });
-  if (channel.carrier === writer.carrier && channel.carrier === "unnamed-carrier") {
-    return Object.freeze({ independent: false, reason: "neither carrier is named, so they cannot be shown to differ" });
+export function independenceFromWriter(channel, writer, { seenByWriter = false, sourceWriters } = {}) {
+  // A synthetically concatenated market-lot label is a useful *display* but
+  // is not the identity of every source-writing participant. Compare the
+  // checking channel with ALL original source-writing channels.
+  const writers = sourceWriters === undefined ? [writer] : sourceWriters;
+  if (!Array.isArray(writers) || writers.length === 0 ||
+      writers.some(item => typeof item?.id !== "string" || typeof item.carrier !== "string") ||
+      typeof channel?.id !== "string" || typeof channel.carrier !== "string") {
+    return Object.freeze({ independent: false, reason: "source writer identities not fully observed" });
   }
-  return Object.freeze({ independent: true, reason: channel.carrier === writer.carrier ? "same carrier on different evidence" : "different carrier" });
+  if (seenByWriter) return Object.freeze({ independent: false, reason: "the writer was shown these checks" });
+  if (writers.some(item => item.id === channel.id))
+    return Object.freeze({ independent: false, reason: "same carrier on the same evidence as a source writer: one channel" });
+  if (channel.carrier === "unnamed-carrier" || writers.some(item => item.carrier === "unnamed-carrier"))
+    return Object.freeze({ independent: false, reason: "unnamed checker or source writer cannot establish distinct carriers" });
+  return Object.freeze({ independent: true, reason: writers.some(item => item.carrier === channel.carrier)
+    ? "same identified carrier on different evidence" : "different identified carrier" });
 }
 
 /** Which channel a pre-assay failure belongs to: a clause assay, an admitted example, or the composition itself. */
@@ -68,22 +83,47 @@ export function channelOfPreAssayFailure(failure) {
  * examined the source.
  */
 export function proofingOfDerivation({ workOrder, assayLot, writerLots = [], examples = [], catches = [] }) {
-  const writerCarriers = [...new Set(writerLots.map(carrierOfLot))];
-  const writer = assayChannel({ method: "source-derivation", carrier: writerCarriers.length === 1 ? writerCarriers[0] : writerCarriers.sort().join("+") || "unnamed-carrier", evidence: workOrder });
+  const writerCarriers = [...new Set(writerLots.map(carrierOfLot))].sort();
+  // Multiple actual writer lots must never disappear into a made-up composite
+  // carrier identity when independence is checked. Missing market provenance
+  // is an unknown writer, not a free pass for a differently named assay.
+  const sourceWriters = (writerCarriers.length ? writerCarriers : ["unnamed-carrier"])
+    .map(carrier => assayChannel({ method: "source-derivation", carrier, evidence: workOrder }));
+  const writer = assayChannel({ method: "source-derivation",
+    carrier: writerCarriers.length === 1 ? writerCarriers[0] : writerCarriers.join("+") || "unnamed-carrier",
+    evidence: workOrder });
   const checks = [
     { channel: assayChannel({ method: "admitted-examples", carrier: "work-order-author", evidence: examples }), seenByWriter: true },
-    ...(assayLot === undefined ? [] : [{ channel: assayChannel({ method: "clause-assays", carrier: carrierOfLot(assayLot), evidence: workOrder }), seenByWriter: false }]),
+    // A clause-assay method can run without an attributed market lot. Keep
+    // its real detection channel with unknown carrier; the absence of a lot
+    // denies *independence*, not the fact that Node observed a failing case.
+    { channel: assayChannel({ method: "clause-assays", carrier: carrierOfLot(assayLot), evidence: workOrder }), seenByWriter: false },
     { channel: assayChannel({ method: "module-set-composition", carrier: "node-test-runner", evidence: { method: "compose-and-run" } }), seenByWriter: false },
     { channel: assayChannel({ method: "delivery-admission", carrier: "jsnode-delivery-schema", evidence: { method: "admit-delivery" } }), seenByWriter: false },
     { channel: assayChannel({ method: "fold-check", carrier: "jsnode-misfold-reader", evidence: { method: "read-misfolds" } }), seenByWriter: false },
   ];
-  const channels = checks.map(({ channel, seenByWriter }) => Object.freeze({ ...channel, ...independenceFromWriter(channel, writer, { seenByWriter }) }));
+  const channels = checks.map(({ channel, seenByWriter }) => Object.freeze({
+    ...channel, ...independenceFromWriter(channel, writer, { seenByWriter, sourceWriters }),
+  }));
   const byMethod = new Map(channels.map((channel) => [channel.method, channel]));
-  const bound = catches.map(({ defect, method }) => Object.freeze({ defect: String(defect).slice(0, 600), method, caughtBy: byMethod.get(method)?.id ?? null }));
+  // R3: an observed failure without a known actual checking channel is not a
+  // proofing receipt. Never preserve a deceptively nullable caughtBy edge.
+  const bound = catches.map(({ defect, method }) => {
+    if (typeof defect !== "string" || !defect.trim() || typeof method !== "string" ||
+        !byMethod.has(method))
+      throw new TypeError("kinetic proofing: every caught defect requires its original assay method and nonempty evidence");
+    return Object.freeze({ defect: defect.slice(0, 600), method, caughtBy: byMethod.get(method).id });
+  });
   const independent = distinctChannels(channels.filter((channel) => channel.independent && ["admitted-examples", "clause-assays"].includes(channel.method)));
   return Object.freeze({
     type: "JsnodeDerivationProofing", version: 1,
-    writer, channels: Object.freeze(channels), catches: Object.freeze(bound),
+    writer, sourceWriters: Object.freeze(sourceWriters), channels: Object.freeze(channels),
+    catches: Object.freeze(bound),
     independentBehavioralChannels: independent.length,
+    // Equality/difference of declared lot names is a candidate structural
+    // independence reading, not authenticated market provenance, separately
+    // received behavioral correctness, or independent customer acceptance.
+    sourceLotAuthentication: "unverified-market-lot-declarations",
+    independentlyReceived: false,
   });
 }
