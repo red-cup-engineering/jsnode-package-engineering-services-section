@@ -1,0 +1,373 @@
+{
+  "observedAt": "2026-10-25T00:07:55.633Z",
+  "rows": [
+    {
+      "manifest": {
+        "name": "@red-cup-engineering/computer-data-engineering-services-section",
+        "version": "0.3.1",
+        "private": false,
+        "type": "module",
+        "description": "Root for data concepts ordered by the prerequisites their services require: FOUR, exact numbers, the closure regimes, and the statics of the semiotic expression notation (its grammar, typing judgment, JSON bridge and the semantic identity of JSON content). Its lib holds Metrologic, the data layer's mathematics.",
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/red-cup-engineering/computer-data-engineering-services-section.git"
+        },
+        "bin": {
+          "differentiate-data": "./bin/differentiate-data.mjs",
+          "differentiate-sequences": "./bin/differentiate-sequences.mjs"
+        },
+        "dependencies": {
+          "@red-cup-engineering/cbor-services-section": "0.1.1",
+          "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
+          "@red-cup-engineering/exact-number-data-service": "0.1.1",
+          "@red-cup-engineering/json-services-section": "0.4.0",
+          "@red-cup-engineering/semiotic-content-address": "0.1.0",
+          "@red-cup-engineering/uri-services-section": "0.1.1"
+        },
+        "exports": {
+          "./artifact-fabrication": "./src/artifact-fabrication.mjs",
+          "./randomization": "./src/randomization/index.mjs",
+          "./randomization/hash-seed": "./src/randomization/hash-seed.mjs",
+          "./randomization/mulberry32": "./src/randomization/mulberry32.mjs",
+          "./randomization/stream": "./src/randomization/stream.mjs",
+          "./operation-refusal-schema": "./src/operation-refusal-schema.mjs",
+          "./four": "./src/four.mjs",
+          "./closure-regime": "./src/closure-regime.mjs",
+          "./semiotic-expression-notation": "./src/semiotic-expression-notation/notation.mjs",
+          "./semiotic-expression-notation/typing": "./src/semiotic-expression-notation/typing.mjs",
+          "./semiotic-expression-notation/json-codec": "./src/semiotic-expression-notation/json-codec.mjs",
+          "./semiotic-expression-notation/semantic-content-identity": "./src/semiotic-expression-notation/semantic-content-identity.mjs",
+          "./tally": "./src/tally.mjs",
+          "./x402-discovery-snapshot": "./src/x402-discovery-snapshot.mjs",
+          "./number/exact-number": "./src/number/exact-number.mjs",
+          "./number/exact-number-host": "./src/number/exact-number-host.mjs",
+          "./number/deterministic-math": "./src/number/deterministic-math.mjs",
+          "./number/decimal-string": "./src/number/decimal-string.mjs",
+          "./number/graded": "./src/number/graded.mjs",
+          "./number/quadratic": "./src/number/quadratic.mjs",
+          "./number/rational-matrix": "./src/number/rational-matrix.mjs",
+          "./media/audio": "./src/media/audio.mjs",
+          "./media/raster": "./src/media/raster.mjs",
+          "./run-json-command": "./src/run-json-command.mjs",
+          "./package.json": "./package.json",
+          "./digital-mark-space": "./src/digital-mark-space.mjs",
+          "./content-space-operation-schemas": "./src/content-space-operation-schemas.mjs",
+          "./persistent-map": "./src/persistent-map.mjs"
+        },
+        "files": [
+          "bin",
+          "src"
+        ],
+        "scripts": {
+          "test": "node --test test/*.test.mjs"
+        },
+        "gitHead": "95118287c202d23ac326fd6a73987b1cafe8dbc3",
+        "_id": "@red-cup-engineering/computer-data-engineering-services-section@0.3.1",
+        "contentDigest": "sha256-bc67fc4c42e08314b3ef5f7d6636370b4f656c407c7d91e73761028b6fcbf2f7",
+        "dist": {
+          "shasum": "0a87cbbddf62f941ab21521430ecb9ed66c7fb88",
+          "integrity": "sha512-P8SMvW65n+jvHnQpI3lbIKsuMm8V3ilXZxUDKdccRd26gnF7s7w8aXb/ogdLIS+/qiEB+Mjj1Lm266K3cveGAw==",
+          "tarball": "https://registry.561.group/@red-cup-engineering/computer-data-engineering-services-section/-/computer-data-engineering-services-section-0.3.1.tgz"
+        },
+        "_npmUser": {
+          "name": "github-services"
+        }
+      },
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-x402-0.13.8-dev.1/computer-data-engineering-services-section-0.3.1.tgz",
+      "received": {
+        "integrity": "sha512-P8SMvW65n+jvHnQpI3lbIKsuMm8V3ilXZxUDKdccRd26gnF7s7w8aXb/ogdLIS+/qiEB+Mjj1Lm266K3cveGAw==",
+        "bytes": 57584,
+        "artifactDownloaded": true
+      }
+    },
+    {
+      "manifest": {
+        "name": "@red-cup-engineering/computer-system-engine",
+        "version": "0.1.2",
+        "type": "module",
+        "description": "The normal-computing system engine: typed operation messages and their invocation, the generic stdio verb server and its refusal schema, and the computer-engineering term specifications.",
+        "license": "UNLICENSED",
+        "exports": {
+          "./filesystem": "./src/filesystem.mjs",
+          "./repository-observation": "./src/repository-observation.mjs",
+          "./specification": "./src/specification.mjs",
+          "./typed-operation-message": "./src/typed-operation-message.mjs",
+          "./generated/specification-declarations": "./src/generated/specification-declarations.mjs",
+          "./serve-verbs-over-stdio": "./scripts/serve-verbs-over-stdio.mjs",
+          "./verb-refusal-schema": "./src/verb-refusal-schema.mjs",
+          "./package.json": "./package.json",
+          "./wire": "./src/wire.mjs",
+          "./journal/reading/coherence": "./src/journal/reading/coherence.mjs",
+          "./journal/reading": "./src/journal/reading/index.mjs",
+          "./journal/reading/rpc-sequence": "./src/journal/reading/rpc-sequence.mjs",
+          "./journal/reading/schema": "./src/journal/reading/schema.mjs",
+          "./addressing/feed": "./src/addressing/feed.mjs",
+          "./addressing/legibility": "./src/addressing/legibility.mjs",
+          "./addressing/markdown-node": "./src/addressing/markdown-node.mjs",
+          "./addressing/path-term": "./src/addressing/path-term.mjs",
+          "./journal/data-artifact-schema": "./src/journal/data-artifact-schema.mjs",
+          "./addressing/codec-legibility": "./src/addressing/codec-legibility.mjs",
+          "./wire-eavt-tuple": "./src/wire-eavt-tuple.mjs",
+          "./rpc/arrival": "./src/rpc/arrival.mjs",
+          "./rpc/contract-evidence": "./src/rpc/contract-evidence.mjs",
+          "./rpc/contract": "./src/rpc/contract.mjs",
+          "./rpc/convergence-key": "./src/rpc/convergence-key.mjs",
+          "./rpc/convergence": "./src/rpc/convergence.mjs",
+          "./rpc/coordination": "./src/rpc/coordination.mjs",
+          "./rpc/describe": "./src/rpc/describe.mjs",
+          "./rpc/dispatch": "./src/rpc/dispatch.mjs",
+          "./rpc/execution-context": "./src/rpc/execution-context.mjs",
+          "./rpc/invocation": "./src/rpc/invocation.mjs",
+          "./rpc/operation": "./src/rpc/operation.mjs",
+          "./rpc/receipt": "./src/rpc/receipt.mjs",
+          "./rpc/witness": "./src/rpc/witness.mjs",
+          "./rpc/capability-claims": "./src/rpc/capability-claims.mjs",
+          "./rpc/journal-witness": "./src/rpc/journal-witness.mjs",
+          "./rpc/arrival-store": "./src/rpc/arrival-store.mjs",
+          "./rpc/capability-assertions": "./src/rpc/capability-assertions.mjs",
+          "./rpc/binding": "./src/rpc/binding.mjs",
+          "./journal/service-lifecycle": "./src/journal/service-lifecycle/index.mjs",
+          "./rpc/resource": "./src/rpc/resource.mjs",
+          "./rpc/prompt": "./src/rpc/prompt.mjs",
+          "./rpc/manifold": "./src/rpc/manifold.mjs",
+          "./rpc/induce": "./src/rpc/induce.mjs",
+          "./rpc/verb-dispatch": "./src/rpc/verb-dispatch.mjs",
+          "./rpc/invocation-feed": "./src/rpc/invocation-feed.mjs",
+          "./rpc/apex": "./src/rpc/apex.mjs",
+          "./rpc/mcp-operations": "./src/rpc/mcp-operations.mjs",
+          "./rpc/wire-dispatch": "./src/rpc/wire-dispatch.mjs",
+          "./rpc/node": "./src/rpc/node.mjs",
+          "./rpc/actor-processing": "./src/rpc/actor-processing.mjs",
+          "./rpc/actor-client": "./src/rpc/actor-client.mjs",
+          "./rpc/http-observation-operations": "./src/rpc/http-observation-operations.mjs",
+          "./rpc/node-job-operations": "./src/rpc/node-job-operations.mjs",
+          "./rpc/operation-declaration": "./src/rpc/operation-declaration.mjs",
+          "./rpc/cloudevent-identity": "./src/rpc/cloudevent-identity.mjs",
+          "./rpc/cloudevent-schema": "./src/rpc/cloudevent-schema.mjs"
+        },
+        "files": [
+          "src",
+          "specifications",
+          "scripts",
+          "data/records/requirements-records"
+        ],
+        "bin": {
+          "serve-verbs-over-stdio": "scripts/serve-verbs-over-stdio.mjs",
+          "system-federate": "scripts/system-federate.mjs"
+        },
+        "scripts": {
+          "test": "node --test test/*.test.mjs"
+        },
+        "engines": {
+          "node": ">=22.18"
+        },
+        "sideEffects": false,
+        "dependencies": {
+          "@red-cup-engineering/semiotic-eavt-services-section": "0.1.0",
+          "@red-cup-engineering/computer-content-engineering-services-section": "0.1.0",
+          "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
+          "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0",
+          "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
+          "@red-cup-engineering/eavt-services-section": "0.11.0",
+          "@red-cup-engineering/json-schema-services-section": "0.5.0",
+          "@red-cup-engineering/json-services-section": "0.4.0",
+          "@red-cup-engineering/jsonl-services-section": "0.1.0",
+          "@red-cup-engineering/metrologic": "0.4.0",
+          "@red-cup-engineering/uri-services-section": "0.1.1",
+          "@red-cup-engineering/signcell": "0.2.0",
+          "@red-cup-engineering/signchain": "0.1.0",
+          "@red-cup-engineering/signgraph": "0.1.0",
+          "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
+          "@red-cup-engineering/computer-code-engineering-services-section": "0.1.2",
+          "@red-cup-engineering/html-structural-projection-service": "0.3.2",
+          "@red-cup-engineering/http-services-section": "0.6.2",
+          "@red-cup-engineering/immutable-content-custody-service": "0.4.1",
+          "@red-cup-engineering/javascript-node-code-fabrication-services-section": "0.1.1",
+          "@red-cup-engineering/javascript-node-services-section": "0.3.2",
+          "@red-cup-engineering/mcp-engineering-services-section": "0.1.1",
+          "@red-cup-engineering/node-process-services-section": "0.2.2",
+          "@red-cup-engineering/node-job-service": "0.1.1",
+          "@red-cup-engineering/signcraft": "0.1.1",
+          "@red-cup-engineering/computer-networking-engineering-services-section": "0.1.2",
+          "@red-cup-engineering/organizing": "0.2.3",
+          "@red-cup-engineering/relating": "0.10.4",
+          "@red-cup-engineering/a2a-services-section": "0.1.2",
+          "@red-cup-engineering/activitypub-services-section": "0.8.4"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/red-cup-engineering/computer-system-engine.git"
+        },
+        "private": false,
+        "readme": "ERROR: No README data found!",
+        "_id": "@red-cup-engineering/computer-system-engine@0.1.2",
+        "bugs": {
+          "url": "https://github.com/red-cup-engineering/computer-system-engine/issues"
+        },
+        "homepage": "https://github.com/red-cup-engineering/computer-system-engine#readme",
+        "_integrity": "sha512-yAJ58b+8X6TRm3P/qI1U3DwWap4Jkx2E2TbsQ5yUqic8BglXiY07ulX9x4lFD24OU0/2pkyRQLcLC6IHsLdCBQ==",
+        "_resolved": "/home/emsenn/.cache/561-registry-normalizer-release/final-release-artifacts/sha512/c80279f1bfbc5fa4d19b73ffa88d54dc3c166a9e09931d84d936ec439c94aa273c060957898d3bba55fdc789450f6e0e534ff6a64c9140b70b0ba207b0b74205.tgz",
+        "_from": "file:/home/emsenn/.cache/561-registry-normalizer-release/final-release-artifacts/sha512/c80279f1bfbc5fa4d19b73ffa88d54dc3c166a9e09931d84d936ec439c94aa273c060957898d3bba55fdc789450f6e0e534ff6a64c9140b70b0ba207b0b74205.tgz",
+        "_nodeVersion": "24.18.0",
+        "_npmVersion": "11.16.0",
+        "dist": {
+          "integrity": "sha512-yAJ58b+8X6TRm3P/qI1U3DwWap4Jkx2E2TbsQ5yUqic8BglXiY07ulX9x4lFD24OU0/2pkyRQLcLC6IHsLdCBQ==",
+          "shasum": "7c224cc76a511f791beef1931b884c99610714b5",
+          "tarball": "https://registry.561.group/@red-cup-engineering/computer-system-engine/-/computer-system-engine-0.1.2.tgz"
+        },
+        "_npmUser": {
+          "name": "emsenn"
+        }
+      },
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-x402-0.13.8-dev.1/computer-system-engine-0.1.2.tgz",
+      "received": {
+        "integrity": "sha512-yAJ58b+8X6TRm3P/qI1U3DwWap4Jkx2E2TbsQ5yUqic8BglXiY07ulX9x4lFD24OU0/2pkyRQLcLC6IHsLdCBQ==",
+        "bytes": 99644,
+        "artifactDownloaded": true
+      }
+    },
+    {
+      "manifest": {
+        "name": "@red-cup-engineering/json-services-section",
+        "version": "0.4.1",
+        "type": "module",
+        "private": false,
+        "license": "MIT",
+        "exports": {
+          ".": "./src/index.mjs",
+          "./parse-json": "./scripts/parse-json.mjs",
+          "./project-json-record-keys": "./scripts/project-json-record-keys.mjs",
+          "./form-cloudevent": "./scripts/form-cloudevent.mjs",
+          "./validate-cloudevent": "./scripts/validate-cloudevent.mjs",
+          "./package.json": "./package.json",
+          "./schema": "./src/json.schema.json",
+          "./canonical-json": {
+            "types": "./scripts/canonical-json.d.mts",
+            "import": "./scripts/canonical-json.mjs"
+          },
+          "./types": {
+            "types": "./src/json-value.d.mts"
+          },
+          "./assert-canonical-json": "./scripts/assert-canonical-json.mjs",
+          "./is-canonical-json": "./scripts/is-canonical-json.mjs",
+          "./parse-json-value": "./scripts/parse-json-value.mjs",
+          "./is-json-value": "./scripts/is-json-value.mjs",
+          "./require-json-value": {
+            "types": "./scripts/require-json-value.d.mts",
+            "import": "./scripts/require-json-value.mjs"
+          },
+          "./assert-nonempty-string": "./scripts/assert-nonempty-string.mjs",
+          "./is-json-record": {
+            "types": "./scripts/is-json-record.d.mts",
+            "import": "./scripts/is-json-record.mjs"
+          },
+          "./freeze-json": "./scripts/freeze-json.mjs",
+          "./admit-json-type": "./scripts/admit-json-type.mjs",
+          "./read-json-field": "./scripts/read-json-field.mjs",
+          "./is-object-record": "./scripts/is-object-record.mjs",
+          "./is-json-text": "./scripts/is-json-text.mjs",
+          "./json-values-of-text": "./scripts/json-values-of-text.mjs",
+          "./write-json-text": "./scripts/write-json-text.mjs",
+          "./keyed-json-text": "./scripts/keyed-json-text.mjs",
+          "./json-byte-carrier": "./src/json-byte-carrier.mjs",
+          "./encode-json-byte-carrier": "./scripts/encode-json-byte-carrier.mjs",
+          "./decode-json-byte-carrier": "./scripts/decode-json-byte-carrier.mjs",
+          "./canonical": "./scripts/canonical-json.mjs",
+          "./differentiate-data": "./scripts/differentiate-data.mjs",
+          "./differentiate-sequences": "./scripts/differentiate-sequences.mjs",
+          "./json-equality": "./scripts/json-equality.mjs",
+          "./json-resource": "./scripts/json-resource.mjs",
+          "./resolve-json-pointer": "./scripts/resolve-json-pointer.mjs",
+          "./json-transformations": "./scripts/json-transformations.mjs",
+          "./json-patch": "./scripts/json-patch.mjs"
+        },
+        "files": [
+          "src",
+          "scripts",
+          "README.md",
+          "package.json",
+          "schemas"
+        ],
+        "devDependencies": {},
+        "scripts": {
+          "test": "node --test test/*.test.mjs",
+          "pack:dry-run": "npm pack --dry-run --ignore-scripts"
+        },
+        "engines": {
+          "node": ">=24.2.0"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/red-cup-engineering/json-services-section.git"
+        },
+        "gitHead": "5874c33d6bee0323ea0a17094f18c9dc20024d25",
+        "_id": "@red-cup-engineering/json-services-section@0.4.1",
+        "contentDigest": "sha256-833155ad51f0daddd0eb7615ea8d0943dac0248d69bddaa3f493f158ed723078",
+        "dist": {
+          "shasum": "c4ada5ccc9cc1768590eca925fd9b601d4928c8b",
+          "integrity": "sha512-m8WXUbLI1KxAJdeabJ27PyrF8HxjuhFMqVEouANXAo0eFhEQsNUPGVgeISfpqBqYai10B45F2NG5muu3iMKUSA==",
+          "tarball": "https://registry.561.group/@red-cup-engineering/json-services-section/-/json-services-section-0.4.1.tgz"
+        },
+        "_npmUser": {
+          "name": "github-services"
+        }
+      },
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-x402-0.13.8-dev.1/json-services-section-0.4.1.tgz",
+      "received": {
+        "integrity": "sha512-m8WXUbLI1KxAJdeabJ27PyrF8HxjuhFMqVEouANXAo0eFhEQsNUPGVgeISfpqBqYai10B45F2NG5muu3iMKUSA==",
+        "bytes": 21019,
+        "artifactDownloaded": true
+      }
+    },
+    {
+      "manifest": {
+        "name": "@red-cup-engineering/javascript-node-operation-service",
+        "version": "0.1.0",
+        "description": "Run a Node script as one typed operation: JSON input admitted by a declared type on standard input, the declared output type checked before it is written, refusals reported as data.",
+        "type": "module",
+        "license": "UNLICENSED",
+        "files": [
+          "src"
+        ],
+        "exports": {
+          ".": "./src/operation.mjs",
+          "./package.json": "./package.json"
+        },
+        "scripts": {
+          "test": "node --test test/*.test.mjs"
+        },
+        "dependencies": {
+          "@red-cup-engineering/json-services-section": "0.4.0",
+          "@red-cup-engineering/signcell": "0.2.0"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/red-cup-engineering/computer-code-engineering-services-section.git",
+          "directory": "services/javascript-engineering-services-section/services/javascript-node-services-section/services/javascript-node-operation-service"
+        },
+        "readme": "ERROR: No README data found!",
+        "_id": "@red-cup-engineering/javascript-node-operation-service@0.1.0",
+        "bugs": {
+          "url": "https://github.com/red-cup-engineering/computer-code-engineering-services-section/issues"
+        },
+        "homepage": "https://github.com/red-cup-engineering/computer-code-engineering-services-section#readme",
+        "_nodeVersion": "24.19.0",
+        "_npmVersion": "11.17.0",
+        "dist": {
+          "integrity": "sha512-RCyHiIMm1puoBt0O2FWYRgWwGznb38xwy766VlsCEPuMbPxaRs9E8/i/9rPPkUvCyeQPwHRLRmt7ylX9TosmnA==",
+          "shasum": "5da272f8a1d8073bf89832edfb2999366a3b71a2",
+          "tarball": "https://registry.561.group/@red-cup-engineering/javascript-node-operation-service/-/javascript-node-operation-service-0.1.0.tgz"
+        },
+        "_npmUser": {
+          "name": "emsenn"
+        }
+      },
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-x402-0.13.8-dev.1/javascript-node-operation-service-0.1.0.tgz",
+      "received": {
+        "integrity": "sha512-RCyHiIMm1puoBt0O2FWYRgWwGznb38xwy766VlsCEPuMbPxaRs9E8/i/9rPPkUvCyeQPwHRLRmt7ylX9TosmnA==",
+        "bytes": 2834,
+        "artifactDownloaded": true
+      }
+    }
+  ]
+}

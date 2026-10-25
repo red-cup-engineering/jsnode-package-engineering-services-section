@@ -1,0 +1,11 @@
+{
+  "observedAt": "2026-10-25T00:21:30.760Z",
+  "name": "@red-cup-engineering/npm-workspace-publication-service",
+  "version": "0.14.18",
+  "root": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-policy-0.14.18/node_modules/@red-cup-engineering/npm-workspace-publication-service",
+  "selectedFace": "./dependency-policy",
+  "sha256": "7864ca0b00f40361aed5e1bc2e58822f8a0e5b8f74522a6c768eb2ae6fd57d88",
+  "comparison": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/npm-workspace-publication-service/src/dependency-policy.mjs",
+  "matched": true,
+  "scope": "Exact pure dependency-policy test supplier only; no publishing/install operations imported or executed by application tests."
+}

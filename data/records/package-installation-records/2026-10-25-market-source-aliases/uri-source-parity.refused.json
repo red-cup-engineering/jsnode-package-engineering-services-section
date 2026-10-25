@@ -1,0 +1,36 @@
+{
+  "observedAt": "2026-10-25T00:29:29.800Z",
+  "name": "@red-cup-engineering/uri-services-section",
+  "version": "0.1.3",
+  "gitHead": "257a3cef4b5bd6c7f7be3398042696747ecd4cc7",
+  "from": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/uri-services-section",
+  "old": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/services/computer-content-engineering-services-section/services/computer-content-address-engineering-services-section/services/uri-services-section",
+  "sourceHead": "a1fd901babf803f6259aa169c7aaf478cd8cd7c8",
+  "matches": [
+    {
+      "file": "src/address-transformations.mjs",
+      "matches": true,
+      "sha256": "2009e01d1afc24d99faab4096bc867fd966812eb0617b0d5127ed42fe327b1df",
+      "sourceSha256": "2009e01d1afc24d99faab4096bc867fd966812eb0617b0d5127ed42fe327b1df"
+    },
+    {
+      "file": "src/http-url.mjs",
+      "matches": false,
+      "sha256": "63cadfe115850bf0f6b4f4383ec71a145332b690ea5da11a71a652aaaa8f2b56",
+      "sourceSha256": "20fc8cfb64ba0a3de2dab8821d4e9371ac9bf6a1bc0a50c019d1f4ff0067d0fc"
+    },
+    {
+      "file": "src/ni-uri.mjs",
+      "matches": true,
+      "sha256": "21c97093a4ef867e88352bcf4ecf9332fd1132a3576dacbda7f48364ca76d353",
+      "sourceSha256": "21c97093a4ef867e88352bcf4ecf9332fd1132a3576dacbda7f48364ca76d353"
+    },
+    {
+      "file": "src/uri-template.mjs",
+      "matches": true,
+      "sha256": "9fd0ceb1056aab6c2349a8a57db7f909181b204941d98a6c33066c8e9b26f988",
+      "sourceSha256": "9fd0ceb1056aab6c2349a8a57db7f909181b204941d98a6c33066c8e9b26f988"
+    }
+  ],
+  "selected": false
+}

@@ -1,0 +1,161 @@
+{
+  "observedAt": "2026-10-25T00:07:05.702Z",
+  "manifest": {
+    "name": "@red-cup-engineering/x402-services-section",
+    "version": "0.13.8-dev.1",
+    "private": false,
+    "type": "module",
+    "description": "Independently hireable x402 v2 HTTP payment boundary and optional currency-obligation evidence adapter using the official x402 implementation.",
+    "exports": {
+      ".": "./src/resource-server.mjs",
+      "./server": "./src/resource-server.mjs",
+      "./fetch": "./src/fetch-server.mjs",
+      "./resource-observation": "./src/resource-observation.mjs",
+      "./payment-requirement-assay": "./src/payment-requirement-assay.mjs",
+      "./public-service-market-listing": "./src/public-service-market-listing.mjs",
+      "./priced-capability-boundary": "./src/priced-capability-boundary.mjs",
+      "./x402-settlement-evidence": "./src/x402-settlement-evidence.mjs",
+      "./purchase-observation": "./src/purchase-observation.mjs",
+      "./facilitator": "./src/facilitator.mjs",
+      "./cdp-facilitator": "./src/cdp-facilitator.mjs",
+      "./facilitator-assay": "./src/facilitator-assay.mjs",
+      "./src/priced-capability-boundary.mjs": "./src/priced-capability-boundary.mjs",
+      "./offer": "./src/offer.mjs",
+      "./capability-outbox": "./src/capability-outbox.mjs",
+      "./compute-binding": "./src/compute-binding.mjs",
+      "./x402-settlement-witness-identity": "./scripts/x402-settlement-witness-identity.mjs",
+      "./market": "./src/market/market.mjs",
+      "./market/node": "./src/market/node.mjs",
+      "./market/access-grants": "./src/market/access-grants.mjs",
+      "./market/settlement-demand-evidence": "./src/market/settlement-demand-evidence.mjs",
+      "./market/unit-economics": "./src/market/unit-economics.mjs",
+      "./sign-in-with-x": "./src/sign-in-with-x.mjs",
+      "./market-observation/settlement": {
+        "default": "./src/market-observation/settlement.mjs"
+      },
+      "./market-observation/product": "./src/market-observation/product.mjs",
+      "./hbd/form-payment-requirement": "./src/hbd/form-hbd-payment-requirement.mjs",
+      "./hbd/verify-payment": "./src/hbd/verify-hbd-payment.mjs",
+      "./hbd/settle-purchase": "./src/hbd/settle-hbd-purchase.mjs",
+      "./hive/exit-tightness": "./src/hive/sell-hive-exit-tightness-resource.mjs",
+      "./hive/exit-tightness-sale-ledger": "./src/hive/exit-tightness-sale-ledger.mjs",
+      "./hive/exit-tightness-http-service": "./src/hive/exit-tightness-http-service.mjs",
+      "./purchase-publication": "./src/purchase-publication.mjs",
+      "./seller-settlements": "./src/settlement-derivation/book-market-seller-settlements.mjs",
+      "./route-configuration": "./src/route-configuration.mjs",
+      "./market/catalog": "./src/market/catalog.mjs",
+      "./market/instance-access-grants": "./src/market/instance-access-grants.mjs",
+      "./market/instance-access-grants/node": "./src/market/instance-access-grants-node.mjs",
+      "./operations": "./src/operations.mjs"
+    },
+    "files": [
+      "src/",
+      "schemas/",
+      "apps/",
+      "scripts/",
+      "data/hive-exit-tightness/systemd/",
+      "types/",
+      "content/",
+      "!content/evm/accounts/",
+      "test/offer.test.mjs",
+      "test/market/proxy-response.test.mjs",
+      "test/market/unit-economics.test.mjs",
+      "test/market/settlement-demand-evidence.test.mjs",
+      "test/market/market.test.mjs",
+      "test/capability-outbox-reuse.test.mjs",
+      "test/market/capability-actor-resources.test.mjs",
+      "test/market/request-pricing-authorization.test.mjs",
+      "test/market/catalog-query.test.mjs",
+      "test/market/required-field-handoff.test.mjs"
+    ],
+    "bin": {
+      "assay-payment-requirements": "./src/assay-payment-requirements.mjs",
+      "observe-x402-market": "./apps/observe-market.mjs",
+      "form-hbd-payment-requirement": "./src/hbd/form-hbd-payment-requirement.mjs",
+      "verify-hbd-payment": "./src/hbd/verify-hbd-payment.mjs",
+      "settle-hbd-purchase": "./src/hbd/settle-hbd-purchase.mjs",
+      "serve-x402-hive-exit-tightness": "./apps/serve-hive-exit-tightness.mjs",
+      "x402-hive-exit-tightness-seller-cli": "./apps/x402-hive-exit-tightness-seller-cli.mjs"
+    },
+    "publishConfig": {
+      "access": "public"
+    },
+    "receivingTests": [
+      "test/offer.test.mjs",
+      "test/market/proxy-response.test.mjs",
+      "test/market/unit-economics.test.mjs",
+      "test/market/settlement-demand-evidence.test.mjs",
+      "test/market/market.test.mjs",
+      "test/capability-outbox-reuse.test.mjs",
+      "test/market/capability-actor-resources.test.mjs",
+      "test/market/request-pricing-authorization.test.mjs",
+      "test/market/catalog-query.test.mjs",
+      "test/market/required-field-handoff.test.mjs"
+    ],
+    "scripts": {
+      "check": "node --check src/offer.mjs && node --check src/compute-binding.mjs && node --check src/resource-server.mjs && node --check src/fetch-server.mjs && node --check src/resource-observation.mjs && node --check src/operations.mjs && node --check src/payment-requirement-assay.mjs && node --check src/assay-payment-requirements.mjs && node --check src/public-service-market-listing.mjs && node --check src/facilitator.mjs && node --check src/cdp-facilitator.mjs && node --check src/priced-capability-boundary.mjs && node --check src/facilitator-assay.mjs && node --check scripts/assay-x402-facilitator.mjs && node --check test/offer.test.mjs && node --check test/resource-server.test.mjs && node --check test/fetch-server.test.mjs && node --check test/resource-observation.test.mjs && node --check test/payment-requirement-assay.test.mjs && node --check test/public-service-market-listing.test.mjs && node --check test/facilitator.test.mjs && node --check test/cdp-facilitator.test.mjs && node --check test/priced-capability-boundary.test.mjs && node --check test/facilitator-assay.test.mjs && node --check src/route-configuration.mjs && node --check src/x402-settlement-evidence.mjs && node --check test/compute-binding-runtime.test.mjs && node --check test/route-configuration.test.mjs && node --check test/x402-settlement-evidence.test.mjs && node --check test/fetch-response-preparation.test.mjs && node --check test/upto-boundary.test.mjs && node --check src/market/settlement-demand-evidence.mjs && node --check test/market/settlement-demand-evidence.test.mjs && node --check test/capability-outbox-reuse.test.mjs && node --check src/market/capability-actor-resources.mjs && node --check apps/observe-market.mjs && node --check src/market/catalog.mjs && node --check test/market/required-field-handoff.test.mjs",
+      "test": "node --test test/offer.test.mjs test/compute-binding.test.mjs test/resource-server.test.mjs test/fetch-server.test.mjs test/resource-observation.test.mjs test/operations.test.mjs test/payment-requirement-assay.test.mjs test/public-service-market-listing.test.mjs test/facilitator.test.mjs test/cdp-facilitator.test.mjs test/priced-capability-boundary.test.mjs test/facilitator-assay.test.mjs test/compute-binding-runtime.test.mjs test/route-configuration.test.mjs test/x402-settlement-evidence.test.mjs test/fetch-response-preparation.test.mjs test/upto-boundary.test.mjs test/market/settlement-demand-evidence.test.mjs test/capability-outbox-reuse.test.mjs test/market/capability-actor-resources.test.mjs test/market/request-pricing-authorization.test.mjs test/market/catalog-query.test.mjs test/market-observation/merchant-discovery.test.mjs test/market/required-field-handoff.test.mjs",
+      "assay-facilitator": "node scripts/assay-x402-facilitator.mjs"
+    },
+    "dependencies": {
+      "@red-cup-engineering/a2a-services-section": "0.1.2",
+      "@red-cup-engineering/activitypub-services-section": "0.8.4",
+      "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
+      "@red-cup-engineering/cbor-services-section": "0.1.1",
+      "@red-cup-engineering/computer-data-engineering-services-section": "0.3.1",
+      "@red-cup-engineering/cloudflare-r2-services-section": "0.5.2",
+      "@red-cup-engineering/computer-serialized-content-engineering-services-section": "0.1.0",
+      "@red-cup-engineering/computer-system-engine": "0.1.2",
+      "@red-cup-engineering/computer-system-platform": "0.5.5",
+      "@red-cup-engineering/computer-web-platform": "0.6.1",
+      "@red-cup-engineering/computer-web-server": "0.6.2",
+      "@red-cup-engineering/eavt-services-section": "0.11.0",
+      "@red-cup-engineering/ethereum-engineering-services-section": "0.15.2",
+      "@red-cup-engineering/execute-javascript-node-command-service": "0.3.1",
+      "@red-cup-engineering/hive-blockchain-client-service": "0.1.5",
+      "@red-cup-engineering/hive-fleet-operations-service": "0.4.12",
+      "@red-cup-engineering/http-services-section": "0.6.4",
+      "@red-cup-engineering/json-schema-services-section": "0.5.0",
+      "@red-cup-engineering/json-services-section": "0.4.1",
+      "@red-cup-engineering/uri-services-section": "0.1.1",
+      "@red-cup-engineering/web-page-tiling-engine": "0.14.2",
+      "@x402/core": "2.19.0",
+      "@x402/evm": "2.19.0",
+      "@x402/express": "2.19.0",
+      "@x402/extensions": "2.19.0",
+      "express": "5.2.1",
+      "@red-cup-engineering/semiotic-eavt-services-section": "0.1.0",
+      "@red-cup-engineering/exact-number-data-service": "0.1.1",
+      "@red-cup-engineering/javascript-node-operation-service": "0.1.0"
+    },
+    "engines": {
+      "node": ">=22.18"
+    },
+    "devDependencies": {
+      "@lenticule-science/astronomy-position-computation-service": "0.8.2",
+      "@red-cup-engineering/computer-code-engineering-services-section": "0.1.2",
+      "@red-cup-engineering/pacing-intelligence-services-section": "0.2.2",
+      "viem": "2.55.8"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/red-cup-engineering/x402-engineering-services-section.git"
+    },
+    "gitHead": "e9bb4dfd7af353e3f2a70fb47d9f4a8673996501",
+    "_id": "@red-cup-engineering/x402-services-section@0.13.8-dev.1",
+    "contentDigest": "sha256-fed8a48678f37748b81c4e8e831176ef9687d7a8e004874cd0033599cf05ff04",
+    "dist": {
+      "shasum": "b4c184cc4b2f958bb1e5f4ed19929e6734cb3cb7",
+      "integrity": "sha512-oqBOzh/x9NCyT/3zB+CIpl9H+fteaucVRMI3itE1F3VB6xXNeAyh/1gS/RkLsQZIQJ7IdslsiwRB0FOfUXYN3A==",
+      "tarball": "https://registry.561.group/@red-cup-engineering/x402-services-section/-/x402-services-section-0.13.8-dev.1.tgz"
+    },
+    "_npmUser": {
+      "name": "github-services"
+    }
+  },
+  "received": {
+    "integrity": "sha512-oqBOzh/x9NCyT/3zB+CIpl9H+fteaucVRMI3itE1F3VB6xXNeAyh/1gS/RkLsQZIQJ7IdslsiwRB0FOfUXYN3A==",
+    "bytes": 177749,
+    "artifactDownloaded": true
+  }
+}

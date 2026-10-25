@@ -1,0 +1,64 @@
+{
+  "observedAt": "2026-10-25T00:26:45.565Z",
+  "currentSourceCommit": "ce493909979c8329ab17d6560dbff39b2311a86c",
+  "artifactSourceCommit": "65e8f7dbde2cff190caf73a2b8141f1ee5f99082",
+  "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/lib/metrologic",
+  "p": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2",
+  "scope": "Only two actual APP public operations and their complete native static import closure; other supplier exports and other consumers retain their own original selections.",
+  "matches": [
+    {
+      "file": "src/models/physics/models/kinetic-theory/boltzmann-entropy.mjs",
+      "matches": true,
+      "sha256": "f3683ab49db320d6cbe5286c12a66b543fab037c9a30ab7de7fa64b20b3f48ec"
+    },
+    {
+      "file": "src/obstruction/attention-allocation.mjs",
+      "matches": true,
+      "sha256": "689b531e49549ac60d4cf1a0efe3a5fe059c5c63ede0e35a635eaa026aab2003"
+    },
+    {
+      "file": "src/number/finite-capacity.mjs",
+      "matches": true,
+      "sha256": "68f65b2076b05751821f45abd7785a29e42dbe8e5eb140349051e35625cf0548"
+    }
+  ],
+  "audit": {
+    "type": "InstalledCarrierBindingObservation",
+    "version": 1,
+    "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2",
+    "entrypoints": [
+      "src/obstruction/attention-allocation.mjs",
+      "src/models/physics/models/kinetic-theory/boltzmann-entropy.mjs"
+    ],
+    "scopes": [
+      "@red-cup-engineering",
+      "@lenticule-science"
+    ],
+    "maxModules": 200,
+    "maxFileBytes": 1048576,
+    "complete": true,
+    "modules": [
+      {
+        "file": "src/models/physics/models/kinetic-theory/boltzmann-entropy.mjs",
+        "name": "@red-cup-engineering/metrologic",
+        "version": "0.14.2",
+        "sha256": "f3683ab49db320d6cbe5286c12a66b543fab037c9a30ab7de7fa64b20b3f48ec"
+      },
+      {
+        "file": "src/obstruction/attention-allocation.mjs",
+        "name": "@red-cup-engineering/metrologic",
+        "version": "0.14.2",
+        "sha256": "689b531e49549ac60d4cf1a0efe3a5fe059c5c63ede0e35a635eaa026aab2003"
+      },
+      {
+        "file": "src/number/finite-capacity.mjs",
+        "name": "@red-cup-engineering/metrologic",
+        "version": "0.14.2",
+        "sha256": "68f65b2076b05751821f45abd7785a29e42dbe8e5eb140349051e35625cf0548"
+      }
+    ],
+    "findings": [],
+    "boundaries": [],
+    "ready": true
+  }
+}
