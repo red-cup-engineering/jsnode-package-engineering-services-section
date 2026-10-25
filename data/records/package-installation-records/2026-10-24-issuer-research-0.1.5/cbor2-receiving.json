@@ -1,0 +1,13 @@
+{
+  "type": "ExistingCborNativeDependencyReceiving",
+  "version": 1,
+  "at": "2026-10-24T23:23:22.236Z",
+  "supplier": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cbor-services-section",
+  "declaredVersion": "2.4.0",
+  "target": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/cbor2",
+  "actualVersion": "2.4.0",
+  "newDownload": false,
+  "imported": true,
+  "roundTrip": true,
+  "fixtureCorrection": "Buffer is a Uint8Array; compare canonical carrier bytes and values rather than narrowing the documented byte subtype."
+}

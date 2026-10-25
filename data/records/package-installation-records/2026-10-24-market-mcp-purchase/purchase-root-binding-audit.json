@@ -1,0 +1,188 @@
+{
+  "type": "InstalledCarrierBindingObservation",
+  "version": 1,
+  "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section",
+  "entrypoints": [
+    "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/purchase.mjs"
+  ],
+  "scopes": [
+    "@red-cup-engineering",
+    "@x402"
+  ],
+  "maxModules": 300,
+  "maxFileBytes": 1048576,
+  "complete": true,
+  "modules": [
+    {
+      "file": "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/purchase.mjs",
+      "name": "@red-cup-engineering/x402-exact-purchase-service",
+      "version": "0.2.0",
+      "sha256": "717b805a896e33a9c47af71684b3431805c2cf91b2d0ca6579a3bb6e19fd7d24"
+    },
+    {
+      "file": "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/successor-deployment.mjs",
+      "name": "@red-cup-engineering/x402-exact-purchase-service",
+      "version": "0.2.0",
+      "sha256": "92e60225cb887cae2ea210e27efe475866847739e96bc7152ee33756e3c12029"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/exact/client/index.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "909408bf97ee03be467089737a3f53c1c8075413ff57230187886912adaf27c4"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-TW7Z65AO.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "ad580ce6d7daefb5a879892fd5f702aec20569e1d7f460930170c649cb6d5003"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-VS3RYAYE.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "3d7b3830ffb8ed296b658589cb674c215a073f38911a9479c035018e83dfcf33"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-MACPBXCT.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "cb91d9f85905a436f7622532a13b7bd32e71ecc3ce92c583456b2f286265c020"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-27MWX225.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "42d3454a50bb919f72472444083a81472b4445a353a903666d55422fb7c4e959"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-23HX7MHV.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "a1b49269d611fd5a65cd1d86efaa0325b6b6bda67a567f1652ed98e099858766"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-HAEDTF25.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "e778a8791c32131e1e54a364e6543636e6a062e7647cb9ba56bfa2953285f7da"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-63YBFPIQ.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "72381ba1a50188e24ec0ad79a7ffa35479fbfd03f3a4d33995da2cd96cfe0b57"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-BEMCJZKA.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "70d6282d0516a43ab9e2b253d660b5a7cf24c4d10ac18c16bd04b0baa3b30626"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-ZWPJEMS5.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "3793eb0aac44c7d59034be08dcd76f80b3ed78c99bf6985dc5849ce261684426"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-GSVPWDXO.mjs",
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "sha256": "228d6dab2ea7a96d168b2c4e5db15e8362dff509b28e40e9d539bbeb8973969e"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/client/index.mjs",
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "sha256": "0e8a9ece331c8ba9c5c371149d38366f9093a821440f79b4238b142f02ff98cc"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/chunk-BJTO5JO5.mjs",
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "sha256": "1c521b4fbee4089393c982b94b5f8a4f81b1043c2f8cd1848d0d6056430e761f"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/chunk-ABS7D6VX.mjs",
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "sha256": "8048342c313b2bf5bfd550520eb1f5ee4e1f61f818f78bba42cd2a86b95361a3"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/chunk-AGOUMC4P.mjs",
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "sha256": "55e8530b87aee19a99a6bf990df89b27b160ee8992f775ace8ae5a019b48f147"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/chunk-VE37GDG2.mjs",
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "sha256": "56fb4db85f03d88dfa5d42c81be8527f72deae2bca4004dfaea6415f186dc086"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/chunk-N4QXZG2Z.mjs",
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "sha256": "19c189f7417214b211ee4abdaada531a80e5adc8504d593c172fe1e2ce61c03e"
+    },
+    {
+      "file": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/chunk-UCXEF6EL.mjs",
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "sha256": "8cd31ae2d8d95d6c5680703ede13c351649112247d9f75c55ec46c0ad749e442"
+    }
+  ],
+  "findings": [],
+  "boundaries": [
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-TW7Z65AO.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-VS3RYAYE.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-27MWX225.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-HAEDTF25.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-63YBFPIQ.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-BEMCJZKA.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-ZWPJEMS5.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/evm/dist/esm/chunk-GSVPWDXO.mjs",
+      "specifier": "viem",
+      "kind": "external-supplier"
+    },
+    {
+      "importer": "services/github-engineering-services-section/node_modules/@x402/core/dist/esm/chunk-N4QXZG2Z.mjs",
+      "specifier": "zod",
+      "kind": "external-supplier",
+      "supplier": "zod",
+      "version": "3.25.76"
+    }
+  ],
+  "ready": true
+}

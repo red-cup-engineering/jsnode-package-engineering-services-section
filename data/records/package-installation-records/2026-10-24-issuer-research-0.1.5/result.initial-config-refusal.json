@@ -1,0 +1,10 @@
+{
+  "startedAt": "2026-10-24T23:09:30.302Z",
+  "finishedAt": "2026-10-24T23:09:31.095Z",
+  "status": 1,
+  "signal": null,
+  "stdout": "",
+  "stderr": "Exit prior to config file resolving\ncause\ndouble-loading config \"/dev/null\" as \"global\", previously loaded as \"user\"\n",
+  "destination": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+  "noNewCash": true
+}

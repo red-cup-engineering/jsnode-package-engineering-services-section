@@ -1,0 +1,47 @@
+{
+  "type": "ExactRegistryPackageInstallation",
+  "version": 1,
+  "sourceOwner": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section",
+  "artifact": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/issuer-research-media-service/data/logs/package-receiving-logs/2026-10-24-issuer-0.1.5/package.tgz",
+  "package": "@red-cup-engineering/issuer-research-media-service",
+  "packageVersion": "0.1.5",
+  "gitHead": "d2f1e69d06175d46d45bf67c534e8f389b137e07",
+  "destination": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+  "arguments": [
+    "install",
+    "--prefix",
+    "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+    "--cache",
+    "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/npm-cache-state",
+    "--no-save",
+    "--ignore-scripts",
+    "--no-package-lock",
+    "--no-audit",
+    "--no-fund",
+    "--no-update-notifier",
+    "--fetch-retries=0",
+    "--fetch-timeout=10000",
+    "--registry=https://registry.561.group/",
+    "--userconfig=/dev/null",
+    "--globalconfig=/dev/null",
+    "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/issuer-research-media-service/data/logs/package-receiving-logs/2026-10-24-issuer-0.1.5/package.tgz"
+  ],
+  "classification": {
+    "action": "serialize",
+    "heavy": [
+      "npm install or script"
+    ],
+    "locked": false
+  },
+  "decision": {
+    "hookEventName": "PreToolUse",
+    "updatedInput": {
+      "command": "_ah_c='echo >\"$_AH_RAN\"; if ! declare -F timeout >/dev/null; then timeout() { command timeout --kill-after=10s \"$@\"; }; export -f timeout; fi; '\\''/gnu/store/kba00zrnc1d1cg9bkx0krpvc2sp7wzrh-node-24.18.0/bin/npm'\\'' '\\''install'\\'' '\\''--prefix'\\'' '\\''/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5'\\'' '\\''--cache'\\'' '\\''/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/npm-cache-state'\\'' '\\''--no-save'\\'' '\\''--ignore-scripts'\\'' '\\''--no-package-lock'\\'' '\\''--no-audit'\\'' '\\''--no-fund'\\'' '\\''--no-update-notifier'\\'' '\\''--fetch-retries=0'\\'' '\\''--fetch-timeout=10000'\\'' '\\''--registry=https://registry.561.group/'\\'' '\\''--userconfig=/dev/null'\\'' '\\''--globalconfig=/dev/null'\\'' '\\''/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section/services/issuer-research-media-service/data/logs/package-receiving-logs/2026-10-24-issuer-0.1.5/package.tgz'\\'''; _ah_io=; ionice -c3 true 2>/dev/null && _ah_io='ionice -c3'; _ah_readable=; for _ah_l in '/run/user/1000/agent-heavy.lock'; do [ ! -r \"$_ah_l\" ] || _ah_readable=1; done; if [ -z \"$_ah_readable\" ]; then printf '%s\\n' 'agent-heavy: no readable admission lock; this command did not run' >&2; (exit 75); else _AH_RAN=$(mktemp '/run/user/1000'/agent-ran.XXXXXX) && { export _AH_RAN; _ah_rc=75; for _ah_l in '/run/user/1000/agent-heavy.lock'; do [ -r \"$_ah_l\" ] || continue; AGENT_HEAVY_LOCK_HELD=1 nice -n 10 $_ah_io flock -n -E 75 \"$_ah_l\" bash -c \"$_ah_c\"; _ah_rc=$?; { [ \"$_ah_rc\" -eq 75 ] && ! [ -s \"$_AH_RAN\" ]; } || break; done; if [ \"$_ah_rc\" -eq 75 ] && ! [ -s \"$_AH_RAN\" ]; then if [ -r '/run/user/1000/agent-heavy.lock' ]; then AGENT_HEAVY_LOCK_HELD=1 nice -n 10 $_ah_io flock -w 110 -E 75 '/run/user/1000/agent-heavy.lock' bash -c \"$_ah_c\"; _ah_rc=$?; fi; fi; [ \"$_ah_rc\" -ne 75 ] || [ -s \"$_AH_RAN\" ] || printf '%s\\n' 'agent-heavy: waited 110s for one of the host'\\''s 1 heavy-command slot (/run/user/1000/agent-heavy.lock); other agents'\\'' clones, fetches, builds or tree scans hold it, so this command did not run. Retry shortly, or narrow it.' >&2; unlink -- \"$_AH_RAN\"; (exit \"$_ah_rc\"); }; fi"
+    },
+    "permissionDecision": "allow",
+    "permissionDecisionReason": "host-resource guard: npm install or script runs in one of the host's heavy-command slots"
+  },
+  "nativePackageManager": true,
+  "handwrittenConsumerManifest": false,
+  "noNewCash": true
+}

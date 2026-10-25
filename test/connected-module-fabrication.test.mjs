@@ -18,13 +18,13 @@ const valid={
  'src/double.mjs':'export function doubleValue(n){if(typeof n!=="number"||!Number.isFinite(n))throw new TypeError();return n+n;}',
  'src/increment.mjs':'import {doubleValue} from "./double.mjs"; export function incrementValue(n){return doubleValue(n)+1;}',
 };
-async function exercise(sources,{lotCarriers=[]}={}){
+async function exercise(sources,{lotCarriers=[],missingLotAt}={}){
  const calls=[],judgments=[];
  const result=await deriveJsnodeModules(order,{infer:async request=>{
   calls.push(request);const module=JSON.parse(request.messages[1].content).selectedModule;
   const carrier=lotCarriers[calls.length-1];
   return {text:JSON.stringify(module===undefined?{cases,question:null}:{source:sources[module],question:null}),
-    lot:{id:'controlled:'+calls.length,...(carrier?{model:carrier}:{})}};
+    ...(calls.length-1===missingLotAt?{}:{lot:{id:'controlled:'+calls.length,...(carrier?{model:carrier}:{})}})};
  },judge:async(...args)=>judgments.push(args),isolatedAssayExecutor:controlledLocalAssayFixture});
  return {result,calls,judgments};
 }
@@ -65,6 +65,23 @@ assert.equal(separate.result.type,'JsnodeModuleProposal',JSON.stringify(separate
 assert.equal(separate.result.derivation.proofing.independentBehavioralChannels,1);
 assert.equal(separate.result.derivation.proofing.independentlyReceived,false,
   'source-carrier identity difference is not independent verifier authentication');
+// A missing lot on either actual source delivery is unknown provenance. It
+// must not disappear at the caller while the other named writer survives.
+for (const missingLotAt of [1,2]) {
+ const missingLot=await exercise(valid,{lotCarriers:['model-c','model-a','model-b'],missingLotAt});
+ assert.equal(missingLot.result.type,'JsnodeModuleProposal',JSON.stringify(missingLot.result));
+ const records=missingLot.result.derivation.derivations.filter(item=>item.module);
+ assert.equal(records.length,2);
+ assert.equal(records[missingLotAt-1].lot,undefined);
+ const proofing=missingLot.result.derivation.proofing;
+ assert.deepEqual(proofing.sourceWriters.map(item=>item.carrier),
+   [missingLotAt===1?'model-b':'model-a','unnamed-carrier']);
+ assert.equal(proofing.independentBehavioralChannels,0);
+ assert.equal(proofing.channels.find(item=>item.method==='clause-assays').independent,false);
+ assert.equal(proofing.sourceLotAuthentication,'unverified-market-lot-declarations');
+ assert.equal(proofing.independentlyReceived,false);
+ assert.ok(missingLot.calls.slice(1).every(call=>cases.every(item=>!JSON.stringify(call.messages).includes(item.name))));
+}
 assert.equal(bad.result.cause.proofing.catches.length,1);
 const failedCase=bad.result.cause.proofing.catches[0];
 assert.ok(['clause-assays','admitted-examples','module-set-composition'].includes(failedCase.method),

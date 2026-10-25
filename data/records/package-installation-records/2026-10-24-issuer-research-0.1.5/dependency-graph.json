@@ -1,0 +1,181 @@
+{
+  "type": "InstalledCarrierBindingObservation",
+  "version": 1,
+  "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+  "entrypoints": [
+    "node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs"
+  ],
+  "scopes": [
+    "@red-cup-engineering",
+    "@lenticule-science"
+  ],
+  "maxModules": 200,
+  "maxFileBytes": 1048576,
+  "complete": true,
+  "modules": [
+    {
+      "file": "node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs",
+      "name": "@red-cup-engineering/issuer-research-media-service",
+      "version": "0.1.5",
+      "sha256": "ca5ec47a426af6f86bf53be8b8ee3a21ea83b2b4dcc983f90fe43f1d1ab21bc5"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/uri-services-section/src/ni-uri.mjs",
+      "name": "@red-cup-engineering/uri-services-section",
+      "version": "0.1.3",
+      "sha256": "21c97093a4ef867e88352bcf4ecf9332fd1132a3576dacbda7f48364ca76d353"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/json-services-section/src/json-byte-carrier.mjs",
+      "name": "@red-cup-engineering/json-services-section",
+      "version": "0.4.0",
+      "sha256": "c95d24ebe2603ae2cc7c690515253ba84e4952a8ced73ca8c1057216d7e32be9"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/cryptographic-computer-data-engineering-services-section/src/portable-sha256.mjs",
+      "name": "@red-cup-engineering/cryptographic-computer-data-engineering-services-section",
+      "version": "0.3.1",
+      "sha256": "7e71288a8d763b17201617b5b7596e04696151ef055a98ec6749a3cd788f4055"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-content-address-engineering-services-section/src/content-address.mjs",
+      "name": "@red-cup-engineering/computer-content-address-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "f05c444ca69db6d4c5b0454c8c97a9826ea8999e3a96ac0a3ffe8673e3c36dca"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-content-address-engineering-services-section/node_modules/@red-cup-engineering/uri-services-section/src/ni-uri.mjs",
+      "name": "@red-cup-engineering/uri-services-section",
+      "version": "0.1.1",
+      "sha256": "91c5c0f5e6da0605df60e1002bb7fd8ad70ba5ff952ca128d7e7f11214e32b2c"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/issuer-research-media-service/src/issuer-revenue-reconciliation.mjs",
+      "name": "@red-cup-engineering/issuer-research-media-service",
+      "version": "0.1.5",
+      "sha256": "603fe0d654e3b899f785c51ad9d00c2ca028237ca16988f344aa39e749e9e298"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/issuer-research-media-service/src/evidence-packet.mjs",
+      "name": "@red-cup-engineering/issuer-research-media-service",
+      "version": "0.1.5",
+      "sha256": "bdccad350041793b6fc00cd3c0d2949b5be415fdf8285bcd91dd20754945c2d8"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/json-services-section/scripts/canonical-json.mjs",
+      "name": "@red-cup-engineering/json-services-section",
+      "version": "0.4.0",
+      "sha256": "8f78095b4c22f9a171823b789c7918910f4a47eb28b388cae1de0eea1fce90cf"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/semiotic-expression-notation/semantic-content-identity.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "c7e15788f77f6a3d3e9410ec8af7606c33d1ce30188d3358ee2f1691ee120d24"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/semiotic-expression-notation/typing.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "cf33d25769e48f695ea5ac72dc05b82fccba4d99848e60c85b3de37e7d56f7ce"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/semiotic-expression-notation/notation.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "beb9e045dbef030e81b0ccb26c82ea6bb08a9418934ee339ed312d073932b034"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/four.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "b7d2bf7af552f5707e208e8da6a6fbd6d4eaabd74d2710ea673413c0c15160a5"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/semiotic-expression-notation/notation/forms.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "2bc9661a8c6392fe340c7ca18f8d21a8c949c62b8b0b2d4d5b61c11d139b1541"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/semiotic-expression-notation/notation/validator.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "0dee6e1c67ff6c6e8fcd5cfb2b6b2c2dba849d079a21bcda2f1c77bd92161549"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/semiotic-expression-notation/notation/schema.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "b637faba2a40ed728dc1f95b01dd9dd8dfa9bd894fa092c87ab326644ff1a92d"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-content-address-engineering-services-section/src/semiotic-content-address.mjs",
+      "name": "@red-cup-engineering/computer-content-address-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "292e244fbdd70559cae531d90f8e633d8c14e82675e66210a683a54111fae022"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/cryptographic-computer-data-engineering-services-section/src/portable-bytes.mjs",
+      "name": "@red-cup-engineering/cryptographic-computer-data-engineering-services-section",
+      "version": "0.3.1",
+      "sha256": "f700d9a39a85a896d2d7799db827730a07d68cf275785444e4cf3463aab117b6"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/cbor-services-section/src/cbor.mjs",
+      "name": "@red-cup-engineering/cbor-services-section",
+      "version": "0.1.1",
+      "sha256": "8e18cb83f705d9d480f22a7202a88afca9276cb63bcc5359f42ba293c37e8bc4"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/cbor-services-section/node_modules/@red-cup-engineering/uri-services-section/src/ni-uri.mjs",
+      "name": "@red-cup-engineering/uri-services-section",
+      "version": "0.1.1",
+      "sha256": "91c5c0f5e6da0605df60e1002bb7fd8ad70ba5ff952ca128d7e7f11214e32b2c"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/src/semiotic-expression-notation/json-codec.mjs",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "version": "0.2.0",
+      "sha256": "2a4b0d42dd8f4f99a006c90238038339854f1948cb09a0335138c126c7e3343d"
+    },
+    {
+      "file": "node_modules/@red-cup-engineering/computer-data-engineering-services-section/node_modules/@red-cup-engineering/uri-services-section/src/ni-uri.mjs",
+      "name": "@red-cup-engineering/uri-services-section",
+      "version": "0.1.1",
+      "sha256": "91c5c0f5e6da0605df60e1002bb7fd8ad70ba5ff952ca128d7e7f11214e32b2c"
+    }
+  ],
+  "findings": [],
+  "boundaries": [
+    {
+      "importer": "node_modules/@red-cup-engineering/cbor-services-section/src/cbor.mjs",
+      "specifier": "cbor2/encoder",
+      "kind": "external-supplier",
+      "supplier": "cbor2",
+      "version": "2.4.0"
+    },
+    {
+      "importer": "node_modules/@red-cup-engineering/cbor-services-section/src/cbor.mjs",
+      "specifier": "cbor2/decoder",
+      "kind": "external-supplier",
+      "supplier": "cbor2",
+      "version": "2.4.0"
+    },
+    {
+      "importer": "node_modules/@red-cup-engineering/cbor-services-section/src/cbor.mjs",
+      "specifier": "cbor2/writer",
+      "kind": "external-supplier",
+      "supplier": "cbor2",
+      "version": "2.4.0"
+    },
+    {
+      "importer": "node_modules/@red-cup-engineering/cbor-services-section/src/cbor.mjs",
+      "specifier": "cbor2/tag",
+      "kind": "external-supplier",
+      "supplier": "cbor2",
+      "version": "2.4.0"
+    }
+  ],
+  "ready": true
+}

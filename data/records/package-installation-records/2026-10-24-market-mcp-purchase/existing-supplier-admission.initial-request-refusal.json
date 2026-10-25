@@ -1,0 +1,122 @@
+[
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/computer-data-engineering-services-section",
+    "version": "0.2.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/computer-serialized-content-engineering-services-section",
+    "version": "0.1.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/json-schema-services-section",
+    "version": "0.5.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/signcell",
+    "version": "0.2.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/oauth-services-section",
+    "version": "0.1.2",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+    "version": "0.1.1",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@a2a-js/sdk",
+    "version": "1.0.0-beta.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/a2a-rmn-part-service",
+    "version": "0.2.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/activitypub-services-section",
+    "version": "0.5.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/x402-services-section",
+    "version": "0.2.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@x402/core",
+    "version": "2.19.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@x402/evm",
+    "version": "2.19.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "express",
+    "version": "5.2.1",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/relation-model-notation-cbor-codec",
+    "version": "0.1.0",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/ni-services-section",
+    "version": "0.1.2",
+    "error": {
+      "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"
+    }
+  }
+]

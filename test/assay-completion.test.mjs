@@ -154,3 +154,74 @@ test("indented Node TAP failure remains correctly attributed to the observed cas
   assert.equal(result.code, "ASSAY_TEST_FAILED");
   assert.match(result.failure, /not ok 1 - double-value: clause assay negative/u);
 });
+
+
+test("root test plan and sequential ordinals are proof obligations, not decorative TAP strings", () => {
+  const counters = [
+    "# tests 2", "# pass 2", "# fail 0",
+    "# cancelled 0", "# skipped 0", "# todo 0",
+  ].join("\n");
+  const good = [
+    "TAP version 13",
+    "ok 1 - " + expected[0],
+    "ok 2 - " + expected[1],
+    "1..2", counters,
+  ].join("\n");
+  assert.equal(testRunCompletedAllAssays(good, expected), true);
+  const variants = [
+    {name: "no root plan; arbitrary ordinal labels", reason: "ROOT_PLAN_MISSING_OR_REPEATED", body: [
+      "TAP version 13", "ok 21 - " + expected[0],
+      "ok 48 - " + expected[1], counters,
+    ].join("\n")},
+    {name: "root plan contradicts the observed results", reason: "ROOT_PLAN_COUNT_MISMATCH", body: good.replace("1..2", "1..0")},
+    {name: "duplicate test ordinal", reason: "ROOT_ORDINAL_MISMATCH", body: good.replace("ok 2 - ", "ok 1 - ")},
+    {name: "root tests not consecutively numbered", reason: "ROOT_ORDINAL_MISMATCH", body: good.replace("ok 2 - ", "ok 3 - ")},
+    {name: "indented nested results pose as root tests", reason: "ROOT_RESULTS_INCOMPLETE", body: good.replaceAll("\nok ", "\n    ok ")},
+    {name: "repeated root plan", reason: "ROOT_PLAN_MISSING_OR_REPEATED", body: good.replace("1..2", "1..2\n1..2")},
+  ];
+  for (const {name, body, reason} of variants) {
+    assert.equal(testRunCompletedAllAssays(body, expected), false, name);
+    const received = receiveIsolatedAssayOutcome({
+      isolated: true, status: 0, stdout: body, stderr: "",
+      timedOut: false, truncated: false, signal: null,
+    }, expected);
+    assert.equal(received.passed, false, name);
+    assert.equal(received.code, "ASSAY_INCOMPLETE", name);
+    assert.equal(received.reason,reason,"typed proof source: "+name);
+  }
+});
+
+const receivedRoots = expected.map((name, index) => `ok ${index + 1} - ${name}`);
+const receivedCounters = ["# tests 2", "# pass 2", "# fail 0", "# cancelled 0", "# skipped 0", "# todo 0"];
+const completeTranscript = ["TAP version 13", ...receivedRoots, "1..2", ...receivedCounters, ""].join("\n");
+for (const [name, stdout, reason] of [
+  ["runner accounting before root results is not a completed observation",
+    ["TAP version 13", ...receivedCounters, ...receivedRoots, "1..2", ""].join("\n"),
+    "RUNNER_COUNTERS_INCONSISTENT"],
+  ["a root bailout cannot be erased by an otherwise complete passing summary",
+    completeTranscript + "Bail out! host observation interrupted\n", "ROOT_TAP_BAILOUT"],
+  ["a malformed extra failing root result cannot disappear from completion",
+    completeTranscript.replace("1..2", "not ok 0 - unadmitted failing result\n1..2"), "ROOT_RESULT_MALFORMED"],
+]) test(name, () => {
+  assert.equal(testRunCompletedAllAssays(stdout, expected), false);
+  const received = receiveIsolatedAssayOutcome({ isolated: true, status: 0,
+    stdout, stderr: "", signal: null, timedOut: false, truncated: false }, expected);
+  assert.equal(received.passed, false);
+  assert.equal(received.code, "ASSAY_INCOMPLETE");
+  assert.equal(received.reason, reason);
+});
+
+test("host assay text limits apply to captured UTF-8 bytes, not JavaScript character counts", () => {
+  const observed=run('import test from "node:test";\ntest("double-value: positive",()=>{});\ntest("double-value: clause assay negative",()=>{});');
+  assert.equal(observed.status,0);
+  assert.equal(testRunCompletedAllAssays(observed.stdout,expected),true);
+  const received = receiveIsolatedAssayOutcome({
+    isolated: true, status: 0, stdout: observed.stdout,
+    // Over 2 MiB in UTF-8 but under 2 million UTF-16 string units.
+    stderr: "é".repeat(1_100_000), timedOut: false, truncated: false,
+    signal: null,
+  }, expected);
+  assert.equal(received.passed,false);
+  assert.equal(received.code,"ASSAY_EXECUTION_REFUSED");
+  assert.equal(received.reason,"CAPTURED_OUTPUT_TOO_LARGE");
+});

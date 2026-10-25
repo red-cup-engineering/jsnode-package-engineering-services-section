@@ -1,0 +1,42 @@
+{
+  "observedAt": "2026-10-24T23:44:54.036Z",
+  "package": "@red-cup-engineering/x402-exact-purchase-service",
+  "version": "0.2.0",
+  "integrity": "sha512-+n/r+6RyTlqyb66BoO6FvyK0cps59nBF7F09HXGP+tQaj+aupoanRlv+NSxzALirnaiiGSCfZwFsGJXNtgXe/w==",
+  "tarballBytes": 22704,
+  "root": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service",
+  "previousAlias": null,
+  "gitHead": null,
+  "gitHeadLimitation": "Registry artifact has no gitHead; no source commit inferred.",
+  "selectedEntry": ".",
+  "exports": [
+    "IncompleteSettlementEvidenceError",
+    "X402ResourceResponseError",
+    "assertTerminalSettlementEvidence",
+    "awaitPurchasedResult",
+    "openEnterpriseAccountPayer",
+    "purchaseAndAwaitExactResource",
+    "purchaseExactResource",
+    "purchaseHttpResource"
+  ],
+  "exactSelectedProviders": [
+    {
+      "name": "@x402/core",
+      "version": "2.19.0",
+      "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@x402/core"
+    },
+    {
+      "name": "@x402/evm",
+      "version": "2.19.0",
+      "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@x402/evm"
+    }
+  ],
+  "unreceivedFaces": [
+    "./a2a-executor",
+    "./successor-activation",
+    "scripts/x402-server.mjs",
+    "scripts/activitypub-server.mjs"
+  ],
+  "scope": "Consumer selected root module import closure only; not full declared package manifest installation.",
+  "effects": "Registry artifact extraction/resolver composition only; no purchase/payment/network customer operation."
+}

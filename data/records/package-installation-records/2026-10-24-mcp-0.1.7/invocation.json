@@ -1,0 +1,90 @@
+{
+  "command": "'timeout' '--kill-after=10s' '90s' '/gnu/store/kba00zrnc1d1cg9bkx0krpvc2sp7wzrh-node-24.18.0/bin/npm' 'install' '--prefix' '/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7' '--cache' '/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/npm-cache-state' '--no-save' '--ignore-scripts' '--no-package-lock' '--no-audit' '--no-fund' '--no-update-notifier' '--fetch-retries=0' '--fetch-timeout=10000' '--registry=https://registry.561.group/' '--userconfig=/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-mcp-0.1.7/user.npmrc' '--globalconfig=/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-mcp-0.1.7/global.npmrc' '/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-market-mcp-purchase/mcp-engineering-services-section-0.1.7.tgz'",
+  "classification": {
+    "action": "serialize",
+    "heavy": [
+      "npm install or script"
+    ],
+    "locked": false
+  },
+  "decision": {
+    "hookEventName": "PreToolUse",
+    "updatedInput": {
+      "command": "_ah_c='echo >\"$_AH_RAN\"; if ! declare -F timeout >/dev/null; then timeout() { command timeout --kill-after=10s \"$@\"; }; export -f timeout; fi; '\\''timeout'\\'' '\\''--kill-after=10s'\\'' '\\''90s'\\'' '\\''/gnu/store/kba00zrnc1d1cg9bkx0krpvc2sp7wzrh-node-24.18.0/bin/npm'\\'' '\\''install'\\'' '\\''--prefix'\\'' '\\''/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7'\\'' '\\''--cache'\\'' '\\''/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/npm-cache-state'\\'' '\\''--no-save'\\'' '\\''--ignore-scripts'\\'' '\\''--no-package-lock'\\'' '\\''--no-audit'\\'' '\\''--no-fund'\\'' '\\''--no-update-notifier'\\'' '\\''--fetch-retries=0'\\'' '\\''--fetch-timeout=10000'\\'' '\\''--registry=https://registry.561.group/'\\'' '\\''--userconfig=/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-mcp-0.1.7/user.npmrc'\\'' '\\''--globalconfig=/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-mcp-0.1.7/global.npmrc'\\'' '\\''/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-market-mcp-purchase/mcp-engineering-services-section-0.1.7.tgz'\\'''; _ah_io=; ionice -c3 true 2>/dev/null && _ah_io='ionice -c3'; _ah_readable=; for _ah_l in '/run/user/1000/agent-heavy.lock'; do [ ! -r \"$_ah_l\" ] || _ah_readable=1; done; if [ -z \"$_ah_readable\" ]; then printf '%s\\n' 'agent-heavy: no readable admission lock; this command did not run' >&2; (exit 75); else _AH_RAN=$(mktemp '/run/user/1000'/agent-ran.XXXXXX) && { export _AH_RAN; _ah_rc=75; for _ah_l in '/run/user/1000/agent-heavy.lock'; do [ -r \"$_ah_l\" ] || continue; AGENT_HEAVY_LOCK_HELD=1 nice -n 10 $_ah_io flock -n -E 75 \"$_ah_l\" bash -c \"$_ah_c\"; _ah_rc=$?; { [ \"$_ah_rc\" -eq 75 ] && ! [ -s \"$_AH_RAN\" ]; } || break; done; if [ \"$_ah_rc\" -eq 75 ] && ! [ -s \"$_AH_RAN\" ]; then if [ -r '/run/user/1000/agent-heavy.lock' ]; then AGENT_HEAVY_LOCK_HELD=1 nice -n 10 $_ah_io flock -w 110 -E 75 '/run/user/1000/agent-heavy.lock' bash -c \"$_ah_c\"; _ah_rc=$?; fi; fi; [ \"$_ah_rc\" -ne 75 ] || [ -s \"$_AH_RAN\" ] || printf '%s\\n' 'agent-heavy: waited 110s for one of the host'\\''s 1 heavy-command slot (/run/user/1000/agent-heavy.lock); other agents'\\'' clones, fetches, builds or tree scans hold it, so this command did not run. Retry shortly, or narrow it.' >&2; unlink -- \"$_AH_RAN\"; (exit \"$_ah_rc\"); }; fi"
+    },
+    "permissionDecision": "allow",
+    "permissionDecisionReason": "host-resource guard: npm install or script runs in one of the host's heavy-command slots"
+  },
+  "artifact": {
+    "manifest": {
+      "name": "@red-cup-engineering/mcp-engineering-services-section",
+      "version": "0.1.7",
+      "type": "module",
+      "description": "The house's one Model Context Protocol implementation: the server, its stdio and Streamable HTTP transports, the client, tool binding, endpoint carriers and catalog admission.",
+      "exports": {
+        "./server": "./src/server.mjs",
+        "./http": "./src/http.mjs",
+        "./client": "./src/client.mjs",
+        "./tool-binding": "./src/tool-binding.mjs",
+        "./client-endpoint": "./src/client-endpoint.mjs",
+        "./catalog": "./src/catalog.mjs",
+        "./modern": "./src/modern.mjs",
+        "./articulating-tools": "./src/articulating-tools.mjs",
+        "./federation": "./src/federation.mjs",
+        "./scripts/bridge-mcp-server": "./scripts/bridge-mcp-server.mjs",
+        "./scripts/call-tool": "./scripts/call-tool.mjs",
+        "./scripts/serve-sparql-ontology-mcp": "./scripts/serve-sparql-ontology-mcp.mjs",
+        "./protocol-versions": "./src/protocol-versions.mjs"
+      },
+      "files": [
+        "README.md",
+        "src/*.mjs",
+        "scripts"
+      ],
+      "scripts": {
+        "test": "node --test test/*.test.mjs"
+      },
+      "engines": {
+        "node": ">=22.18"
+      },
+      "dependencies": {
+        "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
+        "@red-cup-engineering/computer-serialized-content-engineering-services-section": "0.1.0",
+        "@red-cup-engineering/json-schema-services-section": "0.5.0",
+        "@red-cup-engineering/signcell": "0.2.0",
+        "@red-cup-engineering/oauth-services-section": "0.1.2",
+        "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section": "0.1.1"
+      },
+      "bin": {
+        "bridge-mcp-server": "scripts/bridge-mcp-server.mjs",
+        "call-mcp-tool": "scripts/call-tool.mjs",
+        "serve-sparql-ontology-mcp": "scripts/serve-sparql-ontology-mcp.mjs"
+      },
+      "private": false,
+      "softwareKind": "service",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/red-cup-engineering/mcp-engineering-services-section.git"
+      },
+      "gitHead": "932b63a3e7b1295459986dec3683d604ead003b8",
+      "_id": "@red-cup-engineering/mcp-engineering-services-section@0.1.7",
+      "contentDigest": "sha256-4c423a72df7c96894c159e511e438a59fa089c7708694fcbff8587223a3e6e66",
+      "dist": {
+        "shasum": "34be8784a449f70dd5861cbf9e017957cee80bef",
+        "integrity": "sha512-2oY2T9vbM3y2UwcTUsr5pplJfiepUvpOibIVXCwoSIHhGyQET681ME7WEkHtG/lzps5dtwjyf1tvrGnc8tQAog==",
+        "tarball": "https://registry.561.group/@red-cup-engineering/mcp-engineering-services-section/-/mcp-engineering-services-section-0.1.7.tgz"
+      },
+      "_npmUser": {
+        "name": "github-services"
+      }
+    },
+    "received": {
+      "integrity": "sha512-2oY2T9vbM3y2UwcTUsr5pplJfiepUvpOibIVXCwoSIHhGyQET681ME7WEkHtG/lzps5dtwjyf1tvrGnc8tQAog==",
+      "bytes": 30794,
+      "artifactDownloaded": true
+    },
+    "artifact": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-market-mcp-purchase/mcp-engineering-services-section-0.1.7.tgz"
+  },
+  "scope": "MCP-only selected root; excludes purchase/paywall/React graph; reuse existing native npm cache;90s runtime plus native admission queue",
+  "newCash": false
+}

@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-24T23:11:46.003Z",
+  "comparisons": [
+    {
+      "issuer": "Émetteur 😀",
+      "claim": "Revenue rose",
+      "canonical": "ni:///sha-256;8oaBvjtwGeDqhlXKma415pTb8oa8186vhiJY8ZMoKUA",
+      "artifact": "ni:///sha-256;8oaBvjtwGeDqhlXKma415pTb8oa8186vhiJY8ZMoKUA"
+    },
+    {
+      "issuer": "é",
+      "claim": "Revenue rose",
+      "canonical": "ni:///sha-256;uWcw2SetZUfCgLyNIs8fBnmzYXd3SrzMLR50PvC1oMA",
+      "artifact": "ni:///sha-256;uWcw2SetZUfCgLyNIs8fBnmzYXd3SrzMLR50PvC1oMA"
+    },
+    {
+      "issuer": "é",
+      "claim": "Revenue rose",
+      "canonical": "ni:///sha-256;uWcw2SetZUfCgLyNIs8fBnmzYXd3SrzMLR50PvC1oMA",
+      "artifact": "ni:///sha-256;uWcw2SetZUfCgLyNIs8fBnmzYXd3SrzMLR50PvC1oMA"
+    },
+    {
+      "issuer": "Émetteur 😀",
+      "claim": "Revenue fell",
+      "canonical": "ni:///sha-256;vPPVToRd_5tzck7tHXwCFqzKaDPpM4cs7Ph1AnTYEIs",
+      "artifact": "ni:///sha-256;vPPVToRd_5tzck7tHXwCFqzKaDPpM4cs7Ph1AnTYEIs"
+    }
+  ],
+  "allEqual": true
+}

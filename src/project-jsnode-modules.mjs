@@ -65,6 +65,8 @@ function cliText(cli, operations) {
 export function projectJsnodeModules(specification) {
   const validation = specificationContract.validate(specification);
   if (!validation.valid) rejectIssues(validation.issues);
+  if (specification.cli && specification.operations.some(operation => operation.nativeProfile !== undefined))
+    throw new TypeError("a native capability export cannot acquire a JSON CLI command face");
   const sourceByPath = new Map();
   for (const source of specification.sources) {
     confined(source.path, "src");
@@ -75,6 +77,8 @@ export function projectJsnodeModules(specification) {
   const operationNames = new Set();
   for (const operation of specification.operations) {
     confined(operation.module, "src");
+    if (operation.nativeProfile !== undefined && ["inputSchema", "outputSchema", "inputSchemaPath", "outputSchemaPath"].some(key => Object.hasOwn(operation, key)))
+      throw new TypeError("native capability exports cannot declare runtime JSON schemas");
     if (operationNames.has(operation.name)) throw new TypeError(`duplicate operation command: ${operation.name}`);
     operationNames.add(operation.name);
     if (Object.hasOwn(operation, "inputSchemaPath")) confined(operation.inputSchemaPath, "data");

@@ -1,0 +1,53 @@
+[
+  {
+    "type": "IssuerDirectRegistryArtifactComposition",
+    "version": 1,
+    "at": "2026-10-24T23:11:46.015Z",
+    "consumer": "market.561.group",
+    "manifestFile": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group/package.json",
+    "dependency": "@red-cup-engineering/issuer-research-media-service",
+    "before": null,
+    "after": "0.1.5",
+    "selected": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group/node_modules/@red-cup-engineering/issuer-research-media-service",
+    "previous": null,
+    "artifactRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service",
+    "resolved": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs",
+    "sourceSha256": "ca5ec47a426af6f86bf53be8b8ee3a21ea83b2b4dcc983f90fe43f1d1ab21bc5",
+    "registryGitHead": "d2f1e69d06175d46d45bf67c534e8f389b137e07",
+    "nativeInstallationReceipt": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/records/package-installation-records/2026-10-24-issuer-research-0.1.5/result.json",
+    "dependencyGraphReceipt": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/records/package-installation-records/2026-10-24-issuer-research-0.1.5/dependency-graph.json",
+    "noHandwrittenWrapper": true,
+    "sourceCheckoutSelected": false,
+    "packageManagerScoped": true,
+    "otherConsumerDependenciesChanged": false,
+    "noNewCash": true
+  },
+  {
+    "type": "IssuerDirectRegistryArtifactComposition",
+    "version": 1,
+    "at": "2026-10-24T23:11:46.027Z",
+    "consumer": "earning-loop-worker-service",
+    "manifestFile": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/services/earning-loop-worker-service/package.json",
+    "dependency": "@red-cup-engineering/issuer-research-media-service",
+    "before": "0.1.3-dev.1",
+    "after": "0.1.5",
+    "selected": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/services/earning-loop-worker-service/node_modules/@red-cup-engineering/issuer-research-media-service",
+    "previous": {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/services/earning-loop-worker-service/node_modules/@red-cup-engineering/issuer-research-media-service",
+      "symbolicLink": false,
+      "realpath": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/services/earning-loop-worker-service/node_modules/@red-cup-engineering/issuer-research-media-service",
+      "preserved": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-issuer-research-0.1.5/earning-loop-worker-service-previous-installed-package"
+    },
+    "artifactRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service",
+    "resolved": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs",
+    "sourceSha256": "ca5ec47a426af6f86bf53be8b8ee3a21ea83b2b4dcc983f90fe43f1d1ab21bc5",
+    "registryGitHead": "d2f1e69d06175d46d45bf67c534e8f389b137e07",
+    "nativeInstallationReceipt": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/records/package-installation-records/2026-10-24-issuer-research-0.1.5/result.json",
+    "dependencyGraphReceipt": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/records/package-installation-records/2026-10-24-issuer-research-0.1.5/dependency-graph.json",
+    "noHandwrittenWrapper": true,
+    "sourceCheckoutSelected": false,
+    "packageManagerScoped": true,
+    "otherConsumerDependenciesChanged": false,
+    "noNewCash": true
+  }
+]

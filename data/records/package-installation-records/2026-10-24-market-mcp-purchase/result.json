@@ -1,0 +1,12 @@
+{
+  "startedAt": "2026-10-24T23:31:06.306Z",
+  "finishedAt": "2026-10-24T23:33:06.079Z",
+  "status": null,
+  "signal": "SIGTERM",
+  "error": "spawnSync bash ETIMEDOUT",
+  "stdout": "",
+  "stderr": "",
+  "destination": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-mcp-0.1.7-x402-purchase-0.2.0",
+  "noNewCash": true,
+  "purchaseExecuted": false
+}

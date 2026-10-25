@@ -1,0 +1,892 @@
+[
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/computer-data-engineering-services-section",
+    "version": "0.2.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/computer-data-engineering-services-section",
+      "expectedVersion": "0.2.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/computer-data-engineering-services-section",
+      "name": "@red-cup-engineering/computer-data-engineering-services-section",
+      "packageVersion": "0.2.0",
+      "conformant": true,
+      "defects": []
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/computer-serialized-content-engineering-services-section",
+    "version": "0.1.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/computer-serialized-content-engineering-services-section",
+      "expectedVersion": "0.1.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/computer-serialized-content-engineering-services-section",
+      "name": "@red-cup-engineering/computer-serialized-content-engineering-services-section",
+      "packageVersion": "0.1.0",
+      "conformant": true,
+      "defects": []
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/json-schema-services-section",
+    "version": "0.5.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/json-schema-services-section",
+      "expectedVersion": "0.5.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-schema-services-section",
+      "name": "@red-cup-engineering/json-schema-services-section",
+      "packageVersion": "0.5.0",
+      "conformant": true,
+      "defects": []
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/signcell",
+    "version": "0.2.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/signcell",
+      "expectedVersion": "0.2.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@red-cup-engineering/signcell",
+          "expectedVersion": "0.2.0",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/signcell",
+        "expectedVersion": "0.2.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/signcell",
+        "name": "@red-cup-engineering/signcell",
+        "packageVersion": "0.2.0",
+        "conformant": true,
+        "defects": []
+      }
+    ],
+    "reusable": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/signcell",
+      "expectedVersion": "0.2.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/signcell",
+      "name": "@red-cup-engineering/signcell",
+      "packageVersion": "0.2.0",
+      "conformant": true,
+      "defects": []
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/oauth-services-section",
+    "version": "0.1.2",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/oauth-services-section",
+      "expectedVersion": "0.1.2",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@red-cup-engineering/oauth-services-section",
+          "expectedVersion": "0.1.2",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/oauth-services-section",
+        "expectedVersion": "0.1.2",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/oauth-services-section",
+            "expectedVersion": "0.1.2",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/oauth-services-section",
+        "expectedVersion": "0.1.2",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/oauth-services-section",
+            "expectedVersion": "0.1.2",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "consumer": "@red-cup-engineering/mcp-engineering-services-section",
+    "dependency": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+    "version": "0.1.1",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+      "expectedVersion": "0.1.1",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+          "expectedVersion": "0.1.1",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+        "expectedVersion": "0.1.1",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+        "name": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+        "packageVersion": "0.1.1",
+        "conformant": true,
+        "defects": []
+      }
+    ],
+    "reusable": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+      "expectedVersion": "0.1.1",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+      "name": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+      "packageVersion": "0.1.1",
+      "conformant": true,
+      "defects": []
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@a2a-js/sdk",
+    "version": "1.0.0-beta.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@a2a-js/sdk",
+      "expectedVersion": "1.0.0-beta.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@a2a-js/sdk",
+          "expectedVersion": "1.0.0-beta.0",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@a2a-js/sdk",
+        "expectedVersion": "1.0.0-beta.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@a2a-js/sdk",
+            "expectedVersion": "1.0.0-beta.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@a2a-js/sdk",
+        "expectedVersion": "1.0.0-beta.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@a2a-js/sdk",
+            "expectedVersion": "1.0.0-beta.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/a2a-rmn-part-service",
+    "version": "0.2.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
+      "expectedVersion": "0.2.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
+          "expectedVersion": "0.2.0",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
+        "expectedVersion": "0.2.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
+            "expectedVersion": "0.2.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
+        "expectedVersion": "0.2.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
+            "expectedVersion": "0.2.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/activitypub-services-section",
+    "version": "0.5.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/activitypub-services-section",
+      "expectedVersion": "0.5.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@red-cup-engineering/activitypub-services-section",
+          "expectedVersion": "0.5.0",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/activitypub-services-section",
+        "expectedVersion": "0.5.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/activitypub-services-section",
+            "expectedVersion": "0.5.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/activitypub-services-section",
+        "expectedVersion": "0.5.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/activitypub-services-section",
+            "expectedVersion": "0.5.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/x402-services-section",
+    "version": "0.2.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/x402-services-section",
+      "expectedVersion": "0.2.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-networking-engineering-services-section/services/x402-services-section",
+      "name": "@red-cup-engineering/x402-services-section",
+      "packageVersion": "0.13.8-dev.1",
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-identity",
+          "expectedName": "@red-cup-engineering/x402-services-section",
+          "expectedVersion": "0.2.0",
+          "actualName": "@red-cup-engineering/x402-services-section",
+          "actualVersion": "0.13.8-dev.1",
+          "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-networking-engineering-services-section/services/x402-services-section",
+          "entryPath": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/x402-services-section",
+        "expectedVersion": "0.2.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/x402-services-section",
+            "expectedVersion": "0.2.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/x402-services-section",
+        "expectedVersion": "0.2.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/x402-services-section",
+            "expectedVersion": "0.2.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@x402/core",
+    "version": "2.19.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@x402/core",
+      "expectedVersion": "2.19.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@x402/core",
+      "name": "@x402/core",
+      "packageVersion": "2.19.0",
+      "conformant": true,
+      "defects": []
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@x402/evm",
+    "version": "2.19.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@x402/evm",
+      "expectedVersion": "2.19.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@x402/evm",
+      "name": "@x402/evm",
+      "packageVersion": "2.19.0",
+      "conformant": true,
+      "defects": []
+    }
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "express",
+    "version": "5.2.1",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "express",
+      "expectedVersion": "5.2.1",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "express",
+          "expectedVersion": "5.2.1",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "express",
+        "expectedVersion": "5.2.1",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "express",
+            "expectedVersion": "5.2.1",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "express",
+        "expectedVersion": "5.2.1",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "express",
+            "expectedVersion": "5.2.1",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/relation-model-notation-cbor-codec",
+    "version": "0.1.0",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
+      "expectedVersion": "0.1.0",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
+          "expectedVersion": "0.1.0",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
+        "expectedVersion": "0.1.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
+            "expectedVersion": "0.1.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
+        "expectedVersion": "0.1.0",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
+            "expectedVersion": "0.1.0",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "consumer": "@red-cup-engineering/x402-exact-purchase-service",
+    "dependency": "@red-cup-engineering/ni-services-section",
+    "version": "0.1.2",
+    "result": {
+      "type": "InstalledNpmPackageResolutionRead",
+      "version": 1,
+      "expectedName": "@red-cup-engineering/ni-services-section",
+      "expectedVersion": "0.1.2",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "entry": {
+        "kind": "package"
+      },
+      "entryPath": null,
+      "packageRoot": null,
+      "name": null,
+      "packageVersion": null,
+      "conformant": false,
+      "defects": [
+        {
+          "law": "installed-package-resolution",
+          "expectedName": "@red-cup-engineering/ni-services-section",
+          "expectedVersion": "0.1.2",
+          "diagnostic": "package is absent from the consumer's Node lookup paths",
+          "code": "MODULE_NOT_FOUND",
+          "spawnError": null
+        }
+      ]
+    },
+    "additional": [
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/ni-services-section",
+        "expectedVersion": "0.1.2",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/ni-services-section",
+            "expectedVersion": "0.1.2",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      },
+      {
+        "type": "InstalledNpmPackageResolutionRead",
+        "version": 1,
+        "expectedName": "@red-cup-engineering/ni-services-section",
+        "expectedVersion": "0.1.2",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "entry": {
+          "kind": "package"
+        },
+        "entryPath": null,
+        "packageRoot": null,
+        "name": null,
+        "packageVersion": null,
+        "conformant": false,
+        "defects": [
+          {
+            "law": "installed-package-resolution",
+            "expectedName": "@red-cup-engineering/ni-services-section",
+            "expectedVersion": "0.1.2",
+            "diagnostic": "package is absent from the consumer's Node lookup paths",
+            "code": "MODULE_NOT_FOUND",
+            "spawnError": null
+          }
+        ]
+      }
+    ]
+  }
+]

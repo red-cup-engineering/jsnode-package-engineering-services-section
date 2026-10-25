@@ -1,0 +1,42 @@
+{
+  "type": "IssuerInstalledArtifactUsefulCallerReceiving",
+  "version": 1,
+  "at": "2026-10-24T23:13:40.749Z",
+  "resolutions": [
+    {
+      "consumer": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
+      "path": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs",
+      "realpath": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs",
+      "sha256": "ca5ec47a426af6f86bf53be8b8ee3a21ea83b2b4dcc983f90fe43f1d1ab21bc5"
+    },
+    {
+      "consumer": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/services/earning-loop-worker-service",
+      "path": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs",
+      "realpath": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs",
+      "sha256": "ca5ec47a426af6f86bf53be8b8ee3a21ea83b2b4dcc983f90fe43f1d1ab21bc5"
+    }
+  ],
+  "packageVersion": "0.1.5",
+  "gitHead": "d2f1e69d06175d46d45bf67c534e8f389b137e07",
+  "sourceKind": "bounded local companyfacts fixtures; not new SEC observations",
+  "backgroundFixtureFetches": 2,
+  "intervalSleeps": 1,
+  "paidPathCacheReads": 1,
+  "paidPathSourceFetches": 0,
+  "cohortBytes": 6857,
+  "annualValues": [
+    {
+      "ticker": "AAPL",
+      "value": 100,
+      "status": "current"
+    },
+    {
+      "ticker": "MSFT",
+      "value": 200,
+      "status": "current"
+    }
+  ],
+  "originalPacketCount": 2,
+  "passed": true,
+  "newCash": false
+}

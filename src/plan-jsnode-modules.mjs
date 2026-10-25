@@ -1,18 +1,10 @@
 /** Pure source-addressable JSNode module planning, shared with derivation. */
 import path from "node:path";
-import { schemaFromGraph } from "@red-cup-engineering/json-schema-services-section/contracts";
 import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
 import { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
-
-// Each example is judged in its own explicit schema universe. Earlier plans
-// cannot register a schema that changes a later plan's meaning.
-function closedSchema(schema) {
-  const id = typeof schema === "object" && schema !== null && schema.$id !== undefined
-    ? schema.$id : "urn:561:jsnode-plan:inline-schema";
-  const root = typeof schema === "boolean" ? { $id: id, allOf: [schema] } : { ...schema, $id: id };
-  return schemaFromGraph({ root: id, schemas: [{ id, schema: root }] });
-}
+import { admitNativeAssayProfile, nativeAssayData, nativeBindingsFor, projectNativeAssays } from "./native-assay-profile.mjs";
+import { closedAssaySchema } from "./closed-assay-schema.mjs";
 
 // The module projector already owns operation names, export bindings and paths.
 // A meaning closure supplies examples and exact dependencies, never source,
@@ -24,7 +16,10 @@ export const JSNODE_MODULE_MEANING_CLOSURE_SCHEMA = Object.freeze({
   properties: {
     operations: { ...moduleSchema.properties.operations, minItems: 1, items: {
       ...moduleSchema.properties.operations.items,
-      required: [...moduleSchema.properties.operations.items.required, "inputSchema", "outputSchema"],
+      oneOf: [
+        { required: ["inputSchema", "outputSchema"], not: { required: ["nativeProfile"] } },
+        { required: ["nativeProfile"], not: { anyOf: ["inputSchema", "outputSchema", "inputSchemaPath", "outputSchemaPath"].map(key => ({ required: [key] })) } },
+      ],
     } },
     examples: { type: "array", minItems: 1, items: {
       type: "object", additionalProperties: false,
@@ -32,11 +27,11 @@ export const JSNODE_MODULE_MEANING_CLOSURE_SCHEMA = Object.freeze({
       properties: { name: { type: "string", minLength: 1 }, operation: { type: "string", minLength: 1 }, input: {}, output: {} },
     } },
     dependencies: { type: "object", additionalProperties: {
-      type: "string", pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      type: "string",
     } },
   },
 });
-export const moduleMeaningClosure = closedSchema(JSNODE_MODULE_MEANING_CLOSURE_SCHEMA);
+export const moduleMeaningClosure = closedAssaySchema(JSNODE_MODULE_MEANING_CLOSURE_SCHEMA);
 
 export function moduleFabricationPlan(candidate) {
   let phase = "artifact-specification-admission", workOrder;
@@ -58,6 +53,7 @@ export function moduleFabricationPlan(candidate) {
     const closure = moduleMeaningClosure.assert(projection.configuration);
     const names = new Set(), bindings = new Set(), examples = new Set();
     for (const op of closure.operations) {
+      if (op.nativeProfile !== undefined) admitNativeAssayProfile(op.nativeProfile);
       for (const schemaPath of [op.inputSchemaPath, op.outputSchemaPath].filter(value => value !== undefined)) {
         if (!schemaPath.startsWith("data/") || schemaPath.includes("\\") || schemaPath.split("/").some(part => part === "." || part === "..")) throw new TypeError("schema path must stay beneath data");
       }
@@ -70,8 +66,9 @@ export function moduleFabricationPlan(candidate) {
       const op = closure.operations.find(op => op.name === example.operation);
       if (!op || examples.has(example.operation + ":" + example.name)) throw new TypeError("unknown operation or duplicate example");
       examples.add(example.operation + ":" + example.name);
-      closedSchema(op.inputSchema).assert(example.input);
-      closedSchema(op.outputSchema).assert(example.output);
+      if (op.nativeProfile !== undefined) nativeAssayData(example);
+      closedAssaySchema(assayInputSchemaOf(op)).assert(example.input);
+      closedAssaySchema(assayOutputSchemaOf(op)).assert(example.output);
     }
     for (const [name, version] of Object.entries(closure.dependencies)) {
       if (!/^(?:@[a-z0-9._-]+\/)?[a-z0-9][a-z0-9._-]*$/u.test(name)) throw new TypeError("invalid dependency name");
@@ -93,7 +90,8 @@ export function planJsnodeModules(candidate) {
   const admitted = moduleFabricationPlan(candidate);
   if (admitted.type === "JsnodeModuleDerivationRefusal") return admitted;
   const {workOrder, closure, plan} = admitted;
-  const paths = [...projectJsnodeModulePaths(closure), ...testsOfClosure(closure).map(test => test.path)];
+  // Planning declares paths without acquiring or invoking a native host port.
+  const paths = [...projectJsnodeModulePaths(closure), ...closure.operations.map(testPathOf)];
   if (new Set(paths).size !== paths.length) throw new TypeError("fabrication output paths are duplicated");
   return Object.freeze({type: "JsnodeModuleFabricationPlan", version: 1,
     workOrderSpecificationDigest: workOrder.specificationDigest, realizationPlan: plan,
@@ -101,13 +99,25 @@ export function planJsnodeModules(candidate) {
 }
 
 const examplesOf = (closure, operation) => closure.examples.filter((example) => example.operation === operation.name);
+const testPathOf = operation => `test/${operation.name}-examples.test.mjs`;
+export const assayInputSchemaOf = operation => operation.nativeProfile?.scenarioSchema ?? operation.inputSchema;
+export const assayOutputSchemaOf = operation => operation.nativeProfile?.observationSchema ?? operation.outputSchema;
 
 /**
  * The tests a closure's examples determine: for each operation, one test per admitted example,
  * importing the operation's module and holding its result to the admitted output.
  */
-export function testsOfClosure(closure, derivedCases = []) {
+export function testsOfClosure(closure, derivedCases = [], nativeAssayBindings) {
+  const bindings = nativeBindingsFor(closure, nativeAssayBindings);
   return closure.operations.map((operation) => {
+    if (operation.nativeProfile !== undefined) {
+      const cases = [
+        ...examplesOf(closure, operation).map(example => ({ ...example, throws: null, testName: `${operation.name}: ${example.name}` })),
+        ...derivedCases.filter(item => item.operation === operation.name).map(item => ({ ...item, testName: `${operation.name}: clause assay ${item.name}` })),
+      ];
+      return Object.freeze({ type: "JavascriptNodeOperationTestSource", path: testPathOf(operation),
+        text: projectNativeAssays(operation, cases, bindings) });
+    }
     const relative = path.posix.relative("test", operation.module);
     const cases = examplesOf(closure, operation).map((example) => [
       `test(${JSON.stringify(`${operation.name}: ${example.name}`)}, async () => {`,
@@ -125,7 +135,7 @@ export function testsOfClosure(closure, derivedCases = []) {
     }
     return Object.freeze({
       type: "JavascriptNodeOperationTestSource",
-      path: `test/${operation.name}-examples.test.mjs`,
+      path: testPathOf(operation),
       text: [
         "// Derived from the work order's admitted examples, before the operation's source was derived.",
         'import assert from "node:assert/strict";',

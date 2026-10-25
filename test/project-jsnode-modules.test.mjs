@@ -8,13 +8,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { projectJsnodeModules } from "../src/project-jsnode-modules.mjs";
 import { projectJsnodePackageCli } from "../scripts/project-jsnode-package-cli.mjs";
 import { readFile } from "node:fs/promises";
-import { existsSync } from "node:fs";
 
-// The code layer's runner: the sibling in the forest checkout, else the installed package.
-const javascriptNode = [new URL("../../../../../../javascript-node-services-section/", import.meta.url), new URL("../node_modules/@red-cup-engineering/javascript-node-services-section/", import.meta.url)]
-  .map((url) => fileURLToPath(url)).find((candidate) => existsSync(path.join(candidate, "scripts/register-house-resolver.mjs")));
-const houseResolver = path.join(javascriptNode, "scripts/register-house-resolver.mjs");
-const operationRunner = path.join(javascriptNode, "scripts/run-javascript-node-operation-module.mjs");
+// Resolve the declared code-layer runner under either direct or hoisted installation.
+const operationRunner = fileURLToPath(import.meta.resolve("@red-cup-engineering/javascript-node-services-section/run-javascript-node-operation-module"));
+const houseResolver = path.join(path.dirname(operationRunner), "register-house-resolver.mjs");
 const specification = {
   sources: [
     { path: "src/base.mjs", text: "export const base = 1;\n" },
