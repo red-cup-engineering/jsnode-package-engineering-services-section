@@ -25,7 +25,13 @@ const implementation = (exportName,wrong=false) => [
 ].join("\n");
 
 function runNode(args,cwd) {
-  return spawnSync(process.execPath,args,{cwd,encoding:"utf8",timeout:15000});
+  // Node's parent test worker sets NODE_TEST_CONTEXT=child-v8. If inherited
+  // by a nested node --test runner, Node skips the entire nested suite and
+  // exits 0: a dangerously false behavioral success. Remove only that
+  // worker-local marker; preserve the caller's remaining native environment.
+  const env={...process.env};
+  delete env.NODE_TEST_CONTEXT;
+  return spawnSync(process.execPath,args,{cwd,encoding:"utf8",timeout:15000,env});
 }
 
 test("native Node executes tests fabricated from legal ESM reserved, default, and ordinary named exports",async()=>{
