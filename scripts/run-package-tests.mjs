@@ -48,7 +48,7 @@ try { result = spawnSync(process.execPath, [...flags, ...reporters, "--test-repo
 catch (error) { result = { error }; }
 const summary = (() => { try { return readFileSync(tap, "utf8"); } catch { return ""; } })();
 rmSync(scratch, { recursive: true, force: true });
-const received = receivePackageTestReport(summary);
+const received = receivePackageTestReport(summary, { files: run });
 const problems = [packageCheckExecutionProblem(result), received.problem].filter(problem => problem !== null);
 const error = problems.length ? problems.join("; ") : null;
 if (error !== null) process.stderr.write(`run-package-tests: ${error}\n`);

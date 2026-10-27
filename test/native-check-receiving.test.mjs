@@ -126,3 +126,28 @@ describe('nested',()=>{it('pass',()=>{});it.skip('skip',()=>{});it.todo('later')
   assert.equal(receipt.passed, 1);
   assert.equal(receipt.failed, 0);
 });
+
+
+test('actual mixed registered tests and a top-level assertion file retain native wrapper numbering', t => {
+  const {root} = fixture(t);
+  writeFileSync(join(root,'test','actual.test.mjs'), 'import test from "node:test"; test("first",()=>{}); test("second",()=>{}); test("third",()=>{});\n');
+  writeFileSync(join(root,'test','wrapper.test.mjs'), 'import assert from "node:assert/strict"; assert.equal(6*7,42);\n');
+  const {NODE_TEST_CONTEXT, ...environment} = process.env;
+  const result = spawnSync(process.execPath, [runner], {cwd: root, encoding: 'utf8', timeout: 15000,
+    env: {...environment, PACKAGE_TEST_DIRECTORY: root}});
+  assert.equal(result.error, undefined);
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(reportOf(result).ok, true);
+  assert.equal(reportOf(result).files, 2);
+  assert.equal(reportOf(result).ran, 4);
+  assert.equal(reportOf(result).passed, 4);
+});
+
+test('native wrapper compatibility does not excuse duplicate ordinals without the actual enrolled identity', t => {
+  for (const wrapper of ['test/not-enrolled.test.mjs', 'test/actual.test.mjs # SKIP fabricated']) {
+    const report = 'TAP version 13\nok 1 - first\nok 1 - '+wrapper+'\n1..2\n# tests 2\n# suites 0\n# pass 2\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1\n';
+    const result = observe(t, runner, {status: 0, report});
+    assert.notEqual(result.status, 0);
+    assert.equal(reportOf(result).ok, false);
+  }
+});

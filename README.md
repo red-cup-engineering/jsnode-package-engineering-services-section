@@ -396,3 +396,22 @@ unchanged for valid locks. Organizing's importer-scoped resolution consumer
 uses this provider rather than independent lexical guesses. Source edition
 0.2.4 needs immutable package publication and a selected consumer lock before
 it can be called installed.
+
+
+## Native package check receiving
+
+The native syntax and test commands require a successful child-process outcome,
+including no launch error or terminating signal. Status zero alone is not
+execution evidence. The test command also receives its actual Node TAP copy:
+one root header and terminal plan, complete root outcomes, and consistent
+test, suite, pass, fail, cancellation, skip and TODO counters. Missing or
+contradictory evidence fails the package check and remains in the report.
+
+Registered test results use global ordinals. Native wrappers for files that
+perform top-level assertions may carry their original enrolled file index;
+that exception is admitted once only for the exact unannotated enrolled file
+identity. Skips, TODOs, nested suites and explicitly filtered empty runs retain
+their native accounting. Options that reorder or shard the enrolled file list
+have not been qualified with assertion-only file wrappers. These checks prove
+the stated execution/report completeness, not that arbitrary test source
+adequately exercises its requirements.

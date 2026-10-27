@@ -1,13 +1,13 @@
 {
   "kind": "561.fabrication-qualification.v1",
-  "localDate": "2026-10-26",
+  "completedAt": "2026-10-27T03:02:20Z",
   "repository": "red-cup-engineering/jsnode-package-engineering-services-section",
   "base": "2f4d07de3b92b54bdc7acc95914dfd70fa31a812",
   "scope": "Schema-admitted deterministic data modules and truthful native package-check receiving",
   "source": [
     {
       "path": "README.md",
-      "sha256": "92c5a69fedf01dc5eead59b141ad511a6c479d7bea1eb057245be3076128b7bc"
+      "sha256": "55f51374069c67b42eed2332f326c5859d0bb78c22b1fa82ad8feb7ad7380d91"
     },
     {
       "path": "package.json",
@@ -19,11 +19,11 @@
     },
     {
       "path": "scripts/run-package-tests.mjs",
-      "sha256": "c93386da31999e505f19387a4442e3cf29425a9d2dc19aa53fc3627b76e89d77"
+      "sha256": "f668388ec0af57a9016e9e5986ef16e90edc0fba89d137a1621e8f10c66eaffe"
     },
     {
       "path": "src/package-check-outcome.mjs",
-      "sha256": "3c34b5eb6f7f36b61466f76cc59a0a7c12207df6975aa8e5a66121eb359a0828"
+      "sha256": "81bb0ca7d77f620a54af9187e86c4a480c244f2588cbfbb072cfdf9ed9cad7ff"
     },
     {
       "path": "src/project-jsnode-data-modules.mjs",
@@ -51,20 +51,53 @@
     },
     {
       "path": "test/native-check-receiving.test.mjs",
-      "sha256": "903f369a64415f926812e89e4154ceba222a7c89cf92af25ee292bc8b497180e"
+      "sha256": "4ea4204946575cf63607784e33e91991041788eddca6e608379e6420cac7de3c"
     }
   ],
   "toolchain": {
-    "node": "24.22.1"
+    "node": "24.22.1",
+    "npm": "11.9.0"
   },
-  "command": "node --test --test-reporter=tap test/native-check-receiving.test.mjs test/project-jsnode-data-modules.test.mjs test/project-jsnode-modules.test.mjs test/planner-module-closure.test.mjs test/connected-module-fabrication.test.mjs",
-  "result": {
-    "tests": 27,
-    "passed": 27,
-    "failed": 0,
-    "skipped": 0,
-    "cancelled": 0,
-    "todo": 0
+  "checks": [
+    {
+      "command": "npm test -- --test-concurrency=2 --test-timeout=30000",
+      "result": {
+        "files": 40,
+        "tests": 289,
+        "passed": 284,
+        "failed": 0,
+        "skipped": 5,
+        "cancelled": 0,
+        "todo": 0,
+        "received": true
+      },
+      "log": "full-package.tap"
+    },
+    {
+      "command": "node --test --test-reporter=tap test/native-check-receiving.test.mjs",
+      "result": {
+        "tests": 9,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0,
+        "cancelled": 0,
+        "todo": 0
+      },
+      "log": "native-check-receiving.tap"
+    },
+    {
+      "command": "npm run check",
+      "result": {
+        "parsed": 99,
+        "files": 99,
+        "generatedCatalogUnchanged": true,
+        "exitCode": 0
+      }
+    }
+  ],
+  "explicitSkips": {
+    "count": 5,
+    "reason": "Existing package-birth tests require a local registry at http://127.0.0.1:4873/; that registry was unavailable. Their skip declarations are retained in full-package.tap."
   },
   "independentReview": {
     "assaySourceSeparateFromImplementation": true,
@@ -73,17 +106,24 @@
       "draft-inapplicable dependency assertion ignored",
       "inconsistent module output ordering",
       "child execution refusal with status zero",
-      "incomplete native TAP interpreted as success"
+      "incomplete native TAP interpreted as success",
+      "native top-level assertion file wrappers use enrolled-file ordinals amid globally numbered registered tests"
     ]
+  },
+  "earlierEvidence": {
+    "commit": "20ac5a4d21f81b7f8a244ac9567b5d181df406d5",
+    "qualification": "initial-qualification.json",
+    "log": "changed-obligations.tap",
+    "laterCounterexample": "The first full native run completed 287 tests (282 pass,5 skip,0 fail) but the new receiver refused its two native file-wrapper ordinals. The final source binds the narrow exception to original enrolled filenames, and two independent cases cover genuine and forged wrapper numbering."
   },
   "environment": {
     "source": "task-owned development checkout",
     "execution": "Node child processes permitted; temporary/output storage moved to task-owned memory filesystem after shared disk exhaustion",
     "earlierSandboxResults": "Not used as acceptance: EPERM was present despite status zero."
   },
-  "log": "changed-obligations.tap",
   "limitations": [
-    "The complete original package test plan is a distinct run.",
-    "This receipt establishes source and bounded native qualification, not package registry publication or service activation."
+    "Five original registry-dependent tests were explicitly skipped; the full native run's other284 tests passed.",
+    "File-wrapper ordinal compatibility is bound to original enrollment. Node flags that reorder or shard that list have not been qualified with assertion-only files.",
+    "This receipt establishes exact source and native qualification, not registry publication, isolated execution of untrusted code, service activation, or player acceptance."
   ]
 }
