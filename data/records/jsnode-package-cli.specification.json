@@ -16,6 +16,9 @@
       "path": "src/project-jsnode-modules.mjs"
     },
     {
+      "path": "src/project-jsnode-data-modules.mjs"
+    },
+    {
       "path": "src/project-jsnode-module-paths.mjs"
     },
     {

@@ -7,15 +7,23 @@ import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { testPlan } from "../src/package-test-plan.mjs";
 import { packageFiles } from "../src/package-files.mjs";
+import { packageCheckExecutionProblem } from "../src/package-check-outcome.mjs";
 
 const directory = resolve(process.env.PACKAGE_TEST_DIRECTORY ?? process.cwd());
 const manifest = JSON.parse(readFileSync(join(directory, "package.json"), "utf8"));
 const plan = testPlan({ files: packageFiles(directory), manifest });
 const failed = [];
 for (const file of plan.check) {
-  const result = spawnSync(process.execPath, ["--check", file], { cwd: directory, encoding: "utf8" });
-  if (result.status !== 0) failed.push({ file, message: (result.stderr || result.stdout).trim().split("\n").slice(0, 6).join("\n") });
+  let result;
+  try { result = spawnSync(process.execPath, ["--check", file], { cwd: directory, encoding: "utf8" }); }
+  catch (error) { result = { error }; }
+  const problem = packageCheckExecutionProblem(result);
+  if (problem !== null) failed.push({ file, problem });
+  // Keep the complete native observations, including diagnostics from a
+  // refused launch. A short or empty stdout is not evidence of a parsed file.
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
 }
-for (const { file, message } of failed) process.stderr.write(`check-package-syntax: ${file}\n${message}\n`);
+for (const { file, problem } of failed) process.stderr.write(`check-package-syntax: ${file}\n${problem}\n`);
 process.stdout.write(`check-package-syntax: ${plan.check.length - failed.length}/${plan.check.length} files parse\n`);
 process.exit(failed.length ? 1 : 0);

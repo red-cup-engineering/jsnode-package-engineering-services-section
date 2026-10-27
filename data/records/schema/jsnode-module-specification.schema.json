@@ -3,11 +3,15 @@
   "$id": "urn:red-cup:jsnode-module-specification",
   "type": "object",
   "additionalProperties": false,
-  "required": ["sources", "operations"],
+  "required": ["operations"],
+  "anyOf": [
+    { "required": ["sources"], "properties": { "sources": { "minItems": 1 } } },
+    { "required": ["dataModules"], "properties": { "dataModules": { "minItems": 1 } } }
+  ],
   "properties": {
     "sources": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 0,
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -15,6 +19,31 @@
         "properties": {
           "path": { "type": "string", "pattern": "^src/(?:[^/]+/)*[^/]+\\.mjs$" },
           "text": { "type": "string" }
+        }
+      }
+    },
+    "dataModules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "exports"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^src/(?:[^/]+/)*[^/]+\\.mjs$" },
+          "exports": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "value", "schema"],
+              "properties": {
+                "name": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z_$][A-Za-z0-9_$]*$" },
+                "value": {},
+                "schema": { "type": ["object", "boolean"] }
+              }
+            }
+          }
         }
       }
     },

@@ -2,6 +2,8 @@ import { schemaPath, confined, projectJsnodeModulePaths } from "./project-jsnode
 export { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
 import { posix as path } from "node:path";
 import { compileJsonSchema } from "@red-cup-engineering/json-schema-services-section/validation";
+import { projectJsnodeDataModules } from "./project-jsnode-data-modules.mjs";
+export { projectJsnodeDataModules } from "./project-jsnode-data-modules.mjs";
 import { readJsnodeModuleExports, readJsnodeModuleRequests } from "@red-cup-engineering/javascript-node-services-section/syntax";
 
 import specificationSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };
@@ -63,17 +65,26 @@ function cliText(cli, operations) {
 
 /** Projects shared ESM source carriers, their explicit schemas, and one optional catalog declaration that the code layer runs. */
 export function projectJsnodeModules(specification) {
+  const dataDescriptor = specification && Object.getOwnPropertyDescriptor(specification, "dataModules");
+  if (dataDescriptor && !("value" in dataDescriptor)) throw new TypeError("dataModules cannot be an accessor");
+  // Admit every source-free value before the general schema evaluator can
+  // inspect it. The declaration must not execute getters or lose JSON values.
+  const dataFiles = projectJsnodeDataModules(dataDescriptor ? dataDescriptor.value : []);
   const validation = specificationContract.validate(specification);
   if (!validation.valid) rejectIssues(validation.issues);
+  const sources = specification.sources ?? [];
+  if (sources.length + dataFiles.length === 0) throw new TypeError("at least one authored or data module source is required");
+  // One path owner per file, with data values kept out of callable catalogs.
+  const outputPaths = new Set(projectJsnodeModulePaths(specification));
   if (specification.cli && specification.operations.some(operation => operation.nativeProfile !== undefined))
     throw new TypeError("a native capability export cannot acquire a JSON CLI command face");
   const sourceByPath = new Map();
-  for (const source of specification.sources) {
+  for (const source of sources) {
     confined(source.path, "src");
     if (sourceByPath.has(source.path)) throw new TypeError(`duplicate source path: ${source.path}`);
     sourceByPath.set(source.path, source);
   }
-  validateSourceImports(specification.sources, specification.externalReferences);
+  validateSourceImports([...sources, ...dataFiles], specification.externalReferences);
   const operationNames = new Set();
   for (const operation of specification.operations) {
     confined(operation.module, "src");
@@ -92,8 +103,7 @@ export function projectJsnodeModules(specification) {
     if (!namedExports(source.text, source.path).has(operation.exportName)) throw new TypeError(`operation export is not present: ${operation.module}#${operation.exportName}`);
   }
   if (specification.cli) confined(specification.cli.path, "apps");
-  const outputPaths = new Set(projectJsnodeModulePaths(specification));
-  const files = [...specification.sources.map((source) => textFile(source.path, source.text))];
+  const files = [...sources.map((source) => textFile(source.path, source.text)), ...dataFiles];
   for (const operation of specification.operations) {
     if (Object.hasOwn(operation, "inputSchema") && !Object.hasOwn(operation, "inputSchemaPath") && outputPaths.has(schemaPath(operation, "input"))) files.push(textFile(schemaPath(operation, "input"), json(operation.inputSchema)));
     if (Object.hasOwn(operation, "outputSchema") && !Object.hasOwn(operation, "outputSchemaPath") && outputPaths.has(schemaPath(operation, "output"))) files.push(textFile(schemaPath(operation, "output"), json(operation.outputSchema)));
@@ -104,6 +114,6 @@ export function projectJsnodeModules(specification) {
     if (paths.has(file.path)) throw new TypeError(`projected path is duplicated: ${file.path}`);
     paths.add(file.path);
   }
-  return Object.freeze(files.sort((left, right) => left.path.localeCompare(right.path)));
+  return Object.freeze(files.sort((left, right) => left.path < right.path ? -1 : left.path > right.path ? 1 : 0));
 }
 

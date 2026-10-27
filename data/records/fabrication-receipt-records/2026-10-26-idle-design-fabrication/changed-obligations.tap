@@ -1,0 +1,173 @@
+TAP version 13
+# {"controlled":true,"originalOrderRetained":true,"connectedModulesAssayedTogether":true,"sourceBlindToPriorCases":true,"compositionFailureRetainsAllLots":true,"noAutomaticRepurchases":true,"undeclaredImportsRefusedBeforeExecution":true,"externalInferenceCalls":0}
+# Subtest: test/connected-module-fabrication.test.mjs
+ok 1 - test/connected-module-fabrication.test.mjs
+  ---
+  duration_ms: 1338.772738
+  type: 'test'
+  ...
+# Subtest: syntax receiving refuses a launch error even when its status is zero
+ok 2 - syntax receiving refuses a launch error even when its status is zero
+  ---
+  duration_ms: 98.439173
+  type: 'test'
+  ...
+# Subtest: syntax receiving preserves successful parsing and refuses terminating signals
+ok 3 - syntax receiving preserves successful parsing and refuses terminating signals
+  ---
+  duration_ms: 201.609688
+  type: 'test'
+  ...
+# Subtest: test receiving refuses process errors and signals despite a plausible complete report
+ok 4 - test receiving refuses process errors and signals despite a plausible complete report
+  ---
+  duration_ms: 202.785237
+  type: 'test'
+  ...
+# Subtest: test receiving cannot turn missing, partial or inconsistent TAP into zero failures
+ok 5 - test receiving cannot turn missing, partial or inconsistent TAP into zero failures
+  ---
+  duration_ms: 555.77788
+  type: 'test'
+  ...
+# Subtest: complete native success and an empty selected plan retain their successful meaning
+ok 6 - complete native success and an empty selected plan retain their successful meaning
+  ---
+  duration_ms: 103.067715
+  type: 'test'
+  ...
+# Subtest: complete failed test output remains a failed test result
+ok 7 - complete failed test output remains a failed test result
+  ---
+  duration_ms: 60.898463
+  type: 'test'
+  ...
+# Subtest: actual nested Node suites with skips and TODOs retain native counts
+ok 8 - actual nested Node suites with skips and TODOs retain native counts
+  ---
+  duration_ms: 187.615445
+  type: 'test'
+  ...
+# Subtest: planner closure retains its schema bytes and its schema import binding
+ok 9 - planner closure retains its schema bytes and its schema import binding
+  ---
+  duration_ms: 247.094758
+  type: 'test'
+  ...
+# Subtest: source-free game rules become standalone ESM with exact, deeply immutable values
+ok 10 - source-free game rules become standalone ESM with exact, deeply immutable values
+  ---
+  duration_ms: 22.544552
+  type: 'test'
+  ...
+# Subtest: canonical bytes ignore record-key and declaration ordering while preserving array order
+ok 11 - canonical bytes ignore record-key and declaration ordering while preserving array order
+  ---
+  duration_ms: 16.388066
+  type: 'test'
+  ...
+# Subtest: data text and prototype-like keys remain data when emitted modules execute
+ok 12 - data text and prototype-like keys remain data when emitted modules execute
+  ---
+  duration_ms: 20.922307
+  type: 'test'
+  ...
+# Subtest: legal public export names cannot shadow the generated module's own machinery
+ok 13 - legal public export names cannot shadow the generated module's own machinery
+  ---
+  duration_ms: 5.472595
+  type: 'test'
+  ...
+# Subtest: schema admission rejects invalid data and invalid or unresolved schemas
+ok 14 - schema admission rejects invalid data and invalid or unresolved schemas
+  ---
+  duration_ms: 7.956383
+  type: 'test'
+  ...
+# Subtest: all lossy non-JSON values are refused instead of silently coercing
+ok 15 - all lossy non-JSON values are refused instead of silently coercing
+  ---
+  duration_ms: 4.120436
+  type: 'test'
+  ...
+# Subtest: schema/value getters and toJSON hooks never execute during admission
+ok 16 - schema/value getters and toJSON hooks never execute during admission
+  ---
+  duration_ms: 0.767592
+  type: 'test'
+  ...
+# Subtest: scalar JSON and empty nested containers are received without inferred semantics
+ok 17 - scalar JSON and empty nested containers are received without inferred semantics
+  ---
+  duration_ms: 13.55018
+  type: 'test'
+  ...
+# Subtest: unsafe paths and nonbinding export names refuse before producing source
+ok 18 - unsafe paths and nonbinding export names refuse before producing source
+  ---
+  duration_ms: 1.708284
+  type: 'test'
+  ...
+# Subtest: module/export collisions and empty declarations refuse without partial projection
+ok 19 - module/export collisions and empty declarations refuse without partial projection
+  ---
+  duration_ms: 1.103557
+  type: 'test'
+  ...
+# Subtest: authored consumers import declared data through the original connected projector
+ok 20 - authored consumers import declared data through the original connected projector
+  ---
+  duration_ms: 15.88102
+  type: 'test'
+  ...
+# Subtest: a data export cannot be declared as a callable operation or a CLI operation
+ok 21 - a data export cannot be declared as a callable operation or a CLI operation
+  ---
+  duration_ms: 0.936086
+  type: 'test'
+  ...
+# Subtest: a reference cannot bypass the closed profile by promoting annotation data into a schema
+ok 22 - a reference cannot bypass the closed profile by promoting annotation data into a schema
+  ---
+  duration_ms: 1.416155
+  type: 'test'
+  ...
+# Subtest: the closed profile refuses a dependency assertion its selected dialect would ignore
+ok 23 - the closed profile refuses a dependency assertion its selected dialect would ignore
+  ---
+  duration_ms: 1.041223
+  type: 'test'
+  ...
+# Subtest: the original projector, helper and path plan use the same code-unit module order
+ok 24 - the original projector, helper and path plan use the same code-unit module order
+  ---
+  duration_ms: 2.890329
+  type: 'test'
+  ...
+# Subtest: projects shared source modules and one schema-bound NDJSON catalog without wrappers
+ok 25 - projects shared source modules and one schema-bound NDJSON catalog without wrappers
+  ---
+  duration_ms: 602.413778
+  type: 'test'
+  ...
+# Subtest: keeps module-only projections minimal and refuses collisions or unknown exports
+ok 26 - keeps module-only projections minimal and refuses collisions or unknown exports
+  ---
+  duration_ms: 5.740127
+  type: 'test'
+  ...
+# Subtest: projects the checked-in catalog binding without drift and executes its module projection
+ok 27 - projects the checked-in catalog binding without drift and executes its module projection
+  ---
+  duration_ms: 971.839834
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1732.272088
