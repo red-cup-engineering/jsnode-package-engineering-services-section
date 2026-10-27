@@ -270,6 +270,60 @@ test("partial or mixed receipts, undeclared presentations and overflowing ordina
   assert.throws(() => foldFabricationReceiptIntoWorldRows({ receipt, t: Number.MAX_SAFE_INTEGER }), { code: "FABRICATION_TRACE_ORDINAL_OVERFLOW" });
 });
 
+test("public receipt wire refuses native or lossy values before the first real EAVT append", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "fabrication-wire-refusal-"));
+  try {
+    const values = [1n, new Uint8Array([1, 2, 255]), new Uint8Array(), undefined,
+      NaN, Infinity, -Infinity, -0, { nested: [-0] }, [undefined]];
+    for (const [index, value] of values.entries()) {
+      const receipt = structuredClone(receiptFixture());
+      receipt.unknownWireField = value;
+      assert.throws(() => projectFabricationReceiptCells({ receipt }),
+        { code: "INVALID_FABRICATION_RECEIPT_WIRE" });
+      const trace = path.join(root, `${index}.jsonl`);
+      let appended = 0;
+      assert.throws(() => {
+        const folded = foldFabricationReceiptIntoWorldRows({ receipt, t: 0 });
+        for (const row of folded.rows) {
+          executeEavt({ operation: "append", path: trace, row });
+          appended++;
+        }
+      }, { code: "INVALID_FABRICATION_RECEIPT_WIRE" });
+      assert.equal(appended, 0);
+      await assert.rejects(readFile(trace), { code: "ENOENT" });
+    }
+    assert.throws(() => foldFabricationReceiptIntoWorldRows({ receipt: receiptFixture(), t: -0 }),
+      { code: "INVALID_FABRICATION_TRACE_ORDINAL" });
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("JSON wire extensions round-trip exactly and native-only received carriers refuse", async () => {
+  const receipt = structuredClone(receiptFixture());
+  receipt.unknownWireField = { values: [null, false, true, 0, 1.25, Number.MAX_VALUE, "e\u0301"],
+    record: JSON.parse('{"__proto__":{"retained":true},"nested":[]}') };
+  const folded = foldFabricationReceiptIntoWorldRows({ receipt, t: 0 });
+  const root = await mkdtemp(path.join(tmpdir(), "fabrication-wire-receiving-"));
+  try {
+    const trace = path.join(root, "trace.jsonl");
+    for (const row of folded.rows) executeEavt({ operation: "append", path: trace, row });
+    const received = readFabricationReceiptCellRows(executeEavt({ operation: "read", path: trace }));
+    assert.deepEqual(received, folded.cellProjection.cells);
+    assert.deepEqual(received.find(at => at.predicate === P.receipt).object.unknownWireField, receipt.unknownWireField);
+    const proposal = structuredClone(folded.cellProjection);
+    proposal.version = 1n;
+    assert.throws(() => admitFabricationReceiptCellProjection(proposal, { receipt }),
+      { code: "FABRICATION_CELL_BINDING_MISMATCH" });
+    const rows = structuredClone(folded.rows);
+    const reported = rows.find(row => row.a === FABRICATION_CELL_ATTRIBUTE && row.v.for.length);
+    reported.v.for[0].version = 1n;
+    assert.throws(() => readFabricationReceiptCellRows(rows), { code: "FABRICATION_CELL_ROW_MISMATCH" });
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("the existing receipt emitter persists and reads back the source Cells through real EAVT", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "fabrication-cell-receiving-"));
   try {

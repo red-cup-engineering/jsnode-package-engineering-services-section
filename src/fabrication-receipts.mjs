@@ -3,6 +3,7 @@ import { constitute } from "@red-cup-engineering/eavt-services-section";
 import { admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { semanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
+import { canonicalJson } from "@red-cup-engineering/json-services-section/canonical-json";
 import { address as cellAddress, admitCell, bytesToHex, cell, cellSchema, cellSet,
   retainedCarrier, semanticId as cellSemanticId } from "@red-cup-engineering/signcell/cell";
 
@@ -174,6 +175,33 @@ function sourcePresentation(source) {
   return value;
 }
 
+function fabricationRequest(value) {
+  try {
+    // Keep the native getter refusal, then admit the ORIGINAL value at the
+    // JSON owner. The retained snapshot can omit undefined object properties,
+    // so validating only that snapshot would silently discard source data.
+    const snapshot = retainedCarrier(value);
+    canonicalJson(value);
+    return snapshot;
+  }
+  catch (error) { throw receiptAdmissionError("INVALID_FABRICATION_RECEIPT_WIRE", error.message); }
+}
+
+// Only inspect an already retained carrier whose original was admitted by
+// EAVT's JSON owner; the extra sign check refuses its lossy -0 encoding.
+function receiptWireValue(value) {
+  try {
+    const pending = [value];
+    while (pending.length) {
+      const at = pending.pop();
+      if (Object.is(at, -0)) throw new TypeError("ordinary EAVT JSON does not preserve negative zero");
+      if (at !== null && typeof at === "object")
+        for (const child of Object.values(at)) pending.push(child);
+    }
+    return value;
+  } catch (error) { throw receiptAdmissionError("INVALID_FABRICATION_RECEIPT_WIRE", error.message); }
+}
+
 /**
  * Retain one complete admitted receipt and expose its source-bound records as
  * native SignCells. A report's content identity is not its issuer identity or
@@ -183,13 +211,13 @@ function sourcePresentation(source) {
  * @returns {object} The canonical JsnodeFabricationCellProjection, with reported content and unknown external receiving kept distinct.
  */
 export function projectFabricationReceiptCells(request) {
-  request = retainedCarrier(request);
+  request = fabricationRequest(request);
   const input = request?.receipt;
   if (input === null || typeof input !== "object" || Array.isArray(input)) throw new TypeError("receipt must be an object");
   const source = sourcePresentation(request.source);
   // Admission's existing immutable result must not freeze or alias the
   // caller's mutable source. SignCell's carrier owns the exact snapshot.
-  const admitted = admitMarkdownJsnodeOperationPackageFabricationReceipt(input);
+  const admitted = admitMarkdownJsnodeOperationPackageFabricationReceipt(receiptWireValue(input));
   const specification = admitted.artifactSpecification;
   const creation = admitted.jsnodeOperationPackageCreationReceipt;
   const realization = admitted.artifactFabricationRealizationReceipt;
@@ -287,7 +315,7 @@ export function projectFabricationReceiptCells(request) {
 export function admitFabricationReceiptCellProjection(projection, request) {
   const expected = projectFabricationReceiptCells(request);
   let matches = false;
-  try { matches = cellSemanticId(retainedCarrier(projection)) === cellSemanticId(expected); } catch { /* An invalid carrier cannot replay. */ }
+  try { matches = cellSemanticId(receiptWireValue(fabricationRequest(projection))) === cellSemanticId(expected); } catch { /* An invalid carrier cannot replay. */ }
   if (!matches) throw receiptAdmissionError("FABRICATION_CELL_BINDING_MISMATCH",
     "fabrication Cells do not replay from this exact admitted receipt and source presentation");
   return expected;
@@ -301,7 +329,7 @@ export function admitFabricationReceiptCellProjection(projection, request) {
  * @returns {object[]} The canonical native Cell set.
  */
 export function readFabricationReceiptCellRows(rows) {
-  try { rows = retainedCarrier(rows); }
+  try { rows = receiptWireValue(fabricationRequest(rows)); }
   catch (error) { throw receiptAdmissionError("FABRICATION_CELL_ROW_MISMATCH", error.message); }
   if (!Array.isArray(rows)) throw new TypeError("fabrication Cell receiving requires an EAVT row array");
   return cellSet(rows.filter(row => row?.a === FABRICATION_CELL_ATTRIBUTE).map(row => {
@@ -322,8 +350,8 @@ export function readFabricationReceiptCellRows(rows) {
  * @returns {object} WorldRowsFold with original fields and the same persisted native cellProjection.
  */
 export function foldFabricationReceiptIntoWorldRows(request) {
-  request = retainedCarrier(request);
-  if (!Number.isSafeInteger(request?.t))
+  request = fabricationRequest(request);
+  if (!Number.isSafeInteger(request?.t) || Object.is(request.t, -0))
     throw receiptAdmissionError("INVALID_FABRICATION_TRACE_ORDINAL", "t must be a safe integer trace ordinal");
   const projection = projectFabricationReceiptCells(request);
   const byId = new Map(projection.cells.map(at => [cellAddress(at), at]));

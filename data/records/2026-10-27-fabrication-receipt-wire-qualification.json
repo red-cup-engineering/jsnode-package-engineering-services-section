@@ -1,0 +1,247 @@
+{
+  "type": "JsnodeFabricationReceiptWireQualification",
+  "version": 1,
+  "recordedAt": "2026-10-27T03:51:37.591757+00:00",
+  "repository": "red-cup-engineering/jsnode-package-engineering-services-section",
+  "baseRevision": "ec7f787adce8c7393a7f010e18798c581ff1db93",
+  "requirement": "An admitted public fabrication projection/fold must preserve complete ordinary JSON receipt content through its existing EAVT wire, or refuse before returning rows; later unsupported Cell data must not leave a prefix of legacy facts.",
+  "counterexample": {
+    "scope": "existing admitted fixture with one native extra value; no product source changes",
+    "observations": [
+      {
+        "kind": "bigint",
+        "projected": true,
+        "nativeFieldKind": "bigint",
+        "folded": true,
+        "totalRows": 55,
+        "jsonSerialized": false,
+        "jsonError": {
+          "name": "TypeError",
+          "message": "Do not know how to serialize a BigInt"
+        },
+        "appendComplete": false,
+        "appendError": {
+          "name": "TypeError",
+          "code": null,
+          "message": "EAVT row field \"v\" must be JSON"
+        },
+        "rowsAppended": 19,
+        "rowsRead": 19,
+        "storedCellsMatch": false
+      },
+      {
+        "kind": "bytes",
+        "projected": false,
+        "projectionError": {
+          "name": "TypeError",
+          "code": null,
+          "message": "Cannot freeze array buffer views with elements"
+        },
+        "folded": false,
+        "foldError": {
+          "name": "TypeError",
+          "code": null,
+          "message": "Cannot freeze array buffer views with elements"
+        }
+      }
+    ]
+  },
+  "counterexampleEvidence": {
+    "path": "/workspace/scratch/8627ed4fcd11/release-receiving/jsnode-native-wire-probe.json",
+    "bytes": 1050,
+    "sha256": "70e774cb9b02d3aceaacbc5e598c6324e2fc04d25d2a5439d85113dc406805e2"
+  },
+  "nativeOwnerObservations": [
+    {
+      "case": "undefined object property",
+      "rawSourceHasProperty": true,
+      "nativeRetainedSnapshotHasProperty": false,
+      "consequence": "JSON admission must inspect the original value, not only its retained snapshot."
+    },
+    {
+      "case": "negative zero",
+      "nativeRetentionPreservesSign": true,
+      "nativeSemanticIdentityEqualsPositiveZero": true,
+      "actualEavtEncoding": "0",
+      "consequence": "This lossless ordinary JSON receipt profile refuses negative zero explicitly."
+    },
+    {
+      "case": "JSON provider pair-spine child array with accessor at index zero",
+      "canonicalJsonAccessorCalls": 1,
+      "retainedCarrierAccessorCalls": 0,
+      "retainedCarrierRefused": true,
+      "consequence": "Retain native ordinary-accessor refusal before asking the JSON owner about the original value."
+    },
+    {
+      "case": "Proxy with ownKeys trap",
+      "canonicalJsonTrapCalls": 1,
+      "retainedCarrierTrapCalls": 1,
+      "consequence": "This qualification does not establish general Proxy inertness."
+    }
+  ],
+  "correction": {
+    "sequence": [
+      "Native retainedCarrier(raw) refuses ordinary accessors and snapshots without mutating the caller.",
+      "The existing JSON0.4.0 canonicalJson(raw) admits the ORIGINAL full value before the snapshot is used, so native omission of undefined cannot hide a wire defect.",
+      "Refuse negative zero in retained receipt/projection/row values and in the fold trace ordinal.",
+      "Invoke original receipt domain admission and derive the existing native Cells and EAVT rows only after those checks."
+    ],
+    "refusal": "INVALID_FABRICATION_RECEIPT_WIRE",
+    "scope": "Ordinary JSON value carriers and ordinary accessor refusal; production receipt ingress uses JSON.parse.",
+    "noSupplierChanges": true,
+    "noNewCodec": true,
+    "noGenericProxyWalker": true,
+    "directProviders": {
+      "signcell": "0.13.2",
+      "json-services-section": "0.4.0",
+      "eavt-services-section": "0.11.0"
+    },
+    "dependencyClosure": "Original exact117-slot native closure and frozen lock unchanged."
+  },
+  "initialCorrectionFailure": {
+    "reason": "Checking JSON only after native retention lost an original undefined property.",
+    "counts": {
+      "tests": 14,
+      "suites": 0,
+      "pass": 13,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 2269.942133
+    },
+    "log": {
+      "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/wire-boundary-initial-refusal.tap",
+      "bytes": 4119,
+      "sha256": "7ebbe7747a7fba525d5a242cfe08695910262412ac50ef708941d7cdcded7b2a"
+    }
+  },
+  "qualification": [
+    {
+      "command": "node --test --test-isolation=none --test-reporter=tap --test-reporter-destination=/workspace/scratch/8627ed4fcd11/jsnode-evidence/wire-boundary-focused.tap --test-reporter=spec --test-reporter-destination=stdout test/fabrication-receipt-cells.test.mjs",
+      "exitCode": 0,
+      "counts": {
+        "tests": 14,
+        "suites": 0,
+        "pass": 14,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 3395.67758
+      },
+      "log": {
+        "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/wire-boundary-focused.tap",
+        "bytes": 3537,
+        "sha256": "b457be375bde6a648b7806ee50572b574033c3c4050711b69eb5ca24ebc4d8e0"
+      }
+    },
+    {
+      "command": "npm test -- --test-isolation=none --test-concurrency=1 --test-reporter=tap --test-reporter-destination=/workspace/scratch/8627ed4fcd11/jsnode-evidence/wire-boundary-owner.tap --test-reporter=spec --test-reporter-destination=stdout",
+      "exitCode": 0,
+      "counts": {
+        "tests": 303,
+        "suites": 0,
+        "pass": 298,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 5,
+        "todo": 0,
+        "duration_ms": 25290.879179
+      },
+      "ownerReport": {
+        "kind": "package-test-run.v1",
+        "ok": true,
+        "package": "@red-cup-engineering/jsnode-package-services-section",
+        "planned": 41,
+        "files": 41,
+        "ran": 303,
+        "passed": 298,
+        "failed": 0,
+        "requires": []
+      },
+      "logs": [
+        {
+          "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/wire-boundary-owner.tap",
+          "bytes": 70004,
+          "sha256": "9c49d781dad94d49a0c2933439af6282d68720e9e955a743f60a99ab39467379"
+        },
+        {
+          "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/wire-boundary-owner.log",
+          "bytes": 31258,
+          "sha256": "835815eb0374e207b3bdcb1634da75786529e2f6b3fb8502d84c97eb9fe2c146"
+        }
+      ]
+    },
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "parsedFiles": 100,
+      "plannedFiles": 100,
+      "generatedCheck": "passed",
+      "log": {
+        "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/wire-boundary-check.log",
+        "bytes": 521,
+        "sha256": "359be95fce10b820fc56ef4c9ba4c70ea44fd1920c3061ee8244ce51612ed325"
+      }
+    }
+  ],
+  "qualifiedFiles": [
+    {
+      "path": "src/fabrication-receipts.mjs",
+      "bytes": 24378,
+      "sha256": "ab1db4c79c2c4339fac52b37867ae3403163827d492fd27d81e37531d7ec61b2"
+    },
+    {
+      "path": "test/fabrication-receipt-cells.test.mjs",
+      "bytes": 22833,
+      "sha256": "60e1f6ae6ae2cc7d4ea4057e11fd16258b0eabeba45d1024f730ca9d55a771b1"
+    },
+    {
+      "path": "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
+      "bytes": 10113,
+      "sha256": "4c78825a22c993ca813000267c5aaf3c6f0fd43eeb75625e43c867cdc6a49a32"
+    },
+    {
+      "path": "README.md",
+      "bytes": 28010,
+      "sha256": "3608c15111ec8eb524b53d796f6dd630a54d5dd5a6498957d3fd9a50f5f0cb13"
+    }
+  ],
+  "unchangedDependencies": [
+    {
+      "path": "package.json",
+      "bytes": 6515,
+      "sha256": "8e4564b381d88377235c19f349a8d47fee95c24b61a0db143ff08ef24b371ba8"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "bytes": 62187,
+      "sha256": "12cc0ff9e467ffdc08ca4689ea4679336e7082b68b740740204063a21495667e"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "bytes": 188,
+      "sha256": "19f36596fd9ce543205f53f0657096e881d36cdc0052cf9413bab5fd61b68598"
+    }
+  ],
+  "limitations": [
+    "Five owner tests explicitly require the unavailable existing local registry at http://127.0.0.1:4873/ and remain skipped, not passed.",
+    "The owner run retains its TestsStream MaxListenersExceededWarning; its complete native results and final ok:true report were received.",
+    "Arbitrary JavaScript Proxy trap inertness is not established; the observed native-owner limitation is retained above.",
+    "The public fold refuses unsupported wire values before any returned rows; this does not make external filesystem appends transactionally atomic against I/O failure.",
+    "This is source and controlled native receiving, not immutable package publication, installed consumer activation, fabrication execution, deployment or customer acceptance."
+  ],
+  "independentReceiving": {
+    "owner": "/root",
+    "sourceReview": "approved for the explicit JSON carrier and ordinary-accessor scope",
+    "command": "node --test --test-isolation=none --test-reporter=tap test/fabrication-receipt-cells.test.mjs",
+    "exitCode": 0,
+    "tests": 14,
+    "passed": 14,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "tapSha256": "06a3acc65c9f8fbe8c04ed71db48d906b9322d2968f82e1a038d4cd7fe011f02"
+  }
+}

@@ -205,6 +205,14 @@ before field access. Literal path and occurrence identifiers also retain their
 UTF-8 JSON-string hexadecimal observation basis in each positive witness, so
 native Unicode normalization cannot merge distinct supplied presentations.
 
+The complete receipt must also fit the existing EAVT JSON wire. Native-only
+values such as BigInt, byte arrays and undefined refuse before projection;
+nonfinite numbers and negative zero also refuse. Negative zero would lose its
+sign in that encoder. Unknown JSON fields remain intact. A refused receipt
+returns no fold, so a caller cannot append legacy facts before discovering a
+non-JSON source value in a later Cell. SignCell's broader native carrier is
+unchanged.
+
 `admitFabricationReceiptCellProjection(projection, {receipt, source?})` replays
 the projection against that original source. The exported JSON Schema describes
 wire shape and references SignCell's Cell schema; shape alone cannot admit an
