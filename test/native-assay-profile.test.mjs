@@ -150,7 +150,9 @@ test("native binding does not replace the explicit isolated executor or admit as
 test("the existing JSON operation profile still plans and projects its unchanged unary assay", () => {
   const order=moduleWorkOrder(),closure=order.projections[0].configuration;
   assert.equal(planJsnodeModules(order).type,"JsnodeModuleFabricationPlan");
-  assert.match(testsOfClosure(closure)[0].text,/await identity\(2\), 2/);
+  const generated=testsOfClosure(closure)[0].text;
+  assert.match(generated,/import \{ "identity" as fabricatedOperation \} from/);
+  assert.match(generated,/await fabricatedOperation\(2\), 2/);
   assert.match(sourceMessagesOf(order,closure.operations)[0].content,/input schema/);
 });
 

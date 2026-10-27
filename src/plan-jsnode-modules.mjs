@@ -1,5 +1,5 @@
 /** Pure source-addressable JSNode module planning, shared with derivation. */
-import path from "node:path";
+import { projectJsnodeExampleTests } from "./project-jsnode-example-tests.mjs";
 import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
 import { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
@@ -118,33 +118,7 @@ export function testsOfClosure(closure, derivedCases = [], nativeAssayBindings) 
       return Object.freeze({ type: "JavascriptNodeOperationTestSource", path: testPathOf(operation),
         text: projectNativeAssays(operation, cases, bindings) });
     }
-    const relative = path.posix.relative("test", operation.module);
-    const cases = examplesOf(closure, operation).map((example) => [
-      `test(${JSON.stringify(`${operation.name}: ${example.name}`)}, async () => {`,
-      `  assert.deepStrictEqual(await ${operation.exportName}(${JSON.stringify(example.input)}), ${JSON.stringify(example.output)});`,
-      "});",
-    ].join("\n"));
-    for (const item of derivedCases.filter(item => item.operation === operation.name)) {
-      cases.push([
-        `test(${JSON.stringify(operation.name + ": clause assay " + item.name)}, async () => {`,
-        item.throws === null
-          ? `  assert.deepStrictEqual(await ${operation.exportName}(${JSON.stringify(item.input)}), ${JSON.stringify(item.output)});`
-          : `  await assert.rejects(async () => await ${operation.exportName}(${JSON.stringify(item.input)}), { name: ${JSON.stringify(item.throws)} });`,
-        "});",
-      ].join("\n"));
-    }
-    return Object.freeze({
-      type: "JavascriptNodeOperationTestSource",
-      path: testPathOf(operation),
-      text: [
-        "// Derived from the work order's admitted examples, before the operation's source was derived.",
-        'import assert from "node:assert/strict";',
-        'import test from "node:test";',
-        `import { ${operation.exportName} } from ${JSON.stringify(relative.startsWith(".") ? relative : `./${relative}`)};`,
-        "",
-        ...cases,
-        "",
-      ].join("\n"),
-    });
+    return projectJsnodeExampleTests(operation, examplesOf(closure, operation),
+      derivedCases.filter(item => item.operation === operation.name));
   });
 }
