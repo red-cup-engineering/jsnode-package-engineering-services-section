@@ -188,6 +188,38 @@ admission, and neither historical version proves the v3 clause-assay binding. Th
 than organizational acceptance or deployment.
 
 
+### Retain fabrication evidence as native Cells
+
+`projectFabricationReceiptCells({receipt, source?})`, exported through
+`./fabrication-receipts`, projects an originally admitted receipt into native
+SignCells. It retains the complete receipt and exposes its source, requirements,
+constraints, exact candidate files, complete assay records, original work order,
+derivation attempts and traceability. Every reported claim keeps its receipt
+identity and original JSON pointers. `source` may supply a real `locator` and/or
+`occurrence`; omission preserves content identity without inventing an event or
+clock. Independently received, customer accepted and deployed coordinates stay
+unwitnessed.
+
+Requests and received rows enter through SignCell's inert carrier admission
+before field access. Literal path and occurrence identifiers also retain their
+UTF-8 JSON-string hexadecimal observation basis in each positive witness, so
+native Unicode normalization cannot merge distinct supplied presentations.
+
+`admitFabricationReceiptCellProjection(projection, {receipt, source?})` replays
+the projection against that original source. The exported JSON Schema describes
+wire shape and references SignCell's Cell schema; shape alone cannot admit an
+invented acceptance witness or substituted candidate.
+
+The existing `foldFabricationReceiptIntoWorldRows` keeps its original world
+facts, derives them from this same Cell mapping, and appends complete native
+Cell rows under `jsnode-fabrication:cell`. Consequently the ordinary receipt
+emitter persists the evidence without a second ledger. Read those rows with
+`readFabricationReceiptCellRows`; it checks Cell addresses and preserves opposing
+witnesses through the native join. Numeric EAVT `t` remains a safe trace ordinal,
+not an absolute observation timestamp. Both v2 and v3 derivations preserve the
+original work-order digest. See the [source and receiving contract](content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md).
+
+
 ## Select independent execution methods
 
 The native `fabrication-derive-jsnode-modules` and

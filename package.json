@@ -59,6 +59,7 @@
     "data/records/2026-09-04-jsnode-script-reprojection-rule.json",
     "examples",
     "content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
+    "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
     "test"
   ],
   "scripts": {
@@ -70,6 +71,7 @@
     "check:interfaces": "node scripts/check-package-interfaces.mjs --check"
   },
   "dependencies": {
+    "@red-cup-engineering/signcell": "0.13.2",
     "@red-cup-engineering/computer-filepath-engineering-services-section": "0.1.0",
     "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0",
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
