@@ -45,7 +45,7 @@ export async function emitFabricationReceiptsToEavt({ root, tracePath }) {
     let folded;
     try {
       const receipt = JSON.parse((await readTextFile({ path: absolutePath })).text);
-      folded = foldFabricationReceiptIntoWorldRows({ receipt, t: nextT });
+      folded = foldFabricationReceiptIntoWorldRows({ receipt, t: nextT, source: { locator: absolutePath } });
     } catch (error) {
       refusedReceipts.push({ path: relativePath, code: error?.code ?? "RECEIPT_UNREADABLE", message: error?.message ?? String(error) });
       continue;

@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - '@red-cup-engineering/metrologic@0.14.3-dev.1364'
+  - '@red-cup-engineering/semiotic-content-address@0.1.2-dev.31'
+  - '@red-cup-engineering/signcell@0.13.2'

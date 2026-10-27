@@ -1,0 +1,224 @@
+{
+  "type": "JsnodeSourceBearingCellSourceQualification",
+  "version": 1,
+  "repository": "red-cup-engineering/jsnode-package-engineering-services-section",
+  "baseRevision": "54d3f339bd587bc29832c3446762d9e4856495a7",
+  "packageName": "@red-cup-engineering/jsnode-package-services-section",
+  "packageVersion": "0.5.1-dev.5",
+  "changes": [
+    {
+      "path": "scripts/emit-fabrication-receipts-to-eavt.mjs",
+      "before": "fc871de350594b99fb596537744b25fef78e5aef",
+      "after": "bdb58fe9343151e036616d5702d95383f578cff3",
+      "bytes": 3721,
+      "mode": "0o644"
+    },
+    {
+      "path": "src/fabrication-receipts.mjs",
+      "before": "0d50ad53c0bd1b594ba7b23e6658f93778f1533f",
+      "after": "0cb76ce5e233c41fc47182c7b47fe4132e6ab489",
+      "bytes": 23086,
+      "mode": "0o644"
+    },
+    {
+      "path": "README.md",
+      "before": "2459843fc16248abeb7d7e0f432cfcc189079073",
+      "after": "c918853596d293b453a7451c359e27f7d5682c39",
+      "bytes": 27541,
+      "mode": "0o644"
+    },
+    {
+      "path": "package.json",
+      "before": "9e6a5e3353c1701e16581f74f229705588a3bb7e",
+      "after": "fd7afda0603c63b7484ae8a5d419e39e5c15ddb0",
+      "bytes": 6515,
+      "mode": "0o644"
+    },
+    {
+      "path": "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
+      "before": null,
+      "after": "a1cc925a86ee6b467d0c41fad6ecf50101bfd0b0",
+      "bytes": 8286,
+      "mode": "0o644"
+    },
+    {
+      "path": "test/fabrication-receipt-cells.test.mjs",
+      "before": null,
+      "after": "caea39378dfc0f3b898a91517d2b4c13a77f2306",
+      "bytes": 19991,
+      "mode": "0o644"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "before": null,
+      "after": "7808fc6b69392b1484d2eaeef880a06ad7cc0a93",
+      "bytes": 62187,
+      "mode": "0o644"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "before": null,
+      "after": "fa731ae59953672e044e768b6bc47c5340ed7795",
+      "bytes": 188,
+      "mode": "0o644"
+    }
+  ],
+  "patch": {
+    "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/source-bearing-receipts.patch",
+    "bytes": 114466,
+    "sha256": "946b23eebb91a78f96180407ae9450a0dc78ca0d9707dbbc1ab245b4de03fb71"
+  },
+  "sourceReceiving": {
+    "verifiedOriginalBlobs": 161,
+    "unchangedOriginalBlobs": 157,
+    "unexpectedChanges": [],
+    "omitted": "Six historical gzip witness logs, unchanged upstream and not packaged runtime/test inputs.",
+    "concurrentUpstream": {
+      "pullRequest": 5,
+      "receivedRevision": "54d3f339bd587bc29832c3446762d9e4856495a7",
+      "verifiedDeltaBlobs": 17,
+      "overlapsMerged": [
+        "README.md",
+        "package.json"
+      ],
+      "unrelatedUpstreamPreserved": true
+    }
+  },
+  "dependencyReceiving": {
+    "directSignCell": "0.13.2",
+    "directEavt": "0.11.0",
+    "directData": "0.7.0",
+    "jsonSchema": "0.5.0",
+    "node": "v24.22.1",
+    "nativeLockProducer": "pnpm",
+    "exactLockedSlots": 117,
+    "censusIntegritiesPresentInLock": 117,
+    "archiveBytes": 5403770,
+    "expandedBytes": 22553925,
+    "installScriptsRun": false,
+    "cycleFinding": "The native workspace owner inspected the exact SignCell0.13.2 closure and found no JSNode edge.",
+    "virtualStore": "/dev/561-cells-8627ed4fcd11/virtual-stores/jsnode",
+    "sourceCensus": "/workspace/scratch/8627ed4fcd11/jsnode-exact-closure-census.json"
+  },
+  "verification": [
+    {
+      "command": "node --test --test-isolation=none --test-reporter=tap --test-reporter-destination=/workspace/scratch/8627ed4fcd11/jsnode-evidence/presentation-boundary-before.tap --test-reporter=spec --test-reporter-destination=stdout test/fabrication-receipt-cells.test.mjs",
+      "exitCode": 1,
+      "role": "preserved pre-correction regression observations",
+      "counts": {
+        "tests": 12,
+        "suites": 0,
+        "pass": 9,
+        "fail": 3,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 2155.353624
+      },
+      "log": {
+        "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/presentation-boundary-before.tap",
+        "bytes": 5652,
+        "sha256": "44191f2725db5a51e12cd15af9725f2aa3c3f4bbcd4edd48c0dbc1fc65cee675"
+      }
+    },
+    {
+      "command": "node --test --test-isolation=none --test-reporter=tap --test-reporter-destination=/workspace/scratch/8627ed4fcd11/jsnode-evidence/presentation-boundary-after.tap --test-reporter=spec --test-reporter-destination=stdout test/fabrication-receipt-cells.test.mjs",
+      "exitCode": 0,
+      "role": "native receipt source/cell/EAVT obligations and review regressions",
+      "counts": {
+        "tests": 12,
+        "suites": 0,
+        "pass": 12,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0,
+        "duration_ms": 2227.678941
+      },
+      "log": {
+        "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/presentation-boundary-after.tap",
+        "bytes": 3060,
+        "sha256": "6b5113a76be9cd9de1df33097194be78c26ac2264466c97856aa614cade4a591"
+      }
+    },
+    {
+      "command": "npm test -- --test-isolation=none --test-concurrency=1 --test-reporter=tap --test-reporter-destination=/workspace/scratch/8627ed4fcd11/jsnode-evidence/full-native-current-main.tap --test-reporter=spec --test-reporter-destination=stdout",
+      "exitCode": 0,
+      "role": "current owner package plan through its native report receiver",
+      "counts": {
+        "tests": 301,
+        "suites": 0,
+        "pass": 296,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 5,
+        "todo": 0,
+        "duration_ms": 24114.574229
+      },
+      "ownerReport": {
+        "kind": "package-test-run.v1",
+        "ok": true,
+        "package": "@red-cup-engineering/jsnode-package-services-section",
+        "planned": 41,
+        "files": 41,
+        "ran": 301,
+        "passed": 296,
+        "failed": 0,
+        "requires": []
+      },
+      "logs": [
+        {
+          "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/full-native-current-main.tap",
+          "bytes": 69514,
+          "sha256": "05841eb10cc97562f411e3567d0ca0a2c6eef87e8b68006bab780d6f40a03cdd"
+        },
+        {
+          "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/full-native-current-main.log",
+          "bytes": 31047,
+          "sha256": "645d286da387505f7e6b3f53d2871b598fe198665519d9cb900a2aac2cc822f7"
+        }
+      ]
+    },
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "role": "owner syntax and generated-source gates",
+      "parsedFiles": 100,
+      "plannedFiles": 100,
+      "generatedCheck": "passed",
+      "log": {
+        "path": "/workspace/scratch/8627ed4fcd11/jsnode-evidence/check-current-main.log",
+        "bytes": 521,
+        "sha256": "359be95fce10b820fc56ef4c9ba4c70ea44fd1920c3061ee8244ce51612ed325"
+      }
+    }
+  ],
+  "independentReview": {
+    "owner": "/root",
+    "status": "approved after source inspection, independently derived custody/lexical correction clauses, and root native receiving",
+    "corrections": [
+      "Whole request and row carrier admitted before field reads; no getter execution.",
+      "Literal locator/occurrence/receiptPath observation basis retained with native bytesToHex and utf8-json-string-hex encoding."
+    ],
+    "rootReceiving": {
+      "command": "node --test --test-isolation=none --test-reporter=tap test/fabrication-receipt-cells.test.mjs",
+      "exitCode": 0,
+      "tests": 12,
+      "passed": 12,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "tapSha256": "26fdb2732e78c3576dc5d327c318bb03abf7e9eb8e391b4e8f986e7a595516a2"
+    }
+  },
+  "boundaries": [
+    "Receipt fixtures prove admission, projection and real EAVT persistence behavior; they do not prove their reported fabrication or assays happened.",
+    "Native report includes five explicit skips requiring the existing local registry at http://127.0.0.1:4873/; no skipped case is a pass.",
+    "The native full run emitted MaxListenersExceededWarning for eleven TestsStream end listeners; all outcomes and counters were received and the owner receiver returned ok:true.",
+    "The source projection witnesses admitted receipt content; no independently received, customer accepted, deployed, or authority witness is manufactured.",
+    "No registry publication, GitHub write, installed host receiving or customer acceptance has been performed.",
+    "The selected file plan was run without process isolation; no claim is made for untested option combinations.",
+    "Task dependency memory storage requires the approved escalated namespace; portable source and native lock remain in the repository."
+  ],
+  "date": "2026-10-27"
+}

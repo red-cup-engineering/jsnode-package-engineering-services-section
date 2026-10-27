@@ -3,6 +3,8 @@ import { constitute } from "@red-cup-engineering/eavt-services-section";
 import { admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { semanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
+import { address as cellAddress, admitCell, bytesToHex, cell, cellSchema, cellSet,
+  retainedCarrier, semanticId as cellSemanticId } from "@red-cup-engineering/signcell/cell";
 
 function immutable(value) {
   if (value && typeof value === "object" && !Object.isFrozen(value)) {
@@ -122,39 +124,224 @@ export function admitMarkdownJsnodeOperationPackageFabricationReceipt(receipt) {
   });
 }
 
+/** The ordinary ordinal-EAVT attribute carrying a complete native fabrication Cell. */
+export const FABRICATION_CELL_ATTRIBUTE = "jsnode-fabrication:cell";
+
+const predicate = name => `urn:561:jsnode:fabrication:${name}`;
+/** Source-coordinate vocabulary; each object remains its original admitted record. */
+export const FABRICATION_CELL_PREDICATES = Object.freeze(Object.fromEntries([
+  "receipt", "candidate", "source", "specification", "workOrder", "claim", "requirement",
+  "prohibition", "constraint", "openQuestion", "projection", "acceptanceObligation",
+  "materialization", "assay", "realizationEvidence", "acceptanceEvidence", "traceability",
+  "derivationAttempt", "proofing", "publication", "receiptPath", "legacyEntity",
+  "independentlyReceived", "customerAccepted", "deployed",
+].map(name => [name, predicate(name)])));
+
+const presentationSchema = {
+  type: "object", minProperties: 1, additionalProperties: false,
+  properties: { locator: { type: "string", minLength: 1, pattern: "\\S" },
+    occurrence: { type: "string", minLength: 1, pattern: "\\S" } },
+};
+
+/** Wire shape only. The original receipt and presentation are separately replayed. */
+export const fabricationReceiptCellProjectionSchema = retainedCarrier({
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  $id: "https://schemas.561.group/jsnode/fabrication-receipt-cell-projection.schema.json",
+  title: "Source-bearing JSNode fabrication receipt Cells",
+  type: "object", additionalProperties: false,
+  required: ["type", "version", "receiptId", "candidateId", "source", "cells", "legacyEntityCell", "legacyCellAddresses"],
+  properties: {
+    type: { const: "JsnodeFabricationCellProjection" }, version: { const: 1 },
+    receiptId: { type: "string", pattern: "^ni:" }, candidateId: { type: "string", pattern: "^ni:" },
+    source: { anyOf: [{ type: "null" }, presentationSchema] },
+    cells: { type: "array", minItems: 1, items: { $ref: cellSchema.$id } },
+    legacyEntityCell: { type: "string", pattern: "^ni:" },
+    legacyCellAddresses: { type: "array", items: { type: "string", pattern: "^ni:" } },
+  },
+});
+
+function sourcePresentation(source) {
+  if (source === undefined) return null;
+  let value;
+  try { value = retainedCarrier(source); }
+  catch (error) { throw receiptAdmissionError("INVALID_FABRICATION_SOURCE_PRESENTATION", error.message); }
+  if (value === null || typeof value !== "object" || Array.isArray(value) ||
+      Object.keys(value).length === 0 || Object.keys(value).some(key =>
+        !["locator", "occurrence"].includes(key) || typeof value[key] !== "string" || !value[key].trim())) {
+    throw receiptAdmissionError("INVALID_FABRICATION_SOURCE_PRESENTATION",
+      "source presentation requires only a supplied nonblank locator and/or occurrence");
+  }
+  return value;
+}
+
 /**
- * Derives the EAVT facts of one fully admitted JSNode package fabrication.
- * The caller owns persistence; this function only admits the receipt and
- * returns the rows to append to a JSONL EAVT carrier.
- *
- * @param {{receipt: object, t: number}} request A fabrication receipt and its genesis trace ordinal.
- * @returns {{type: string, version: number, address: string, rows: object[], traceability: object[]}}
+ * Retain one complete admitted receipt and expose its source-bound records as
+ * native SignCells. A report's content identity is not its issuer identity or
+ * an original fabrication occurrence. A supplied source presentation is kept
+ * in witnesses; no source event or clock is synthesized when it is absent.
+ * @param {{receipt: object, source?: {locator?: string, occurrence?: string}}} request Original receipt and optional actual source presentation.
+ * @returns {object} The canonical JsnodeFabricationCellProjection, with reported content and unknown external receiving kept distinct.
+ */
+export function projectFabricationReceiptCells(request) {
+  request = retainedCarrier(request);
+  const input = request?.receipt;
+  if (input === null || typeof input !== "object" || Array.isArray(input)) throw new TypeError("receipt must be an object");
+  const source = sourcePresentation(request.source);
+  // Admission's existing immutable result must not freeze or alias the
+  // caller's mutable source. SignCell's carrier owns the exact snapshot.
+  const admitted = admitMarkdownJsnodeOperationPackageFabricationReceipt(input);
+  const specification = admitted.artifactSpecification;
+  const creation = admitted.jsnodeOperationPackageCreationReceipt;
+  const realization = admitted.artifactFabricationRealizationReceipt;
+  const receiptId = cellSemanticId(admitted);
+  const candidate = { type: "JsnodeFabricationCandidate", version: 1,
+    packageName: creation.packageName, packageVersion: creation.packageVersion,
+    filesDigest: creation.filesDigest, specificationDigest: admitted.specificationDigest };
+  const candidateId = cellSemanticId(candidate);
+  const cells = [];
+  const P = FABRICATION_CELL_PREDICATES;
+  // Native semantic identity normalizes text. A real source locator or
+  // occurrence is a literal identifier, so retain its exact observation basis
+  // alongside the original field using the shared native lexical encoding.
+  const literal = value => typeof value === "string"
+    ? bytesToHex(new TextEncoder().encode(JSON.stringify(value))) : null;
+  const presentationBinding = { encoding: "utf8-json-string-hex",
+    locator: literal(source?.locator), occurrence: literal(source?.occurrence),
+    receiptPath: literal(admitted.receiptPath) };
+  const witness = pointers => ({
+    type: "JsnodeFabricationReceiptContentWitness", version: 1,
+    receiptId, candidateId, source, receiptPath: admitted.receiptPath ?? null, presentationBinding,
+    sourceDigest: admitted.sourceDigest, specificationDigest: admitted.specificationDigest,
+    creationReceiptDigest: semanticId(creation), pointers,
+    scope: "admitted-receipt-content",
+  });
+  const tell = (subject, predicate, object, pointers) => {
+    const at = cell(subject, predicate, object, { for: [witness(pointers)] });
+    cells.push(at);
+    return cellAddress(at);
+  };
+  const report = (predicate, object, pointer) => tell(candidateId, predicate, object, [pointer]);
+  const reports = (predicate, values, pointer) => values.forEach((value, index) => report(predicate, value, `${pointer}/${index}`));
+
+  tell(receiptId, P.receipt, admitted, [""]);
+  tell(candidateId, P.candidate, candidate, ["/jsnodeOperationPackageCreationReceipt/packageName",
+    "/jsnodeOperationPackageCreationReceipt/packageVersion", "/jsnodeOperationPackageCreationReceipt/filesDigest", "/specificationDigest"]);
+  report(P.source, specification.source, "/artifactSpecification/source");
+  report(P.specification, specification, "/artifactSpecification");
+  for (const [field, role] of [["claims", "claim"], ["requirements", "requirement"],
+    ["prohibitions", "prohibition"], ["constraints", "constraint"], ["openQuestions", "openQuestion"],
+    ["projections", "projection"], ["acceptanceObligations", "acceptanceObligation"]]) {
+    if (Array.isArray(specification[field])) reports(P[role], specification[field], `/artifactSpecification/${field}`);
+  }
+  reports(P.materialization, creation.files, "/jsnodeOperationPackageCreationReceipt/files");
+  reports(P.assay, creation.assays, "/jsnodeOperationPackageCreationReceipt/assays");
+  reports(P.realizationEvidence, realization.realizations, "/artifactFabricationRealizationReceipt/realizations");
+  reports(P.acceptanceEvidence, realization.acceptances, "/artifactFabricationRealizationReceipt/acceptances");
+  reports(P.traceability, realization.traceability, "/artifactFabricationRealizationReceipt/traceability");
+  if ([2, 3].includes(admitted.derivation?.version))
+    report(P.workOrder, admitted.derivation.workOrderSpecification, "/derivation/workOrderSpecification");
+  if (Array.isArray(admitted.derivation?.attempts))
+    reports(P.derivationAttempt, admitted.derivation.attempts, "/derivation/attempts");
+  if (admitted.derivation?.proofing !== undefined)
+    report(P.proofing, admitted.derivation.proofing, "/derivation/proofing");
+  if (admitted.jsnodeOperationPackageRegistryPublication !== undefined)
+    report(P.publication, admitted.jsnodeOperationPackageRegistryPublication, "/jsnodeOperationPackageRegistryPublication");
+  if (admitted.receiptPath !== undefined) report(P.receiptPath, admitted.receiptPath, "/receiptPath");
+
+  // These are explicit coordinates with no evidence, not denial. Neither
+  // schema admission nor a reported acceptance record can fill them in.
+  for (const role of ["independentlyReceived", "customerAccepted", "deployed"])
+    cells.push(cell(candidateId, P[role], admitted.specificationDigest));
+
+  const workOrder = admitted.workOrder ?? specification.source.provenance.locator ?? null;
+  const workOrderPointer = admitted.workOrder == null ? "/artifactSpecification/source/provenance/locator" : "/workOrder";
+  const legacyEntityCell = tell(candidateId, P.legacyEntity,
+    { name: creation.packageName, version: creation.packageVersion, workOrder },
+    ["/jsnodeOperationPackageCreationReceipt/packageName", "/jsnodeOperationPackageCreationReceipt/packageVersion", workOrderPointer]);
+  // One source-bearing mapping owns both the ordinary legacy world facts
+  // and their evidence. No parallel list in the storage emitter can drift.
+  const facts = [
+    ["born-from-work-order", workOrder, [workOrderPointer]],
+    ["source-digest", admitted.sourceDigest, ["/sourceDigest"]],
+    ["specification-digest", admitted.specificationDigest, ["/specificationDigest"]],
+    ...([2, 3].includes(admitted.derivation?.version)
+      ? [["work-order-specification-digest", admitted.derivation.workOrderSpecificationDigest, ["/derivation/workOrderSpecificationDigest"]]] : []),
+    ...realization.traceability.map((trace, index) => ["fabrication-trace", trace, [`/artifactFabricationRealizationReceipt/traceability/${index}`]]),
+    ["files-digest", creation.filesDigest, ["/jsnodeOperationPackageCreationReceipt/filesDigest"]],
+    ["has-quality", "fabricated-through-the-jsnode-line", ["/type", "/jsnodeOperationPackageCreationReceipt/type"]],
+    ...creation.assays.map((assay, index) => ["assay-passed", assay.name, [`/jsnodeOperationPackageCreationReceipt/assays/${index}`]]),
+  ];
+  const legacyCellAddresses = facts.filter(([, value]) => value !== null && value !== undefined)
+    .map(([predicate, object, pointers]) => tell(candidateId, predicate, object, pointers));
+  return retainedCarrier({ type: "JsnodeFabricationCellProjection", version: 1,
+    receiptId, candidateId, source, cells: cellSet(cells), legacyEntityCell, legacyCellAddresses });
+}
+
+/**
+ * Replay a proposed Cell projection against the original complete receipt and
+ * its actual supplied presentation. Shape alone cannot establish this binding.
+ * @param {object} projection A received JsnodeFabricationCellProjection.
+ * @param {{receipt: object, source?: {locator?: string, occurrence?: string}}} request Original source for replay.
+ * @returns {object} The canonically replayed projection, or throws on mismatch.
+ */
+export function admitFabricationReceiptCellProjection(projection, request) {
+  const expected = projectFabricationReceiptCells(request);
+  let matches = false;
+  try { matches = cellSemanticId(retainedCarrier(projection)) === cellSemanticId(expected); } catch { /* An invalid carrier cannot replay. */ }
+  if (!matches) throw receiptAdmissionError("FABRICATION_CELL_BINDING_MISMATCH",
+    "fabrication Cells do not replay from this exact admitted receipt and source presentation");
+  return expected;
+}
+
+/**
+ * Read native Cells from the existing ordinal EAVT carrier, retaining opposing
+ * witnesses by SignCell's canonical join. This is structural Cell receiving;
+ * use the original-receipt replay for source binding and never infer authority.
+ * @param {object[]} rows Ordinary EAVT rows, possibly containing unrelated facts.
+ * @returns {object[]} The canonical native Cell set.
+ */
+export function readFabricationReceiptCellRows(rows) {
+  try { rows = retainedCarrier(rows); }
+  catch (error) { throw receiptAdmissionError("FABRICATION_CELL_ROW_MISMATCH", error.message); }
+  if (!Array.isArray(rows)) throw new TypeError("fabrication Cell receiving requires an EAVT row array");
+  return cellSet(rows.filter(row => row?.a === FABRICATION_CELL_ATTRIBUTE).map(row => {
+    let at;
+    try { at = admitCell(row.v); }
+    catch (error) { throw receiptAdmissionError("FABRICATION_CELL_ROW_MISMATCH", error.message); }
+    if (!Number.isSafeInteger(row.t) || row.e !== cellAddress(at))
+      throw receiptAdmissionError("FABRICATION_CELL_ROW_MISMATCH", "the row must retain its native Cell address and safe trace ordinal");
+    return at;
+  }));
+}
+
+/**
+ * Derive legacy facts and lossless native Cell rows from one original receipt.
+ * The existing emitter persists every row. Its t is only a trace ordinal,
+ * never an absolute clock or manufactured original fabrication occurrence.
+ * @param {{receipt: object, t: number, source?: {locator?: string, occurrence?: string}}} request Original fabrication report, genesis ordinal and optional source presentation.
+ * @returns {object} WorldRowsFold with original fields and the same persisted native cellProjection.
  */
 export function foldFabricationReceiptIntoWorldRows(request) {
-  const receipt = request?.receipt;
-  if (receipt === null || typeof receipt !== "object" || Array.isArray(receipt)) throw new TypeError("receipt must be an object");
-  if (!Number.isInteger(request?.t)) throw new TypeError("t must be an integer");
-  const admitted = admitMarkdownJsnodeOperationPackageFabricationReceipt(receipt);
-  const realization = admitted.artifactFabricationRealizationReceipt;
-  const creation = admitted.jsnodeOperationPackageCreationReceipt;
-  const workOrder = admitted.workOrder ?? admitted.artifactSpecification.source.provenance.locator ?? null;
-  const { address, genesis: genesisRow } = constitute({ kind: "jsnode-operation-package", attributes: { name: creation.packageName, version: creation.packageVersion, workOrder }, t: request.t });
-  const facts = [
-    ["born-from-work-order", workOrder],
-    ["source-digest", admitted.sourceDigest],
-    ["specification-digest", admitted.specificationDigest],
-    ...(admitted.derivation?.version === 2 ? [["work-order-specification-digest", admitted.derivation.workOrderSpecificationDigest]] : []),
-    ...realization.traceability.map((trace) => ["fabrication-trace", trace]),
-    ["files-digest", creation.filesDigest],
-    ["has-quality", "fabricated-through-the-jsnode-line"],
-    ...creation.assays.map((assay) => ["assay-passed", assay.name]),
-  ];
+  request = retainedCarrier(request);
+  if (!Number.isSafeInteger(request?.t))
+    throw receiptAdmissionError("INVALID_FABRICATION_TRACE_ORDINAL", "t must be a safe integer trace ordinal");
+  const projection = projectFabricationReceiptCells(request);
+  const byId = new Map(projection.cells.map(at => [cellAddress(at), at]));
+  const lastOffset = projection.legacyCellAddresses.length + projection.cells.length;
+  if (!Number.isSafeInteger(request.t + lastOffset))
+    throw receiptAdmissionError("FABRICATION_TRACE_ORDINAL_OVERFLOW", "the complete fabrication fold exceeds safe trace ordinals");
+  const attributes = byId.get(projection.legacyEntityCell).object;
+  const { address, genesis: genesisRow } = constitute({ kind: "jsnode-operation-package", attributes, t: request.t });
   const rows = [genesisRow];
   let t = request.t;
-  for (const [a, v] of facts) {
-    if (v === null || v === undefined) continue;
-    rows.push({ e: address, a, v, t: ++t });
+  for (const identity of projection.legacyCellAddresses) {
+    const at = byId.get(identity);
+    rows.push({ e: address, a: at.predicate, v: at.object, t: ++t });
   }
-  return { type: "WorldRowsFold", version: 1, address, rows, traceability: realization.traceability };
+  for (const at of projection.cells)
+    rows.push({ e: cellAddress(at), a: FABRICATION_CELL_ATTRIBUTE, v: at, t: ++t });
+  const receipt = projection.cells.find(at => at.predicate === FABRICATION_CELL_PREDICATES.receipt).object;
+  return { type: "WorldRowsFold", version: 1, address, rows,
+    traceability: receipt.artifactFabricationRealizationReceipt.traceability, cellProjection: projection };
 }
 
