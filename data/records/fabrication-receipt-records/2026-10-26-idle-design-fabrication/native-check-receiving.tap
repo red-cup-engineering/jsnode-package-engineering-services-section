@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: syntax receiving refuses a launch error even when its status is zero
+ok 1 - syntax receiving refuses a launch error even when its status is zero
+  ---
+  duration_ms: 56.657948
+  type: 'test'
+  ...
+# Subtest: syntax receiving preserves successful parsing and refuses terminating signals
+ok 2 - syntax receiving preserves successful parsing and refuses terminating signals
+  ---
+  duration_ms: 223.461231
+  type: 'test'
+  ...
+# Subtest: test receiving refuses process errors and signals despite a plausible complete report
+ok 3 - test receiving refuses process errors and signals despite a plausible complete report
+  ---
+  duration_ms: 238.812535
+  type: 'test'
+  ...
+# Subtest: test receiving cannot turn missing, partial or inconsistent TAP into zero failures
+ok 4 - test receiving cannot turn missing, partial or inconsistent TAP into zero failures
+  ---
+  duration_ms: 905.786831
+  type: 'test'
+  ...
+# Subtest: complete native success and an empty selected plan retain their successful meaning
+ok 5 - complete native success and an empty selected plan retain their successful meaning
+  ---
+  duration_ms: 131.924377
+  type: 'test'
+  ...
+# Subtest: complete failed test output remains a failed test result
+ok 6 - complete failed test output remains a failed test result
+  ---
+  duration_ms: 77.1586
+  type: 'test'
+  ...
+# Subtest: actual nested Node suites with skips and TODOs retain native counts
+ok 7 - actual nested Node suites with skips and TODOs retain native counts
+  ---
+  duration_ms: 220.278774
+  type: 'test'
+  ...
+# Subtest: actual mixed registered tests and a top-level assertion file retain native wrapper numbering
+ok 8 - actual mixed registered tests and a top-level assertion file retain native wrapper numbering
+  ---
+  duration_ms: 235.623998
+  type: 'test'
+  ...
+# Subtest: native wrapper compatibility does not excuse duplicate ordinals without the actual enrolled identity
+ok 9 - native wrapper compatibility does not excuse duplicate ordinals without the actual enrolled identity
+  ---
+  duration_ms: 169.240402
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2360.921581

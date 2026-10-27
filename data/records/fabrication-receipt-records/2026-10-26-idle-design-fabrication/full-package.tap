@@ -1,0 +1,1754 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> @red-cup-engineering/jsnode-package-services-section@0.5.1-dev.5 test
+> node scripts/run-package-tests.mjs --test-concurrency=2 --test-timeout=30000
+
+TAP version 13
+# Subtest: admits and freezes complete creation evidence
+ok 1 - admits and freezes complete creation evidence
+  ---
+  duration_ms: 3.072883
+  type: 'test'
+  ...
+# Subtest: refuses a malformed digest
+ok 2 - refuses a malformed digest
+  ---
+  duration_ms: 0.523616
+  type: 'test'
+  ...
+# Subtest: admits module-only evidence without retired direct-script assays
+ok 3 - admits module-only evidence without retired direct-script assays
+  ---
+  duration_ms: 0.25984
+  type: 'test'
+  ...
+# Subtest: refuses incomplete or reordered assay evidence
+ok 4 - refuses incomplete or reordered assay evidence
+  ---
+  duration_ms: 0.286871
+  type: 'test'
+  ...
+# Subtest: admits a complete package specification and derives operation identity and documentation
+ok 5 - admits a complete package specification and derives operation identity and documentation
+  ---
+  duration_ms: 19.293443
+  type: 'test'
+  ...
+# Subtest: admits a grouped v2 topic from projected operation arguments without package-operation identity coupling
+ok 6 - admits a grouped v2 topic from projected operation arguments without package-operation identity coupling
+  ---
+  duration_ms: 15.156723
+  type: 'test'
+  ...
+# Subtest: returns specific refusal records for incomplete or contradictory candidates
+ok 7 - returns specific refusal records for incomplete or contradictory candidates
+  ---
+  duration_ms: 10.943964
+  type: 'test'
+  ...
+# Subtest: legacy source and authored tests normalize to shared module paths
+ok 8 - legacy source and authored tests normalize to shared module paths
+  ---
+  duration_ms: 2.380554
+  type: 'test'
+  ...
+# Subtest: legacy migration accepts one declaration (operation, catalog or command) in place of the main guard
+ok 9 - legacy migration accepts one declaration (operation, catalog or command) in place of the main guard
+  ---
+  duration_ms: 5.644052
+  type: 'test'
+  ...
+# Subtest: legacy migration drops the runtime import the old guard called
+ok 10 - legacy migration drops the runtime import the old guard called
+  ---
+  duration_ms: 3.506473
+  type: 'test'
+  ...
+# Subtest: legacy migration refuses a source with no runnable face or with more than one
+ok 11 - legacy migration refuses a source with no runnable face or with more than one
+  ---
+  duration_ms: 1.969566
+  type: 'test'
+  ...
+# Subtest: two passes of the same model on the same evidence are one channel
+ok 12 - two passes of the same model on the same evidence are one channel
+  ---
+  duration_ms: 5.21585
+  type: 'test'
+  ...
+# Subtest: the same model on different evidence, or another model on the same evidence, is another channel
+ok 13 - the same model on different evidence, or another model on the same evidence, is another channel
+  ---
+  duration_ms: 1.133742
+  type: 'test'
+  ...
+# Subtest: a check is independent of the writer only on evidence: a different channel the writer was not shown
+ok 14 - a check is independent of the writer only on evidence: a different channel the writer was not shown
+  ---
+  duration_ms: 3.770029
+  type: 'test'
+  ...
+# Subtest: a derivation whose tests and source came from one model on one order has no independent behavioral channel
+ok 15 - a derivation whose tests and source came from one model on one order has no independent behavioral channel
+  ---
+  duration_ms: 2.759713
+  type: 'test'
+  ...
+# Subtest: each caught defect is bound to the channel that caught it
+ok 16 - each caught defect is bound to the channel that caught it
+  ---
+  duration_ms: 3.299203
+  type: 'test'
+  ...
+# Subtest: each source-writing lot is compared separately; a compound name cannot counterfeit independence
+ok 17 - each source-writing lot is compared separately; a compound name cannot counterfeit independence
+  ---
+  duration_ms: 6.274589
+  type: 'test'
+  ...
+# Subtest: unknown writer and unknown checker origins cannot create an independent proofing channel
+ok 18 - unknown writer and unknown checker origins cannot create an independent proofing channel
+  ---
+  duration_ms: 5.615089
+  type: 'test'
+  ...
+# Subtest: every reported defect has an actual named checking channel, or the proofing record refuses
+ok 19 - every reported defect has an actual named checking channel, or the proofing record refuses
+  ---
+  duration_ms: 4.304242
+  type: 'test'
+  ...
+# Subtest: finite original writer/checker truth table retains same-evidence and seen-by-writer refusals
+ok 20 - finite original writer/checker truth table retains same-evidence and seen-by-writer refusals
+  ---
+  duration_ms: 10.154413
+  type: 'test'
+  ...
+# Subtest: blank or boundary-whitespace market lot names cannot claim separate provenance
+ok 21 - blank or boundary-whitespace market lot names cannot claim separate provenance
+  ---
+  duration_ms: 4.175318
+  type: 'test'
+  ...
+# Subtest: a missing clause-assay market lot retains its real detection method without making it independent
+ok 22 - a missing clause-assay market lot retains its real detection method without making it independent
+  ---
+  duration_ms: 1.006231
+  type: 'test'
+  ...
+# Subtest: real Node tests must execute both admitted and independently derived cases
+ok 23 - real Node tests must execute both admitted and independently derived cases
+  ---
+  duration_ms: 124.370934
+  type: 'test'
+  ...
+# Subtest: a generated import that exits zero before tests run is never admitted
+ok 24 - a generated import that exits zero before tests run is never admitted
+  ---
+  duration_ms: 128.408701
+  type: 'test'
+  ...
+# Subtest: a module's forged TAP lines are treated as comments by the trusted runner
+ok 25 - a module's forged TAP lines are treated as comments by the trusted runner
+  ---
+  duration_ms: 126.877377
+  type: 'test'
+  ...
+# Subtest: skipped, todo and cancelled test outcomes do not satisfy fabrication
+ok 26 - skipped, todo and cancelled test outcomes do not satisfy fabrication
+  ---
+  duration_ms: 313.561347
+  type: 'test'
+  ...
+# Subtest: extra, missing or duplicate test names cannot obscure absent behavior
+ok 27 - extra, missing or duplicate test names cannot obscure absent behavior
+  ---
+  duration_ms: 140.009845
+  type: 'test'
+  ...
+# Subtest: expected labels are derived from the actual example and clause-test generation order
+ok 28 - expected labels are derived from the actual example and clause-test generation order
+  ---
+  duration_ms: 0.967933
+  type: 'test'
+  ...
+# Subtest: the host's claimed success must also carry every actual complete assay
+ok 29 - the host's claimed success must also carry every actual complete assay
+  ---
+  duration_ms: 136.951104
+  type: 'test'
+  ...
+# Subtest: the actual Node exit-zero bypass remains refused even with a purported host result
+ok 30 - the actual Node exit-zero bypass remains refused even with a purported host result
+  ---
+  duration_ms: 107.020043
+  type: 'test'
+  ...
+# Subtest: a failing host test is rejected without inventing a passing code-generation outcome
+ok 31 - a failing host test is rejected without inventing a passing code-generation outcome
+  ---
+  duration_ms: 147.595462
+  type: 'test'
+  ...
+# Subtest: unattributed failing Node process produces an honest nonempty receipt, not a fabricated test failure
+ok 32 - unattributed failing Node process produces an honest nonempty receipt, not a fabricated test failure
+  ---
+  duration_ms: 0.495434
+  type: 'test'
+  ...
+# Subtest: indented Node TAP failure remains correctly attributed to the observed case
+ok 33 - indented Node TAP failure remains correctly attributed to the observed case
+  ---
+  duration_ms: 0.34618
+  type: 'test'
+  ...
+# Subtest: root test plan and sequential ordinals are proof obligations, not decorative TAP strings
+ok 34 - root test plan and sequential ordinals are proof obligations, not decorative TAP strings
+  ---
+  duration_ms: 0.470096
+  type: 'test'
+  ...
+# Subtest: runner accounting before root results is not a completed observation
+ok 35 - runner accounting before root results is not a completed observation
+  ---
+  duration_ms: 0.322895
+  type: 'test'
+  ...
+# Subtest: a root bailout cannot be erased by an otherwise complete passing summary
+ok 36 - a root bailout cannot be erased by an otherwise complete passing summary
+  ---
+  duration_ms: 0.114081
+  type: 'test'
+  ...
+# Subtest: a malformed extra failing root result cannot disappear from completion
+ok 37 - a malformed extra failing root result cannot disappear from completion
+  ---
+  duration_ms: 0.061302
+  type: 'test'
+  ...
+# Subtest: host assay text limits apply to captured UTF-8 bytes, not JavaScript character counts
+ok 38 - host assay text limits apply to captured UTF-8 bytes, not JavaScript character counts
+  ---
+  duration_ms: 157.797417
+  type: 'test'
+  ...
+# Subtest: clean-file
+ok 39 - clean-file
+  ---
+  duration_ms: 116.871581
+  type: 'test'
+  ...
+# Subtest: messy-file
+ok 40 - messy-file
+  ---
+  duration_ms: 101.936792
+  type: 'test'
+  ...
+# Subtest: passes a compactly documented export with no loose comments
+ok 41 - passes a compactly documented export with no loose comments
+  ---
+  duration_ms: 5.251162
+  type: 'test'
+  ...
+# Subtest: flags a prose-essay loose comment and missing export documentation
+ok 42 - flags a prose-essay loose comment and missing export documentation
+  ---
+  duration_ms: 0.757046
+  type: 'test'
+  ...
+# Subtest: flags a parameter missing a JSDoc type
+ok 43 - flags a parameter missing a JSDoc type
+  ---
+  duration_ms: 0.760802
+  type: 'test'
+  ...
+# Subtest: flags an excessive loose-comment-to-code ratio from many short comments
+ok 44 - flags an excessive loose-comment-to-code ratio from many short comments
+  ---
+  duration_ms: 0.658118
+  type: 'test'
+  ...
+# Subtest: does not flag TypeDoc attached to a class method as loose prose
+ok 45 - does not flag TypeDoc attached to a class method as loose prose
+  ---
+  duration_ms: 0.691228
+  type: 'test'
+  ...
+# Subtest: does not flag a JSDoc block attached to a non-exported declaration as loose prose
+ok 46 - does not flag a JSDoc block attached to a non-exported declaration as loose prose
+  ---
+  duration_ms: 0.544177
+  type: 'test'
+  ...
+# Subtest: throws TypeError for a non-TextFileRead input
+ok 47 - throws TypeError for a non-TextFileRead input
+  ---
+  duration_ms: 0.346871
+  type: 'test'
+  ...
+# Subtest: egregious reason is null for a strict violation that does not cross the egregious thresholds
+ok 48 - egregious reason is null for a strict violation that does not cross the egregious thresholds
+  ---
+  duration_ms: 1.097087
+  type: 'test'
+  ...
+# Subtest: egregious reason names a loose comment block over the egregious line threshold
+ok 49 - egregious reason names a loose comment block over the egregious line threshold
+  ---
+  duration_ms: 0.721984
+  type: 'test'
+  ...
+# Subtest: egregious reason names an egregious loose-comment-to-code ratio without any single block over the line threshold
+ok 50 - egregious reason names an egregious loose-comment-to-code ratio without any single block over the line threshold
+  ---
+  duration_ms: 0.370046
+  type: 'test'
+  ...
+# Subtest: egregious reason throws TypeError for a non-report input
+ok 51 - egregious reason throws TypeError for a non-report input
+  ---
+  duration_ms: 0.134802
+  type: 'test'
+  ...
+# Subtest: --check reports findings by break class and exits 1, writing nothing
+ok 52 - --check reports findings by break class and exits 1, writing nothing
+  ---
+  duration_ms: 63.056718
+  type: 'test'
+  ...
+# Subtest: --write adds the imported export in the manifest's own formatting and keeps every other export
+ok 53 - --write adds the imported export in the manifest's own formatting and keeps every other export
+  ---
+  duration_ms: 107.619583
+  type: 'test'
+  ...
+# Subtest: --write never reports refused root-sugar exports as added or closes their findings
+ok 54 - --write never reports refused root-sugar exports as added or closes their findings
+  ---
+  duration_ms: 161.45618
+  type: 'test'
+  ...
+# Subtest: --write accounts separately for written and refused provider additions
+ok 55 - --write accounts separately for written and refused provider additions
+  ---
+  duration_ms: 168.570269
+  type: 'test'
+  ...
+# Subtest: --write preserves exact and pattern conditional exports and actual require resolution
+ok 56 - --write preserves exact and pattern conditional exports and actual require resolution
+  ---
+  duration_ms: 367.960803
+  type: 'test'
+  ...
+# {"exampleOnlyCandidateRejected":true,"validCandidatePassed":true,"sourceBlindToDerivedCases":true,"uncoveredProhibitionStopsBeforeSource":true,"externalInferenceCalls":0,"fixtureOnly":true}
+# {"receiptReconstructsTests":true,"droppedTestsRefused":true,"assaysAfterSourceRefused":true,"uncoveredClauseReceiptRefused":true,"fixtureOnly":true}
+# Subtest: test/clause-assay-derivation.test.mjs
+ok 8 - test/clause-assay-derivation.test.mjs
+  ---
+  duration_ms: 615.945636
+  type: 'test'
+  ...
+# {"controlled":true,"originalOrderRetained":true,"connectedModulesAssayedTogether":true,"sourceBlindToPriorCases":true,"compositionFailureRetainsAllLots":true,"noAutomaticRepurchases":true,"undeclaredImportsRefusedBeforeExecution":true,"externalInferenceCalls":0}
+# Subtest: test/connected-module-fabrication.test.mjs
+ok 9 - test/connected-module-fabrication.test.mjs
+  ---
+  duration_ms: 1839.322986
+  type: 'test'
+  ...
+# Subtest: refuses a stale installed dependency before accepting staged tests
+ok 59 - refuses a stale installed dependency before accepting staged tests
+  ---
+  duration_ms: 176.134308
+  type: 'test'
+  ...
+# Subtest: creates only after every staged and installed face passes
+ok 60 - creates only after every staged and installed face passes
+  ---
+  duration_ms: 1482.880714
+  type: 'test'
+  ...
+# Subtest: refuses an occupied destination without changing it
+ok 61 - refuses an occupied destination without changing it
+  ---
+  duration_ms: 4.13733
+  type: 'test'
+  ...
+# Subtest: module package creation does not couple directory and package names
+ok 62 - module package creation does not couple directory and package names
+  ---
+  duration_ms: 1245.037556
+  type: 'test'
+  ...
+# Subtest: leaves no destination when a staged behavioral assay fails
+ok 63 - leaves no destination when a staged behavioral assay fails
+  ---
+  duration_ms: 389.029132
+  type: 'test'
+  ...
+# Subtest: module package preserves JSON data containing embedded newlines
+ok 64 - module package preserves JSON data containing embedded newlines
+  ---
+  duration_ms: 1358.716312
+  type: 'test'
+  ...
+# Subtest: packs and clean-installs a shared async module family without a command dependency
+ok 65 - packs and clean-installs a shared async module family without a command dependency
+  ---
+  duration_ms: 2032.022168
+  type: 'test'
+  ...
+# Subtest: refuses a v2 example outside its declared output schema and leaves no destination
+ok 66 - refuses a v2 example outside its declared output schema and leaves no destination
+  ---
+  duration_ms: 2.893765
+  type: 'test'
+  ...
+# Subtest: receiving rejects a substituted work-order requirement before admitting creation evidence
+ok 67 - receiving rejects a substituted work-order requirement before admitting creation evidence
+  ---
+  duration_ms: 36.211879
+  type: 'test'
+  ...
+# Subtest: fabricates the admitted Markdown work order through package birth and binds all realization evidence
+ok 68 - fabricates the admitted Markdown work order through package birth and binds all realization evidence # SKIP requires a local registry at http://127.0.0.1:4873/ (staged dependency installation)
+  ---
+  duration_ms: 0.251187
+  type: 'test'
+  ...
+# Subtest: publish:false writes the admitted source-to-realization receipt FROG folds with traceability
+ok 69 - publish:false writes the admitted source-to-realization receipt FROG folds with traceability # SKIP requires a local registry at http://127.0.0.1:4873/ (staged dependency installation)
+  ---
+  duration_ms: 0.176875
+  type: 'test'
+  ...
+# Subtest: omitting publish performs development fabrication without registry publication
+ok 70 - omitting publish performs development fabrication without registry publication # SKIP requires a local registry at http://127.0.0.1:4873/ (staged dependency installation)
+  ---
+  duration_ms: 0.160872
+  type: 'test'
+  ...
+# Subtest: the public Markdown driver reaches grouped fabrication with publication omitted
+ok 71 - the public Markdown driver reaches grouped fabrication with publication omitted # SKIP requires a local registry at http://127.0.0.1:4873/ (staged dependency installation)
+  ---
+  duration_ms: 0.175273
+  type: 'test'
+  ...
+# Subtest: explicit publication propagates the shared gate refusal without its own npm publish loop
+ok 72 - explicit publication propagates the shared gate refusal without its own npm publish loop
+  ---
+  duration_ms: 2.213063
+  type: 'test'
+  ...
+# Subtest: blocking open questions refuse before JSNode package birth and leave the destination absent
+ok 73 - blocking open questions refuse before JSNode package birth and leave the destination absent
+  ---
+  duration_ms: 24.968311
+  type: 'test'
+  ...
+# Subtest: additional admitted projections are refused by pre-creation JSNode projection selection
+ok 74 - additional admitted projections are refused by pre-creation JSNode projection selection
+  ---
+  duration_ms: 3.99053
+  type: 'test'
+  ...
+# Subtest: preflight admits an evidence-free plan rather than synthetic realization evidence
+ok 75 - preflight admits an evidence-free plan rather than synthetic realization evidence
+  ---
+  duration_ms: 1.874274
+  type: 'test'
+  ...
+# Subtest: fabrication discovery includes translatable orders, not arbitrary specification files
+ok 76 - fabrication discovery includes translatable orders, not arbitrary specification files
+  ---
+  duration_ms: 8.823485
+  type: 'test'
+  ...
+# Subtest: re-exporting a dependency's capability under the operation's name is a misfold
+ok 77 - re-exporting a dependency's capability under the operation's name is a misfold
+  ---
+  duration_ms: 4.439784
+  type: 'test'
+  ...
+# Subtest: aliasing or forwarding to a dependency import is a misfold
+ok 78 - aliasing or forwarding to a dependency import is a misfold
+  ---
+  duration_ms: 2.178621
+  type: 'test'
+  ...
+# Subtest: a module that folds the capability from the order is not a misfold
+ok 79 - a module that folds the capability from the order is not a misfold
+  ---
+  duration_ms: 1.743166
+  type: 'test'
+  ...
+# Subtest: a misfold is refused with the reason, and a folded module is not
+ok 80 - a misfold is refused with the reason, and a folded module is not
+  ---
+  duration_ms: 0.722094
+  type: 'test'
+  ...
+# Subtest: native planning preserves the native interface without runtime JSON schemas or a command face
+ok 81 - native planning preserves the native interface without runtime JSON schemas or a command face
+  ---
+  duration_ms: 35.053381
+  type: 'test'
+  ...
+# Subtest: the host binds an immutable source-qualified profile; JSON cannot supply its projector
+ok 82 - the host binds an immutable source-qualified profile; JSON cannot supply its projector
+  ---
+  duration_ms: 4.817993
+  type: 'test'
+  ...
+# Subtest: absent, forged, duplicate or changed native bindings refuse before any inference or execution
+ok 83 - absent, forged, duplicate or changed native bindings refuse before any inference or execution
+  ---
+  duration_ms: 19.23843
+  type: 'test'
+  ...
+# Subtest: native scenarios remain source-free data and cannot be confused with unary runtime schemas
+ok 84 - native scenarios remain source-free data and cannot be confused with unary runtime schemas
+  ---
+  duration_ms: 5.059836
+  type: 'test'
+  ...
+# Subtest: native fixtures are projected once before source, run real native values, and retain prior assay bytes
+ok 85 - native fixtures are projected once before source, run real native values, and retain prior assay bytes
+  ---
+  duration_ms: 204.887865
+  type: 'test'
+  ...
+# Subtest: a native close defect is caught by the real controlled fixture without fabricating proposal acceptance
+ok 86 - a native close defect is caught by the real controlled fixture without fabricating proposal acceptance
+  ---
+  duration_ms: 214.60699
+  type: 'test'
+  ...
+# Subtest: native binding does not replace the explicit isolated executor or admit async/unbounded fixture projections
+ok 87 - native binding does not replace the explicit isolated executor or admit async/unbounded fixture projections
+  ---
+  duration_ms: 74.783355
+  type: 'test'
+  ...
+# Subtest: the existing JSON operation profile still plans and projects its unchanged unary assay
+ok 88 - the existing JSON operation profile still plans and projects its unchanged unary assay
+  ---
+  duration_ms: 2.614955
+  type: 'test'
+  ...
+# Subtest: original sibling sources are identity-bound, staged through the same isolated boundary and absent from generated outputs
+ok 89 - original sibling sources are identity-bound, staged through the same isolated boundary and absent from generated outputs
+  ---
+  duration_ms: 224.488699
+  type: 'test'
+  ...
+# Subtest: a retained source cannot be missing, changed, forged, escaped or overwritten by a generated target
+ok 90 - a retained source cannot be missing, changed, forged, escaped or overwritten by a generated target
+  ---
+  duration_ms: 15.42207
+  type: 'test'
+  ...
+# Subtest: retained source context must still form a complete original import closure
+ok 91 - retained source context must still form a complete original import closure
+  ---
+  duration_ms: 26.298708
+  type: 'test'
+  ...
+# Subtest: native schema delivery preserves local pointers through the actual fixture
+ok 92 - native schema delivery preserves local pointers through the actual fixture
+  ---
+  duration_ms: 205.704846
+  type: 'test'
+  ...
+# Subtest: native schema delivery preserves reused explicit root IDs through the actual fixture
+ok 93 - native schema delivery preserves reused explicit root IDs through the actual fixture
+  ---
+  duration_ms: 183.767937
+  type: 'test'
+  ...
+# Subtest: native schema delivery preserves reused nested relative IDs and anchors through the actual fixture
+ok 94 - native schema delivery preserves reused nested relative IDs and anchors through the actual fixture
+  ---
+  duration_ms: 189.079755
+  type: 'test'
+  ...
+# Subtest: native schema delivery preserves reused bare root IDs through the actual fixture
+ok 95 - native schema delivery preserves reused bare root IDs through the actual fixture
+  ---
+  duration_ms: 172.039445
+  type: 'test'
+  ...
+# Subtest: separate operations keep distinct contracts even when their resource IDs coincide
+ok 96 - separate operations keep distinct contracts even when their resource IDs coincide
+  ---
+  duration_ms: 7.788
+  type: 'test'
+  ...
+# Subtest: missing local, external and sibling resources refuse before inference, without consulting the registry
+ok 97 - missing local, external and sibling resources refuse before inference, without consulting the registry
+  ---
+  duration_ms: 19.937058
+  type: 'test'
+  ...
+# Subtest: a native transport envelope never admits an invalid scenario, observation or refusal case
+ok 98 - a native transport envelope never admits an invalid scenario, observation or refusal case
+  ---
+  duration_ms: 58.626081
+  type: 'test'
+  ...
+# Subtest: syntax receiving refuses a launch error even when its status is zero
+ok 99 - syntax receiving refuses a launch error even when its status is zero
+  ---
+  duration_ms: 65.373314
+  type: 'test'
+  ...
+# Subtest: syntax receiving preserves successful parsing and refuses terminating signals
+ok 100 - syntax receiving preserves successful parsing and refuses terminating signals
+  ---
+  duration_ms: 137.100127
+  type: 'test'
+  ...
+# Subtest: test receiving refuses process errors and signals despite a plausible complete report
+ok 101 - test receiving refuses process errors and signals despite a plausible complete report
+  ---
+  duration_ms: 247.856993
+  type: 'test'
+  ...
+# Subtest: test receiving cannot turn missing, partial or inconsistent TAP into zero failures
+ok 102 - test receiving cannot turn missing, partial or inconsistent TAP into zero failures
+  ---
+  duration_ms: 641.059399
+  type: 'test'
+  ...
+# Subtest: complete native success and an empty selected plan retain their successful meaning
+ok 103 - complete native success and an empty selected plan retain their successful meaning
+  ---
+  duration_ms: 104.024946
+  type: 'test'
+  ...
+# Subtest: complete failed test output remains a failed test result
+ok 104 - complete failed test output remains a failed test result
+  ---
+  duration_ms: 55.936509
+  type: 'test'
+  ...
+# Subtest: actual nested Node suites with skips and TODOs retain native counts
+ok 105 - actual nested Node suites with skips and TODOs retain native counts
+  ---
+  duration_ms: 198.026806
+  type: 'test'
+  ...
+# Subtest: actual mixed registered tests and a top-level assertion file retain native wrapper numbering
+ok 106 - actual mixed registered tests and a top-level assertion file retain native wrapper numbering
+  ---
+  duration_ms: 226.523212
+  type: 'test'
+  ...
+# Subtest: native wrapper compatibility does not excuse duplicate ordinals without the actual enrolled identity
+ok 107 - native wrapper compatibility does not excuse duplicate ordinals without the actual enrolled identity
+  ---
+  duration_ms: 109.280315
+  type: 'test'
+  ...
+# Subtest: a neutral operation order binds to the jsnode module closure
+ok 108 - a neutral operation order binds to the jsnode module closure
+  ---
+  duration_ms: 2.896258
+  type: 'test'
+  ...
+# Subtest: the bound order is fabricated: examples assay the derived source
+ok 109 - the bound order is fabricated: examples assay the derived source
+  ---
+  duration_ms: 150.333111
+  type: 'test'
+  ...
+# Subtest: a dependency the Node binding cannot resolve is refused, not dropped
+ok 110 - a dependency the Node binding cannot resolve is refused, not dropped
+  ---
+  duration_ms: 1.199841
+  type: 'test'
+  ...
+# Subtest: every form a module uses a house package by is read, and nothing else
+ok 111 - every form a module uses a house package by is read, and nothing else
+  ---
+  duration_ms: 2.556307
+  type: 'test'
+  ...
+# Subtest: runtime, test and foreign code are told apart, and a package used at runtime is never test-only
+ok 112 - runtime, test and foreign code are told apart, and a package used at runtime is never test-only
+  ---
+  duration_ms: 0.95292
+  type: 'test'
+  ...
+# Subtest: specifiers split into package and subpath
+ok 113 - specifiers split into package and subpath
+  ---
+  duration_ms: 2.187634
+  type: 'test'
+  ...
+# Subtest: an import of a subpath the provider does not export is unexported-interface
+ok 114 - an import of a subpath the provider does not export is unexported-interface
+  ---
+  duration_ms: 1.425149
+  type: 'test'
+  ...
+# Subtest: providers resolved outside the repository are read at their resolved manifest; unresolved ones are diagnostics
+ok 115 - providers resolved outside the repository are read at their resolved manifest; unresolved ones are diagnostics
+  ---
+  duration_ms: 0.413651
+  type: 'test'
+  ...
+# Subtest: exports naming missing files or retired trees are findings; types-only targets and patterns are read as such
+ok 116 - exports naming missing files or retired trees are findings; types-only targets and patterns are read as such
+  ---
+  duration_ms: 10.230277
+  type: 'test'
+  ...
+# Subtest: --write adds an export only for one existing conventional file, never for an exclusion
+ok 117 - --write adds an export only for one existing conventional file, never for an exclusion
+  ---
+  duration_ms: 0.961633
+  type: 'test'
+  ...
+# Subtest: a dist target of a package that builds is an unchecked build output, not a missing file
+ok 118 - a dist target of a package that builds is an unchecked build output, not a missing file
+  ---
+  duration_ms: 0.347091
+  type: 'test'
+  ...
+# Subtest: every finding class comes from the one exported class list
+ok 119 - every finding class comes from the one exported class list
+  ---
+  duration_ms: 0.304407
+  type: 'test'
+  ...
+# Subtest: house imports come from the shared reader with subpaths, test code marked and nested packages left out
+ok 120 - house imports come from the shared reader with subpaths, test code marked and nested packages left out
+  ---
+  duration_ms: 1.488965
+  type: 'test'
+  ...
+# Subtest: repeated wildcard targets require the same capture and imported members must exist
+ok 121 - repeated wildcard targets require the same capture and imported members must exist
+  ---
+  duration_ms: 0.954283
+  type: 'test'
+  ...
+# Subtest: valid invalid-target fallbacks do not create spurious missing-file findings
+ok 122 - valid invalid-target fallbacks do not create spurious missing-file findings
+  ---
+  duration_ms: 0.709786
+  type: 'test'
+  ...
+# Subtest: repeated wildcard followed by digits cannot become a larger backreference
+ok 123 - repeated wildcard followed by digits cannot become a larger backreference
+  ---
+  duration_ms: 1.707524
+  type: 'test'
+  ...
+# Subtest: the plan is every *.test.{mjs,js,cjs,mts} the package owns, at any depth
+ok 124 - the plan is every *.test.{mjs,js,cjs,mts} the package owns, at any depth
+  ---
+  duration_ms: 3.99645
+  type: 'test'
+  ...
+# Subtest: nested packages, node_modules, legacy, vendor and fixtures are not the package's own
+ok 125 - nested packages, node_modules, legacy, vendor and fixtures are not the package's own
+  ---
+  duration_ms: 0.272299
+  type: 'test'
+  ...
+# Subtest: check reads the package's own JavaScript, runtime and test, not TypeScript
+ok 126 - check reads the package's own JavaScript, runtime and test, not TypeScript
+  ---
+  duration_ms: 0.258478
+  type: 'test'
+  ...
+# Subtest: testRequires declares requirements by kind; a declared test stays in the plan
+ok 127 - testRequires declares requirements by kind; a declared test stays in the plan
+  ---
+  duration_ms: 0.475564
+  type: 'test'
+  ...
+# Subtest: a declaration must name a test of the package and real requirements
+ok 128 - a declaration must name a test of the package and real requirements
+  ---
+  duration_ms: 0.436265
+  type: 'test'
+  ...
+# Subtest: a requirement is met by the path, the variable, the package or TEST_NETWORK=1, and only then
+ok 129 - a requirement is met by the path, the variable, the package or TEST_NETWORK=1, and only then
+  ---
+  duration_ms: 0.377887
+  type: 'test'
+  ...
+# Subtest: run-package-tests runs the plan, reports an unmet requirement as requires, and fails on a failing test
+ok 130 - run-package-tests runs the plan, reports an unmet requirement as requires, and fails on a failing test
+  ---
+  duration_ms: 579.258934
+  type: 'test'
+  ...
+# Subtest: packages are the tracked manifests outside legacy and test trees, and a file belongs to the deepest one
+ok 131 - packages are the tracked manifests outside legacy and test trees, and a file belongs to the deepest one
+  ---
+  duration_ms: 3.036749
+  type: 'test'
+  ...
+# Subtest: pure planner and captured installed programme produce the same admitted plan
+ok 132 - pure planner and captured installed programme produce the same admitted plan
+  ---
+  duration_ms: 258.115592
+  type: 'test'
+  ...
+# Subtest: boolean schemas are admitted and false refuses examples
+ok 133 - boolean schemas are admitted and false refuses examples
+  ---
+  duration_ms: 4.64985
+  type: 'test'
+  ...
+# Subtest: schema ids and foreign declarations cannot change a later plan
+ok 134 - schema ids and foreign declarations cannot change a later plan
+  ---
+  duration_ms: 9.1523
+  type: 'test'
+  ...
+# Subtest: projected paths use ordinal order independent of locale collation
+ok 135 - projected paths use ordinal order independent of locale collation
+  ---
+  duration_ms: 2.221825
+  type: 'test'
+  ...
+# Subtest: planner closure retains its schema bytes and its schema import binding
+ok 136 - planner closure retains its schema bytes and its schema import binding
+  ---
+  duration_ms: 200.460724
+  type: 'test'
+  ...
+# Subtest: ordinary module planning retains exact stable dependency versions
+ok 137 - ordinary module planning retains exact stable dependency versions
+  ---
+  duration_ms: 18.567808
+  type: 'test'
+  ...
+# Subtest: ordinary module planning admits exact development SemVer and build metadata
+ok 138 - ordinary module planning admits exact development SemVer and build metadata
+  ---
+  duration_ms: 11.772433
+  type: 'test'
+  ...
+# Subtest: the existing canonical version admission refuses malformed versions and ranges
+ok 139 - the existing canonical version admission refuses malformed versions and ranges
+  ---
+  duration_ms: 12.92981
+  type: 'test'
+  ...
+# Subtest: source-owned decoder preserves distinct importer addresses and exact resolved versions
+ok 140 - source-owned decoder preserves distinct importer addresses and exact resolved versions
+  ---
+  duration_ms: 2.927224
+  type: 'test'
+  ...
+# Subtest: duplicate importer declarations cannot overwrite one source with another
+ok 141 - duplicate importer declarations cannot overwrite one source with another
+  ---
+  duration_ms: 0.761754
+  type: 'test'
+  ...
+# Subtest: duplicate, unnamed or incomplete dependency entries cannot claim a version
+ok 142 - duplicate, unnamed or incomplete dependency entries cannot claim a version
+  ---
+  duration_ms: 1.455786
+  type: 'test'
+  ...
+# Subtest: source-free game rules become standalone ESM with exact, deeply immutable values
+ok 143 - source-free game rules become standalone ESM with exact, deeply immutable values
+  ---
+  duration_ms: 33.230599
+  type: 'test'
+  ...
+# Subtest: canonical bytes ignore record-key and declaration ordering while preserving array order
+ok 144 - canonical bytes ignore record-key and declaration ordering while preserving array order
+  ---
+  duration_ms: 18.04616
+  type: 'test'
+  ...
+# Subtest: data text and prototype-like keys remain data when emitted modules execute
+ok 145 - data text and prototype-like keys remain data when emitted modules execute
+  ---
+  duration_ms: 17.386043
+  type: 'test'
+  ...
+# Subtest: legal public export names cannot shadow the generated module's own machinery
+ok 146 - legal public export names cannot shadow the generated module's own machinery
+  ---
+  duration_ms: 4.310051
+  type: 'test'
+  ...
+# Subtest: schema admission rejects invalid data and invalid or unresolved schemas
+ok 147 - schema admission rejects invalid data and invalid or unresolved schemas
+  ---
+  duration_ms: 3.578051
+  type: 'test'
+  ...
+# Subtest: all lossy non-JSON values are refused instead of silently coercing
+ok 148 - all lossy non-JSON values are refused instead of silently coercing
+  ---
+  duration_ms: 4.454737
+  type: 'test'
+  ...
+# Subtest: schema/value getters and toJSON hooks never execute during admission
+ok 149 - schema/value getters and toJSON hooks never execute during admission
+  ---
+  duration_ms: 0.768955
+  type: 'test'
+  ...
+# Subtest: scalar JSON and empty nested containers are received without inferred semantics
+ok 150 - scalar JSON and empty nested containers are received without inferred semantics
+  ---
+  duration_ms: 5.417843
+  type: 'test'
+  ...
+# Subtest: unsafe paths and nonbinding export names refuse before producing source
+ok 151 - unsafe paths and nonbinding export names refuse before producing source
+  ---
+  duration_ms: 1.815155
+  type: 'test'
+  ...
+# Subtest: module/export collisions and empty declarations refuse without partial projection
+ok 152 - module/export collisions and empty declarations refuse without partial projection
+  ---
+  duration_ms: 1.343316
+  type: 'test'
+  ...
+# Subtest: authored consumers import declared data through the original connected projector
+ok 153 - authored consumers import declared data through the original connected projector
+  ---
+  duration_ms: 10.113462
+  type: 'test'
+  ...
+# Subtest: a data export cannot be declared as a callable operation or a CLI operation
+ok 154 - a data export cannot be declared as a callable operation or a CLI operation
+  ---
+  duration_ms: 0.902334
+  type: 'test'
+  ...
+# Subtest: a reference cannot bypass the closed profile by promoting annotation data into a schema
+ok 155 - a reference cannot bypass the closed profile by promoting annotation data into a schema
+  ---
+  duration_ms: 1.391499
+  type: 'test'
+  ...
+# Subtest: the closed profile refuses a dependency assertion its selected dialect would ignore
+ok 156 - the closed profile refuses a dependency assertion its selected dialect would ignore
+  ---
+  duration_ms: 0.838108
+  type: 'test'
+  ...
+# Subtest: the original projector, helper and path plan use the same code-unit module order
+ok 157 - the original projector, helper and path plan use the same code-unit module order
+  ---
+  duration_ms: 2.104319
+  type: 'test'
+  ...
+# Subtest: projects shared source modules and one schema-bound NDJSON catalog without wrappers
+ok 158 - projects shared source modules and one schema-bound NDJSON catalog without wrappers
+  ---
+  duration_ms: 654.624532
+  type: 'test'
+  ...
+# Subtest: keeps module-only projections minimal and refuses collisions or unknown exports
+ok 159 - keeps module-only projections minimal and refuses collisions or unknown exports
+  ---
+  duration_ms: 4.760306
+  type: 'test'
+  ...
+# Subtest: projects the checked-in catalog binding without drift and executes its module projection
+ok 160 - projects the checked-in catalog binding without drift and executes its module projection
+  ---
+  duration_ms: 1163.097972
+  type: 'test'
+  ...
+# Subtest: projects module and example documentation without inventing a command protocol
+ok 161 - projects module and example documentation without inventing a command protocol
+  ---
+  duration_ms: 2.049767
+  type: 'test'
+  ...
+# Subtest: documents the catalog command only when admitted
+ok 162 - documents the catalog command only when admitted
+  ---
+  duration_ms: 0.318348
+  type: 'test'
+  ...
+# Subtest: one projection retains shared modules, explicit schemas, and examples without command apparatus
+ok 163 - one projection retains shared modules, explicit schemas, and examples without command apparatus
+  ---
+  duration_ms: 88.362805
+  type: 'test'
+  ...
+# Subtest: optional catalog uses the same functions and one explicit schema pair per binding
+ok 164 - optional catalog uses the same functions and one explicit schema pair per binding
+  ---
+  duration_ms: 7.209593
+  type: 'test'
+  ...
+# Subtest: examples must name a binding when two functions share a module
+ok 165 - examples must name a binding when two functions share a module
+  ---
+  duration_ms: 2.588726
+  type: 'test'
+  ...
+# Subtest: package realization requires an example for each operation binding
+ok 166 - package realization requires an example for each operation binding
+  ---
+  duration_ms: 1.584759
+  type: 'test'
+  ...
+# Subtest: projects a no-import argument record into the canonical operation source
+ok 167 - projects a no-import argument record into the canonical operation source
+  ---
+  duration_ms: 2.635596
+  type: 'test'
+  ...
+# Subtest: projects schema files under data/records/schema/ when the record carries inputSchema and outputSchema
+ok 168 - projects schema files under data/records/schema/ when the record carries inputSchema and outputSchema
+  ---
+  duration_ms: 0.944958
+  type: 'test'
+  ...
+# Subtest: projects only files array entry when inputSchema and outputSchema are null
+ok 169 - projects only files array entry when inputSchema and outputSchema are null
+  ---
+  duration_ms: 0.182474
+  type: 'test'
+  ...
+# Subtest: preserves complete boolean and constrained JSON Schemas in command descriptors and sidecars
+ok 170 - preserves complete boolean and constrained JSON Schemas in command descriptors and sidecars
+  ---
+  duration_ms: 0.521022
+  type: 'test'
+  ...
+# Subtest: projects schema file text in a fixed key order regardless of the incoming schema object's own key order
+ok 171 - projects schema file text in a fixed key order regardless of the incoming schema object's own key order
+  ---
+  duration_ms: 0.276174
+  type: 'test'
+  ...
+# Subtest: is deterministic: the same arguments record projects to the same bytes twice
+ok 172 - is deterministic: the same arguments record projects to the same bytes twice
+  ---
+  duration_ms: 0.184057
+  type: 'test'
+  ...
+# Subtest: retains requested import evaluation order and imports no runtime
+ok 173 - retains requested import evaluation order and imports no runtime
+  ---
+  duration_ms: 0.451137
+  type: 'test'
+  ...
+# Subtest: declares the operation without importing or calling a runtime, a shebang or a main guard
+ok 174 - declares the operation without importing or calling a runtime, a shebang or a main guard
+  ---
+  duration_ms: 0.285509
+  type: 'test'
+  ...
+# Subtest: drops the runtime import the old guard called when nothing else uses it
+ok 175 - drops the runtime import the old guard called when nothing else uses it
+  ---
+  duration_ms: 0.247151
+  type: 'test'
+  ...
+# Subtest: refuses a body that already exports an operation binding
+ok 176 - refuses a body that already exports an operation binding
+  ---
+  duration_ms: 0.514112
+  type: 'test'
+  ...
+# Subtest: delegates async operation invocation to the shared runtime
+ok 177 - delegates async operation invocation to the shared runtime
+  ---
+  duration_ms: 0.217807
+  type: 'test'
+  ...
+# Subtest: refuses a record missing exportName, bodyText, or description
+ok 178 - refuses a record missing exportName, bodyText, or description
+  ---
+  duration_ms: 0.252679
+  type: 'test'
+  ...
+# Subtest: observed top-level residue is refused rather than dropped
+ok 179 - observed top-level residue is refused rather than dropped
+  ---
+  duration_ms: 0.142564
+  type: 'test'
+  ...
+# Subtest: import attributes survive explicit migration to the canonical declaration
+ok 180 - import attributes survive explicit migration to the canonical declaration
+  ---
+  duration_ms: 0.149895
+  type: 'test'
+  ...
+# Subtest: refuses a reserved schema binding collision
+ok 181 - refuses a reserved schema binding collision
+  ---
+  duration_ms: 0.182574
+  type: 'test'
+  ...
+# Subtest: canonical migration keeps alias meaning and import effects while the code layer runs the declaration
+ok 182 - canonical migration keeps alias meaning and import effects while the code layer runs the declaration
+  ---
+  duration_ms: 102.570398
+  type: 'test'
+  ...
+# Subtest: preserves authored tests and projects one module contract test
+ok 183 - preserves authored tests and projects one module contract test
+  ---
+  duration_ms: 12.591711
+  type: 'test'
+  ...
+# Subtest: adds catalog invocation only when the specification has an app
+ok 184 - adds catalog invocation only when the specification has an app
+  ---
+  duration_ms: 0.417717
+  type: 'test'
+  ...
+# Subtest: uses a distinct deterministic binding for each operation, including shared exports
+ok 185 - uses a distinct deterministic binding for each operation, including shared exports
+  ---
+  duration_ms: 0.294872
+  type: 'test'
+  ...
+# Subtest: an omitted files field states no explicit exclusion
+ok 186 - an omitted files field states no explicit exclusion
+  ---
+  duration_ms: 1.378219
+  type: 'test'
+  ...
+# Subtest: an implicit Node index.js entrance is not automatic npm inclusion
+ok 187 - an implicit Node index.js entrance is not automatic npm inclusion
+  ---
+  duration_ms: 0.628914
+  type: 'test'
+  ...
+# Subtest: only explicit main and bin join mandatory package metadata
+ok 188 - only explicit main and bin join mandatory package metadata
+  ---
+  duration_ms: 0.275985
+  type: 'test'
+  ...
+# Subtest: directory, glob and normalized directory allowlists preserve actual exclusions
+ok 189 - directory, glob and normalized directory allowlists preserve actual exclusions
+  ---
+  duration_ms: 3.446113
+  type: 'test'
+  ...
+# Subtest: negative directory declaration excludes its nested files
+ok 190 - negative directory declaration excludes its nested files
+  ---
+  duration_ms: 0.414873
+  type: 'test'
+  ...
+# Subtest: invalid declarations refuse and wildcard materialization stays unclaimed
+ok 191 - invalid declarations refuse and wildcard materialization stays unclaimed
+  ---
+  duration_ms: 0.45985
+  type: 'test'
+  ...
+# Subtest: matchesReadoutCandidatePredicate admits exactly the rule's shape
+ok 192 - matchesReadoutCandidatePredicate admits exactly the rule's shape
+  ---
+  duration_ms: 1.710458
+  type: 'test'
+  ...
+# Subtest: matchesReadoutCandidatePredicate refuses more than one export
+ok 193 - matchesReadoutCandidatePredicate refuses more than one export
+  ---
+  duration_ms: 0.323926
+  type: 'test'
+  ...
+# Subtest: matchesReadoutCandidatePredicate refuses a missing description
+ok 194 - matchesReadoutCandidatePredicate refuses a missing description
+  ---
+  duration_ms: 0.173461
+  type: 'test'
+  ...
+# Subtest: matchesReadoutCandidatePredicate refuses non-empty residue
+ok 195 - matchesReadoutCandidatePredicate refuses non-empty residue
+  ---
+  duration_ms: 1.562486
+  type: 'test'
+  ...
+# Subtest: matchesReadoutCandidatePredicate refuses a missing main guard
+ok 196 - matchesReadoutCandidatePredicate refuses a missing main guard
+  ---
+  duration_ms: 0.27331
+  type: 'test'
+  ...
+# Subtest: argumentsPassReadsStdin reads the fresh-arguments half of the predicate
+ok 197 - argumentsPassReadsStdin reads the fresh-arguments half of the predicate
+  ---
+  duration_ms: 0.180471
+  type: 'test'
+  ...
+# Subtest: guard migration matches complete known templates and preserves unexpected effects
+ok 198 - guard migration matches complete known templates and preserves unexpected effects
+  ---
+  duration_ms: 11.292381
+  type: 'test'
+  ...
+# Subtest: importKey ignores name-list order within one import
+ok 199 - importKey ignores name-list order within one import
+  ---
+  duration_ms: 0.33946
+  type: 'test'
+  ...
+# Subtest: importsEqualAsSets ignores declaration order across imports
+ok 200 - importsEqualAsSets ignores declaration order across imports
+  ---
+  duration_ms: 0.524338
+  type: 'test'
+  ...
+# Subtest: importsEqualAsSets refuses a changed import set
+ok 201 - importsEqualAsSets refuses a changed import set
+  ---
+  duration_ms: 0.45986
+  type: 'test'
+  ...
+# Subtest: stripLeadingJsDoc removes only the leading block comment
+ok 202 - stripLeadingJsDoc removes only the leading block comment
+  ---
+  duration_ms: 0.317447
+  type: 'test'
+  ...
+# Subtest: argumentsRoundTripEqual accepts a reordered-imports, regenerated-JSDoc projection
+ok 203 - argumentsRoundTripEqual accepts a reordered-imports, regenerated-JSDoc projection
+  ---
+  duration_ms: 0.328443
+  type: 'test'
+  ...
+# Subtest: argumentsRoundTripEqual refuses a body text change beyond the leading JSDoc
+ok 204 - argumentsRoundTripEqual refuses a body text change beyond the leading JSDoc
+  ---
+  duration_ms: 0.16667
+  type: 'test'
+  ...
+# Subtest: argumentsRoundTripEqual refuses a changed import set
+ok 205 - argumentsRoundTripEqual refuses a changed import set
+  ---
+  duration_ms: 0.12658
+  type: 'test'
+  ...
+# Subtest: pendingFileWrites is empty when every entry already matches disk
+ok 206 - pendingFileWrites is empty when every entry already matches disk
+  ---
+  duration_ms: 0.998799
+  type: 'test'
+  ...
+# Subtest: pendingFileWrites yields a schema entry whose file is absent even when the script is canonical
+ok 207 - pendingFileWrites yields a schema entry whose file is absent even when the script is canonical
+  ---
+  duration_ms: 0.255083
+  type: 'test'
+  ...
+# Subtest: pendingFileWrites yields a schema entry whose file differs from disk
+ok 208 - pendingFileWrites yields a schema entry whose file differs from disk
+  ---
+  duration_ms: 0.102964
+  type: 'test'
+  ...
+# Subtest: pendingFileWrites includes the script entry when its projected text differs
+ok 209 - pendingFileWrites includes the script entry when its projected text differs
+  ---
+  duration_ms: 0.149735
+  type: 'test'
+  ...
+# Subtest: schemaContractsEqual preserves boolean schemas and every refinement
+ok 210 - schemaContractsEqual preserves boolean schemas and every refinement
+  ---
+  duration_ms: 0.798288
+  type: 'test'
+  ...
+# Subtest: projectDeclarationManifest ships schemas, drops the bin of a script that became a declaration and adds no runtime
+ok 211 - projectDeclarationManifest ships schemas, drops the bin of a script that became a declaration and adds no runtime
+  ---
+  duration_ms: 0.356105
+  type: 'test'
+  ...
+# Subtest: moved readout rows refuse individually and current unsafe source cannot write
+ok 212 - moved readout rows refuse individually and current unsafe source cannot write
+  ---
+  duration_ms: 27.831889
+  type: 'test'
+  ...
+# Subtest: raw stdin echo guards remain refused because they are not line JSON command interfaces
+ok 213 - raw stdin echo guards remain refused because they are not line JSON command interfaces
+  ---
+  duration_ms: 22.390903
+  type: 'test'
+  ...
+# Subtest: untestable packages cannot write a projected script or schemas
+ok 214 - untestable packages cannot write a projected script or schemas
+  ---
+  duration_ms: 10.715685
+  type: 'test'
+  ...
+# Subtest: live scoped discovery excludes test and dependency scripts and respects limit
+ok 215 - live scoped discovery excludes test and dependency scripts and respects limit
+  ---
+  duration_ms: 31.551974
+  type: 'test'
+  ...
+# Subtest: a failing baseline leaves every prior file untouched
+ok 216 - a failing baseline leaves every prior file untouched
+  ---
+  duration_ms: 150.869115
+  type: 'test'
+  ...
+# Subtest: a post-write test failure restores original source and schema absence
+ok 217 - a post-write test failure restores original source and schema absence
+  ---
+  duration_ms: 373.120451
+  type: 'test'
+  ...
+# Subtest: successful behavior tests permit canonical writes and schemas
+ok 218 - successful behavior tests permit canonical writes and schemas
+  ---
+  duration_ms: 347.405459
+  type: 'test'
+  ...
+# Subtest: successful reprojection preserves authoritative schema sidecars and migrates the runtime manifest
+ok 219 - successful reprojection preserves authoritative schema sidecars and migrates the runtime manifest
+  ---
+  duration_ms: 369.41917
+  type: 'test'
+  ...
+# Subtest: nested package fixture tests do not authorize writes in their parent
+ok 220 - nested package fixture tests do not authorize writes in their parent
+  ---
+  duration_ms: 12.118732
+  type: 'test'
+  ...
+# Subtest: canonical interface migration preserves body meaning while changing the guard
+ok 221 - canonical interface migration preserves body meaning while changing the guard
+  ---
+  duration_ms: 0.361943
+  type: 'test'
+  ...
+# Subtest: canonical migration cannot reorder imports or change alias bindings
+ok 222 - canonical migration cannot reorder imports or change alias bindings
+  ---
+  duration_ms: 0.28615
+  type: 'test'
+  ...
+# Subtest: separate option operands and quoting survive migration and a second pass
+ok 223 - separate option operands and quoting survive migration and a second pass
+  ---
+  duration_ms: 4.241517
+  type: 'test'
+  ...
+# Subtest: a command selecting a nonstandard file stays exactly as written, including globs and bare discovery
+ok 224 - a command selecting a nonstandard file stays exactly as written, including globs and bare discovery
+  ---
+  duration_ms: 0.965479
+  type: 'test'
+  ...
+# Subtest: excluded files remain visible to migration without being activated in the standard plan
+ok 225 - excluded files remain visible to migration without being activated in the standard plan
+  ---
+  duration_ms: 0.424427
+  type: 'test'
+  ...
+# Subtest: uncertain flags, missing operands, unsupported globs and selected directories fail closed
+ok 226 - uncertain flags, missing operands, unsupported globs and selected directories fail closed
+  ---
+  duration_ms: 1.404568
+  type: 'test'
+  ...
+# Subtest: default Node discovery is compared using its test names and type-stripping flag
+ok 227 - default Node discovery is compared using its test names and type-stripping flag
+  ---
+  duration_ms: 0.398999
+  type: 'test'
+  ...
+# Subtest: actual CLI keeps a failing smoke test failing: node --test test/smoke.mjs
+ok 228 - actual CLI keeps a failing smoke test failing: node --test test/smoke.mjs
+  ---
+  duration_ms: 369.62538
+  type: 'test'
+  ...
+# Subtest: actual CLI keeps a failing smoke test failing: node --test test/*.mjs
+ok 229 - actual CLI keeps a failing smoke test failing: node --test test/*.mjs
+  ---
+  duration_ms: 345.387379
+  type: 'test'
+  ...
+# Subtest: actual CLI keeps a failing smoke test failing: node --test "test/**/*.mjs"
+ok 230 - actual CLI keeps a failing smoke test failing: node --test "test/**/*.mjs"
+  ---
+  duration_ms: 388.043052
+  type: 'test'
+  ...
+# Subtest: actual CLI keeps a failing smoke test failing: node --test
+ok 231 - actual CLI keeps a failing smoke test failing: node --test
+  ---
+  duration_ms: 402.841717
+  type: 'test'
+  ...
+# Subtest: actual CLI retains a mixed glob and nested-package selection without shrinking it
+ok 232 - actual CLI retains a mixed glob and nested-package selection without shrinking it
+  ---
+  duration_ms: 423.982276
+  type: 'test'
+  ...
+# Subtest: actual CLI preserves separate concurrency and quoted name-pattern operands through the runner
+ok 233 - actual CLI preserves separate concurrency and quoted name-pattern operands through the runner
+  ---
+  duration_ms: 453.358835
+  type: 'test'
+  ...
+# Subtest: an eligible failing standard test still fails after actual CLI migration
+ok 234 - an eligible failing standard test still fails after actual CLI migration
+  ---
+  duration_ms: 395.432995
+  type: 'test'
+  ...
+# Subtest: actual CLI detects an untracked failing file selected by an existing glob
+ok 235 - actual CLI detects an untracked failing file selected by an existing glob
+  ---
+  duration_ms: 302.084446
+  type: 'test'
+  ...
+# Subtest: actual CLI preserves an ignored failing smoke test: node --test test/*.mjs
+ok 236 - actual CLI preserves an ignored failing smoke test: node --test test/*.mjs
+  ---
+  duration_ms: 384.102396
+  type: 'test'
+  ...
+# Subtest: actual CLI preserves an ignored failing smoke test: node --test "test/**/*.mjs"
+ok 237 - actual CLI preserves an ignored failing smoke test: node --test "test/**/*.mjs"
+  ---
+  duration_ms: 357.853348
+  type: 'test'
+  ...
+# Subtest: actual CLI preserves an ignored failing smoke test: node --test
+ok 238 - actual CLI preserves an ignored failing smoke test: node --test
+  ---
+  duration_ms: 411.543069
+  type: 'test'
+  ...
+# Subtest: actual CLI preserves an ignored failing smoke test: node --test test/smoke.mjs
+ok 239 - actual CLI preserves an ignored failing smoke test: node --test test/smoke.mjs
+  ---
+  duration_ms: 320.101006
+  type: 'test'
+  ...
+# Subtest: ignored paths do not block an explicit, fully evidenced standard file
+ok 240 - ignored paths do not block an explicit, fully evidenced standard file
+  ---
+  duration_ms: 391.138002
+  type: 'test'
+  ...
+# Subtest: the standard forms: run-package-tests with node flags only, a check that begins with check-package-syntax
+ok 241 - the standard forms: run-package-tests with node flags only, a check that begins with check-package-syntax
+  ---
+  duration_ms: 1.830728
+  type: 'test'
+  ...
+# Subtest: what an old command ran: quoted globs are node's, unquoted ** is the shell's *, bare --test is everything
+ok 242 - what an old command ran: quoted globs are node's, unquoted ** is the shell's *, bare --test is everything
+  ---
+  duration_ms: 5.653197
+  type: 'test'
+  ...
+# Subtest: a node --test command becomes the standard one, keeping its node flags and naming the tests it never ran
+ok 243 - a node --test command becomes the standard one, keeping its node flags and naming the tests it never ran
+  ---
+  duration_ms: 0.784537
+  type: 'test'
+  ...
+# Subtest: hand-listed node --check steps become one check-package-syntax; other chained steps are kept
+ok 244 - hand-listed node --check steps become one check-package-syntax; other chained steps are kept
+  ---
+  duration_ms: 0.575945
+  type: 'test'
+  ...
+# Subtest: a package with tests and no runner gets one; one with no tests and no scripts is left alone
+ok 245 - a package with tests and no runner gets one; one with no tests and no scripts is left alone
+  ---
+  duration_ms: 0.498318
+  type: 'test'
+  ...
+# Subtest: a test command that is not a node --test form is kept and reported, never rewritten
+ok 246 - a test command that is not a node --test form is kept and reported, never rewritten
+  ---
+  duration_ms: 0.469164
+  type: 'test'
+  ...
+# Subtest: the test-plan package itself is left to run its own scripts
+ok 247 - the test-plan package itself is left to run its own scripts
+  ---
+  duration_ms: 0.188323
+  type: 'test'
+  ...
+# Subtest: house dependencies become exactly what the code uses, scripts name and loadsByName declares
+ok 248 - house dependencies become exactly what the code uses, scripts name and loadsByName declares
+  ---
+  duration_ms: 4.148698
+  type: 'test'
+  ...
+# Subtest: a manifest already in sync reports no changes, and loadsByName must name house packages
+ok 249 - a manifest already in sync reports no changes, and loadsByName must name house packages
+  ---
+  duration_ms: 1.069766
+  type: 'test'
+  ...
+# Subtest: a rewritten manifest keeps its indent, escapes and trailing whitespace
+ok 250 - a rewritten manifest keeps its indent, escapes and trailing whitespace
+  ---
+  duration_ms: 0.494222
+  type: 'test'
+  ...
+# Subtest: without add, a used but undeclared house package is reported, not declared
+ok 251 - without add, a used but undeclared house package is reported, not declared
+  ---
+  duration_ms: 0.518459
+  type: 'test'
+  ...
+# Subtest: a work order with claims translates to a version 2 candidate that the Data admission admits
+ok 252 - a work order with claims translates to a version 2 candidate that the Data admission admits
+  ---
+  duration_ms: 19.748174
+  type: 'test'
+  ...
+# Subtest: a work order without a Claims section is refused: candidate version 1 is retired
+ok 253 - a work order without a Claims section is refused: candidate version 1 is retired
+  ---
+  duration_ms: 1.038389
+  type: 'test'
+  ...
+# Subtest: the law binds a translated work order: bare numbers, ungrounded refusals and measured evidence
+ok 254 - the law binds a translated work order: bare numbers, ungrounded refusals and measured evidence
+  ---
+  duration_ms: 4.188007
+  type: 'test'
+  ...
+# Subtest: a blocking question on a measurable conjecture is refused, not left to block the work
+ok 255 - a blocking question on a measurable conjecture is refused, not left to block the work
+  ---
+  duration_ms: 0.783295
+  type: 'test'
+  ...
+# Subtest: a dependency of a claimed work order needs a measured dependency claim naming name@version
+ok 256 - a dependency of a claimed work order needs a measured dependency claim naming name@version
+  ---
+  duration_ms: 6.624761
+  type: 'test'
+  ...
+# Subtest: an unknown placeholder and a malformed claim are refused at translation with their lines
+ok 257 - an unknown placeholder and a malformed claim are refused at translation with their lines
+  ---
+  duration_ms: 0.691227
+  type: 'test'
+  ...
+# Subtest: a definitionally exact constant is a placeholder without a claim
+ok 258 - a definitionally exact constant is a placeholder without a claim
+  ---
+  duration_ms: 2.400904
+  type: 'test'
+  ...
+# Subtest: a leading YAML front matter block is accepted and counted in every source span
+ok 259 - a leading YAML front matter block is accepted and counted in every source span
+  ---
+  duration_ms: 4.924432
+  type: 'test'
+  ...
+# Subtest: an unterminated front matter block is refused
+ok 260 - an unterminated front matter block is refused
+  ---
+  duration_ms: 0.296425
+  type: 'test'
+  ...
+# Subtest: translates the grouped v2 Markdown dialect through admission and projection
+ok 261 - translates the grouped v2 Markdown dialect through admission and projection
+  ---
+  duration_ms: 40.130126
+  type: 'test'
+  ...
+# Subtest: creates a two-operation Markdown v2 topic with one shared source and one CLI
+ok 262 - creates a two-operation Markdown v2 topic with one shared source and one CLI # SKIP requires a local registry at http://127.0.0.1:4873/ (staged dependency installation)
+  ---
+  duration_ms: 0.154171
+  type: 'test'
+  ...
+# Subtest: refuses malformed v2 operation fences with their source span
+ok 263 - refuses malformed v2 operation fences with their source span
+  ---
+  duration_ms: 0.588924
+  type: 'test'
+  ...
+# Subtest: the Markdown-file command delegates to the parent translator
+ok 264 - the Markdown-file command delegates to the parent translator
+  ---
+  duration_ms: 14.121163
+  type: 'test'
+  ...
+# Subtest: sugar forms stand for the root subpath
+ok 265 - sugar forms stand for the root subpath
+  ---
+  duration_ms: 3.654776
+  type: 'test'
+  ...
+# Subtest: exact subpaths win over patterns, and the longest pattern prefix wins among patterns
+ok 266 - exact subpaths win over patterns, and the longest pattern prefix wins among patterns
+  ---
+  duration_ms: 3.902824
+  type: 'test'
+  ...
+# Subtest: conditions resolve in key order, arrays take the first match, and null excludes
+ok 267 - conditions resolve in key order, arrays take the first match, and null excludes
+  ---
+  duration_ms: 0.506921
+  type: 'test'
+  ...
+# Subtest: every target a map names is listed with its subpath and condition path
+ok 268 - every target a map names is listed with its subpath and condition path
+  ---
+  duration_ms: 0.381041
+  type: 'test'
+  ...
+# Subtest: array null fallback and pattern precedence agree with actual Node ESM resolution
+ok 269 - array null fallback and pattern precedence agree with actual Node ESM resolution
+  ---
+  duration_ms: 1248.593557
+  type: 'test'
+  ...
+# Subtest: target listing excludes invalid array alternatives while rejecting malformed configuration
+ok 270 - target listing excludes invalid array alternatives while rejecting malformed configuration
+  ---
+  duration_ms: 0.575704
+  type: 'test'
+  ...
+# Subtest: packageManifestAdmissionContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 271 - packageManifestAdmissionContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 6.242971
+  type: 'test'
+  ...
+# Subtest: admissionFailureContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 272 - admissionFailureContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.726711
+  type: 'test'
+  ...
+# Subtest: workspaceDeclarationAdmissionContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 273 - workspaceDeclarationAdmissionContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.992731
+  type: 'test'
+  ...
+# Subtest: pnpmLockfileAdmissionContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 274 - pnpmLockfileAdmissionContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 1.590468
+  type: 'test'
+  ...
+# Subtest: binSurfaceEntryContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 275 - binSurfaceEntryContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.455344
+  type: 'test'
+  ...
+# Subtest: binSurfaceContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 276 - binSurfaceContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.826781
+  type: 'test'
+  ...
+# Subtest: packageScriptCatalogEntryContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 277 - packageScriptCatalogEntryContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.498027
+  type: 'test'
+  ...
+# Subtest: packageScriptCatalogContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 278 - packageScriptCatalogContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.963656
+  type: 'test'
+  ...
+# Subtest: exportSurfaceEntryContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 279 - exportSurfaceEntryContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.673401
+  type: 'test'
+  ...
+# Subtest: exportSurfaceContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 280 - exportSurfaceContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 1.13866
+  type: 'test'
+  ...
+# Subtest: packageSurfaceCommitmentContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 281 - packageSurfaceCommitmentContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 1.761905
+  type: 'test'
+  ...
+# Subtest: packageSurfaceContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 282 - packageSurfaceContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 1.663126
+  type: 'test'
+  ...
+# Subtest: publicationArtifactTargetContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 283 - publicationArtifactTargetContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 0.433551
+  type: 'test'
+  ...
+# Subtest: publicationStatusProofContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 284 - publicationStatusProofContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 2.292451
+  type: 'test'
+  ...
+# Subtest: publicationReleasePolicyContract: genuine provider accepts valid value and refuses required/type/extra violations
+ok 285 - publicationReleasePolicyContract: genuine provider accepts valid value and refuses required/type/extra violations
+  ---
+  duration_ms: 4.584632
+  type: 'test'
+  ...
+# Subtest: nested explicit and relative references reject malformed child values
+ok 286 - nested explicit and relative references reject malformed child values
+  ---
+  duration_ms: 2.607003
+  type: 'test'
+  ...
+# Subtest: actual script-catalog consumer carries admitted script names without running commands
+ok 287 - actual script-catalog consumer carries admitted script names without running commands
+  ---
+  duration_ms: 2.217509
+  type: 'test'
+  ...
+# Subtest: actual publication consumer receives source-only package without mandatory build script
+ok 288 - actual publication consumer receives source-only package without mandatory build script
+  ---
+  duration_ms: 1.893121
+  type: 'test'
+  ...
+# Subtest: actual publication consumer retains missing, nonexecutable, private, exclusion and TS boundaries
+ok 289 - actual publication consumer retains missing, nonexecutable, private, exclusion and TS boundaries
+  ---
+  duration_ms: 3.278671
+  type: 'test'
+  ...
+1..289
+# tests 289
+# suites 0
+# pass 284
+# fail 0
+# cancelled 0
+# skipped 5
+# todo 0
+# duration_ms 16711.852119
+
+{"kind":"package-test-run.v1","ok":true,"package":"@red-cup-engineering/jsnode-package-services-section","planned":40,"files":40,"ran":289,"passed":284,"failed":0,"requires":[]}

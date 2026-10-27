@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/jsnode-package-services-section",
-  "version": "0.5.1-dev.4",
+  "version": "0.5.1-dev.5",
   "type": "module",
   "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
   "repository": {
@@ -21,6 +21,7 @@
     "./project-jsnode-operation-package-readme": "./src/project-jsnode-operation-package-readme.mjs",
     "./project-jsnode-operation-tests": "./src/project-jsnode-operation-tests.mjs",
     "./project-jsnode-modules": "./src/project-jsnode-modules.mjs",
+    "./project-jsnode-data-modules": "./src/project-jsnode-data-modules.mjs",
     "./project-jsnode-operation-source-from-arguments": "./src/project-jsnode-operation-source-from-arguments.mjs",
     "./check-javascript-export-comment-discipline": "./scripts/check-javascript-export-comment-discipline.mjs",
     "./workspace/bins": "./src/workspace/bins/index.mjs",
