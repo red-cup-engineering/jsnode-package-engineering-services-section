@@ -31,7 +31,12 @@ function runNode(args,cwd) {
   // worker-local marker; preserve the caller's remaining native environment.
   const env={...process.env};
   delete env.NODE_TEST_CONTEXT;
-  return spawnSync(process.execPath,args,{cwd,encoding:"utf8",timeout:15000,env});
+  // Node 24 defaults to the human-readable spec reporter, while earlier
+  // native runners default to TAP. Select TAP explicitly for machine-read
+  // assertions about executed/failed cases, never infer a passing result
+  // merely from a child's zero exit code.
+  const nativeArgs=args.includes("--test") ? ["--test-reporter=tap",...args] : args;
+  return spawnSync(process.execPath,nativeArgs,{cwd,encoding:"utf8",timeout:15000,env});
 }
 
 test("native Node executes tests fabricated from legal ESM reserved, default, and ordinary named exports",async()=>{
