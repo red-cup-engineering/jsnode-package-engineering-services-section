@@ -107,3 +107,54 @@ console.log(JSON.stringify({
   invalidArrayBehaviorRejected:true, mislabeledInputRefusedBeforeSource:true,
   externalInferenceCalls:0, controlledFixtureOnly:true,
 }));
+
+
+// The same incumbent clause receiver, test projector and original receipt
+// re-reader must retain the explicit behavioral demand. No second test
+// registry, inferred purity claim or generated source supplier is involved.
+const invariantCases = arrayCases.map(item => item.name === 'independent-array'
+  ? {...item, checks:{inputUnchanged:true,stableReplay:true}} : item);
+const invalidInvariants = [
+  invariantCases.map(item => item.name === 'independent-array'
+    ? {...item,checks:{inputUnchanged:false}} : item),
+  invariantCases.map(item => item.name === 'independent-array'
+    ? {...item,checks:{notAContract:true}} : item),
+  invariantCases.map(item => item.name === 'reject-scalar'
+    ? {...item,checks:{stableReplay:true}} : item),
+];
+for(const malformed of invalidInvariants)
+  assert.throws(()=>assayCasesOfDelivery(deliverArray(malformed),arrayClosure),
+    'unadmitted behavioral obligations must never enter source-derived tests');
+const checkedArray=await deriveArray(
+  'export function sumList(values){if(!Array.isArray(values))throw new TypeError("array required");return values.reduce((sum,n)=>sum+n,0);}',
+  invariantCases,
+);
+assert.ok(Array.isArray(checkedArray.result.tests),JSON.stringify(checkedArray.result));
+assert.equal(checkedArray.inferenceCalls,2);
+assert.match(checkedArray.result.tests[0].text,/assert\.deepStrictEqual\(assayInput, originalInput\)/u);
+assert.match(checkedArray.result.tests[0].text,/assert\.deepStrictEqual\(replayOutput, firstOutput\)/u);
+const mutatingArray=await deriveArray(
+  'export function sumList(values){if(!Array.isArray(values))throw new TypeError("array required");values.push(0);return values.reduce((sum,n)=>sum+n,0);}',
+  invariantCases,
+);
+assert.equal(mutatingArray.result.type,'JsnodeClosureDerivationRefusal');
+assert.equal(mutatingArray.result.code,'DERIVATION_REJECTED',
+  'matching outputs cannot conceal input mutations explicitly prohibited by the original clause');
+const invariantOrder={
+  projections:[{configuration:{...arrayClosure,sources:[],tests:[]}}],
+  requirements:arrayClosure.requirements,prohibitions:arrayClosure.prohibitions,
+  constraints:arrayClosure.constraints,
+};
+const retainedInvariant=admitClauseAssayDerivation(invariantOrder,
+  {tests:checkedArray.result.tests},{attempts:checkedArray.result.derivations});
+assert.deepEqual(retainedInvariant.cases,invariantCases);
+assert.deepEqual(retainedInvariant.tests,checkedArray.result.tests);
+const weakenedTests=checkedArray.result.tests.map(file=>({...file,
+  text:file.text.replace('  assert.deepStrictEqual(assayInput, originalInput);','')}));
+assert.throws(()=>admitClauseAssayDerivation(invariantOrder,
+  {tests:weakenedTests},{attempts:checkedArray.result.derivations}),
+  {code:'CLAUSE_ASSAY_TEST_BINDING_MISMATCH'},
+  'original receipt replay refuses tests that silently drop independent behavioral obligations');
+console.log(JSON.stringify({nonmutationFromOriginalClauses:true,
+  mutatingCodeRefused:true,stableReplayGenerated:true,
+  originalReceiptRetainsChecks:true,proofWeakeningRefused:true,controlledFixtureOnly:true}));
