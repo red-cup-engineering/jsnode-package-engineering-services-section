@@ -23,6 +23,7 @@
  */
 import path from "node:path";
 import { parseJsonValue } from "@red-cup-engineering/json-services-section";
+import { readJsnodeModuleExports } from "@red-cup-engineering/javascript-node-services-section/syntax";
 import { inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";
 import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
 import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
@@ -235,10 +236,20 @@ export function moduleOfDelivery(text, member) {
   } else if (hasQuestion && record.source === null) return { question: record.question };
   else return { refused: "delivery must carry exactly one nonempty source or open question and null for the other" };
   const source = record.source;
+  // The original JavaScript syntax reader, not a regex, owns ECMAScript
+  // export grammar. Export-shaped comments cannot satisfy declared interfaces;
+  // legal quoted, reserved and dollar-sign exports remain admissible.
+  if (Buffer.byteLength(source, "utf8") > 1024 * 1024)
+    return { refused: "the delivered module exceeds the bounded one-module source budget" };
+  let exports;
+  try { exports = new Set(readJsnodeModuleExports(source, operations[0].module).names); }
+  catch (error) {
+    return { refused: "the delivered module is not readable ECMAScript source: " +
+      String(error?.message ?? error).slice(0, 240) };
+  }
   for (const operation of operations) {
-  const name = operation.exportName;
-  const exported = new RegExp(`export\\s+(?:(?:async\\s+)?function\\s*\\*?\\s*${name}\\b|(?:const|let)\\s+${name}\\s*=)|export\\s*\\{[^}]*\\b${name}\\b[^}]*\\}`, "u");
-  if (!exported.test(source)) return { refused: `the module does not export ${name}` };
+    if (!exports.has(operation.exportName))
+      return { refused: `the module does not export ${operation.exportName}` };
   }
   if (/import\.meta\.main/u.test(source)) return { refused: "the module carries a command-line face; the package projects that" };
   return { source };

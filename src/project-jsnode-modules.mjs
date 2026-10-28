@@ -30,7 +30,9 @@ function validateOperationSchema(schema, operation, side) {
   if (result.issues.some((issue) => issue.kind === "schema")) throw new TypeError(`invalid ${side} schema for ${operation.name}: ${result.issues.map((issue) => issue.message).join("; ")}`);
 }
 function namedExports(text, fileName) {
-  return new Set(readJsnodeModuleExports(text, fileName).names.filter((name) => name !== "default"));
+  // "default" is a real ECMAScript ModuleExportName, not an omitted
+  // operation; the original AST reader already distinguishes exported names.
+  return new Set(readJsnodeModuleExports(text, fileName).names);
 }
 function validateSourceImports(sources, externalReferences) {
   const paths = new Set(sources.map((source) => source.path));
@@ -46,7 +48,7 @@ function validateSourceImports(sources, externalReferences) {
   }
 }
 function cliText(cli, operations) {
-  const imports = operations.map((operation, index) => `import { ${operation.exportName} as operation${index} } from ${JSON.stringify(relative(cli.path, operation.module))};`);
+  const imports = operations.map((operation, index) => `import { ${JSON.stringify(operation.exportName)} as operation${index} } from ${JSON.stringify(relative(cli.path, operation.module))};`);
   const schemas = operations.flatMap((operation, index) => {
     const result = [];
     if (Object.hasOwn(operation, "inputSchema")) result.push(`import operation${index}InputSchema from ${JSON.stringify(relative(cli.path, schemaPath(operation, "input")))} with { type: "json" };`);
