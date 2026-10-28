@@ -158,3 +158,58 @@ assert.throws(()=>admitClauseAssayDerivation(invariantOrder,
 console.log(JSON.stringify({nonmutationFromOriginalClauses:true,
   mutatingCodeRefused:true,stableReplayGenerated:true,
   originalReceiptRetainsChecks:true,proofWeakeningRefused:true,controlledFixtureOnly:true}));
+
+
+// Before any source attempt, independently derived clause tests must share
+// the same exact TAP namespace as original example tests. The two syntactic
+// lists can be individually unique but *collide after Node test-name formation*.
+const overlapping = structuredClone(closure);
+overlapping.examples[0].name = "clause assay negative";
+let collisionCalls=0;
+const collision = await deriveJsnodePackageFromClosure(overlapping, {
+  infer: async () => ({
+    text: JSON.stringify(++collisionCalls===1
+      ? {cases,question:null}
+      : {source:"unreachable",question:null}),
+  }),
+  isolatedAssayExecutor:controlledLocalAssayFixture,
+});
+assert.equal(collision.type,"JsnodeClosureDerivationRefusal");
+assert.equal(collision.code,"ASSAY_DERIVATION_REFUSED");
+assert.equal(collisionCalls,1,
+  "a derived name collision must not buy implementation inference");
+assert.throws(() => assayCasesOfDelivery(JSON.stringify({cases,question:null}), overlapping),
+  /runner names must be distinct/u);
+
+const unsafeExample=structuredClone(closure);
+unsafeExample.examples[0].name="line\nbreak";
+let unsafeCalls=0;
+const unsafeResult=await deriveJsnodePackageFromClosure(unsafeExample,{
+  infer:async()=>{unsafeCalls++;throw new Error("must not purchase an assay");},
+  isolatedAssayExecutor:controlledLocalAssayFixture,
+});
+assert.equal(unsafeResult.type,"JsnodeClosureDerivationRefusal");
+assert.equal(unsafeResult.code,"INVALID_ADMITTED_ASSAYS");
+assert.equal(unsafeCalls,0,
+  "the source-owned example cannot consume an inference lot before TAP-name receiving");
+
+const overlappingOrder={
+  projections:[{configuration:overlapping}],
+  requirements:overlapping.requirements,
+  prohibitions:overlapping.prohibitions,
+  constraints:overlapping.constraints,
+};
+assert.throws(()=>admitClauseAssayDerivation(overlappingOrder,
+  {tests:good.result.tests},{attempts:good.result.derivations}),
+  {code:"INVALID_CLAUSE_ASSAYS"},
+  "the existing original receipt reader must not re-admit a combined runner-name collision");
+const ordinary=await run('export function successor({n}){if(n<0)throw new RangeError();return n+1;}');
+assert.ok(ordinary.result.sources.length===1);
+assert.equal(ordinary.calls.length,2);
+console.log(JSON.stringify({
+  originalExampleNameAdmittedBeforeInference:true,
+  sourceAssayCollisionsRefusedBeforeCode:true,
+  unsafeNameZeroInferenceRequests:true,
+  originalReceiptReplayRefusesNameCollision:true,
+  normalCodeWorkPreserved:true,controlledFixtureOnly:true,
+}));
