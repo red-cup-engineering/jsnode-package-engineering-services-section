@@ -183,6 +183,13 @@ remains mandatory before any supplier source executes. Up to 128 cases may be
 proposed in one bounded delivery. These checks demonstrate a concrete expected
 failure path, not independent authentication of a claimed clause's meaning.
 
+The native TAP runner's exact name contract also rejects hash (`#`) and
+backslash (`\\`) in original example and derived clause-case labels, because Node
+escapes those characters when reporting TAP results. Nonprintable C1 controls
+are refused as well. Admission happens before implementation inference,
+avoiding paid source lots that cannot match the runner's literal receipt.
+This is a test-name compatibility gate, not a host isolation proof.
+
 When an **original Requirement/Prohibition explicitly calls for observable
 nonmutation or stable results for equivalent repeated inputs**, a successful,
 schema-admitted JSON clause case may additionally declare

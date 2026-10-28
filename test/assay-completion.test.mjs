@@ -254,3 +254,22 @@ test("original TAP labels are admitted as one unique namespace before a source m
   }
   assert.deepEqual(assertAdmittedAssayNames(original), ["sort-values: normal"]);
 });
+
+test("Node TAP escapes punctuation in labels, so original exact names must refuse it", () => {
+  for (const unsafeName of ["hash#marker", "path\\fragment"]) {
+    const exact = "double-value: " + unsafeName;
+    const observed = run('import test from "node:test";\ntest(' + JSON.stringify(exact) + ',()=>{});');
+    assert.equal(observed.status, 0, observed.stderr);
+    const root = observed.stdout.split("\n").find(line => line.startsWith("ok 1 - "));
+    assert.ok(root, observed.stdout);
+    assert.notEqual(root, "ok 1 - " + exact,
+      "Node's TAP reporter must not be mistaken for the source-owned literal label");
+    const order = { operations:[{name:"double-value"}],
+      examples:[{operation:"double-value",name:unsafeName}] };
+    assert.throws(() => assertAdmittedAssayNames(order), TypeError);
+    assert.equal(testRunCompletedAllAssays(observed.stdout, [exact]), false);
+  }
+  const nonPrintable = { operations:[{name:"double-value"}],
+    examples:[{operation:"double-value",name:"C1\u0085control"}] };
+  assert.throws(() => assertAdmittedAssayNames(nonPrintable), TypeError);
+});

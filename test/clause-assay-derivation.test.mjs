@@ -213,3 +213,32 @@ console.log(JSON.stringify({
   originalReceiptReplayRefusesNameCollision:true,
   normalCodeWorkPreserved:true,controlledFixtureOnly:true,
 }));
+
+// Original P0 #74: Node's TAP reporter escapes # and \, so a literal
+// completion receipt could never accept these source-owned names. Reject
+// authored examples before any inference, hidden cases before source inference.
+for (const unsafeName of ["hash#marker", "back\\slash"]) {
+  const badExample=structuredClone(closure);
+  badExample.examples[0].name=unsafeName;
+  let originalCalls=0;
+  const originalRefusal=await deriveJsnodePackageFromClosure(badExample,{
+    infer:async()=>{originalCalls++;throw new Error("cannot spend");},
+    isolatedAssayExecutor:controlledLocalAssayFixture,
+  });
+  assert.equal(originalRefusal.code,"INVALID_ADMITTED_ASSAYS");
+  assert.equal(originalCalls,0,"unreceivable original name must not buy inference");
+
+  const badCase=cases.map(item=>item.name==="negative"
+    ? {...item,name:unsafeName} : item);
+  let derivedCalls=0;
+  const derivedRefusal=await deriveJsnodePackageFromClosure(closure,{
+    infer:async()=>({text:JSON.stringify(++derivedCalls===1
+      ? {cases:badCase,question:null}
+      : {source:"unreachable",question:null})}),
+    isolatedAssayExecutor:controlledLocalAssayFixture,
+  });
+  assert.equal(derivedRefusal.code,"ASSAY_DERIVATION_REFUSED");
+  assert.equal(derivedCalls,1,"unreceivable hidden assay must not buy source");
+}
+console.log(JSON.stringify({tapEscapedNamesRefusedBeforeCode:true,
+  noInferenceOnUnreportableOriginalAssays:true,fixtureOnly:true}));
