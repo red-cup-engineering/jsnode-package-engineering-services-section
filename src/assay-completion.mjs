@@ -21,9 +21,12 @@ export function admittedAssayNames(closure, derivedCases = []) {
 // fabricate code. A runner name is composed from the original operation and
 // example/clause name, so validating only the separate input arrays misses
 // collisions such as example "clause assay x" versus independent case "x".
+// Node's TAP reporter escapes # and \ in test names (as \# and \\).
+// Those labels cannot match source-owned exact names: reject them before
+// buying a source attempt rather than reporting false incompletion.
 const safeAssayName = name => typeof name === "string" &&
   name.trim().length > 0 && name.length <= 512 &&
-  !/[\u0000-\u001f\u007f\u2028\u2029]/u.test(name);
+  !/[\\#\u0000-\u001f\u007f-\u009f\u2028\u2029]/u.test(name);
 
 /** Admit one exact native runner name set without running, spending or writing. */
 export function assertAdmittedAssayNames(closure, derivedCases = []) {
