@@ -29,7 +29,7 @@ import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-e
 import { bindOperationMeaningClosure } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
 import { channelOfPreAssayFailure, proofingOfDerivation } from "./assay-channels.mjs";
-import { admittedAssayNames, receiveIsolatedAssayOutcome } from "./assay-completion.mjs";
+import { assertAdmittedAssayNames, receiveIsolatedAssayOutcome } from "./assay-completion.mjs";
 import { misfoldRefusal, misfoldsOfModule } from "./misfold.mjs";
 
 import { moduleMeaningClosure, moduleFabricationPlan, testsOfClosure, assayInputSchemaOf, assayOutputSchemaOf } from "./plan-jsnode-modules.mjs";
@@ -192,6 +192,9 @@ export function assayCasesOfDelivery(text, closure) {
   }
   const missing = [...closure.requirements, ...closure.prohibitions].filter(item => !covered.has(item.id));
   if (missing.length) throw new TypeError("uncovered clauses: " + missing.map(item => item.id).join(", "));
+  // The original example names and these independently proposed clause cases
+  // share one exact TAP namespace. Reject collisions before buying any Code.
+  assertAdmittedAssayNames(closure, delivery.cases);
   return { cases: delivery.cases };
 }
 
@@ -283,7 +286,7 @@ async function preAssayWithProjection(closure, sources, derivedCases, dependency
       operations: closure.operations,
     });
     const assays = projectAssays();
-    const names = admittedAssayNames(closure, derivedCases);
+    const names = assertAdmittedAssayNames(closure, derivedCases);
     const files = Object.freeze([...modules, ...assays.map(({ path, text }) => ({ path, text }))].map(file =>
       Object.freeze({ path: file.path, text: file.text })));
     const testPaths = Object.freeze(assays.map(({ path }) => path));
@@ -333,6 +336,14 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
       code: "ISOLATED_ASSAY_UNAVAILABLE",
       evidence: "the host did not compose an isolated code-execution capability",
       derivations: Object.freeze([]) });
+  // Direct source-free closure callers (not only the canonical Work planner)
+  // must refuse impossible native runner labels before any market request.
+  try { assertAdmittedAssayNames(closure); }
+  catch (error) {
+    return Object.freeze({ type: "JsnodeClosureDerivationRefusal", version: 1,
+      code: "INVALID_ADMITTED_ASSAYS", evidence: error.message,
+      derivations: Object.freeze([]) });
+  }
   let nativeBindings;
   try { nativeBindings = nativeBindingsFor(closure, nativeAssayBindings); }
   catch (error) {

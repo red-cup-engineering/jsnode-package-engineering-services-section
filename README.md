@@ -442,6 +442,21 @@ still requires the selected isolated host and an actual inference delivery.
 A `jsnode-modules` order declares every operation, its module, schemas, examples,
 exact dependencies, clauses and independent receiving obligations. The native
 `fabrication-derive-jsnode-modules` operation admits that order before inference.
+The original native TAP receiver requires one **exact, unique runner-name
+namespace** across authored examples and independently derived clause cases.
+The original Work planner and direct source-free fabricator now refuse
+control-character, multiline and oversized example names **before buying an
+assay inference request**. The original clause-case receiver also refuses a
+collision with any authored example after forming full native test names:
+an example called `clause assay negative` and an independent case called
+`negative` address the same `operation: clause assay negative` TAP result.
+That disagreement refuses **before buying implementation inference** and
+the existing v3 fabrication-receipt reader refuses to replay a forged or
+unreceivable case set. The original complete TAP host receiver still checks
+the exact executed count, identities, zero skips and complete accounting;
+early structural admission is not an isolation proof or substantive
+requirement coverage.
+
 Clause assays are derived first and hidden from source suppliers. Each declared
 module is supplied once; relative imports may use the other declared modules.
 The existing module projector validates the complete source/import closure, then

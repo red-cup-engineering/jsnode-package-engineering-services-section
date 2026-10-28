@@ -16,13 +16,36 @@ export function admittedAssayNames(closure, derivedCases = []) {
   ]));
 }
 
+// Test names are public, exact words in the native TAP receiving contract.
+// Reject collisions and control characters *before* the supplier is asked to
+// fabricate code. A runner name is composed from the original operation and
+// example/clause name, so validating only the separate input arrays misses
+// collisions such as example "clause assay x" versus independent case "x".
+const safeAssayName = name => typeof name === "string" &&
+  name.trim().length > 0 && name.length <= 512 &&
+  !/[\u0000-\u001f\u007f\u2028\u2029]/u.test(name);
+
+/** Admit one exact native runner name set without running, spending or writing. */
+export function assertAdmittedAssayNames(closure, derivedCases = []) {
+  if (!Array.isArray(closure?.operations) || !Array.isArray(closure?.examples) ||
+      !Array.isArray(derivedCases) ||
+      closure.operations.some(item => !safeAssayName(item?.name)) ||
+      [...closure.examples, ...derivedCases].some(item =>
+        !safeAssayName(item?.operation) || !safeAssayName(item?.name)))
+    throw new TypeError("original assay names require bounded, printable, source-owned words");
+  const names = admittedAssayNames(closure, derivedCases);
+  if (!names.length || names.some(name => !safeAssayName(name)) ||
+      new Set(names).size !== names.length)
+    throw new TypeError("original example and clause-assay runner names must be distinct and printable");
+  return names;
+}
+
 // A source-owned proof *problem* is read from one original host's TAP bytes.
 // Null means every necessary structural condition was observed; none of these
 // readings certify a sandbox, a mathematical theorem, a buyer or payment.
 function tapCompletionProblem(tap, expectedNames) {
   if (typeof tap !== "string" || !Array.isArray(expectedNames) ||
-      expectedNames.length === 0 || expectedNames.some(name =>
-        typeof name !== "string" || name.length === 0 || /[\r\n]/u.test(name)) ||
+      expectedNames.length === 0 || expectedNames.some(name => !safeAssayName(name)) ||
       new Set(expectedNames).size !== expectedNames.length)
     return "INVALID_ADMITTED_ASSAYS";
   const lines = tap.replaceAll("\r\n", "\n").split("\n");

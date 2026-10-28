@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { admittedAssayNames, testRunCompletedAllAssays, receiveIsolatedAssayOutcome } from "../src/assay-completion.mjs";
+import { admittedAssayNames, assertAdmittedAssayNames, testRunCompletedAllAssays, receiveIsolatedAssayOutcome } from "../src/assay-completion.mjs";
 
 const expected = ["double-value: positive", "double-value: clause assay negative"];
 const run = source => {
@@ -224,4 +224,33 @@ test("host assay text limits apply to captured UTF-8 bytes, not JavaScript chara
   assert.equal(received.passed,false);
   assert.equal(received.code,"ASSAY_EXECUTION_REFUSED");
   assert.equal(received.reason,"CAPTURED_OUTPUT_TOO_LARGE");
+});
+
+
+test("original TAP labels are admitted as one unique namespace before a source maker can spend", () => {
+  const original = {
+    operations:[{name:"sort-values"}],
+    examples:[{operation:"sort-values",name:"normal"}],
+  };
+  assert.deepEqual(assertAdmittedAssayNames(original, [
+    {operation:"sort-values",name:"independent-case"},
+  ]), ["sort-values: normal", "sort-values: clause assay independent-case"]);
+
+  const clash = structuredClone(original);
+  clash.examples[0].name = "clause assay independent-case";
+  assert.throws(() => assertAdmittedAssayNames(clash, [
+    {operation:"sort-values",name:"independent-case"},
+  ]), /runner names must be distinct/u);
+
+  for (const invalidName of ["line\nbreak", "carriage\rreturn", "escape\u001b[31m",
+    "null\u0000byte", "Unicode\u2028separator", "x".repeat(520), ""]) {
+    const malformed = structuredClone(original);
+    malformed.examples[0].name = invalidName;
+    assert.throws(() => assertAdmittedAssayNames(malformed), TypeError,
+      "a hazardous exact native test name must refuse before it reaches TAP");
+    assert.equal(testRunCompletedAllAssays("TAP version 13\n", [
+      "sort-values: " + invalidName,
+    ]), false);
+  }
+  assert.deepEqual(assertAdmittedAssayNames(original), ["sort-values: normal"]);
 });
