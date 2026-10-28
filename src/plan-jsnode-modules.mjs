@@ -5,6 +5,7 @@ import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version
 import { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
 import { admitNativeAssayProfile, nativeAssayData, nativeBindingsFor, projectNativeAssays } from "./native-assay-profile.mjs";
 import { closedAssaySchema } from "./closed-assay-schema.mjs";
+import { assertAdmittedAssayNames } from "./assay-completion.mjs";
 
 // The module projector already owns operation names, export bindings and paths.
 // A meaning closure supplies examples and exact dependencies, never source,
@@ -51,6 +52,9 @@ export function moduleFabricationPlan(candidate) {
       return refuse({ code: "INVALID_MODULE_PROJECTION", message: "one jsnode-modules projection to the module fabricator is required" });
     }
     const closure = moduleMeaningClosure.assert(projection.configuration);
+    // Source-free example names must be receivable by the native TAP runner
+    // before Work admission or inference. Derived cases are checked later.
+    assertAdmittedAssayNames(closure);
     const names = new Set(), bindings = new Set(), examples = new Set();
     for (const op of closure.operations) {
       if (op.nativeProfile !== undefined) admitNativeAssayProfile(op.nativeProfile);
