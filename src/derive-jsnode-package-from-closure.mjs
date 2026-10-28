@@ -131,6 +131,10 @@ export function assayDeliverySchema(closure) {
           properties: {
             operation: { const: op.name }, name: { type: "string", minLength: 1, maxLength: 160 },
             inputDomain: { enum: ["admitted", "outside-schema"] },
+            // Optional evidence-bearing behavioral checks. Merely having an
+            // input/output schema does not assert nonmutation or repeatability.
+            checks: { type: "object", minProperties: 1, additionalProperties: false,
+              properties: { inputUnchanged: { const: true }, stableReplay: { const: true } } },
             clauses: { type: "array", minItems: 1, uniqueItems: true, items: { enum: clauseIds } },
             // Keep the transport independent of the original input universe:
             // a negative input MUST be able to violate that universe.
@@ -159,6 +163,11 @@ export function assayCasesOfDelivery(text, closure) {
     // scenarios continue to require the original operation's input schema.
     // Do not mistake transport-schema acceptance for domain acceptance.
     const domain = item.inputDomain ?? "admitted";
+    if (item.checks !== undefined &&
+        (item.throws !== null || domain !== "admitted" || op.nativeProfile !== undefined))
+      throw new TypeError("behavioral checks require a successful, schema-admitted JSON operation case");
+    if (item.checks?.inputUnchanged && (item.input === null || typeof item.input !== "object"))
+      throw new TypeError("input-unchanged check requires a structured input to observe");
     if (domain === "outside-schema" && op.nativeProfile !== undefined)
       throw new TypeError("outside-schema assays are unavailable for native host scenarios");
     const inputSchema = closedAssaySchema(assayInputSchemaOf(op));
@@ -193,7 +202,7 @@ export function assayCasesOfDelivery(text, closure) {
  */
 export function assayMessagesOf(workOrder) {
   return [
-    { role: "system", content: "Derive behavioral assay cases from the closed work order's requirements and prohibitions before any source is written. The workOrder carrier is the entire order; its projection configuration declares the operations, schemas, examples and dependencies. Return only the supplied JSON carrier. Cases must be determined by the clauses and cover every clause by ID. For a JSON operation, use inputs admitted by its input schema, unless testing an explicitly specified out-of-domain rejection. For that negative test only, set inputDomain to \"outside-schema\", use an input the original operation schema rejects, output null and a named throws expectation. NativeProfile scenarios and ordinary cases must be schema-admitted; a schema-valid input must never be labeled outside-schema. For a nativeProfile operation, input/output are source-free fixture scenarios and observations admitted by its scenarioSchema/observationSchema; its native contract is exercised by a separately trusted host fixture. The transport schema deliberately leaves native input/output slots open; obey each original scenarioSchema and observationSchema in the complete workOrder independently, without resolving references against the transport envelope or another operation. The receiver validates those exact contracts before source writing. They are never serialized native function ports, factory arguments or handles. Do not invent requirements. Include cases beyond the supplied examples. Returned outputs and thrown error names are exclusive. If a required expectation is not determined, return cases null and a nonempty question. No executable source, tool calls or repository access." },
+    { role: "system", content: "Derive behavioral assay cases from the closed work order's requirements and prohibitions before any source is written. The workOrder carrier is the entire order; its projection configuration declares the operations, schemas, examples and dependencies. Return only the supplied JSON carrier. Cases must be determined by the clauses and cover every clause by ID. For a JSON operation, use inputs admitted by its input schema, unless testing an explicitly specified out-of-domain rejection. For that negative test only, set inputDomain to \"outside-schema\", use an input the original operation schema rejects, output null and a named throws expectation. NativeProfile scenarios and ordinary cases must be schema-admitted; a schema-valid input must never be labeled outside-schema. Only where an original clause explicitly demands it, a successful schema-admitted JSON case may include checks with inputUnchanged:true for a structured input and/or stableReplay:true for equal results on repeated equivalent inputs. These checks are not implied by the schema. Do not attach checks to throwing cases or nativeProfile operations. For a nativeProfile operation, input/output are source-free fixture scenarios and observations admitted by its scenarioSchema/observationSchema; its native contract is exercised by a separately trusted host fixture. The transport schema deliberately leaves native input/output slots open; obey each original scenarioSchema and observationSchema in the complete workOrder independently, without resolving references against the transport envelope or another operation. The receiver validates those exact contracts before source writing. They are never serialized native function ports, factory arguments or handles. Do not invent requirements. Include cases beyond the supplied examples. Returned outputs and thrown error names are exclusive. If a required expectation is not determined, return cases null and a nonempty question. No executable source, tool calls or repository access." },
     { role: "user", content: JSON.stringify({ workOrder }) },
   ];
 }
