@@ -182,6 +182,22 @@ actual Node behavior assertions; the original host-owned isolated executor
 remains mandatory before any supplier source executes. Up to 128 cases may be
 proposed in one bounded delivery. These checks demonstrate a concrete expected
 failure path, not independent authentication of a claimed clause's meaning.
+
+When an **original Requirement/Prohibition explicitly calls for observable
+nonmutation or stable results for equivalent repeated inputs**, a successful,
+schema-admitted JSON clause case may additionally declare
+`checks: { "inputUnchanged": true, "stableReplay": true }`, selecting either
+or both flags. `inputUnchanged` requires an array/object input; throwing
+cases, outside-schema cases and native host scenarios cannot carry these
+checks. The original deterministic projector captures the initial input,
+asserts the expected first result, checks the original input is unchanged,
+then invokes the export on a fresh equivalent input and compares results; when
+both flags are requested it also checks the replay input stayed unchanged.
+The same source/derived tests are replayed by the incumbent v3 fabrication
+receipt reader. An output-only test that passed a mutating or stateful
+implementation is now distinguishable from an explicitly checked one.
+This is a finite observational contract, not a general proof of purity,
+idempotence, freedom from external effects, or actual buyer acceptance.
 The source writer sees the original order and
 examples, but not the extra cases. Each declared module is derived once with all
 its specified exports. An unresolved question or failed assay returns a refusal;
