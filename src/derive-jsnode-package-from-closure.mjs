@@ -124,14 +124,19 @@ export function assayDeliverySchema(closure) {
     type: "object", required: ["cases", "question"], additionalProperties: false,
     properties: {
       question: { type: ["string", "null"] },
-      cases: { anyOf: [{ type: "null" }, { type: "array", minItems: 1, items: {
+      cases: { anyOf: [{ type: "null" }, { type: "array", minItems: 1, maxItems: 128, items: {
         anyOf: closure.operations.map(op => ({
           type: "object", additionalProperties: false,
           required: ["operation", "name", "clauses", "input", "output", "throws"],
           properties: {
-            operation: { const: op.name }, name: { type: "string", minLength: 1 },
+            operation: { const: op.name }, name: { type: "string", minLength: 1, maxLength: 160 },
+            inputDomain: { enum: ["admitted", "outside-schema"] },
             clauses: { type: "array", minItems: 1, uniqueItems: true, items: { enum: clauseIds } },
-            input: op.nativeProfile === undefined ? assayInputSchemaOf(op) : {},
+            // Keep the transport independent of the original input universe:
+            // a negative input MUST be able to violate that universe.
+            // Its actual inside/outside relationship is checked below, against
+            // the original operation schema, before source inference.
+            input: {},
             output: op.nativeProfile === undefined ? { anyOf: [assayOutputSchemaOf(op), { type: "null" }] } : {},
             throws: { enum: [null, "Error", "TypeError", "RangeError", "SyntaxError"] },
           },
@@ -149,9 +154,27 @@ export function assayCasesOfDelivery(text, closure) {
   for (const item of delivery.cases) {
     if (item.throws !== null && item.output !== null) throw new TypeError("a refusal assay cannot also declare a returned output");
     const op = closure.operations.find(op => op.name === item.operation);
+    // Only a declared negative JSON-operation test may live outside its input
+    // schema. Admitted examples, ordinary negative cases and all native host
+    // scenarios continue to require the original operation's input schema.
+    // Do not mistake transport-schema acceptance for domain acceptance.
+    const domain = item.inputDomain ?? "admitted";
+    if (domain === "outside-schema" && op.nativeProfile !== undefined)
+      throw new TypeError("outside-schema assays are unavailable for native host scenarios");
+    const inputSchema = closedAssaySchema(assayInputSchemaOf(op));
+    if (domain === "outside-schema") {
+      if (item.throws === null)
+        throw new TypeError("outside-schema assay must expect a named thrown error");
+      let rejectedByOriginalSchema = false;
+      try { inputSchema.assert(item.input); }
+      catch { rejectedByOriginalSchema = true; }
+      if (!rejectedByOriginalSchema)
+        throw new TypeError("outside-schema assay input is admitted by the original operation schema");
+    } else {
+      inputSchema.assert(item.input);
+    }
     if (op.nativeProfile !== undefined) {
       nativeAssayData(item);
-      closedAssaySchema(assayInputSchemaOf(op)).assert(item.input);
       if (item.throws === null) closedAssaySchema(assayOutputSchemaOf(op)).assert(item.output);
     } else if (item.throws === null) schemaFrom(assayOutputSchemaOf(op)).assert(item.output);
     const name = item.operation + ":" + item.name;
@@ -170,7 +193,7 @@ export function assayCasesOfDelivery(text, closure) {
  */
 export function assayMessagesOf(workOrder) {
   return [
-    { role: "system", content: "Derive behavioral assay cases from the closed work order's requirements and prohibitions before any source is written. The workOrder carrier is the entire order; its projection configuration declares the operations, schemas, examples and dependencies. Return only the supplied JSON carrier. Cases must be determined by the clauses and cover every clause by ID. For a JSON operation, use inputs admitted by its input schema. For a nativeProfile operation, input/output are source-free fixture scenarios and observations admitted by its scenarioSchema/observationSchema; its native contract is exercised by a separately trusted host fixture. The transport schema deliberately leaves native input/output slots open; obey each original scenarioSchema and observationSchema in the complete workOrder independently, without resolving references against the transport envelope or another operation. The receiver validates those exact contracts before source writing. They are never serialized native function ports, factory arguments or handles. Do not invent requirements. Include cases beyond the supplied examples. Returned outputs and thrown error names are exclusive. If a required expectation is not determined, return cases null and a nonempty question. No executable source, tool calls or repository access." },
+    { role: "system", content: "Derive behavioral assay cases from the closed work order's requirements and prohibitions before any source is written. The workOrder carrier is the entire order; its projection configuration declares the operations, schemas, examples and dependencies. Return only the supplied JSON carrier. Cases must be determined by the clauses and cover every clause by ID. For a JSON operation, use inputs admitted by its input schema, unless testing an explicitly specified out-of-domain rejection. For that negative test only, set inputDomain to \"outside-schema\", use an input the original operation schema rejects, output null and a named throws expectation. NativeProfile scenarios and ordinary cases must be schema-admitted; a schema-valid input must never be labeled outside-schema. For a nativeProfile operation, input/output are source-free fixture scenarios and observations admitted by its scenarioSchema/observationSchema; its native contract is exercised by a separately trusted host fixture. The transport schema deliberately leaves native input/output slots open; obey each original scenarioSchema and observationSchema in the complete workOrder independently, without resolving references against the transport envelope or another operation. The receiver validates those exact contracts before source writing. They are never serialized native function ports, factory arguments or handles. Do not invent requirements. Include cases beyond the supplied examples. Returned outputs and thrown error names are exclusive. If a required expectation is not determined, return cases null and a nonempty question. No executable source, tool calls or repository access." },
     { role: "user", content: JSON.stringify({ workOrder }) },
   ];
 }
