@@ -29,6 +29,7 @@ test("real source delivery, module projection, CLI and generated assays agree on
     await mkdir(path.join(directory,"src"));
     await mkdir(path.join(directory,"test"));
     await mkdir(path.join(directory,"apps"));
+    await mkdir(path.join(directory,"data","records","schema"),{recursive:true});
     for (const exportName of ["ordinaryValue","class","default","await","revenue$","$"]) {
       const operation = {
         name:"source-contract",module:"src/operation.mjs",exportName,
