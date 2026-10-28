@@ -1,8 +1,8 @@
-import { admitJsnodeOperationPackageSpecification as operation0 } from "../src/admit-jsnode-operation-package-specification.mjs";
-import { projectJsnodeOperationPackage as operation1 } from "../src/project-jsnode-operation-package.mjs";
-import { createJsnodeOperationPackage as operation2 } from "../src/create-jsnode-operation-package.mjs";
-import { projectJsnodeModules as operation3 } from "../src/project-jsnode-modules.mjs";
-import { translateMarkdownJsnodeOperationPackageSpecification as operation4 } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
+import { "admitJsnodeOperationPackageSpecification" as operation0 } from "../src/admit-jsnode-operation-package-specification.mjs";
+import { "projectJsnodeOperationPackage" as operation1 } from "../src/project-jsnode-operation-package.mjs";
+import { "createJsnodeOperationPackage" as operation2 } from "../src/create-jsnode-operation-package.mjs";
+import { "projectJsnodeModules" as operation3 } from "../src/project-jsnode-modules.mjs";
+import { "translateMarkdownJsnodeOperationPackageSpecification" as operation4 } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
 import operation0InputSchema from "../data/records/schema/admit-jsnode-operation-package-specification.input.schema.json" with { type: "json" };
 import operation0OutputSchema from "../data/records/schema/admit-jsnode-operation-package-specification.output.schema.json" with { type: "json" };
 import operation1InputSchema from "../data/records/schema/project-jsnode-operation-package.input.schema.json" with { type: "json" };
