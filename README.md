@@ -14,7 +14,7 @@ helper imports remain local imports. No package, build, or per-function command
 wrapper is required by the module projection.
 
 The specification contract is
-`data/records/schema/jsnode-module-specification.schema.json`. Input and output
+`data/records/schema/jsnode-module-specification.schema.json`. See also the [package-form specification](content/text/documents/specifications/2026-10-28-jsnode-package-form-and-concurrent-boundaries.md), which distinguishes `src/`, `scripts/`, `bin/`, `lib/`, declared exports, published contents, and qualified concurrent effects. It is a proposed engineering specification with original-owner receiving requirements, not a claim that arbitrary JavaScript operations are concurrent games. Input and output
 schemas are supplied explicitly. Missing schemas remain unspecified; JSDoc does
 not establish a runtime data contract. NDJSON belongs to the optional command
 interface, while module functions receive and return JavaScript values.
