@@ -19,6 +19,29 @@ schemas are supplied explicitly. Missing schemas remain unspecified; JSDoc does
 not establish a runtime data contract. NDJSON belongs to the optional command
 interface, while module functions receive and return JavaScript values.
 
+## Exact ECMAScript source and catalog admission
+
+Source-free ModuleDelivery admission uses the incumbent JavaScript syntax
+reader, rather than searching model-produced text for an export-shaped regular
+expression. A commented-out export, invalid syntax or a source body beyond
+the admitted one-module byte budget refuses **before package projection or
+an isolated source execution request**. An export declared by the original
+operation is checked against its actual ECMAScript ModuleExportName, including
+legal reserved names and dollar signs.
+
+The original module projector retains `default` as an actual ESM export and
+the optional catalog imports exact export names using quoted ModuleExportName
+syntax. The existing generated example/clause tests use the same convention.
+Native tests generate real modules, emitted catalog files and independent
+example tests for ordinary, reserved, default and dollar-bearing exports,
+execute them on Node 24 and verify that malformed code and export-shaped
+comments are refused. The source reader, projector and receiving tests share
+one original parser and do not create a duplicate language grammar.
+
+These are source/Code correctness observations. They do not attest the
+model provider, operating-system isolation, independent Work/SignChain,
+publication or a customer's accepted software.
+
 ## Deterministic data modules from design records
 
 The same `projectJsnodeModules` producer accepts source-free `dataModules`.
