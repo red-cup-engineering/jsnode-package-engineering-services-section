@@ -168,7 +168,21 @@ and output schemas. The fabricator admits that order and its realization plan
 before calling a supplied inference carrier. A separate clause-assay delivery proposes case data from the requirements and
 prohibitions. SignStuff schema admission checks those data, and deterministic
 projection produces executable tests from the admitted examples and clause
-cases before source derivation. The source writer sees the original order and
+cases before source derivation. **Schema-negative clause assays** now allow a
+JSON operation to prove rejection of a value *outside* its declared input
+schema: the derived case sets `inputDomain: "outside-schema"`, supplies the
+out-of-domain `input`, sets `output: null`, and declares a named `throws`
+expectation. The receiver independently checks the original operation input
+schema and refuses a mislabeled valid input, missing expected error, or
+out-of-domain native host scenario **before requesting code**. The ordinary
+`inputDomain` default remains `admitted`, so existing schema-valid examples,
+negative cases and historical receipts continue to be read in their original
+mode. The generator's test emitter already projects those received cases into
+actual Node behavior assertions; the original host-owned isolated executor
+remains mandatory before any supplier source executes. Up to 128 cases may be
+proposed in one bounded delivery. These checks demonstrate a concrete expected
+failure path, not independent authentication of a claimed clause's meaning.
+The source writer sees the original order and
 examples, but not the extra cases. Each declared module is derived once with all
 its specified exports. An unresolved question or failed assay returns a refusal;
 the fabricator does not buy a repair or retry a rejected candidate. The Group host
