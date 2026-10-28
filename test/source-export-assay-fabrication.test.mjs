@@ -94,3 +94,46 @@ test("source-owned test projection preserves original clauses and cannot be infl
   assert.match(first.text,/assert\.rejects/);
   assert.match(first.text,/RangeError/);
 });
+
+
+test("source-generated clause checks detect mutation and unstable replay rather than only matching the first output",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-behavioral-clause-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const op=caseSource("class");
+    const withChecks=[{
+      name:"preserve and repeat",operation:op.name,input:[4,1,3],output:[1,3,4],
+      throws:null,checks:{inputUnchanged:true,stableReplay:true},
+    }];
+    const withoutChecks=withChecks.map(({checks,...caseData})=>caseData);
+    const guarded=projectJsnodeExampleTests(op,[],withChecks);
+    const legacy=projectJsnodeExampleTests(op,[],withoutChecks);
+    assert.match(guarded.text,/assert\.deepStrictEqual\(assayInput, originalInput\)/u);
+    assert.match(guarded.text,/assert\.deepStrictEqual\(replayOutput, firstOutput\)/u);
+    assert.doesNotMatch(legacy.text,/replayOutput|originalInput/u);
+    const sourceFile=path.join(directory,op.module);
+    const testFile=path.join(directory,guarded.path);
+    const sources={
+      lawful:'function implementation(values){return [...values].sort((a,b)=>a-b);} export {implementation as "class"};',
+      mutates:'function implementation(values){return values.sort((a,b)=>a-b);} export {implementation as "class"};',
+      unstable:'let count=0; function implementation(values){const sorted=[...values].sort((a,b)=>a-b);return ++count % 2 ? sorted : sorted.reverse();} export {implementation as "class"};',
+    };
+    for (const [name,source] of Object.entries(sources)){
+      await writeFile(sourceFile,source,"utf8");
+      const syntax=runNode(["--check",sourceFile],directory);
+      assert.equal(syntax.status,0,name+": "+syntax.stderr);
+      await writeFile(testFile,guarded.text,"utf8");
+      const guardedRun=runNode(["--test",testFile],directory);
+      assert.equal(guardedRun.status===0,name==="lawful",
+        name+" did not satisfy its expected independent behavior checks:\n"+guardedRun.stdout);
+      assert.match(guardedRun.stdout,name==="lawful"?/# pass 1\b/u:/# fail 1\b/u);
+      if(name!=="lawful"){
+        await writeFile(testFile,legacy.text,"utf8");
+        const uncheckedRun=runNode(["--test",testFile],directory);
+        assert.equal(uncheckedRun.status,0,
+          name+" must demonstrate that output-only testing missed this defect:\n"+uncheckedRun.stdout);
+      }
+    }
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
