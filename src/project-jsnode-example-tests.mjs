@@ -27,11 +27,29 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     "});",
   ].join("\n"));
   for (const item of derivedCases) {
+    // The original assay receiver has admitted these opt-in checks against
+    // the source clause and schema. They are emitted as actual behavior
+    // observations, never as a claim that a type implies purity.
+    const success = item.checks === undefined ? [
+      `  assert.deepStrictEqual(await ${BINDING}(${JSON.stringify(item.input)}), ${JSON.stringify(item.output)});`,
+    ] : [
+      `  const assayInput = ${JSON.stringify(item.input)};`,
+      "  const originalInput = structuredClone(assayInput);",
+      `  const firstOutput = await ${BINDING}(assayInput);`,
+      `  assert.deepStrictEqual(firstOutput, ${JSON.stringify(item.output)});`,
+      ...(item.checks.inputUnchanged ? ["  assert.deepStrictEqual(assayInput, originalInput);"] : []),
+      ...(item.checks.stableReplay ? [
+        "  const replayInput = structuredClone(originalInput);",
+        `  const replayOutput = await ${BINDING}(replayInput);`,
+        "  assert.deepStrictEqual(replayOutput, firstOutput);",
+        ...(item.checks.inputUnchanged ? ["  assert.deepStrictEqual(replayInput, originalInput);"] : []),
+      ] : []),
+    ];
     cases.push([
       `test(${JSON.stringify(operation.name + ": clause assay " + item.name)}, async () => {`,
-      item.throws === null
-        ? `  assert.deepStrictEqual(await ${BINDING}(${JSON.stringify(item.input)}), ${JSON.stringify(item.output)});`
-        : `  await assert.rejects(async () => await ${BINDING}(${JSON.stringify(item.input)}), { name: ${JSON.stringify(item.throws)} });`,
+      ...(item.throws === null ? success : [
+        `  await assert.rejects(async () => await ${BINDING}(${JSON.stringify(item.input)}), { name: ${JSON.stringify(item.throws)} });`,
+      ]),
       "});",
     ].join("\n"));
   }
