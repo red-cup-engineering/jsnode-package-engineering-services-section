@@ -1,4 +1,12 @@
 minimumReleaseAgeExclude:
-  - '@red-cup-engineering/metrologic@0.14.3-dev.1364'
-  - '@red-cup-engineering/semiotic-content-address@0.1.2-dev.31'
-  - '@red-cup-engineering/signcell@0.13.2'
+  # House releases have no artificial age delay (Leader correction, 2026-10-20; 2026-10-26).
+  - '@561-group/*'
+  - '@causeway-services/*'
+  - '@coesite-operations/*'
+  - '@emsenn/*'
+  - '@emsweb/*'
+  - '@harmonious-union/*'
+  - '@koios-news/*'
+  - '@lenticule-science/*'
+  - '@red-cup-engineering/*'
+  - '@red-cup-science/*'
