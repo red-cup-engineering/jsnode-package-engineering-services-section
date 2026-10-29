@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/jsnode-package-services-section",
-  "version": "0.5.1-dev.154",
+  "version": "0.5.1-dev.155",
   "type": "module",
   "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
   "repository": {
