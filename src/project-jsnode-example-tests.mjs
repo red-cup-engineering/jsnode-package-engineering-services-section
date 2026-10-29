@@ -78,9 +78,21 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     path: testPathOf(operation),
     text: [
       "// Derived from the work order's admitted examples, before the operation's source was derived.",
-      'import assert from "node:assert/strict";',
+      'import nativeAssert from "node:assert/strict";',
       'import test from "node:test";',
-      `import { ${JSON.stringify(operation.exportName)} as ${BINDING} } from ${JSON.stringify(importPath)};`,
+      // ESM static imports execute before module-local code. A candidate may
+      // mutate the shared assert singleton (or sync native named exports) at
+      // import time, so first capture native assertion functions; only then
+      // import the candidate as an effect. The incumbent assay-completion
+      // receiver independently requires ALL declared tests to have run, even
+      // if a candidate exits early or suppresses test registration.
+      'const assert = Object.freeze({',
+      '  deepStrictEqual: nativeAssert.deepStrictEqual.bind(nativeAssert),',
+      '  rejects: nativeAssert.rejects.bind(nativeAssert),',
+      '});',
+      `const moduleUnderAssay = await import(${JSON.stringify(importPath)});`,
+      `const ${BINDING} = moduleUnderAssay[${JSON.stringify(operation.exportName)}];`,
+      `if (typeof ${BINDING} !== "function") throw new TypeError("Missing callable source export");`,
       "",
       ...cases,
       "",

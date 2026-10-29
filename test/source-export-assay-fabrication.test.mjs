@@ -5,6 +5,7 @@ import {tmpdir} from "node:os";
 import path from "node:path";
 import test from "node:test";
 import {projectJsnodeExampleTests} from "../src/project-jsnode-example-tests.mjs";
+import {receiveIsolatedAssayOutcome} from "../src/assay-completion.mjs";
 
 const caseSource = operation => ({
   name: "reserved-name",
@@ -49,7 +50,9 @@ test("native Node executes tests fabricated from legal ESM reserved, default, an
       const generated=projectJsnodeExampleTests(operation,examples,derived);
       assert.equal(generated.type,"JavascriptNodeOperationTestSource");
       assert.equal(generated.path,"test/reserved-name-examples.test.mjs");
-      assert.match(generated.text,/import \{ "[^"]+" as fabricatedOperation \} from "\.\.\/src\/operation\.mjs";/);
+      assert.match(generated.text,/const moduleUnderAssay = await import\("\.\.\/src\/operation\.mjs"\);/);
+      assert.match(generated.text,/const fabricatedOperation = moduleUnderAssay\["[^"]+"\];/);
+      assert.match(generated.text,/const assert = Object\.freeze\(\{/);
       assert.doesNotMatch(generated.text,/import \{ class \}|import \{ default \}/);
       const sourcePath=path.join(directory,operation.module),testPath=path.join(directory,generated.path);
       await writeFile(sourcePath,implementation(exportName),"utf8");
@@ -351,5 +354,58 @@ test("candidate module mutating shared native assertions cannot forge generated 
       "incorrect candidate tampered with the native assertion singleton and falsely passed both generated assays:\n"+
       executed.stdout);
     assert.match(executed.stdout,/# fail [1-9]\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+
+test("supplier cannot forge the assertion oracle by synchronizing native ESM exports",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-assert-sync-tamper-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const sourceValue=JSON.parse('{"__proto__":{"marker":8},"n":2}');
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"preserve source key",operation:operation.name,input:sourceValue,output:sourceValue},
+    ]);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(sourceFile,[
+      'import assert from "node:assert/strict";',
+      'import {syncBuiltinESMExports} from "node:module";',
+      'assert.deepStrictEqual=()=>undefined;',
+      'assert.rejects=async()=>undefined;',
+      'syncBuiltinESMExports();',
+      'function implementation(value){return {n:value.n};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    const observed=runNode(["--test",testFile],directory);
+    assert.notEqual(observed.status,0,
+      "candidate's native ESM synchronization must not replace prior captured assertion references:\n"+observed.stdout);
+    assert.match(observed.stdout,/# fail [1-9]\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+test("early supplier exit does not become complete generated Code assay receiving",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-exit-receiving-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const examples=[{name:"must execute",operation:operation.name,input:2,output:4}];
+    const generated=projectJsnodeExampleTests(operation,examples);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(path.join(directory,operation.module),'process.exit(0);',"utf8");
+    const run=runNode(["--test",testFile],directory);
+    const received=receiveIsolatedAssayOutcome({
+      isolated:true,status:run.status,stdout:run.stdout,stderr:run.stderr,
+    },[operation.name+": must execute"]);
+    assert.equal(received.passed,false,"exit status alone is not an original assay-completion receipt");
+    assert.ok(["ASSAY_INCOMPLETE","ASSAY_TEST_FAILED"].includes(received.code),JSON.stringify(received));
+    if(run.status===0) assert.equal(received.reason==="ROOT_NAMES_MISMATCH"||
+      received.reason==="ROOT_RESULTS_INCOMPLETE"||
+      received.reason==="ROOT_PLAN_COUNT_MISMATCH",true,JSON.stringify(received));
   } finally {await rm(directory,{recursive:true,force:true});}
 });
