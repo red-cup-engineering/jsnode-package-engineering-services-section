@@ -264,3 +264,56 @@ test("candidate cannot forge generated own-key assays by replacing global JSON.p
     assert.match(corrupted.stdout,/retain admitted own key/u);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
+
+
+test("supplier replacement of global structuredClone cannot falsely pass the original mutation/replay assay",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-clone-tamper-"));
+  try{
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const guarded=projectJsnodeExampleTests(operation,[],[{
+      name:"input source is unchanged",operation:operation.name,
+      input:{n:2},output:{ok:true},throws:null,
+      checks:{inputUnchanged:true,stableReplay:true},
+    }]);
+    assert.doesNotMatch(guarded.text,/structuredClone\s*\(/u,
+      "a source-derived input oracle cannot depend on a supplier-mutable global");
+    const sourceFile=path.join(directory,operation.module);
+    const assayFile=path.join(directory,guarded.path);
+    await writeFile(assayFile,guarded.text,"utf8");
+    await writeFile(sourceFile,[
+      "globalThis.structuredClone = value => value;",
+      'function implementation(value){value.tampered=true;return {ok:true};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    const falseAcceptance=runNode(["--test",assayFile],directory);
+    assert.notEqual(falseAcceptance.status,0,
+      "mutating supplier code must not pass by aliasing the admitted snapshot:\n"+falseAcceptance.stdout);
+    assert.match(falseAcceptance.stdout,/# fail 1\b/u);
+    await writeFile(sourceFile,[
+      'function implementation(value){return {ok:true};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    const lawful=runNode(["--test",assayFile],directory);
+    assert.equal(lawful.status,0,lawful.stderr+"\n"+lawful.stdout);
+    assert.match(lawful.stdout,/# pass 1\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+test("replayed clauses reuse one admitted source snapshot, including JSON own keys",()=>{
+  const operation=caseSource("class");
+  let reads=0;
+  const nested=JSON.parse('{"__proto__":{"source":"original"}}');
+  const input={nested};
+  Object.defineProperty(input,"n",{enumerable:true,get(){return ++reads;}});
+  const generated=projectJsnodeExampleTests(operation,[],[{
+    name:"source cut",operation:operation.name,input,output:{ok:true},
+    throws:null,checks:{inputUnchanged:true,stableReplay:true},
+  }]);
+  assert.equal(reads,1,"the producer must not re-read the source getter at later test positions");
+  assert.equal((generated.text.match(/"n":1/g)||[]).length,3);
+  assert.doesNotMatch(generated.text,/"n":2/u);
+  assert.match(generated.text,/\["__proto__"\]/u);
+  assert.doesNotMatch(generated.text,/structuredClone\s*\(/u);
+});

@@ -41,19 +41,25 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     "});",
   ].join("\n"));
   for (const item of derivedCases) {
+    // Admit each clause value only once; later test-source positions must
+    // reuse the same captured source, even for accessor-bearing JS carriers.
+    const inputExpression = jsonValueExpression(item.input);
+    const outputExpression = jsonValueExpression(item.output);
     // The original assay receiver has admitted these opt-in checks against
     // the source clause and schema. They are emitted as actual behavior
     // observations, never as a claim that a type implies purity.
     const success = item.checks === undefined ? [
-      `  assert.deepStrictEqual(await ${BINDING}(${jsonValueExpression(item.input)}), ${jsonValueExpression(item.output)});`,
+      `  assert.deepStrictEqual(await ${BINDING}(${inputExpression}), ${outputExpression});`,
     ] : [
-      `  const assayInput = ${jsonValueExpression(item.input)};`,
-      "  const originalInput = structuredClone(assayInput);",
+      `  const assayInput = ${inputExpression};`,
+      // Static supplier imports can replace global structuredClone before a
+      // generated test runs. Two separately emitted literals cannot alias.
+      `  const originalInput = ${inputExpression};`,
       `  const firstOutput = await ${BINDING}(assayInput);`,
-      `  assert.deepStrictEqual(firstOutput, ${jsonValueExpression(item.output)});`,
+      `  assert.deepStrictEqual(firstOutput, ${outputExpression});`,
       ...(item.checks.inputUnchanged ? ["  assert.deepStrictEqual(assayInput, originalInput);"] : []),
       ...(item.checks.stableReplay ? [
-        "  const replayInput = structuredClone(originalInput);",
+        `  const replayInput = ${inputExpression};`,
         `  const replayOutput = await ${BINDING}(replayInput);`,
         "  assert.deepStrictEqual(replayOutput, firstOutput);",
         ...(item.checks.inputUnchanged ? ["  assert.deepStrictEqual(replayInput, originalInput);"] : []),
@@ -62,7 +68,7 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     cases.push([
       `test(${JSON.stringify(operation.name + ": clause assay " + item.name)}, async () => {`,
       ...(item.throws === null ? success : [
-        `  await assert.rejects(async () => await ${BINDING}(${jsonValueExpression(item.input)}), { name: ${JSON.stringify(item.throws)} });`,
+        `  await assert.rejects(async () => await ${BINDING}(${inputExpression}), { name: ${JSON.stringify(item.throws)} });`,
       ]),
       "});",
     ].join("\n"));
