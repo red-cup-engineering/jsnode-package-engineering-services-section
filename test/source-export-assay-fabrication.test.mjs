@@ -215,3 +215,21 @@ test("source-derived positive, negative, replay and scalar assays retain exact J
     assert.equal(Object.hasOwn(invalid,"__proto__"),true);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
+
+
+test("ordinary admitted JSON assays retain their original historical test-source form",()=>{
+  const operation=caseSource("default");
+  const original=projectJsnodeExampleTests(operation,examples,derived);
+  assert.doesNotMatch(original.text,/JSON\.parse\(/u,
+    "unaffected source/assay receipts must not be rewritten by a fix for a distinct JSON key");
+  assert.match(original.text,/fabricatedOperation\(2\), 4/u);
+  assert.match(original.text,/fabricatedOperation\(-1\)/u);
+
+  // A string VALUE containing key-looking text is not an object member.
+  const textValue={text:'"__proto__":',n:2};
+  const quoted=projectJsnodeExampleTests(operation,[
+    {name:"quoted property spelling",input:textValue,output:textValue},
+  ]);
+  assert.doesNotMatch(quoted.text,/JSON\.parse\(/u);
+  assert.deepEqual(textValue,{text:'"__proto__":',n:2});
+});
