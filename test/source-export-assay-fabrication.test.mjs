@@ -194,7 +194,7 @@ test("source-derived positive, negative, replay and scalar assays retain exact J
       {name:"ordinary scalar",operation:operation.name,input:4,output:4,throws:null},
     ];
     const generated=projectJsnodeExampleTests(operation,[],cases);
-    assert.match(generated.text,/JSON\.parse\(/u);
+    assert.match(generated.text,/\["__proto__"\]/u);
     const sourceFile=path.join(directory,operation.module);
     const testFile=path.join(directory,generated.path);
     await writeFile(sourceFile,[
@@ -232,4 +232,35 @@ test("ordinary admitted JSON assays retain their original historical test-source
   ]);
   assert.doesNotMatch(quoted.text,/JSON\.parse\(/u);
   assert.deepEqual(textValue,{text:'"__proto__":',n:2});
+});
+
+
+test("candidate cannot forge generated own-key assays by replacing global JSON.parse",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-json-assay-global-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const original=JSON.parse('{"__proto__":{"marker":7},"n":1}');
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"retain admitted own key",operation:operation.name,input:original,output:original},
+    ]);
+    assert.doesNotMatch(generated.text,/JSON\.parse\(/u,
+      "an imported candidate must not reinterpret both operands by replacing a global parser");
+    assert.match(generated.text,/\["__proto__"\]/u);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(sourceFile,[
+      'const originalParse=JSON.parse;',
+      'JSON.parse=(text,...args)=>typeof text==="string" && text.includes("marker") ? {n:1} : originalParse(text,...args);',
+      'function implementation(value) { return {n:value.n}; }',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    const corrupted=runNode(["--test",testFile],directory);
+    assert.notEqual(corrupted.status,0,
+      "candidate source must not rewrite admitted JSON expectations to pass a wrong result:\n"+corrupted.stdout);
+    assert.match(corrupted.stdout,/# fail 1\b/u);
+    assert.match(corrupted.stdout,/retain admitted own key/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
 });

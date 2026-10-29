@@ -17,16 +17,17 @@ import path from "node:path";
 const testPathOf = operation => `test/${operation.name}-examples.test.mjs`;
 const BINDING = "fabricatedOperation";
 
-/** A JSON "__proto__" member changes prototype rather than becoming an own
- * property if emitted directly as a JavaScript object literal. Use a single
- * JSON serialization snapshot for both detection and emission. Keep the old
- * source text for ordinary JSON: prior admitted fabrication receipts bind the
- * exact generated tests, and unaffected evidence must not churn.
+/** Preserve an ordinary JSON "__proto__" data member in generated JS syntax.
+ * A direct object-literal key is a prototype setter; a computed key is an
+ * ordinary data property. One JSON serialization snapshot governs the edit,
+ * preserving all unaffected source bytes and historical assay receipts.
+ * Never defer interpretation to runtime JSON.parse after candidate import:
+ * untrusted source could replace that global and forge both test operands.
  */
 const jsonValueExpression = value => {
   const json = JSON.stringify(value);
-  return typeof json === "string" && json.includes('"__proto__":')
-    ? `JSON.parse(${JSON.stringify(json)})`
+  return typeof json === "string"
+    ? json.replaceAll('"__proto__":', '["__proto__"]:')
     : json;
 };
 
