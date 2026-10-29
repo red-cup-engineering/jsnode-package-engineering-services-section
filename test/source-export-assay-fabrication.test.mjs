@@ -317,3 +317,39 @@ test("replayed clauses reuse one admitted source snapshot, including JSON own ke
   assert.match(generated.text,/\["__proto__"\]/u);
   assert.doesNotMatch(generated.text,/structuredClone\s*\(/u);
 });
+
+
+test("candidate module mutating shared native assertions cannot forge generated Code assay success",async()=>{
+  // Requirement: source-derived acceptance is independent of candidate code.
+  // Candidate static ESM imports run before generated test callbacks and can
+  // otherwise replace the shared node:assert/strict default's methods.
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-assert-oracle-custody-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const ownKey=JSON.parse('{"__proto__":{"marker":7},"n":1}');
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"must preserve original own key",operation:operation.name,input:ownKey,output:ownKey},
+    ],[
+      {name:"must reject malformed value",operation:operation.name,input:ownKey,output:null,throws:"TypeError"},
+    ]);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(sourceFile,[
+      'import assert from "node:assert/strict";',
+      'assert.deepStrictEqual=()=>undefined;',
+      'assert.rejects=async()=>undefined;',
+      'function implementation(value){return {n:value.n};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    // Both requirements are false. Supplier-authored source must not be
+    // allowed to set the generated acceptance oracle through module state.
+    const executed=runNode(["--test",testFile],directory);
+    assert.notEqual(executed.status,0,
+      "incorrect candidate tampered with the native assertion singleton and falsely passed both generated assays:\n"+
+      executed.stdout);
+    assert.match(executed.stdout,/# fail [1-9]\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
