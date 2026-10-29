@@ -137,3 +137,81 @@ test("source-generated clause checks detect mutation and unstable replay rather 
     }
   } finally {await rm(directory,{recursive:true,force:true});}
 });
+
+
+test("generated JSNode example tests reject code that drops an admitted JSON own key", async () => {
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-json-assay-identity-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const original=JSON.parse('{"__proto__":{"marker":7},"n":1}');
+    assert.equal(Object.hasOwn(original,"__proto__"),true);
+    const operation=caseSource("class");
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"retain original own keys",operation:operation.name,input:original,output:original},
+    ]);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+
+    // A generated oracle must reject an implementation that preserves only
+    // the ordinary property while discarding the original own "__proto__".
+    await writeFile(sourceFile,[
+      'function implementation(value) { return {n:value.n}; }',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    const wrong=runNode(["--test",testFile],directory);
+    assert.notEqual(wrong.status,0,
+      "the original generated test must reject an implementation missing a JSON own property:\n"+wrong.stdout);
+    assert.match(wrong.stdout,/# fail 1\b/u);
+
+    // The same source-derived test still admits the correct JSON-preserving
+    // implementation and its exact expected value.
+    await writeFile(sourceFile,[
+      'function implementation(value) { return structuredClone(value); }',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    const correct=runNode(["--test",testFile],directory);
+    assert.equal(correct.status,0,correct.stderr+"\n"+correct.stdout);
+    assert.match(correct.stdout,/# pass 1\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+test("source-derived positive, negative, replay and scalar assays retain exact JSON values",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-json-assay-clauses-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const original=JSON.parse('{"__proto__":{"outer":7},"nested":[{"__proto__":{"inner":9},"n":2}]}');
+    const invalid=JSON.parse('{"__proto__":{"deny":true},"deny":true}');
+    assert.equal(Object.hasOwn(original.nested[0],"__proto__"),true);
+    const cases=[
+      {name:"complete replay",operation:operation.name,input:original,output:original,
+        throws:null,checks:{inputUnchanged:true,stableReplay:true}},
+      {name:"reject forbidden own key",operation:operation.name,input:invalid,output:null,
+        throws:"TypeError"},
+      {name:"ordinary scalar",operation:operation.name,input:4,output:4,throws:null},
+    ];
+    const generated=projectJsnodeExampleTests(operation,[],cases);
+    assert.match(generated.text,/JSON\.parse\(/u);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(sourceFile,[
+      'function implementation(value) {',
+      '  if (value !== null && typeof value === "object" && value.deny && Object.hasOwn(value,"__proto__")) throw new TypeError("forbidden");',
+      '  return structuredClone(value);',
+      '}',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    await writeFile(testFile,generated.text,"utf8");
+    const syntax=runNode(["--check",testFile],directory);
+    assert.equal(syntax.status,0,syntax.stderr);
+    const executed=runNode(["--test",testFile],directory);
+    assert.equal(executed.status,0,executed.stderr+"\n"+executed.stdout);
+    assert.match(executed.stdout,/# pass 3\b/u);
+    assert.match(executed.stdout,/# fail 0\b/u);
+    assert.equal(Object.hasOwn(original,"__proto__"),true);
+    assert.equal(Object.hasOwn(invalid,"__proto__"),true);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
