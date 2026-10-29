@@ -32,6 +32,8 @@ jobs:
         with:
           version: '10.20.0'
           run_install: false
+          cache: true
+          cache_dependency_path: pnpm-lock.yaml
         # Only the public package-manager bootstrap uses npmjs; original
         # package dependencies still resolve from committed .npmrc.
         env:
@@ -44,7 +46,7 @@ jobs:
           pnpm --version
           set +e
           timeout --signal=TERM --kill-after=5s 240s \
-            pnpm install --frozen-lockfile --ignore-scripts --reporter=append-only
+            pnpm install --frozen-lockfile --ignore-scripts --network-concurrency=2 --reporter=append-only
           status=$?
           if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
             echo '::error::Pinned dependency closure not received within 240s; do not run or accept downstream assays.'
