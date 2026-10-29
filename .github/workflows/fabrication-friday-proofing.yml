@@ -24,8 +24,32 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
-      - name: Resolve actual original package dependencies
-        run: npm install --no-audit --no-fund --ignore-scripts
+      # pnpm-lock.yaml is the repository's committed dependency contract.
+      # Pin the installer code and manager version; do not let an npm install
+      # silently resolve a different, uncommitted dependency tree.
+      - name: Install pinned pnpm 10
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # signed v4 tag
+        with:
+          version: '10.20.0'
+          run_install: false
+        # Only the public package-manager bootstrap uses npmjs; original
+        # package dependencies still resolve from committed .npmrc.
+        env:
+          npm_config_registry: https://registry.npmjs.org/
+      - name: Resolve committed original package dependency closure
+        env:
+          npm_config_fetch_retries: '0'
+          npm_config_fetch_timeout: '20000'
+        run: |
+          pnpm --version
+          set +e
+          timeout --signal=TERM --kill-after=5s 240s \
+            pnpm install --frozen-lockfile --ignore-scripts --reporter=append-only
+          status=$?
+          if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
+            echo '::error::Pinned dependency closure not received within 240s; do not run or accept downstream assays.'
+          fi
+          exit "$status"
       - name: Run original kinetic-proofing and connected-module assays
         run: node --test test/assay-channels.test.mjs test/connected-module-fabrication.test.mjs
       - name: Run entire existing package test plan
