@@ -17,10 +17,18 @@ import path from "node:path";
 const testPathOf = operation => `test/${operation.name}-examples.test.mjs`;
 const BINDING = "fabricatedOperation";
 
-/** JSON own keys, including "__proto__", are not JavaScript object-literal syntax.
- * Parse escaped JSON text in the generated test to preserve the admitted value.
+/** A JSON "__proto__" member changes prototype rather than becoming an own
+ * property if emitted directly as a JavaScript object literal. Use a single
+ * JSON serialization snapshot for both detection and emission. Keep the old
+ * source text for ordinary JSON: prior admitted fabrication receipts bind the
+ * exact generated tests, and unaffected evidence must not churn.
  */
-const jsonValueExpression = value => `JSON.parse(${JSON.stringify(JSON.stringify(value))})`;
+const jsonValueExpression = value => {
+  const json = JSON.stringify(value);
+  return typeof json === "string" && json.includes('"__proto__":')
+    ? `JSON.parse(${JSON.stringify(json)})`
+    : json;
+};
 
 /** Tests derived from original qualified examples and independently assayed clause cases. */
 export function projectJsnodeExampleTests(operation, examples, derivedCases = []) {
