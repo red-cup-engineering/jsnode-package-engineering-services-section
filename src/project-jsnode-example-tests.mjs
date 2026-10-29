@@ -17,13 +17,18 @@ import path from "node:path";
 const testPathOf = operation => `test/${operation.name}-examples.test.mjs`;
 const BINDING = "fabricatedOperation";
 
+/** JSON own keys, including "__proto__", are not JavaScript object-literal syntax.
+ * Parse escaped JSON text in the generated test to preserve the admitted value.
+ */
+const jsonValueExpression = value => `JSON.parse(${JSON.stringify(JSON.stringify(value))})`;
+
 /** Tests derived from original qualified examples and independently assayed clause cases. */
 export function projectJsnodeExampleTests(operation, examples, derivedCases = []) {
   const relative = path.posix.relative("test", operation.module);
   const importPath = relative.startsWith(".") ? relative : `./${relative}`;
   const cases = examples.map(example => [
     `test(${JSON.stringify(`${operation.name}: ${example.name}`)}, async () => {`,
-    `  assert.deepStrictEqual(await ${BINDING}(${JSON.stringify(example.input)}), ${JSON.stringify(example.output)});`,
+    `  assert.deepStrictEqual(await ${BINDING}(${jsonValueExpression(example.input)}), ${jsonValueExpression(example.output)});`,
     "});",
   ].join("\n"));
   for (const item of derivedCases) {
@@ -31,12 +36,12 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     // the source clause and schema. They are emitted as actual behavior
     // observations, never as a claim that a type implies purity.
     const success = item.checks === undefined ? [
-      `  assert.deepStrictEqual(await ${BINDING}(${JSON.stringify(item.input)}), ${JSON.stringify(item.output)});`,
+      `  assert.deepStrictEqual(await ${BINDING}(${jsonValueExpression(item.input)}), ${jsonValueExpression(item.output)});`,
     ] : [
-      `  const assayInput = ${JSON.stringify(item.input)};`,
+      `  const assayInput = ${jsonValueExpression(item.input)};`,
       "  const originalInput = structuredClone(assayInput);",
       `  const firstOutput = await ${BINDING}(assayInput);`,
-      `  assert.deepStrictEqual(firstOutput, ${JSON.stringify(item.output)});`,
+      `  assert.deepStrictEqual(firstOutput, ${jsonValueExpression(item.output)});`,
       ...(item.checks.inputUnchanged ? ["  assert.deepStrictEqual(assayInput, originalInput);"] : []),
       ...(item.checks.stableReplay ? [
         "  const replayInput = structuredClone(originalInput);",
@@ -48,7 +53,7 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     cases.push([
       `test(${JSON.stringify(operation.name + ": clause assay " + item.name)}, async () => {`,
       ...(item.throws === null ? success : [
-        `  await assert.rejects(async () => await ${BINDING}(${JSON.stringify(item.input)}), { name: ${JSON.stringify(item.throws)} });`,
+        `  await assert.rejects(async () => await ${BINDING}(${jsonValueExpression(item.input)}), { name: ${JSON.stringify(item.throws)} });`,
       ]),
       "});",
     ].join("\n"));
