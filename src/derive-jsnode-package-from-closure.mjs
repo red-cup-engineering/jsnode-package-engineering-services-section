@@ -79,14 +79,7 @@ export async function deriveJsnodeModules(candidate, carriers = {}) {
 /** One whole delivery: source and question are mutually exclusive at admission.
  * Nullable fields retain one closed shape supported by strict structured decoders.
  */
-export const MODULE_DELIVERY_SCHEMA = Object.freeze({
-  $id: "jsnode/fabrication/module-delivery",
-  type: "object", required: ["source", "question"], additionalProperties: false,
-  properties: {
-    source: { type: ["string", "null"] },
-    question: { type: ["string", "null"] },
-  },
-});
+export const MODULE_DELIVERY_SCHEMA = Object.freeze(JSON.parse("{\"$id\":\"jsnode/fabrication/module-delivery/exclusive-source-question\",\"additionalProperties\":false,\"anyOf\":[{\"additionalProperties\":false,\"properties\":{\"question\":{\"type\":\"null\"},\"source\":{\"type\":\"string\"}},\"required\":[\"source\",\"question\"],\"type\":\"object\"},{\"additionalProperties\":false,\"properties\":{\"question\":{\"type\":\"string\"},\"source\":{\"type\":\"null\"}},\"required\":[\"source\",\"question\"],\"type\":\"object\"}],\"properties\":{\"question\":{\"type\":[\"string\",\"null\"]},\"source\":{\"type\":[\"string\",\"null\"]}},\"required\":[\"source\",\"question\"],\"type\":\"object\"}"));
 const moduleDelivery = schemaFrom(MODULE_DELIVERY_SCHEMA);
 
 
@@ -218,7 +211,7 @@ export function sourceMessagesOf(workOrder, member) {
     ? "For each nativeProfile export, realize exactly its native contract: functions, BigInt, Uint8Array, retained object identity and lifecycle methods remain actual in-process values wherever its contract requires them. Its scenarioSchema and observationSchema describe only the independent host fixture, not the runtime arguments or return type. Never turn a native factory into a JSON operation or serialize a capability. Any JSON operation in the same module still takes and returns the values its input/output schemas admit."
     : "Each export takes the value its input schema admits, without changing its shape, and returns the value its output schema admits, directly or as a Promise.";
   return [
-    { role: "system", content: "Realize exactly the selected module from the complete workOrder carrier. Its projection configuration declares the operations, schemas, dependencies and admitted examples. Preserve all normative clauses, their authority, revision, locator and applicability, traceability, and receiving obligations. Produce one ECMAScript module for Node.js 24 exporting every operation declared for selectedModule. " + interfaceInstruction + " Import only node: builtins, declared dependencies, and relative paths to other modules declared by the order. Use the other modules' declared export names and schemas or native contracts; do not inline their implementations. Read no file, network or environment unless required by the order. Each export carries a JSDoc description, @param and @returns. No shebang or command face: the package projects that. Return one JSON document satisfying the supplied output schema, source carrying the complete module and question null. If the order leaves a required choice open, source must be null and question must name that open choice. Exactly one field carries a nonempty string. Return no fences, commentary, additional fields or multiple candidates." },
+    { role: "system", content: JSON.parse("\"Realize exactly the selected module from the complete workOrder carrier. A direct meaning closure declares operations, schemas, dependencies and admitted examples in workOrder.operations, workOrder.examples and workOrder.dependencies; an admitted artifact work order declares them in workOrder.projections[].configuration. Preserve all normative clauses, their authority, revision, locator and applicability, traceability, and receiving obligations. Produce one ECMAScript module for Node.js 24 exporting every operation declared for selectedModule. \"") + interfaceInstruction + " Import only node: builtins, declared dependencies, and relative paths to other modules declared by the order. Use the other modules' declared export names and schemas or native contracts; do not inline their implementations. Read no file, network or environment unless required by the order. Each export carries a JSDoc description, @param and @returns. No shebang or command face: the package projects that. Return one JSON document satisfying the supplied output schema, source carrying the complete module and question null. If the order leaves a required choice open, source must be null and question must name that open choice. Exactly one field carries a nonempty string. Return no fences, commentary, additional fields or multiple candidates." },
     { role: "user", content: JSON.stringify({ workOrder, selectedModule: operations[0].module }) },
   ];
 }
