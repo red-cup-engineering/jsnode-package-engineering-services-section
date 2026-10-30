@@ -1,0 +1,298 @@
+{
+  "observedAt": "2026-10-25T00:10:17.968Z",
+  "root": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-0.13.8-dev.1/node_modules/@red-cup-engineering/x402-services-section",
+  "gitHead": "e9bb4dfd7af353e3f2a70fb47d9f4a8673996501",
+  "sourceMatches": [
+    {
+      "file": "schemas/offer.schema.json",
+      "bytes": 20710,
+      "sha256": "b6d910ac594f1d5e34e18a7542eaf90136dc45796f834b1d6d4b36e5b9a370da"
+    },
+    {
+      "file": "src/market/access-grants.mjs",
+      "bytes": 3221,
+      "sha256": "5cfd0127218ca4da0074005e13595c503f3c2eb4b5f08d5879c95b6485333ebf"
+    },
+    {
+      "file": "src/assay-payment-requirements.mjs",
+      "bytes": 536,
+      "sha256": "aee551d33c3babc728013687ffe6e448777f6ba31a27f91746120b8ccaac5271"
+    },
+    {
+      "file": "scripts/assay-x402-facilitator.mjs",
+      "bytes": 2681,
+      "sha256": "cbc7bd17b60527be0c9ff5a492670406c14efb163a39f9b5549ea3da47876680"
+    },
+    {
+      "file": "src/settlement-derivation/book-market-seller-settlements.mjs",
+      "bytes": 15430,
+      "sha256": "f7f8c93984aa99552e9f9a2913446a454f73cabf1adb817b967e9aba0f51c156"
+    },
+    {
+      "file": "src/market/capability-actor-resources.mjs",
+      "bytes": 6165,
+      "sha256": "24ffb6ca0fd43f44e63c4a253a89a959238530da1cea496d37299ff2e1093ad1"
+    },
+    {
+      "file": "test/market/capability-actor-resources.test.mjs",
+      "bytes": 5168,
+      "sha256": "6418e3e05198a91df836c5e8a48188189e41037747b376fd90f8366b87e406d9"
+    },
+    {
+      "file": "test/capability-outbox-reuse.test.mjs",
+      "bytes": 4840,
+      "sha256": "83809c6dee431463ae294118cdbdb329925f9aba6125e10b265da31d8f4ba2cd"
+    },
+    {
+      "file": "src/capability-outbox.mjs",
+      "bytes": 4938,
+      "sha256": "465de8e81110409ddea277c96e3b716bd4ce3afc1c1c26d3d222c2e3fced7558"
+    },
+    {
+      "file": "test/market/catalog-query.test.mjs",
+      "bytes": 29583,
+      "sha256": "b3ecbb802cb6bfcd307ee89941b2791317529b81a130aa5c72ebad62c5cd76b2"
+    },
+    {
+      "file": "src/market/catalog.mjs",
+      "bytes": 34453,
+      "sha256": "e6be072552b7ea665c8de86b2cd822db732d9b112edfac0abdb9936fa92709c4"
+    },
+    {
+      "file": "src/cdp-facilitator.mjs",
+      "bytes": 7704,
+      "sha256": "a6f0e01c96f810629e0f5efb87b9a575e846458236ed5e941d475b725eefe40d"
+    },
+    {
+      "file": "src/compute-binding.mjs",
+      "bytes": 8788,
+      "sha256": "a46b021ad76d8df274c033b96a7a741d602f1a18275bf88b76ebcf7696728c07"
+    },
+    {
+      "file": "src/evm-network.mjs",
+      "bytes": 1337,
+      "sha256": "f00e8fc1dde9ef4365a4b01916a676d3e6f855fb06f606b25a8b8000a973a8ed"
+    },
+    {
+      "file": "src/hive/exit-tightness-http-service.mjs",
+      "bytes": 3792,
+      "sha256": "c6d405e2e99910f0cce01ca014da5c719675cd7cacc164154818ffe6fa2fb5d7"
+    },
+    {
+      "file": "src/hive/exit-tightness-sale-ledger.mjs",
+      "bytes": 6277,
+      "sha256": "5dde6299a48e1ac70f99419db3b43dc0e317174e02daf693c4e085b7002329f8"
+    },
+    {
+      "file": "src/facilitator-assay.mjs",
+      "bytes": 10596,
+      "sha256": "5543a3fb037afeb73b2966e3973299b318be596f09d6a7a7758de28b75733c44"
+    },
+    {
+      "file": "src/facilitator.mjs",
+      "bytes": 1960,
+      "sha256": "4a256b404d8c5f3c9c30b0da080c44ae2102297db7f3fb94e6a24233341eb4f0"
+    },
+    {
+      "file": "src/fetch-server.mjs",
+      "bytes": 14352,
+      "sha256": "99cc2a1eb2287cd4a6ee3deeb1f9d6e1136f7e2578da4c9dfd5f096917c10121"
+    },
+    {
+      "file": "src/hbd/form-hbd-payment-requirement.mjs",
+      "bytes": 4947,
+      "sha256": "f7d91722f25ee3314b2f08722bcc475dea038c9f6c1c0a4b6610bb19aea8c735"
+    },
+    {
+      "file": "src/market/instance-access-grants-node.mjs",
+      "bytes": 674,
+      "sha256": "b5ec26c26bee0a924d0605140683b55e10c74496b95f466f425a8f7e187afa8b"
+    },
+    {
+      "file": "src/market/instance-access-grants.mjs",
+      "bytes": 2009,
+      "sha256": "ccbb2605d4bc9ef12dc2363659d15c59083f7c1a0f2db591d89f0e0a9d980925"
+    },
+    {
+      "file": "src/market/market.mjs",
+      "bytes": 52093,
+      "sha256": "ef7f6c1ce5873f0680940e0914b42a1b0b9270c48aba7068abbad21dbbe09fc9"
+    },
+    {
+      "file": "test/market/market.test.mjs",
+      "bytes": 60887,
+      "sha256": "d0d6d08d50fdbf8d79bcce4ff78c510d5771d58e4b9a9de338678fd29e124e72"
+    },
+    {
+      "file": "src/market/node.mjs",
+      "bytes": 641,
+      "sha256": "e3953a66b17bd651ca5cddf1cb6fb8b2f8f14c7f19c8221044ecad487d381b1b"
+    },
+    {
+      "file": "apps/observe-market.mjs",
+      "bytes": 8062,
+      "sha256": "52a4bbbf48393b2044f13f431e8101adf4d65ef39967ced445902a4a1b8df32e"
+    },
+    {
+      "file": "src/offer.mjs",
+      "bytes": 39472,
+      "sha256": "a88d35280919fd6e8e8e7ae7d769f4ba1e8da9e35b74637f607fcd060db0b0aa"
+    },
+    {
+      "file": "test/offer.test.mjs",
+      "bytes": 35627,
+      "sha256": "0f455e09e02d3f1ef779f7365b6dfd4595a2bd89abdd6c0404883ded7c971f82"
+    },
+    {
+      "file": "src/operations.mjs",
+      "bytes": 2379,
+      "sha256": "8a38bc9e29b0a8c77ae4c7fbb687c778b858c823b6b7ed3fee3ace0f0d4326b5"
+    },
+    {
+      "file": "src/paid-response-recovery.mjs",
+      "bytes": 6728,
+      "sha256": "e5daee458f069255bad415785cea116008b6a7cb689264f96f7abe1b5223c34e"
+    },
+    {
+      "file": "src/payment-requirement-assay.mjs",
+      "bytes": 5486,
+      "sha256": "45d671ddfd573a607127f0dc721843d20e83d943d16c729ab56fd86eeec3daa1"
+    },
+    {
+      "file": "src/priced-capability-boundary.mjs",
+      "bytes": 13870,
+      "sha256": "d229158ecdd142b6db45705e46bc611580072ecd565f88149d152b3d26cdaef3"
+    },
+    {
+      "file": "src/market-observation/product.mjs",
+      "bytes": 2812,
+      "sha256": "d1684d277e4818c2db51694e6826c73b2aaf82e117275c3bce4723c57a75c0e7"
+    },
+    {
+      "file": "src/market/proxy-response.mjs",
+      "bytes": 7551,
+      "sha256": "e7f242b001e56c715ea3dec93ddc5e1780fcb704a38084803b43ccc999e6fe46"
+    },
+    {
+      "file": "test/market/proxy-response.test.mjs",
+      "bytes": 9396,
+      "sha256": "7209ea236c168d2183ab37f5f18cfad4946702933b3cb381579090592ac3afe9"
+    },
+    {
+      "file": "src/public-service-market-listing.mjs",
+      "bytes": 10634,
+      "sha256": "22cf175e6e9c8f72d480cec56ea3745e3038cf307fb0b01d5ec5bf024b8fdada"
+    },
+    {
+      "file": "src/purchase-observation.mjs",
+      "bytes": 5710,
+      "sha256": "00ab926b2528989ee5a466659fc3051edff839e3ce95b2979a339ed50181292e"
+    },
+    {
+      "file": "src/purchase-publication.mjs",
+      "bytes": 2372,
+      "sha256": "cfb87347971d51777ded5cf59aadf113c58836ddb569fa41aaf7d7c295e64867"
+    },
+    {
+      "file": "test/market/request-pricing-authorization.test.mjs",
+      "bytes": 4867,
+      "sha256": "90d02cd0aff949951a4ab25d62fd99fd857f0371f354bbee44b81b34058bc210"
+    },
+    {
+      "file": "test/market/required-field-handoff.test.mjs",
+      "bytes": 5816,
+      "sha256": "78e8ef58af87a5b627654cb4139acc128fe30221ecc96863f34ec7126a700182"
+    },
+    {
+      "file": "src/resource-admission.mjs",
+      "bytes": 1155,
+      "sha256": "8591ecc1ff47ac07aef678bd81ef0979ba8f4ff94d43f8f537ca96d06fd7fa4d"
+    },
+    {
+      "file": "src/resource-observation.mjs",
+      "bytes": 9251,
+      "sha256": "ebc042b77f719d6133f4f39fdcf2066362b89a50f15d1a88dd02d06cb9a35d0e"
+    },
+    {
+      "file": "src/resource-server.mjs",
+      "bytes": 6031,
+      "sha256": "e5d722f5b97471becc76a79ed550939264dfce742ca6520cf983756103017a58"
+    },
+    {
+      "file": "src/route-configuration.mjs",
+      "bytes": 2056,
+      "sha256": "6ec39d0f5c2ebeb425bcc051b69c6c419a051fdcbf2b8d82687d6d826abb563e"
+    },
+    {
+      "file": "src/hive/sell-hive-exit-tightness-resource.mjs",
+      "bytes": 4157,
+      "sha256": "e3b84bef7f8724afd3a23dfe5e986e183a0b997caa932e80181b9fabcaeef31a"
+    },
+    {
+      "file": "apps/serve-hive-exit-tightness.mjs",
+      "bytes": 1060,
+      "sha256": "a29fafaf1c1039fce33a9012aae8859e6d02cab713849b72cc475fe71e289325"
+    },
+    {
+      "file": "src/hbd/settle-hbd-purchase.mjs",
+      "bytes": 5080,
+      "sha256": "ad82f4ee6d73d8b48c2abee90a80c2dbd2feb4158609f8e22941ffa631fa765b"
+    },
+    {
+      "file": "src/market/settlement-demand-evidence.mjs",
+      "bytes": 6673,
+      "sha256": "48572a7069f844a637b2ebfb972ef34e1348cb16cc2912184886e98d000a6f5b"
+    },
+    {
+      "file": "test/market/settlement-demand-evidence.test.mjs",
+      "bytes": 4468,
+      "sha256": "acafef1d50e0065a28f31a823d9266a5c5f610ab8778b3c6c143b141cf314f3f"
+    },
+    {
+      "file": "src/market-observation/settlement.mjs",
+      "bytes": 7731,
+      "sha256": "ee05b5e24b6299f2c8f688e29d06b51f157359a4e7535617b9c631e9daa6b066"
+    },
+    {
+      "file": "src/sign-in-with-x.mjs",
+      "bytes": 8026,
+      "sha256": "7a4fb7fef124a37819d418efa7c63ff32da8567a8ba8b8142558fccb7793fe9d"
+    },
+    {
+      "file": "src/market/unit-economics.mjs",
+      "bytes": 15984,
+      "sha256": "86d42ddbfad8212772d183cee77a0350b4e36e2567ac8aaa788cb22c00c85ce3"
+    },
+    {
+      "file": "test/market/unit-economics.test.mjs",
+      "bytes": 14009,
+      "sha256": "bc2a904b95162afcdb143a44adcde71d364c538b3e699cad243720a709f1fce5"
+    },
+    {
+      "file": "src/hbd/verify-hbd-payment.mjs",
+      "bytes": 8259,
+      "sha256": "d67088da180ea12e4111013dd3bffea8e386c0cbad78f2f4027b59afe28bd20a"
+    },
+    {
+      "file": "apps/x402-hive-exit-tightness-seller-cli.mjs",
+      "bytes": 2404,
+      "sha256": "2d00e2619b2f71b46cf457adfbfaf9c4ffb4c8c3d6056729447d880d88c799aa"
+    },
+    {
+      "file": "src/x402-settlement-evidence.mjs",
+      "bytes": 1843,
+      "sha256": "f8cae38821bcbfa431662c72becdd831cb135dacd89ecd3bfb4f4251909c944e"
+    },
+    {
+      "file": "scripts/x402-settlement-witness-identity.mjs",
+      "bytes": 1797,
+      "sha256": "73019c597ecaa51cb0f50ad983ff37bb6897b9c091208ef1dd9bc3a959a8ab3a"
+    }
+  ],
+  "previousEntry": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-networking-engineering-services-section/services/x402-services-section/src/offer.mjs",
+  "selectedEntry": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-networking-engineering-services-section/services/x402-services-section/src/offer.mjs",
+  "issuerSku": "ni:///sha-256;17l4KLnJz9NrHaT9JGP9q0YUr_08GJMNP47gXQNlMp0",
+  "issuerCell": "ni:///sha-256;Tmspe1DP5hibL5_v7LTCL-sVo6X0IXE84GjnEVYioQ8",
+  "issuerLaw": "ni:///sha-256;7f1U0ZlId3USP2WNZbndkrIpx_pSCFjEqLaK3WvFLoQ",
+  "scope": "Actual selected artifact source parity; source/manifest transitive dependency interfaces separately observed by native binding audit and application tests."
+}

@@ -1,0 +1,2091 @@
+{
+  "observedAt": "2026-10-25T00:22:17.734Z",
+  "rows": [
+    {
+      "name": "@red-cup-engineering/alpaca-services-section",
+      "version": "0.1.4-dev.1",
+      "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/alpaca-services-section",
+      "manifest": {
+        "dependencies": {
+          "@red-cup-engineering/eavt-services-section": "0.11.0",
+          "@red-cup-engineering/json-services-section": "0.4.0",
+          "@red-cup-engineering/semiotic-eavt-services-section": "0.1.0",
+          "@red-cup-engineering/uri-services-section": "0.1.1",
+          "@red-cup-engineering/computer-content-engineering-services-section": "0.1.0",
+          "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
+          "@red-cup-engineering/signcell": "0.2.0",
+          "@red-cup-engineering/signchain": "0.1.0",
+          "@red-cup-engineering/signgraph": "0.1.0",
+          "@red-cup-engineering/json-schema-services-section": "0.5.0",
+          "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
+          "@red-cup-engineering/account-evidence-reconciliation-service": "0.1.7",
+          "@red-cup-engineering/alpha-portfolio-order-intent-service": "0.1.8",
+          "@red-cup-engineering/brokerage-authority-custody-service": "0.1.6",
+          "@red-cup-engineering/credential-custody-service": "0.1.2",
+          "@red-cup-engineering/brokerage-execution-transport-service": "0.1.8",
+          "@red-cup-engineering/brokerage-independent-witness-and-books": "0.1.8",
+          "@red-cup-engineering/computer-code-engineering-services-section": "0.1.2",
+          "@red-cup-engineering/javascript-node-services-section": "0.3.2",
+          "@red-cup-engineering/mandate-portfolio-allocation-service": "0.2.1",
+          "@red-cup-engineering/model-tournament-service": "0.1.2",
+          "@red-cup-engineering/pluggable-venue-adapter-service": "0.1.7",
+          "@red-cup-engineering/transaction-cost-replay-service": "0.1.3",
+          "@red-cup-engineering/union-brokerage-products-market-border": "0.1.7",
+          "@red-cup-engineering/virtuals-brokerage-products-border": "0.1.7",
+          "@red-cup-engineering/witness-journal-document-service": "0.1.2",
+          "@red-cup-engineering/content-addressed-dataset-store-service": "0.2.4",
+          "@red-cup-engineering/purged-walk-forward-fold-service": "0.1.2",
+          "@red-cup-engineering/alpaca-principal-actuation-service": "0.1.1",
+          "@red-cup-engineering/principal-brokerage-interface": "0.1.6",
+          "@red-cup-engineering/strategy-evaluation-service": "0.1.7",
+          "@red-cup-engineering/signcraft": "0.1.1",
+          "@red-cup-engineering/obsmetrologia-alpha-selection-proof-service": "0.1.5",
+          "@red-cup-engineering/causal-market-panel-assay-service": "0.1.2",
+          "@red-cup-engineering/causal-tiling-novelty-measurement-service": "0.1.2",
+          "@red-cup-engineering/deterministic-ridge-fit-service": "0.1.2",
+          "@red-cup-engineering/generated-strategy-fold-replay-service": "0.1.2",
+          "@red-cup-engineering/market-funded-strategy-improvement-service": "0.1.4",
+          "@red-cup-engineering/obsmetrologia-blk-accumulation-strategy-service": "0.1.6",
+          "@red-cup-engineering/recursive-strategy-program-improvement-service": "0.1.2",
+          "@red-cup-engineering/return-risk-feature-measurement-service": "0.1.2",
+          "@red-cup-engineering/investment-research-work-lot-service": "0.2.5",
+          "@red-cup-engineering/sheaf-laplacian-measurement-service": "0.1.2",
+          "@red-cup-engineering/correlation-graph-measurement-service": "0.1.2",
+          "@red-cup-engineering/agent-section-descent-assay-service": "0.1.2",
+          "@red-cup-engineering/strategy-program-synthesis-work-lot-service": "0.1.7",
+          "@red-cup-engineering/issuer-research-media-service": "0.1.3-dev.1"
+        },
+        "description": "Scalable customer-wallet-funded market in metered brokerage-control APIs.",
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/red-cup-engineering/alpaca-engineering-services-section.git"
+        },
+        "devDependencies": {
+          "@red-cup-engineering/obsmetrologia-alpha-selection-proof-service": "0.1.5",
+          "@red-cup-engineering/computer-system-engine": "0.1.2"
+        },
+        "exports": {
+          ".": "./src/contract-kernel.mjs",
+          "./market-runtime": "./src/market-runtime.mjs",
+          "./virtuals-runtime": "./src/virtuals-runtime.mjs",
+          "./union-runtime": "./src/union-runtime.mjs",
+          "./esther-onboarding": "./src/esther-onboarding.mjs",
+          "./readiness": "./src/readiness.mjs",
+          "./autonomous-portfolio": "./src/autonomous-portfolio.mjs",
+          "./principal-brokerage-system": "./src/principal-brokerage-system.mjs",
+          "./investment-operating-system": "./src/investment-operating-system.mjs",
+          "./historical-bars": "./scripts/historical-bars.mjs",
+          "./read-news": "./scripts/read-news.mjs",
+          "./news-read": "./scripts/read-news.mjs",
+          "./paper-account-read": "./scripts/paper-account-read.mjs",
+          "./guards": "./scripts/guards.mjs",
+          "./principal-account-read": "./scripts/principal-account-read.mjs",
+          "./frames": "./scripts/frames.mjs",
+          "./circuit": "./scripts/circuit.mjs",
+          "./compose-context": "./scripts/compose-context.mjs",
+          "./daily-trading-context": "./scripts/compose-context.mjs",
+          "./simulate": "./scripts/simulate.mjs",
+          "./run-shadow-assay": "./scripts/run-shadow-assay.mjs",
+          "./evidence-packet": "./scripts/evidence-packet.mjs",
+          "./metered-payment": "./scripts/metered-payment.mjs",
+          "./technical-analysis-feature-measure": "./scripts/technical-analysis-feature-measure.mjs",
+          "./settlement-provider": "./scripts/settlement-provider.mjs",
+          "./live-runtime": "./src/live-runtime.mjs"
+        },
+        "name": "@red-cup-engineering/alpaca-services-section",
+        "scripts": {
+          "start:x402": "node src/market-runtime.mjs",
+          "start:virtuals": "node src/virtuals-runtime.mjs",
+          "start:union": "node src/union-runtime.mjs",
+          "prepare:esther": "node src/esther-onboarding.mjs",
+          "readiness": "node src/readiness.mjs",
+          "check": "find src scripts services \\( -path '*/src/*.mjs' -o -path '*/scripts/*.mjs' \\) -type f -exec node --check {} \\;",
+          "test": "node --test test/*.test.mjs"
+        },
+        "type": "module",
+        "version": "0.1.4-dev.1",
+        "private": false,
+        "files": [
+          "package.json",
+          "README*",
+          "LICENSE*",
+          "scripts",
+          "src"
+        ],
+        "license": "MIT",
+        "funding": {
+          "type": "individual",
+          "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
+        },
+        "gitHead": "80d0a6eb27ed411b13c50055f94fbb36132fea17",
+        "_id": "@red-cup-engineering/alpaca-services-section@0.1.4-dev.1",
+        "contentDigest": "sha256-9e93e721827abe88a51dc68c8b36afa571021e5169a11ada4a1185b715615229",
+        "dist": {
+          "shasum": "16ac81ff31d070813a72efc0c1706bd98281b987",
+          "integrity": "sha512-aKvkGGMiTIYP/whC7cbNocUqtKOV5IKRuX8yM5TCaJKoIuWwhTmRt1uTat83hEMM64UrXbYx4vaHxEHzzAWmXg==",
+          "tarball": "https://registry.561.group/@red-cup-engineering/alpaca-services-section/-/alpaca-services-section-0.1.4-dev.1.tgz"
+        },
+        "_npmUser": {
+          "name": "github-services"
+        }
+      },
+      "received": {
+        "integrity": "sha512-aKvkGGMiTIYP/whC7cbNocUqtKOV5IKRuX8yM5TCaJKoIuWwhTmRt1uTat83hEMM64UrXbYx4vaHxEHzzAWmXg==",
+        "bytes": 47645,
+        "artifactDownloaded": true
+      },
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/alpaca-services-section-0.1.4-dev.1.tgz",
+      "comparisons": [
+        {
+          "file": "src/autonomous-portfolio.mjs",
+          "sha256": "a901934e22b7c5e1cfcadde39f255e6ed2fa0c0df4f234749952511a3acd626b",
+          "sourceSha256": "a901934e22b7c5e1cfcadde39f255e6ed2fa0c0df4f234749952511a3acd626b",
+          "matches": true
+        },
+        {
+          "file": "scripts/circuit.mjs",
+          "sha256": "cdae555ca2f971a8c11e7353530e65a25f179edaa81c2635db7a2db623f27fa9",
+          "sourceSha256": "cdae555ca2f971a8c11e7353530e65a25f179edaa81c2635db7a2db623f27fa9",
+          "matches": true
+        },
+        {
+          "file": "scripts/compose-context.mjs",
+          "sha256": "4585480225d47480dee0fedffc69a7a9710a7c210cba5ce3c1ea7b0cf22961d0",
+          "sourceSha256": "4585480225d47480dee0fedffc69a7a9710a7c210cba5ce3c1ea7b0cf22961d0",
+          "matches": true
+        },
+        {
+          "file": "src/contract-kernel.mjs",
+          "sha256": "3f7fa0c0072bfeff858db3e19196da3135bb4a058ec4b10eeed66b266e6917c2",
+          "sourceSha256": "3f7fa0c0072bfeff858db3e19196da3135bb4a058ec4b10eeed66b266e6917c2",
+          "matches": true
+        },
+        {
+          "file": "src/esther-onboarding.mjs",
+          "sha256": "d261a72deae618de275afeb5c0d0fb793562d160f8d9884a614213d97e5ff07e",
+          "sourceSha256": "d261a72deae618de275afeb5c0d0fb793562d160f8d9884a614213d97e5ff07e",
+          "matches": true
+        },
+        {
+          "file": "scripts/evidence-packet.mjs",
+          "sha256": "28805f68de0a4fade61b1e522edc3052f334b3341f98970ff16d4e8ed5c4dd26",
+          "sourceSha256": "28805f68de0a4fade61b1e522edc3052f334b3341f98970ff16d4e8ed5c4dd26",
+          "matches": true
+        },
+        {
+          "file": "scripts/frames.mjs",
+          "sha256": "d03822fe71de0470ae585b7d6ea813c6293c4644cdac7682f27a9e0abd1ef4b8",
+          "sourceSha256": "d03822fe71de0470ae585b7d6ea813c6293c4644cdac7682f27a9e0abd1ef4b8",
+          "matches": true
+        },
+        {
+          "file": "scripts/guards.mjs",
+          "sha256": "edeabd6d51551e455cad40c7e1dbe9df7d4fb8421b03c3ff67bfd9fe6f086cda",
+          "sourceSha256": "edeabd6d51551e455cad40c7e1dbe9df7d4fb8421b03c3ff67bfd9fe6f086cda",
+          "matches": true
+        },
+        {
+          "file": "scripts/historical-bars.mjs",
+          "sha256": "35a7f04ed7d0f74224989df8287aab59fdb90519bddb9e0bdd646e4673199079",
+          "sourceSha256": "35a7f04ed7d0f74224989df8287aab59fdb90519bddb9e0bdd646e4673199079",
+          "matches": true
+        },
+        {
+          "file": "src/investment-operating-system.mjs",
+          "sha256": "c11257986e9eb6f3c9b4e63165fd0680c409678c27d1b14970367c9f027ae56c",
+          "sourceSha256": "c11257986e9eb6f3c9b4e63165fd0680c409678c27d1b14970367c9f027ae56c",
+          "matches": true
+        },
+        {
+          "file": "src/live-runtime.mjs",
+          "sha256": "0f5d1cda11287e256f8192937824ac4348a3b95a0c8f26fad63e4cebf052e1cd",
+          "sourceSha256": "0f5d1cda11287e256f8192937824ac4348a3b95a0c8f26fad63e4cebf052e1cd",
+          "matches": true
+        },
+        {
+          "file": "src/market-runtime.mjs",
+          "sha256": "4a9cc67cbb6e858f1e932cf0284a098e2743cf0917e712955b99b50a8124d812",
+          "sourceSha256": "4a9cc67cbb6e858f1e932cf0284a098e2743cf0917e712955b99b50a8124d812",
+          "matches": true
+        },
+        {
+          "file": "scripts/metered-payment.mjs",
+          "sha256": "b876581c31c24ab96031c1becea3567db510f2d14940affddf3fefc03a415457",
+          "sourceSha256": "b876581c31c24ab96031c1becea3567db510f2d14940affddf3fefc03a415457",
+          "matches": true
+        },
+        {
+          "file": "scripts/paper-account-read.mjs",
+          "sha256": "240b63fd89ccce7b179b013d36f06b37a2283831fbb5a3d97ed51f94f205afcc",
+          "sourceSha256": "240b63fd89ccce7b179b013d36f06b37a2283831fbb5a3d97ed51f94f205afcc",
+          "matches": true
+        },
+        {
+          "file": "scripts/principal-account-read.mjs",
+          "sha256": "7fe5323abd5ab80957165d889b9027d64c2401f32868544e1222e22ee05f6d02",
+          "sourceSha256": "7fe5323abd5ab80957165d889b9027d64c2401f32868544e1222e22ee05f6d02",
+          "matches": true
+        },
+        {
+          "file": "src/principal-brokerage-system.mjs",
+          "sha256": "ec3dd8edf8f5ebc51bfa9f211d26700a0efca6a06fd697289dbdafcb6aded5c7",
+          "sourceSha256": "ec3dd8edf8f5ebc51bfa9f211d26700a0efca6a06fd697289dbdafcb6aded5c7",
+          "matches": true
+        },
+        {
+          "file": "scripts/read-news.mjs",
+          "sha256": "eb71a4b89af72d88f2167d7fa403c679e8ff4b30f1c1208df7da5a39a80081fb",
+          "sourceSha256": "eb71a4b89af72d88f2167d7fa403c679e8ff4b30f1c1208df7da5a39a80081fb",
+          "matches": true
+        },
+        {
+          "file": "src/readiness.mjs",
+          "sha256": "cbbbf0d5e4b2726330ac8fd3facfd05cda2dc032c4fa8558295c6343e0d26d4d",
+          "sourceSha256": "cbbbf0d5e4b2726330ac8fd3facfd05cda2dc032c4fa8558295c6343e0d26d4d",
+          "matches": true
+        },
+        {
+          "file": "scripts/record-cold-red-gate-paper-loop-deployment.mjs",
+          "sha256": "0ad019cb21b65e5b4aa651cb700aef1157b4a480c91d6f3ea5b3c44f11661077",
+          "sourceSha256": "0ad019cb21b65e5b4aa651cb700aef1157b4a480c91d6f3ea5b3c44f11661077",
+          "matches": true
+        },
+        {
+          "file": "src/relational-id.mjs",
+          "sha256": "d4f0df36411040360dc228b27b58c5c3897f307dc4f25c8fee7e0da85b34418d",
+          "sourceSha256": "d4f0df36411040360dc228b27b58c5c3897f307dc4f25c8fee7e0da85b34418d",
+          "matches": true
+        },
+        {
+          "file": "scripts/run-shadow-assay.mjs",
+          "sha256": "cd691889ec8a518df27572a7e13f32f3c3b8534c1a510d4a7d7c6ceef5fa8ed2",
+          "sourceSha256": "cd691889ec8a518df27572a7e13f32f3c3b8534c1a510d4a7d7c6ceef5fa8ed2",
+          "matches": true
+        },
+        {
+          "file": "scripts/settlement-provider.mjs",
+          "sha256": "ec90013db4c672d49b901fcdba8c6c8bee618abda650f0294314af04b70ced88",
+          "sourceSha256": "ec90013db4c672d49b901fcdba8c6c8bee618abda650f0294314af04b70ced88",
+          "matches": true
+        },
+        {
+          "file": "scripts/simulate.mjs",
+          "sha256": "cb6d47b195c28e49516efbce30180469ddd87008251912012b139318293edc56",
+          "sourceSha256": "cb6d47b195c28e49516efbce30180469ddd87008251912012b139318293edc56",
+          "matches": true
+        },
+        {
+          "file": "scripts/technical-analysis-feature-measure.mjs",
+          "sha256": "049e02ec8541c01128f9573a30bb71129e6ef2b71c15ae20b5cc10a82f93ed9b",
+          "sourceSha256": "049e02ec8541c01128f9573a30bb71129e6ef2b71c15ae20b5cc10a82f93ed9b",
+          "matches": true
+        },
+        {
+          "file": "src/union-runtime.mjs",
+          "sha256": "870b2f370f402ebcb370c9cd12502fe87054d60f06bf83696b9608344955ef5e",
+          "sourceSha256": "870b2f370f402ebcb370c9cd12502fe87054d60f06bf83696b9608344955ef5e",
+          "matches": true
+        },
+        {
+          "file": "src/virtuals-runtime.mjs",
+          "sha256": "8a7c11d4bbf1e6e1bc02ddd3aeb2f04c2c6117c97179ac55829420ce103154c9",
+          "sourceSha256": "8a7c11d4bbf1e6e1bc02ddd3aeb2f04c2c6117c97179ac55829420ce103154c9",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "name": "@red-cup-engineering/json-services-section",
+      "version": "0.4.2-dev.2",
+      "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/services/computer-content-engineering-services-section/services/computer-serialized-content-engineering-services-section/services/json-services-section",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/json-services-section",
+      "manifest": {
+        "name": "@red-cup-engineering/json-services-section",
+        "version": "0.4.2-dev.2",
+        "type": "module",
+        "private": false,
+        "license": "MIT",
+        "exports": {
+          ".": "./src/index.mjs",
+          "./parse-json": "./scripts/parse-json.mjs",
+          "./project-json-record-keys": "./scripts/project-json-record-keys.mjs",
+          "./form-cloudevent": "./scripts/form-cloudevent.mjs",
+          "./validate-cloudevent": "./scripts/validate-cloudevent.mjs",
+          "./package.json": "./package.json",
+          "./schema": "./src/json.schema.json",
+          "./canonical-json": {
+            "types": "./scripts/canonical-json.d.mts",
+            "import": "./scripts/canonical-json.mjs"
+          },
+          "./types": {
+            "types": "./src/json-value.d.mts"
+          },
+          "./assert-canonical-json": "./scripts/assert-canonical-json.mjs",
+          "./is-canonical-json": "./scripts/is-canonical-json.mjs",
+          "./parse-json-value": "./scripts/parse-json-value.mjs",
+          "./is-json-value": "./scripts/is-json-value.mjs",
+          "./require-json-value": {
+            "types": "./scripts/require-json-value.d.mts",
+            "import": "./scripts/require-json-value.mjs"
+          },
+          "./assert-nonempty-string": "./scripts/assert-nonempty-string.mjs",
+          "./is-json-record": {
+            "types": "./scripts/is-json-record.d.mts",
+            "import": "./scripts/is-json-record.mjs"
+          },
+          "./freeze-json": "./scripts/freeze-json.mjs",
+          "./admit-json-type": "./scripts/admit-json-type.mjs",
+          "./read-json-field": "./scripts/read-json-field.mjs",
+          "./is-object-record": "./scripts/is-object-record.mjs",
+          "./is-json-text": "./scripts/is-json-text.mjs",
+          "./json-values-of-text": "./scripts/json-values-of-text.mjs",
+          "./write-json-text": "./scripts/write-json-text.mjs",
+          "./keyed-json-text": "./scripts/keyed-json-text.mjs",
+          "./json-byte-carrier": "./src/json-byte-carrier.mjs",
+          "./encode-json-byte-carrier": "./scripts/encode-json-byte-carrier.mjs",
+          "./decode-json-byte-carrier": "./scripts/decode-json-byte-carrier.mjs",
+          "./canonical": "./scripts/canonical-json.mjs",
+          "./differentiate-data": "./scripts/differentiate-data.mjs",
+          "./differentiate-sequences": "./scripts/differentiate-sequences.mjs",
+          "./json-equality": "./scripts/json-equality.mjs",
+          "./json-resource": "./scripts/json-resource.mjs",
+          "./resolve-json-pointer": "./scripts/resolve-json-pointer.mjs",
+          "./json-transformations": "./scripts/json-transformations.mjs",
+          "./json-patch": "./scripts/json-patch.mjs"
+        },
+        "files": [
+          "src",
+          "scripts",
+          "README.md",
+          "package.json",
+          "schemas"
+        ],
+        "devDependencies": {},
+        "scripts": {
+          "test": "node --test test/*.test.mjs",
+          "pack:dry-run": "npm pack --dry-run --ignore-scripts"
+        },
+        "engines": {
+          "node": ">=24.2.0"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/red-cup-engineering/json-services-section.git"
+        },
+        "gitHead": "3fef290769fc2c26837fd20c93e192f3a6976ce6",
+        "_id": "@red-cup-engineering/json-services-section@0.4.2-dev.2",
+        "contentDigest": "sha256-82f18c9699ba509ca6831252219f930845141b07b97e6495c85d37f73afb33a9",
+        "dist": {
+          "shasum": "54725fb7b5a5918678609a652bd6e9f80c9982dc",
+          "integrity": "sha512-2/ooNcP31g/zFEwXcW7IJmcPmnEU+0NSxpUxnxoU5E2bFvaM2gBG+YfFs0Z63aT0fm/mCBHWcfmgiaIoqKdHfg==",
+          "tarball": "https://registry.561.group/@red-cup-engineering/json-services-section/-/json-services-section-0.4.2-dev.2.tgz"
+        },
+        "_npmUser": {
+          "name": "github-services"
+        }
+      },
+      "received": {
+        "integrity": "sha512-2/ooNcP31g/zFEwXcW7IJmcPmnEU+0NSxpUxnxoU5E2bFvaM2gBG+YfFs0Z63aT0fm/mCBHWcfmgiaIoqKdHfg==",
+        "bytes": 22374,
+        "artifactDownloaded": true
+      },
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/json-services-section-0.4.2-dev.2.tgz",
+      "comparisons": [
+        {
+          "file": "scripts/admit-json-type.mjs",
+          "sha256": "1ef821e2cdf0b7283e76e0bdba419ea44fccb130700a98dadf368693e0bde1b3",
+          "sourceSha256": "1ef821e2cdf0b7283e76e0bdba419ea44fccb130700a98dadf368693e0bde1b3",
+          "matches": true
+        },
+        {
+          "file": "scripts/assert-canonical-json.mjs",
+          "sha256": "c1695b34467421408916c5c6d04fdd087a56cba097d83ec7919feaa9728925ec",
+          "sourceSha256": "c1695b34467421408916c5c6d04fdd087a56cba097d83ec7919feaa9728925ec",
+          "matches": true
+        },
+        {
+          "file": "scripts/assert-nonempty-string.mjs",
+          "sha256": "754db2afaa6d379c6270c7a2ca6274f037b9fd87d8a6281b1205e32989ef2dad",
+          "sourceSha256": "754db2afaa6d379c6270c7a2ca6274f037b9fd87d8a6281b1205e32989ef2dad",
+          "matches": true
+        },
+        {
+          "file": "scripts/canonical-json.mjs",
+          "sha256": "8f78095b4c22f9a171823b789c7918910f4a47eb28b388cae1de0eea1fce90cf",
+          "sourceSha256": "8f78095b4c22f9a171823b789c7918910f4a47eb28b388cae1de0eea1fce90cf",
+          "matches": true
+        },
+        {
+          "file": "scripts/decode-json-byte-carrier.mjs",
+          "sha256": "100ca20ee46ff7a26b6cca73f85e542aa3b3c0b9a030086aeb8eb241d6df9d4f",
+          "sourceSha256": "100ca20ee46ff7a26b6cca73f85e542aa3b3c0b9a030086aeb8eb241d6df9d4f",
+          "matches": true
+        },
+        {
+          "file": "scripts/differentiate-data.mjs",
+          "sha256": "111d435e41cbc1467c45fcbfd081bf38dcbf10d9e7e47cab7c5d5df501a4ad4f",
+          "sourceSha256": "111d435e41cbc1467c45fcbfd081bf38dcbf10d9e7e47cab7c5d5df501a4ad4f",
+          "matches": true
+        },
+        {
+          "file": "scripts/differentiate-sequences.mjs",
+          "sha256": "20ba47fa6953d0fc07e50e62e5520f2b2c436d96cfc616e5edea0abbf57cd842",
+          "sourceSha256": "20ba47fa6953d0fc07e50e62e5520f2b2c436d96cfc616e5edea0abbf57cd842",
+          "matches": true
+        },
+        {
+          "file": "scripts/encode-json-byte-carrier.mjs",
+          "sha256": "0d72352f187a9b902ea2c689f9865c30d75278d102dcbb170716e8d414025591",
+          "sourceSha256": "0d72352f187a9b902ea2c689f9865c30d75278d102dcbb170716e8d414025591",
+          "matches": true
+        },
+        {
+          "file": "scripts/form-cloudevent.mjs",
+          "sha256": "24f952b00dbb70003890d445f990cd6e302b520d77f28bf77e10d82053199b44",
+          "sourceSha256": "24f952b00dbb70003890d445f990cd6e302b520d77f28bf77e10d82053199b44",
+          "matches": true
+        },
+        {
+          "file": "scripts/freeze-json.mjs",
+          "sha256": "ded14661a69f301eb50ff53011ac63e9cabbf6697064fea1e8fe35c01afa5b71",
+          "sourceSha256": "ded14661a69f301eb50ff53011ac63e9cabbf6697064fea1e8fe35c01afa5b71",
+          "matches": true
+        },
+        {
+          "file": "src/index.mjs",
+          "sha256": "bcaca69ce4ec927d5ea04364b0398ea4637fe4b1c2b8382b4ad482fbb509ff93",
+          "sourceSha256": "bcaca69ce4ec927d5ea04364b0398ea4637fe4b1c2b8382b4ad482fbb509ff93",
+          "matches": true
+        },
+        {
+          "file": "scripts/is-canonical-json.mjs",
+          "sha256": "efe5948284983cc8ce900c39b5541d05acb4deccfb39461462fcfe7e1a1f4066",
+          "sourceSha256": "efe5948284983cc8ce900c39b5541d05acb4deccfb39461462fcfe7e1a1f4066",
+          "matches": true
+        },
+        {
+          "file": "scripts/is-json-record.mjs",
+          "sha256": "ee1bd2b3bc9a4d8b7ac20fa2330a4696ec5679b44d426ee182f10a16dd0b4d02",
+          "sourceSha256": "ee1bd2b3bc9a4d8b7ac20fa2330a4696ec5679b44d426ee182f10a16dd0b4d02",
+          "matches": true
+        },
+        {
+          "file": "scripts/is-json-text.mjs",
+          "sha256": "1b1fe19e36cb93c20a236e17a44b188aa8f7d3228c37f448f5917cd6cbf579c9",
+          "sourceSha256": "1b1fe19e36cb93c20a236e17a44b188aa8f7d3228c37f448f5917cd6cbf579c9",
+          "matches": true
+        },
+        {
+          "file": "scripts/is-json-value.mjs",
+          "sha256": "041f294e5e8f21c51aef653d840ceac121477c02456139beb7fe4c9014bfba0c",
+          "sourceSha256": "041f294e5e8f21c51aef653d840ceac121477c02456139beb7fe4c9014bfba0c",
+          "matches": true
+        },
+        {
+          "file": "scripts/is-object-record.mjs",
+          "sha256": "eb03890ac316acfb0536ae3ce385c5e91aeefa30bbb4232a91f523b72fc2f2ce",
+          "sourceSha256": "eb03890ac316acfb0536ae3ce385c5e91aeefa30bbb4232a91f523b72fc2f2ce",
+          "matches": true
+        },
+        {
+          "file": "src/json-byte-carrier.mjs",
+          "sha256": "c95d24ebe2603ae2cc7c690515253ba84e4952a8ced73ca8c1057216d7e32be9",
+          "sourceSha256": "c95d24ebe2603ae2cc7c690515253ba84e4952a8ced73ca8c1057216d7e32be9",
+          "matches": true
+        },
+        {
+          "file": "scripts/json-equality.mjs",
+          "sha256": "785319608f24e19aec011d0f1eaef5b179136ab3cfc75c9929b0a608654205b8",
+          "sourceSha256": "785319608f24e19aec011d0f1eaef5b179136ab3cfc75c9929b0a608654205b8",
+          "matches": true
+        },
+        {
+          "file": "scripts/json-patch.mjs",
+          "sha256": "3a8b173a051697cfdb651e20fd01cf06148f5f29f068882c1fc6dab77b1c055c",
+          "sourceSha256": "3a8b173a051697cfdb651e20fd01cf06148f5f29f068882c1fc6dab77b1c055c",
+          "matches": true
+        },
+        {
+          "file": "scripts/json-resource.mjs",
+          "sha256": "d4142ecf02ac8c5ee59154bb89f1fc88e0a82ebedcf3840486f734d84461f74a",
+          "sourceSha256": "d4142ecf02ac8c5ee59154bb89f1fc88e0a82ebedcf3840486f734d84461f74a",
+          "matches": true
+        },
+        {
+          "file": "scripts/json-transformations.mjs",
+          "sha256": "5b3230f5c2e58603a74b7efad93f201b7fb8f65a8006c698360f80084200350a",
+          "sourceSha256": "5b3230f5c2e58603a74b7efad93f201b7fb8f65a8006c698360f80084200350a",
+          "matches": true
+        },
+        {
+          "file": "scripts/json-values-of-text.mjs",
+          "sha256": "4074d211be5e92ec9f33e175db73ebbace39305cf5944c82cd760352444aef61",
+          "sourceSha256": "4074d211be5e92ec9f33e175db73ebbace39305cf5944c82cd760352444aef61",
+          "matches": true
+        },
+        {
+          "file": "scripts/keyed-json-text.mjs",
+          "sha256": "85149e8a87cf1fb33591ffdbf761114ea6c0a41e6caa7b689209f35da08bc697",
+          "sourceSha256": "85149e8a87cf1fb33591ffdbf761114ea6c0a41e6caa7b689209f35da08bc697",
+          "matches": true
+        },
+        {
+          "file": "scripts/parse-json-value.mjs",
+          "sha256": "ef0d1a5e15303a341619271f639b1f157c360818f56243d07e4eea45c5d1017a",
+          "sourceSha256": "ef0d1a5e15303a341619271f639b1f157c360818f56243d07e4eea45c5d1017a",
+          "matches": true
+        },
+        {
+          "file": "scripts/parse-json.mjs",
+          "sha256": "dc12fa3e50cd6ec919f808552158ab246ca6dd59da45af74a9e960738f0a651f",
+          "sourceSha256": "dc12fa3e50cd6ec919f808552158ab246ca6dd59da45af74a9e960738f0a651f",
+          "matches": true
+        },
+        {
+          "file": "scripts/project-json-record-keys.mjs",
+          "sha256": "82401f4fe0fe6f625f71f6eeaada1306c62135674aeb434b7d4235da18ca1bb1",
+          "sourceSha256": "82401f4fe0fe6f625f71f6eeaada1306c62135674aeb434b7d4235da18ca1bb1",
+          "matches": true
+        },
+        {
+          "file": "scripts/read-json-field.mjs",
+          "sha256": "24abf5e49ea6a6f0cd6eb17ea0a8f8ee5676d0f8e6318c3ee419c7d504eca4eb",
+          "sourceSha256": "24abf5e49ea6a6f0cd6eb17ea0a8f8ee5676d0f8e6318c3ee419c7d504eca4eb",
+          "matches": true
+        },
+        {
+          "file": "scripts/require-json-value.mjs",
+          "sha256": "ce3834dd536347cad2adc5893161fc4f0fd322e486d3cc1b9a0c919c64f57404",
+          "sourceSha256": "ce3834dd536347cad2adc5893161fc4f0fd322e486d3cc1b9a0c919c64f57404",
+          "matches": true
+        },
+        {
+          "file": "scripts/resolve-json-pointer.mjs",
+          "sha256": "3b877fb6bd4ba010d579dce83fe2cb02dfdebd9c5ffbd5850ff1e206795d5d23",
+          "sourceSha256": "3b877fb6bd4ba010d579dce83fe2cb02dfdebd9c5ffbd5850ff1e206795d5d23",
+          "matches": true
+        },
+        {
+          "file": "scripts/validate-cloudevent.mjs",
+          "sha256": "5eaec77034c99b239993ca477e38d9b99f759a1d0bf6e46af2c87b019a804960",
+          "sourceSha256": "5eaec77034c99b239993ca477e38d9b99f759a1d0bf6e46af2c87b019a804960",
+          "matches": true
+        },
+        {
+          "file": "scripts/write-json-text.mjs",
+          "sha256": "70f3bc6830267c0d77e934eac5e8c1dcabd84d6b1d740e4e1b27d3a35a0bade1",
+          "sourceSha256": "70f3bc6830267c0d77e934eac5e8c1dcabd84d6b1d740e4e1b27d3a35a0bade1",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "name": "@red-cup-engineering/metrologic",
+      "version": "0.4.2",
+      "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/lib/metrologic",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/metrologic",
+      "manifest": {
+        "name": "@red-cup-engineering/metrologic",
+        "version": "0.4.2",
+        "type": "module",
+        "description": "Metrologic: the data layer's mathematics, the shared JavaScript implementation of the mathematical operations every layer above it uses.",
+        "keywords": [
+          "bilattice",
+          "four-valued",
+          "belnap",
+          "paraconsistent",
+          "chu-space",
+          "star-autonomous",
+          "category-theory",
+          "predication",
+          "exact-arithmetic",
+          "fixed-point"
+        ],
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/red-cup-engineering/computer-data-engineering-services-section.git",
+          "directory": "lib/metrologic"
+        },
+        "engines": {
+          "node": ">=22"
+        },
+        "exports": {
+          "./hyperdoctrine/order": {
+            "default": "./src/hyperdoctrine/order.mjs"
+          },
+          "./hyperdoctrine/adjoints": {
+            "default": "./src/hyperdoctrine/adjoints.mjs"
+          },
+          "./hyperdoctrine/comprehension": {
+            "default": "./src/hyperdoctrine/comprehension.mjs"
+          },
+          "./readout": {
+            "default": "./src/readout/index.mjs"
+          },
+          "./obstruction/attention-allocation": {
+            "default": "./src/obstruction/attention-allocation.mjs"
+          },
+          "./obstruction/settling": {
+            "default": "./src/obstruction/settling.mjs"
+          },
+          "./spectral/inversion": {
+            "default": "./src/spectral/inversion.mjs"
+          },
+          "./spectral/location": {
+            "default": "./src/spectral/location.mjs"
+          },
+          "./equality": {
+            "default": "./src/equality/index.mjs"
+          },
+          "./package.json": "./package.json",
+          "./number-theory/sequence-recurrence": {
+            "import": "./src/number-theory/sequence-recurrence.mjs"
+          },
+          "./tiling/tile": "./src/models/tiling/tile.mjs",
+          "./sheaf/four-valued-names": {
+            "import": "./src/sheaf/four-valued-names.mjs"
+          },
+          "./chu": {
+            "import": "./src/chu.mjs"
+          },
+          "./sheaf/order/four-twist-product": {
+            "import": "./src/sheaf/order/four-twist-product.mjs"
+          },
+          "./sheaf/topology/d-frame": {
+            "import": "./src/sheaf/topology/d-frame.mjs"
+          },
+          "./graph/port-graph": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/port-graph.mjs"
+          },
+          "./articulation/four-corner-cell": {
+            "import": "./src/articulation/four-corner-cell.mjs"
+          },
+          "./articulation/predicating/equality": {
+            "import": "./src/articulation/predicating/equality.mjs"
+          },
+          "./articulation/predicating/fibration": {
+            "import": "./src/articulation/predicating/fibration.mjs"
+          },
+          "./articulation/predicating/geometry/spatial/cut-and-project": {
+            "import": "./src/articulation/predicating/geometry/spatial/cut-and-project.mjs"
+          },
+          "./articulation/predicating/geometry/spatial/gyrobifastigium-j26": {
+            "import": "./src/articulation/predicating/geometry/spatial/gyrobifastigium-j26.mjs"
+          },
+          "./articulation/predicating/positing/closure-operator-fiber": {
+            "import": "./src/articulation/predicating/positing/closure-operator-fiber.mjs"
+          },
+          "./articulation/predicating/positing/dihedral-gauge": {
+            "import": "./src/articulation/predicating/positing/dihedral-gauge.mjs"
+          },
+          "./articulation/predicating/positing/modal-kripke-four-valued": {
+            "import": "./src/articulation/predicating/positing/modal-kripke-four-valued.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/algebra-hierarchy": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/algebra-hierarchy.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/aperiodic-classification": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/aperiodic-classification.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/bigraded-cohomology": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/bigraded-cohomology.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/bigraded-diamond": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/bigraded-diamond.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/bitopological-settling-site": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/bitopological-settling-site.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/causal-manifoldlikeness": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/causal-manifoldlikeness.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/causal-microsupport": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/causal-microsupport.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/causal-mld-classification": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/causal-mld-classification.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/causal": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/causal.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/closure-rule-system": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/closure-rule-system.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/continuum-colimit": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/continuum-colimit.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/laplacian": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/laplacian.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/coordination-cohomology": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/coordination-cohomology.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/crdt-cohomological-calm": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/crdt-cohomological-calm.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/d-frame": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/d-frame.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/evidence": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/evidence.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/fca-lambek-circle": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/fca-lambek-circle.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/flow": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/flow.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/formats-four": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/formats-four.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/frobenius-tqft": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/frobenius-tqft.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/hauptvermutung": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/hauptvermutung.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/inconsistency-sheaf": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/inconsistency-sheaf.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/inverse-hull": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/inverse-hull.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/lawvere-harmonic-cohomology": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/lawvere-harmonic-cohomology.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/lax-slack": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/lax-slack.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/matter-topology": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/matter-topology.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/negative-paraconsistent-sheaf": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/negative-paraconsistent-sheaf.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/ordinal-closure": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/ordinal-closure.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/pairwise-stone-clopen": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/pairwise-stone-clopen.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/port-graph": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/port-graph.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/port-thread-routing": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/port-thread-routing.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/quantale-enriched-sheaf": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/quantale-enriched-sheaf.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/regime-time-section": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/regime-time-section.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/scott-coalgebra": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/scott-coalgebra.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/settling-associated-sheaf": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/settling-associated-sheaf.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/settling-cohomology-h1": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/settling-cohomology-h1.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/settling-local-constancy": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/settling-local-constancy.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/tarski-sheaf-closure": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/tarski-sheaf-closure.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/transfinite-cell-complex": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/transfinite-cell-complex.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/twist-product": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/twist-product.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/verification-tournament": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/verification-tournament.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/weave-draft": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/weave-draft.mjs"
+          },
+          "./articulation/predicating/positing/settling/bigraded-cohomology": {
+            "import": "./src/articulation/predicating/positing/settling/bigraded-cohomology.mjs"
+          },
+          "./articulation/predicating/positing/settling/carrier": {
+            "import": "./src/articulation/predicating/positing/settling/carrier.mjs"
+          },
+          "./articulation/predicating/positing/settling/certificate": {
+            "import": "./src/articulation/predicating/positing/settling/certificate.mjs"
+          },
+          "./articulation/predicating/positing/settling/closure": {
+            "import": "./src/articulation/predicating/positing/settling/closure.mjs"
+          },
+          "./articulation/predicating/positing/settling/dynamics/substitution/hull": {
+            "import": "./src/models/dynamics/substitution/hull.mjs"
+          },
+          "./articulation/predicating/positing/settling/dynamics/substitution": {
+            "import": "./src/models/dynamics/substitution/index.mjs"
+          },
+          "./articulation/predicating/positing/settling/dynamics/substitution/mld": {
+            "import": "./src/models/dynamics/substitution/mld.mjs"
+          },
+          "./articulation/predicating/positing/settling/dynamics/substitution/recurrence": {
+            "import": "./src/models/dynamics/substitution/recurrence/index.mjs"
+          },
+          "./articulation/predicating/positing/settling/dynamics/substitution/sofic": {
+            "import": "./src/models/dynamics/substitution/sofic.mjs"
+          },
+          "./articulation/predicating/positing/settling/dynamics/substitution/tiling": {
+            "import": "./src/models/dynamics/substitution/tiling.mjs"
+          },
+          "./articulation/predicating/positing/settling/learning-cycle": {
+            "import": "./src/articulation/predicating/positing/settling/learning-cycle.mjs"
+          },
+          "./articulation/predicating/positing/settling/learning-depth": {
+            "import": "./src/articulation/predicating/positing/settling/learning-depth.mjs"
+          },
+          "./articulation/predicating/positing/settling/object": {
+            "import": "./src/articulation/predicating/positing/settling/object.mjs"
+          },
+          "./articulation/predicating/positing/settling/optimization": {
+            "import": "./src/articulation/predicating/positing/settling/optimization.mjs"
+          },
+          "./articulation/predicating/positing/settling/ordinal": {
+            "import": "./src/articulation/predicating/positing/settling/ordinal.mjs"
+          },
+          "./articulation/predicating/positing/settling/probability": {
+            "import": "./src/articulation/predicating/positing/settling/probability.mjs"
+          },
+          "./articulation/predicating/positing/settling/stochastic": {
+            "import": "./src/articulation/predicating/positing/settling/stochastic.mjs"
+          },
+          "./articulation/predicating/positing/settling/value-category": {
+            "import": "./src/articulation/predicating/positing/settling/value-category.mjs"
+          },
+          "./articulation/predicating/positing/valuation-fiber-algebra": {
+            "import": "./src/articulation/predicating/positing/valuation-fiber-algebra.mjs"
+          },
+          "./articulation/predicating/quantifying": {
+            "import": "./src/articulation/predicating/quantifying.mjs"
+          },
+          "./settlement": {
+            "import": "./src/settlement.mjs"
+          },
+          "./settlement/wire": {
+            "import": "./src/settlement-wire.mjs"
+          },
+          "./number/wire-ratio": "./src/number/wire-ratio.mjs",
+          "./number/natural-extension": "./src/number/natural-extension.mjs",
+          "./articulation/predicating/geometry/spatial/icosahedral": "./src/articulation/predicating/geometry/spatial/icosahedral.mjs",
+          "./models/order/d-frame-site": "./src/articulation/predicating/positing/settling/graph/d-frame-site.mjs",
+          "./models/topology/alexandrov-site": "./src/articulation/predicating/positing/settling/graph/alexandrov-site.mjs",
+          "./models/topology/quantale-enriched-site": "./src/articulation/predicating/positing/settling/graph/quantale-enriched-site.mjs",
+          "./models/topology/settling-site": "./src/articulation/predicating/positing/settling/graph/settling-site.mjs",
+          "./models/topology/keratin": "./src/models/topology/keratin.mjs",
+          "./models/order/run-causal-set": "./src/models/order/run-causal-set.mjs",
+          "./models/physics/models/kinetic-theory/molecular-chaos-gluing": "./src/models/physics/models/kinetic-theory/molecular-chaos-gluing.mjs",
+          "./models/physics/models/glass/kappa-sector-charges": "./src/models/physics/models/glass/kappa-sector-charges.mjs",
+          "./models/physics/models/quantum-contextuality/reconciliation-quote": "./src/models/physics/models/quantum-contextuality/reconciliation-quote.mjs",
+          "./models/physics/session-presence": "./src/models/physics/session-presence.mjs",
+          "./models/graphs/module-cohesion": "./src/models/graphs/module-cohesion.mjs",
+          "./models/graphs/directed-multigraph": "./src/models/graphs/directed-multigraph.mjs",
+          "./settling/schema/site": "./src/articulation/predicating/positing/settling/site.mjs",
+          "./closure/src/directed-evidence": "./src/closure/directed-evidence.mjs",
+          "./models/physics/models/quantum-contextuality/measurement-scenario": "./src/models/physics/models/quantum-contextuality/measurement-scenario.mjs",
+          "./models/physics/models/quantum-contextuality/contextual-obstruction": "./src/models/physics/models/quantum-contextuality/contextual-obstruction.mjs",
+          "./articulation/predicating/positing/evidence-record": {
+            "import": "./src/articulation/predicating/positing/evidence-record.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/coloring": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/coloring.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/alexandrov-husainov": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/alexandrov-husainov.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/aperiodic-autocorrelation": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/aperiodic-autocorrelation.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/causal-involutivity": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/causal-involutivity.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/causal-polarization": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/causal-polarization.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/chromatic-lorentzian": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/chromatic-lorentzian.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/collatz": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/collatz.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/conservation": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/conservation.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/differential": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/differential.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/discrete-set-number-graph": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/discrete-set-number-graph.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/glass-overlap": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/glass-overlap.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/information": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/information.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/internal-real": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/internal-real.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/jeandel-rao-witness": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/jeandel-rao-witness.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/knaster-tarski": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/knaster-tarski.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/kz-coherent-sheaf": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/kz-coherent-sheaf.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/lambek-calculus": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/lambek-calculus.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/linear-algebra": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/linear-algebra.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/number-theory": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/number-theory.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/order-infra": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/order-infra.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/persistent-h0": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/persistent-h0.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/residuated-lattice": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/residuated-lattice.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/sofic": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/sofic.mjs"
+          },
+          "./articulation/predicating/positing/settling/analysis/spectral": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/spectral.mjs"
+          },
+          "./articulation/predicating/positing/opaque-coincidence": {
+            "import": "./src/articulation/predicating/positing/opaque-coincidence.mjs"
+          },
+          "./closure/formal-context": "./src/closure/formal-context.mjs",
+          "./closure/formal-concepts": "./src/closure/formal-concepts.mjs",
+          "./articulation/predicating/positing/settling/analysis/proof-foam": {
+            "import": "./src/articulation/predicating/positing/settling/analysis/proof-foam.mjs"
+          },
+          "./models/physics/models/kinetic-theory/boltzmann-entropy": "./src/models/physics/models/kinetic-theory/boltzmann-entropy.mjs",
+          "./number/evidence-bits": "./src/number/evidence-bits.mjs",
+          "./number/polynomial-ints": "./src/number/polynomial-ints.mjs",
+          "./models/order/quantale": "./src/models/order/quantale.mjs",
+          "./number/finite-law": {
+            "import": "./src/number/finite-law.mjs"
+          },
+          "./obstruction/capacity-flow": {
+            "default": "./src/obstruction/capacity-flow.mjs"
+          }
+        },
+        "files": [
+          "README.md",
+          "src",
+          "scripts",
+          "specifications"
+        ],
+        "sideEffects": false,
+        "dependencies": {
+          "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
+          "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
+          "@red-cup-engineering/exact-number-data-service": "0.1.1",
+          "@red-cup-engineering/json-services-section": "0.4.0"
+        },
+        "scripts": {
+          "test": "node --max-old-space-size=256 --test --test-concurrency=1 --test-timeout=15000"
+        },
+        "private": false,
+        "readme": "# @red-cup-engineering/metrologic\n\nThe one logic kernel every 561-group and family-engine package imports: bilattice\npredication as the floor, an opt-in categorical hyperdoctrine over it, a charge\nreadout utility, Chu spaces over FOUR, and the settled math modules that computer\npackages import as their semantic substrate.\n\nThis package is ESM-only, Node >=20, and organized by explicit subpath exports.\nIt does not provide a broad default import.\nConsumers should import the math surface they actually descend through.\n\nMetrologic is the data layer's mathematics: it lives in the computer data section's lib and\nimports only data (FOUR, exact numbers, closure regimes), content, JSON and EAVT, so every\nlayer above data may import it. The Laplacian, PyMetrologic, and enriched-category research\napplications live under computer-math-system; proof-assistant integration lives in\ncomputer-proofing-system.\n\n## The three families\n\n- **`@red-cup-engineering/metrologic/bilattice`** — the floor. The four-regime descent\n  (`articulate → predicate → posit → settle`) over a lossless four-valued\n  evidence carrier, both cone pairs (`brim`/`adjudicate`/`presume`), and the\n  void reads (`saturate`, `precipitate`, `estrange`, `vanish`, ...). The charge\n  itself and its value-algebra (`joinKnowledge`, `meetTruth`, `negate`,\n  `conflate`, `isTop`, ...) are `@red-cup-engineering/metrologic/articulation/predicating/positing/bilattice-charge`. Everything else in this package is built on top of the floor, or is\n  independent of it — nothing upstream of it depends on anything else here.\n  Narrower modules: `@red-cup-engineering/metrologic/bilattice/descent`,\n  `@red-cup-engineering/metrologic/bilattice/cone`,\n  `@red-cup-engineering/metrologic/bilattice/void`.\n- **`@red-cup-engineering/metrologic/hyperdoctrine`** — opt-in. The categorical hyperdoctrine\n  over the bilattice floor: quantifier adjoints (`existsAlong`/`forallAlong`),\n  Frobenius reciprocity, Beck-Chevalley, and Lawvere comprehension, over a\n  general finite fibration. A from-scratch recreation of legacy `voidmath`'s\n  `predication-fibration`/`predication-hyperdoctrine` theorems, restated with\n  hand-rolled validation in place of `voidmath`'s `ajv`-based schema checking\n  — zero runtime dependencies here too. Nothing in `bilattice` depends on this;\n  pull it in only if you need the categorical layer. Narrower modules:\n  `@red-cup-engineering/metrologic/hyperdoctrine/order`, `@red-cup-engineering/metrologic/hyperdoctrine/adjoints`,\n  `@red-cup-engineering/metrologic/hyperdoctrine/comprehension`.\n- **`@red-cup-engineering/metrologic/readout`** — a charge-to-style utility, derived from the\n  bilattice order rather than an ad-hoc switch statement: `place` classifies\n  any charge into one of the four regimes, `knowledgeWeight` and `salience`\n  give a total order over them (absurd < active < potential < stable),\n  and `styleFor`/`assertStyleTable` look a charge up in a caller-supplied,\n  validated style table. Written to absorb the FOUR-to-style tables that were\n  hand-duplicated in the `abrash` and `tsander` renderers.\n\n## Other surfaces\n\n- `@red-cup-engineering/metrologic/sheaf/topology/d-frame` - pure subset/frame operations and **bounded exhaustive** four-valued d-frame/sheaf receipts. Binary join/bottom and distribution induction replace the former `2^(2^n)` enumeration of subset families. Exhaustive receipts admit at most **five distinct marks**, with refusal beyond that scope; this is not a checked theorem about arbitrary sites or permission to charge for unbounded proof search. Source test `test/sheaf/d-frame.test.mjs` also checks the three-mark exhaustive-family equivalence and zero-/one-mark frames. An effectful x402 server must separately admit input size, deliver results, meter cost and retain any charged-failure evidence.\n- `@red-cup-engineering/metrologic/obstruction` - temporal firing cohomology of settlings.\n- `@red-cup-engineering/metrologic/number` - the number tower and exact integer matrices.\n- `@red-cup-engineering/metrologic/number/wire-ratio` - BigInt ratios for host pricing.\n- `@red-cup-engineering/metrologic/number/natural-extension` - inspectable membership-to-Chu construction.\n- `@red-cup-engineering/metrologic/articulation/predicating/positing/evidence-record` - supporting/opposing evidence counts and their FOUR projection.\n- `@red-cup-engineering/metrologic/spectral` - spectral location and inversion.\n- `@red-cup-engineering/metrologic/articulation/predicating/positing/settling/dynamics/substitution` - substitution dynamics, gauge, and colimit duality.\n- `@red-cup-engineering/metrologic/articulation/predicating/positing/settling/firing` - d-frame firing cohomology and orbit reads.\n- `@red-cup-engineering/metrologic/equality` - equality derived (not postulated) from `hyperdoctrine`'s `existsAlong` along the Lawvere diagonal, in both the classical (truth) and paraconsistent (knowledge) orders.\n\nEach surface has its own README in the corresponding directory.\n\n## Kinematic Space and canonical diamond-bead threading\n\n`@red-cup-engineering/metrologic/articulation/predicating/positing/settling/analysis/causal`\nexports `kinematicDiamondSpaceOf({eventCount,edges})`: a bounded (at most\n32 source events), topologically indexed causal DAG projection to the finite\nspace K(C) of strictly reachable endpoint pairs. `sequencing` is endpoint\nsequencing, **not** interval nesting or shared timestamps. Distinct signed\nsource evidence events remain distinct in the consuming SignCraft replay.\n\nThe returned `beadThread` is the already-proved\n`Obsmetrologia.CausalSets.BlackHoles.diamondThread` readout: one canonical\n`{pointIndex,inPort:false,outPort:true}` pass for each diamond point.\nEvery pass obeys the local `PortGraph.legal_iff_distinct` law.\n`beadThreadAdjacency` is the *same immutable relation object* as\n`sequencing`, conforming to\n`DiamondBeads.sequencingBeadAdjacency_thread`. This is **not** a separate\nbead-weaving graph or another closure engine. Source tests check the\nlocal-port and adjacency laws for all 1,100 forward DAGs through five events.\n\nThe complete `beadThread` list consists of **local, individually legal\npasses**; those points need not form a single sequencing-compatible path.\n`kinematicBeadStrandsOf(space)` first rederives the full causal-diamond\ngeometry and rejects mismatched/missing arrows or altered passes. It then\ncomputes a deterministic **minimum disjoint path cover** using bipartite\nmaximum matching on the actual endpoint-sequencing relation. It returns\n`strands` (lists of the original local passes),\n`matchedSequencing`, `strandCount`, and `requiresMultipleStrands`.\nEvery diamond is covered exactly once and every adjacent pair within a\nstrand is genuinely sequenced. The number of required mathematical strands\nis the **maximum antichain width**, not a count of physical strings.\nThe 1,100 small-DAG regression cases independently enumerate antichains\nand compare the exact width; the three-event chain already needs **two**\nstrands because its long interval overlaps the short ones.\n\nThe returned `maximumAntichain` is an **explicit lower-bound witness**, not\njust an asserted numeric width. Metrologic extracts it from alternating\nreachability in the maximum matching, while the existing `strands` are an\nupper-bound witness. `kinematicBeadCoverAdmits(space, cover)` independently\nchecks that every bead pass occurs once, that all transitions are actual\nsequencing, and that the alleged antichain contains distinct pairwise\nincomparable points with exactly the same cardinality as the strand cover.\nThe checker **does not run matching**. Equality of the two bounds certifies\nminimum cardinality for the supplied finite K(C), without claiming external\nwitness authenticity or any physical material realization. The 32-event\nlinear order yields 496 intervals and a concrete 256-member antichain\ncrossing the central cut.\n\nThis mathematical carrier does **not** supply a connected physical string,\nper-bead repeated occupation, independently separated contact/cell/visible\ngraphs, bead geometry, a material realization, a proof of external SignChain\nrule licenses, or Lean-kernel admission. The remaining fields for\n`SequencingDiamondBeadPayload.toBeads` must be supplied and qualified\nseparately; they must not be inferred from `beadThread` length or the\n`causalRanks` schedule.\n\n### Finite Kinematic Space transport has an exact morphism criterion\n\n`kinematicDiamondTransportOf(sourceSpace, targetSpace, eventMap)` maps\neach diamond `(a,b)` to `(f(a),f(b))` **if and only if** the total\nlisted-event map `f` preserves every strict source causal pair. That\ncondition is necessary because every strict pair is an admitted diamond;\nit is sufficient because equality and strict precedence preserve\nendpoint sequencing. The endpoint construction respects identities and\ncomposition, so it is functorial on this category of finite causal sets\nand strict-precedence-preserving maps. No reflexive-order-only map is\nsilently promoted to a strict map.\n\nThe executable returns exact indexed `eventMap` and `pointMap`,\n`identifiedPoints`, `newlyComparable`, `unmappedTargetPoints`, and\nwhether the result embeds the source point order into the target or\ncovers the target points. These record **information lost**, not a failed\ncalculation: incomparable source events may be identified, and\nincomparable source diamonds may become sequenceable after a target\ngains causal relations. **Maximum-antichain and minimum-strand\ncertificates do not automatically transport under these maps.** When the\ninduced diamond map is a genuine **order isomorphism** (bijective on points,\npreserving and reflecting sequencing), `kinematicBeadCoverTransportOf`\ninstead maps the already-admitted source strands and maximum antichain\ndirectly onto target points, independently admits the target dual bounds,\nand returns `metrologic.kinematicBeadCoverTransport.v1`. This does **not**\nrerun maximum matching. The order isomorphism need not be a bijection on\nunderlying events: adjoining a disconnected event, for example, leaves K(C)\nunchanged. Non-isomorphisms and forged source certificates refuse. A general\nstrict K(f) can still transport its points even when an optimal bead cover\ncannot be reused.\n\nTo reduce repetitive K(C) reconstruction, the implementation privately\nrecognizes only immutable canonical spaces and admitted covers originally\ncreated by its own provider; neither a copied wrapper nor a JSON clone\ninherits that trust. Serialized inputs undergo full canonical validation\nand dual-witness checks. Private typed-array sequencing lookup replaces\nrepeated string-keyed graph scans, while the full independent checker\nremains available through `kinematicBeadCoverAdmits`. Certificate transport\navoids an optimization search; whether it is faster in a deployed workload\nmust be measured separately, not inferred from that fact.\n\nThe regression suite checks 1,100 identity carriers, 2,067 total\nsmall-DAG event maps (536 admitted, 1,531 refused) against an independent\nstrict-reachability oracle, composition, non-injective lawful maps,\nnewly introduced comparabilities, sparse-map refusal and forged source\ngeometry. These are executable finite comparisons alongside the\ngeneral endpoint proof, **not** a declaration-specific Lean-kernel\nadmission or a physical causal interpretation.\n\n## Bead routing: actual port walks and local occupation\n\n`@red-cup-engineering/metrologic/articulation/predicating/positing/settling/analysis/port-thread-routing`\nis the data-owned **finite material port-routing** API, distinct from\n`analysis/causal` and its acyclic K(C) diamond sequencing. The former\nworks with named rigid bead units, explicit paired ports for each hole,\nand explicitly supplied **directed external connector segments**.\n`portThreadRouteOf` checks the complete word of internal hole passes\nand external connectors including an explicit closed-loop join. It\nretains repeated visits, exact traversed thread segments, local\nper-bead **and per-hole** pass counts, and the existing\n`portGraph.condensate` FOUR readings at those local counts.\n\n```js\nimport {\n  minimumPortThreadRouteOf, portThreadRouteOf,\n  closedPortThreadFeasibilityOf, coveringPortThreadRouteOf,\n} from\n  \"@red-cup-engineering/metrologic/articulation/predicating/positing/settling/analysis/port-thread-routing\";\n\nconst p = (beadId, port) => ({ beadId, port });\nconst beads = [\"a\", \"b\", \"c\"].map(id => ({ id, holes: [[\"in\", \"out\"]] }));\nconst links = [\n  { from: p(\"a\",\"out\"), to: p(\"b\",\"in\") },\n  { from: p(\"b\",\"out\"), to: p(\"c\",\"in\") },\n  { from: p(\"c\",\"out\"), to: p(\"a\",\"in\") },\n];\nconst result = minimumPortThreadRouteOf({ beads, links, closed: true });\n// result.minimalPassCount === 3; each bead has occupation 1.\nconst possible = closedPortThreadFeasibilityOf({ beads, links });\nconst constructive = coveringPortThreadRouteOf({ beads, links });\n// possible.feasible === true; constructive.passCount === 3.\n// A positive feasibility decision does not claim minimum thread length.\n// To independently receive a proposed walk:\nconst receipt = portThreadRouteOf({\n  beads, links, closed: true, requireEveryBead: true,\n  passes: result.thread.map(({beadId,enter,exit})=>({beadId,enter,exit})),\n});\n```\n\n`minimumPortThreadRouteOf` uses a bounded exact breadth-first\nsearch to minimize **the number of bead-hole passes** covering all\nlisted beads, not cord length, weighted turns, material tension, or the\nDemaine/Kirkpatrick/Lin graph-tightening objective. A closed port-route\nmay repeat a bead; a causal K(C) sequencing graph cannot supply the\nrequired closed directed walk unless independent material connectors\nare actually admitted. The bounded solver refuses unsupported sizes\n(greater than nine beads, sixty oriented local passes, ninety-six\nexternal links, or its 300,000-state budget) instead of calling a\nbudget exhaustion a mathematical impossibility.\n\n**New finite closed-walk characterization and constructive receiving.**\n`closedPortThreadFeasibilityOf({beads,links})` builds the graph of\n**oriented legal hole passes** (one pass state per oriented hole) and adds\na directed edge only for an explicitly listed external exit-to-entry\nconnector. A nonempty closed route visiting every bead exists **if and\nonly if** one cyclic strongly connected component of this state graph\ncontains a pass of every listed bead. Necessity follows by following\nany valid closed word around its visits; sufficiency follows by\nconcatenating directed paths between each bead's representative in\nthat component and returning to the start. An isolated singleton\nwithout a self-loop is not a cycle.\n\nThe feasibility result exposes the complete finite strong-component\ncoverage, the number of cyclic components, the maximum number of\nbeads covered by any one cyclic component, and the actual covering\npass indices when one exists. This is a mathematical **yes/no decision**\non the bounded carrier, *independent* of how expensive a particular\nroute would be to construct.\n\n`coveringPortThreadRouteOf({beads,links})` then builds an actual\npossibly repeated route and **replays it independently** through\n`portThreadRouteOf`. It can return `route-search-budget-exceeded` or\n`route-pass-budget-exceeded` even when the exact feasibility report\nsays `feasible: true`. It must never equate those resource limits\nwith geometric impossibility. The former unit-cost minimum search\nstill handles at most nine beads; the new strong-component decision\naccepts up to 4,096 beads, up to 24 paired holes per bead, and at most\n131,072 explicitly listed external connectors. The oriented transition\ngraph is indexed once from ports rather than reconstructed with a\npass-by-connector nested scan.\n\n`test/port-thread-connectivity.test.mjs` checks the necessary-and-\nsufficient criterion against an independent 64-graph directed-word\nenumeration and 256 mixed-orientation connector graphs with an\nindependent Floyd–Warshall oracle. It also checks a 1,500-bead closed\nring, a branching route that must revisit its hub, different holes\non the same repeatedly visited bead, a one-bead two-pass cycle,\ndisjoint strongly connected components, and strict causal K(C)\nsequencing without invented material closure.\n\nThe construction establishes neither Demaine–Kirkpatrick–Lin\ngraph-tightening's required junction connectivity nor the later\nturn-cost, weighted thread length, friction, collision,\nmaterialization, or community-specific authorization conditions.\nThose are separate qualifying interfaces, not silently assumed\nresults of this strongly connected component theorem.\n\n**Kinetic, dimensioned thread-length optimization.** The same source-owned\n`port-thread-routing` export now also provides\n`materialPortThreadRouteOf` and `minimumMaterialPortThreadRouteOf`.\nThe latter solves the **exact additive minimum-length** objective on the\nsame bounded nine-bead pass-state carrier, instead of minimizing the\nnumber of bead-hole passes. It is a separate objective, not a rival\nport graph or a duplicate settlement engine.\n\nEvery bead must provide `holeLengthsUm`, an array of **positive\nsafe-integer micrometre estimates**, in the same order as its paired\n`holes`. Every allowed directed external connector must provide\n`lengthUm`, a **nonnegative safe-integer micrometre estimate**. There\nare no assumed, zero-filled, or distance-inferred defaults. The\noptimizer uses nonnegative-weight Dijkstra on\n`(firstPass, lastPass, visitedBeadMask)` and counts each repeated\nhole passage and connector, including the closing connector. It\ncomputes all total lengths using `BigInt` and serializes results as\ndecimal integer strings. The independent `materialPortThreadRouteOf`\nreplays an emitted route through actual named ports and returns\n`holePassLengthsUm`, `connectorSegmentLengthsUm`,\n`holeLengthUm`, `connectorLengthUm`, and `totalLengthUm`.\nA non-calibrated input explicitly yields `lengthsCalibrated: false`.\n\n**Independently check the kinetic optimum.** On bounded queries, pass\n`includeOptimalityCertificate: true` to\n`minimumMaterialPortThreadRouteOf`. The optional\n`optimalityCertificate` contains a threshold `L` (as an exact decimal\nmicrometre string) and a finite collection of lower-bound states\n`(start, last, visitedMask, boundUm)`. The independent\n`materialPortThreadOptimalityAdmits(spec, certificate)` first\nreplays the proposed route and its exact cost, then checks:\n\n- every possible initial pass with cost less than `L` has a claimed\n  lower-bound state no greater than its actual starting cost;\n- every connector transition from a certified state whose proposed\n  accumulated cost would be less than `L` leads to another certified\n  state with no larger lower bound;\n- no certified all-covered state can reach the terminal goal (including\n  a closing connector when required) for less than `L`.\n\nBy induction, **any hypothetically cheaper word would have to stay\ninside these checked states and arrive at a forbidden cheap terminal**.\nThe actual admitted word of cost `L` is the matching upper bound.\nThus `optimalityAdmission.lowerBoundUm` and `upperBoundUm` are\nequal independently of the solver. This is a genuine finite\n**kinetic-proof receipt**, not a self-labelled optimal route or a\nLean-kernel certificate about the world.\n\nThe optional certificate is capped at 10,000 states to bound receipt\nsize. A request that would exceed that limit refuses as\n`material-optimality-certificate-budget-exceeded`; retry without the\noptional certificate to obtain an optimized route without falsely\nclaiming independent proof. The test suite checks all 128 tiny\nopen/closed weighted instances with this independent verifier and\nrejects tampered, incomplete and duplicated frontier states.\n\nFor a concrete falsification of pass-count optimality, give three\nbeads A, B, C unit-cost hole passages, length-1 connectors A↔B\nand A↔C, and length-100 connectors B↔C. The original pass-count\nsolver returns a three-pass covering cycle costing 105 micrometres.\nThe length solver correctly chooses A→B→A→C→A, which is four\nactual bead passes and a last-to-first closing connector,\ncosting only **8 micrometres**. Neither solution implies a\nphysical cord layout, safe tensile load, friction or measured\ndiameter.\n\nThe additional `test/port-thread-material-length.test.mjs`\nenumerates all 64 three-bead directed graphs under both open and\nclosed weighted objectives, compares with an independent explicit\nthread-word oracle, checks a cheaper multi-hole alternative,\nindependently replays repeated connector costs, verifies\n`BigInt` totals above `Number.MAX_SAFE_INTEGER`, and refuses\nunpriced, fractional, negative or unsafe-integer lengths.\nThe bounded optimizer returns `material-route-search-budget-exceeded`\nrather than falsely claiming graph-theoretic impossibility.\nGraph-scale closed-port feasibility remains the independent\nstrong-component decision and is not limited by the length optimizer.\n\nGlobal `passCount` and local occupation are **not interchangeable**.\nFor a three-bead cycle with one pass at each bead, the global\n`condensate(3)` is the held-both FOUR reading, but **none** of its\nthree individual bead occupations is held-both. Branching routes that\nrevisit the hub can have a genuinely locally held-both reading.\nThe presence of such a reading **does not establish physical\nsuperjamming**: contact, friction, placement, stiffness, surface\nvisibility, machine feasibility, and cultural authority require\nindependent evidence. This API does not synthesize these missing\ngraphs or assert authorization to fabricate a physical object.\n\nThe test `test/port-thread-routing.test.mjs` exercises the real\nconsumer interface, independent explicit-route replay, local and\nper-hole counts, failure cases, and all 128 open/closed scenarios\nover the 64 directed port-link graphs with three beads against an\nindependently enumerated route-word oracle.\n\n## Finite numerical probability laws (distinct from FOUR knowledge)\n\n`@red-cup-engineering/metrologic/number/finite-law` owns three\nsource-agnostic finite numerical operations: linear expectation over one\nnormalized joint probability vector, a minimum/maximum linear expectation\nover an assumed total-variation ball on that SAME simplex, and an upper-tail\nmean with fractional boundary mass. The implementation uses compensated\nbinary64 sums and source/destination mass ledgers to avoid losing later\ntransfers after a sub-ULP probability movement.\n\nThis is the **shared numeric mathematical operator**, not another event,\nmarket, forecast, account, trade or SignCell carrier. Probabilities are\nconditional assumptions, never FOUR supporting/opposing witnesses or a\nsubstitute for a source-clock/provenance record. The caller continues to\nown its observed worlds, net payoff units, information filtration,\nconfidence claims, feasible action menu and authorization. For example,\na financial caller may send per-world total *portfolio* payoff values;\nMetrologic knows nothing of Kalshi contracts, Alpaca shares, GMX collateral\nor the issuer that supplied a forecast.\n\nThe finite transport proof obligation and expected-shortfall variational\nlaw belong upstream to Obsmetrologia. JavaScript does not emit a Lean theorem\nreceipt or guarantee that an empirically unknown distribution lies in the\nassumed ball. Scientific verification requires an actual checked theorem and\nan independently qualified empirical uncertainty model.\n\n## Use From Computer\n\nComputer packages should name their descent explicitly:\n\n```js\nimport { settle } from \"@red-cup-engineering/metrologic/bilattice\";\nimport { existsAlong } from \"@red-cup-engineering/metrologic/hyperdoctrine\";\nimport { place, styleFor } from \"@red-cup-engineering/metrologic/readout\";\nimport { chuSpaceOfMatrix } from \"@red-cup-engineering/metrologic/articulation/predicating/positing/logic/linear-logic-chu\";\n```\n\nDo not rederive bilattice, hyperdoctrine, readout, or Chu operations locally.\nExtend the defining mathematical module when a consumer needs another operation; consumers import that module directly.\n\n## Development\n\n```sh\npnpm test\n```\n\nRuntime exports load directly from JavaScript ESM source; no TypeScript build is required.\n",
+        "readmeFilename": "README.md",
+        "_id": "@red-cup-engineering/metrologic@0.4.2",
+        "bugs": {
+          "url": "https://github.com/red-cup-engineering/computer-data-engineering-services-section/issues"
+        },
+        "homepage": "https://github.com/red-cup-engineering/computer-data-engineering-services-section#readme",
+        "_nodeVersion": "24.19.0",
+        "_npmVersion": "11.17.0",
+        "dist": {
+          "integrity": "sha512-R292E4hfbQ9YmkIuDr0zBXkiCUH+P9epBYZMHfbzJxJ3vtdISAnMpuYtNY2Fz+LUhnUKzfwQPBpLdQEDm/2W7w==",
+          "shasum": "f7d7e08c1e701904a396a1169c98641cf3683a7c",
+          "tarball": "https://registry.561.group/@red-cup-engineering/metrologic/-/metrologic-0.4.2.tgz"
+        },
+        "_npmUser": {
+          "name": "emsenn"
+        }
+      },
+      "received": {
+        "integrity": "sha512-R292E4hfbQ9YmkIuDr0zBXkiCUH+P9epBYZMHfbzJxJ3vtdISAnMpuYtNY2Fz+LUhnUKzfwQPBpLdQEDm/2W7w==",
+        "bytes": 380710,
+        "artifactDownloaded": true
+      },
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/metrologic-0.4.2.tgz",
+      "comparisons": [
+        {
+          "file": "src/hyperdoctrine/adjoints.mjs",
+          "sha256": "baac6ca074f1650067f64b6148b9bf65e100d97cfd757728018e242c494aa3b1",
+          "sourceSha256": "baac6ca074f1650067f64b6148b9bf65e100d97cfd757728018e242c494aa3b1",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/alexandrov-husainov.mjs",
+          "sha256": "3dee7f0706784fe881e68444bdb843969a9c4657019d2c270c8c9b0da693977e",
+          "sourceSha256": "3dee7f0706784fe881e68444bdb843969a9c4657019d2c270c8c9b0da693977e",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/graph/alexandrov-site.mjs",
+          "sha256": "5484b791a46175ca974b15ead1f1cdf2b970d0ab8bd069252bc23bf7552e9872",
+          "sourceSha256": "5484b791a46175ca974b15ead1f1cdf2b970d0ab8bd069252bc23bf7552e9872",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/algebra-hierarchy.mjs",
+          "sha256": "eb557df7d38434b1fa93cc3fb8026e1812c3cac1386c9c4ee36a536e72b24ed1",
+          "sourceSha256": "eb557df7d38434b1fa93cc3fb8026e1812c3cac1386c9c4ee36a536e72b24ed1",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/aperiodic-autocorrelation.mjs",
+          "sha256": "9fea1ba20485ea31d1fa1873422207fc2baf49fb05f347f05892c0a2c18d4e23",
+          "sourceSha256": "9fea1ba20485ea31d1fa1873422207fc2baf49fb05f347f05892c0a2c18d4e23",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/aperiodic-classification.mjs",
+          "sha256": "2b2365e24bf0a6cb5086c1eb25de7e2305a5c2556ca7fc837d43e67b9fd4ef0a",
+          "sourceSha256": "2b2365e24bf0a6cb5086c1eb25de7e2305a5c2556ca7fc837d43e67b9fd4ef0a",
+          "matches": true
+        },
+        {
+          "file": "src/obstruction/attention-allocation.mjs",
+          "sha256": "086e0ae557ada8323e1c6e30d329e18350ebe100f179c9564afdc65b713a917f",
+          "sourceSha256": "689b531e49549ac60d4cf1a0efe3a5fe059c5c63ede0e35a635eaa026aab2003",
+          "matches": false
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/bigraded-cohomology.mjs",
+          "sha256": "1943f2a1a10d3009c832a5f5c83eacb294140579b1c6d098ba7252d6eb3ce4bf",
+          "sourceSha256": "1943f2a1a10d3009c832a5f5c83eacb294140579b1c6d098ba7252d6eb3ce4bf",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/bigraded-cohomology.mjs",
+          "sha256": "7caa8779ed71777110552e23c039b5bfde19c135498ea21b71b1c35b35e1f3d0",
+          "sourceSha256": "7caa8779ed71777110552e23c039b5bfde19c135498ea21b71b1c35b35e1f3d0",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/bigraded-diamond.mjs",
+          "sha256": "f4a5fd6b3c0ef53dcbd1c114debcfec6dfaf28b74698d4a383c26d302be0ca99",
+          "sourceSha256": "f4a5fd6b3c0ef53dcbd1c114debcfec6dfaf28b74698d4a383c26d302be0ca99",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/bitopological-settling-site.mjs",
+          "sha256": "c3b73a06455ddd8e6ff8f1e018b03ca36ae4590bee0bf6b74450d776a761c687",
+          "sourceSha256": "c3b73a06455ddd8e6ff8f1e018b03ca36ae4590bee0bf6b74450d776a761c687",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/kinetic-theory/boltzmann-closure.mjs",
+          "sha256": "0c892d8cb47062bfa686f79e51f164ca55713416023fe732cc2ba6512644513e",
+          "sourceSha256": "0c892d8cb47062bfa686f79e51f164ca55713416023fe732cc2ba6512644513e",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/kinetic-theory/boltzmann-entropy.mjs",
+          "sha256": "f3683ab49db320d6cbe5286c12a66b543fab037c9a30ab7de7fa64b20b3f48ec",
+          "sourceSha256": "f3683ab49db320d6cbe5286c12a66b543fab037c9a30ab7de7fa64b20b3f48ec",
+          "matches": true
+        },
+        {
+          "file": "src/obstruction/capacity-flow.mjs",
+          "sha256": "d3a24cf05c582558c17ae3e5f920b3161c703110c9641c043df7405b5028b77f",
+          "sourceSha256": "d3a24cf05c582558c17ae3e5f920b3161c703110c9641c043df7405b5028b77f",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/carrier.mjs",
+          "sha256": "95301e996ea6bd49235947b48de5d2b941ed7f052d3f3cbdc50955c77dcba0ad",
+          "sourceSha256": "95301e996ea6bd49235947b48de5d2b941ed7f052d3f3cbdc50955c77dcba0ad",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/causal-involutivity.mjs",
+          "sha256": "70be22c80f2f91cd96f6f5f5c5a922c3a8f91e46220b50cc5765347df7bffc4c",
+          "sourceSha256": "70be22c80f2f91cd96f6f5f5c5a922c3a8f91e46220b50cc5765347df7bffc4c",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/causal-manifoldlikeness.mjs",
+          "sha256": "d629479139ba49685db2eb1e12c95526f809febcdadee7ef4c657f288ea4baab",
+          "sourceSha256": "d629479139ba49685db2eb1e12c95526f809febcdadee7ef4c657f288ea4baab",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/causal-microsupport.mjs",
+          "sha256": "789ba09dbb775ffbd44d0e58af109fc7299e2454e8ca7703c4975039748c5a6e",
+          "sourceSha256": "789ba09dbb775ffbd44d0e58af109fc7299e2454e8ca7703c4975039748c5a6e",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/causal-mld-classification.mjs",
+          "sha256": "5db898e8c543721eed467db62561c1448225d07d579c029e2ada017e9772fe35",
+          "sourceSha256": "5db898e8c543721eed467db62561c1448225d07d579c029e2ada017e9772fe35",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/causal-mobius.mjs",
+          "sha256": "65e8a16117c30df8dac6de30fc988b28f87a9289ce622ed0123981d2a0971475",
+          "sourceSha256": "65e8a16117c30df8dac6de30fc988b28f87a9289ce622ed0123981d2a0971475",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/causal-polarization.mjs",
+          "sha256": "31befacd20e477428b1d549e862515b7e564b539f56ab3e3c00c4ae61b62e3b2",
+          "sourceSha256": "31befacd20e477428b1d549e862515b7e564b539f56ab3e3c00c4ae61b62e3b2",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/causal.mjs",
+          "sha256": "42b85a8d8ea0899e9498596eea1e30067ae593d5f2751987bfb85cc5314193f2",
+          "sourceSha256": "42b85a8d8ea0899e9498596eea1e30067ae593d5f2751987bfb85cc5314193f2",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/certificate.mjs",
+          "sha256": "f716d6ac9fddaa1e64bc6367b7ce48866c9fb80554d9bbd8e4c501ac3917093d",
+          "sourceSha256": "f716d6ac9fddaa1e64bc6367b7ce48866c9fb80554d9bbd8e4c501ac3917093d",
+          "matches": true
+        },
+        {
+          "file": "scripts/check-settling-orbit.mjs",
+          "sha256": "c8d163b309d48f42fa1f6c8971597a34ec1069dde2ba2955c14377c1bb25a0c0",
+          "sourceSha256": "c8d163b309d48f42fa1f6c8971597a34ec1069dde2ba2955c14377c1bb25a0c0",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/chromatic-lorentzian.mjs",
+          "sha256": "68375e80987971fa071a3fc9126aefa42a0dd643bba7108996c7fd18695a2100",
+          "sourceSha256": "68375e80987971fa071a3fc9126aefa42a0dd643bba7108996c7fd18695a2100",
+          "matches": true
+        },
+        {
+          "file": "src/models/tilings/chromatic-marking.mjs",
+          "sha256": "c42658a2a17ce39703d943c3c6e0c6a60699fbed2712941d80b7c70734cf1893",
+          "sourceSha256": "c42658a2a17ce39703d943c3c6e0c6a60699fbed2712941d80b7c70734cf1893",
+          "matches": true
+        },
+        {
+          "file": "src/chu.mjs",
+          "sha256": "70176be1ad38bafb782e7f877825f721f104ccdda2a24678b4a4332ae7b268a1",
+          "sourceSha256": "70176be1ad38bafb782e7f877825f721f104ccdda2a24678b4a4332ae7b268a1",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/closure-operator-fiber.mjs",
+          "sha256": "a52dfcbf4e4065a133c6cf2882c82ee4ef511ff341b0d3ee374d770875e9a4a4",
+          "sourceSha256": "a52dfcbf4e4065a133c6cf2882c82ee4ef511ff341b0d3ee374d770875e9a4a4",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/closure-rule-system.mjs",
+          "sha256": "37f48dde32805dc6a793a0d14681ba8c209cf6d124cc085e884c3d05f438103d",
+          "sourceSha256": "37f48dde32805dc6a793a0d14681ba8c209cf6d124cc085e884c3d05f438103d",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/closure.mjs",
+          "sha256": "3e98f10e9028d6aea4b1fe3874fc83819599fa446aa534d328ded978bbc62b2a",
+          "sourceSha256": "3e98f10e9028d6aea4b1fe3874fc83819599fa446aa534d328ded978bbc62b2a",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/collatz.mjs",
+          "sha256": "5502e55bc898d2789e12da4953ea14e3a3adc4584a3aa8294ca6fc7edd5d9ba9",
+          "sourceSha256": "5502e55bc898d2789e12da4953ea14e3a3adc4584a3aa8294ca6fc7edd5d9ba9",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/coloring.mjs",
+          "sha256": "a25f83eca0f72ac79f37e5242b7af53054f1d2b91edd4f770f6f1596b3d5d3de",
+          "sourceSha256": "a25f83eca0f72ac79f37e5242b7af53054f1d2b91edd4f770f6f1596b3d5d3de",
+          "matches": true
+        },
+        {
+          "file": "src/hyperdoctrine/comprehension.mjs",
+          "sha256": "d64dc0d91c3f163f225f7e47a90a6b274eabd448fc8f8762f6bd6deec834192b",
+          "sourceSha256": "d64dc0d91c3f163f225f7e47a90a6b274eabd448fc8f8762f6bd6deec834192b",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/conservation.mjs",
+          "sha256": "2083435719db63d5344be392a79e451fb7ef13fb5f85a9f98391e16fbe03ff49",
+          "sourceSha256": "2083435719db63d5344be392a79e451fb7ef13fb5f85a9f98391e16fbe03ff49",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/contextual-obstruction.mjs",
+          "sha256": "392ca5bc04858f2c7dec36b3cde7ee3ed75e5bc3267d1ecb09ece2956af37911",
+          "sourceSha256": "392ca5bc04858f2c7dec36b3cde7ee3ed75e5bc3267d1ecb09ece2956af37911",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/continuum-colimit.mjs",
+          "sha256": "e6ca20015d577612b028083206966607ddba1345d00530fff74f563dfe03c7d9",
+          "sourceSha256": "e6ca20015d577612b028083206966607ddba1345d00530fff74f563dfe03c7d9",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/coordination-cohomology.mjs",
+          "sha256": "5fe73bcc4a1c2fdecc24be18455af9dd96645f3f70836af2e5593fdb234c0afd",
+          "sourceSha256": "5fe73bcc4a1c2fdecc24be18455af9dd96645f3f70836af2e5593fdb234c0afd",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/crdt-cohomological-calm.mjs",
+          "sha256": "67bd12205e6eac45e18dbb70703212d309721f377d691239dc1c016ff57e6596",
+          "sourceSha256": "67bd12205e6eac45e18dbb70703212d309721f377d691239dc1c016ff57e6596",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/geometry/spatial/cut-and-project.mjs",
+          "sha256": "0eeb8ad936bdbfba144e4e9c3c8c1ec81e1d77c37a7ce8de2060bd02ea8428ef",
+          "sourceSha256": "0eeb8ad936bdbfba144e4e9c3c8c1ec81e1d77c37a7ce8de2060bd02ea8428ef",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/graph/d-frame-site.mjs",
+          "sha256": "55526ee9de1d0bdc84bd94de7736a9c0156ce413884b364a82d8aaed4d6c80d8",
+          "sourceSha256": "55526ee9de1d0bdc84bd94de7736a9c0156ce413884b364a82d8aaed4d6c80d8",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/d-frame.mjs",
+          "sha256": "0c73b881af390b7e6da6b651fea33096350c96dbb83ccd6fd283bfec035aefdf",
+          "sourceSha256": "0c73b881af390b7e6da6b651fea33096350c96dbb83ccd6fd283bfec035aefdf",
+          "matches": true
+        },
+        {
+          "file": "src/sheaf/topology/d-frame.mjs",
+          "sha256": "8ba6d6132dca29270fb8757ed2c0f9ee1607cfdd1e050c12c4d5a78607279755",
+          "sourceSha256": "8ba6d6132dca29270fb8757ed2c0f9ee1607cfdd1e050c12c4d5a78607279755",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/plasma/debye-graph-screening.mjs",
+          "sha256": "0618ea0421f604592dec5a0ca452a16bd0e46993ff6eba5fc4fbc245270f8e8a",
+          "sourceSha256": "0618ea0421f604592dec5a0ca452a16bd0e46993ff6eba5fc4fbc245270f8e8a",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/reaction/detailed-balance.mjs",
+          "sha256": "2717dec86e46b1dd4183f28ae95c9246f8182400d42dde831d126cbcd72192dc",
+          "sourceSha256": "2717dec86e46b1dd4183f28ae95c9246f8182400d42dde831d126cbcd72192dc",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/differential.mjs",
+          "sha256": "79a50d69b4c89f2f405f6ad019af381c8b8304579ea912105bf5790528ccbb46",
+          "sourceSha256": "79a50d69b4c89f2f405f6ad019af381c8b8304579ea912105bf5790528ccbb46",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/dihedral-gauge.mjs",
+          "sha256": "faf66d14cefdf0168b60657157b80218313c8b72d7caac371e7a6b92330ec77c",
+          "sourceSha256": "faf66d14cefdf0168b60657157b80218313c8b72d7caac371e7a6b92330ec77c",
+          "matches": true
+        },
+        {
+          "file": "src/closure/directed-evidence.mjs",
+          "sha256": "cb2bd29ac1d176309ac3cc50629e3150b273f3fc97c456f58a3503e817912d79",
+          "sourceSha256": "cb2bd29ac1d176309ac3cc50629e3150b273f3fc97c456f58a3503e817912d79",
+          "matches": true
+        },
+        {
+          "file": "src/models/graphs/directed-multigraph.mjs",
+          "sha256": "cf947fb013c1b86fdcc8d1cf34bee4aee3cdf8bc244679b02788933ba70961b9",
+          "sourceSha256": "cf947fb013c1b86fdcc8d1cf34bee4aee3cdf8bc244679b02788933ba70961b9",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/discrete-set-number-graph.mjs",
+          "sha256": "9c4b3f084a0bb5484acdf6bb1033546c3b8d631d3b23816040db4bb2488a1011",
+          "sourceSha256": "9c4b3f084a0bb5484acdf6bb1033546c3b8d631d3b23816040db4bb2488a1011",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/kinetic-theory/discrete-velocity-collision.mjs",
+          "sha256": "4372e4d850d9093e74e3faa07c992eb39bb8419b9815b8cd4b336426b028d05d",
+          "sourceSha256": "4372e4d850d9093e74e3faa07c992eb39bb8419b9815b8cd4b336426b028d05d",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/empirical-model.mjs",
+          "sha256": "1c7b641072776454d435c648761569a717c3bb9f480d3d9c18623d1c6078d519",
+          "sourceSha256": "1c7b641072776454d435c648761569a717c3bb9f480d3d9c18623d1c6078d519",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/dense-matter/eos.mjs",
+          "sha256": "35990c5a5a23663def0cab2500cc99fbeeeba75d04b101c0b87a4fb4293ae969",
+          "sourceSha256": "35990c5a5a23663def0cab2500cc99fbeeeba75d04b101c0b87a4fb4293ae969",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/equality.mjs",
+          "sha256": "cfdf751fa4929367014e8671aadcbabbcd554d07c0516b2ccd892c1265f1222f",
+          "sourceSha256": "cfdf751fa4929367014e8671aadcbabbcd554d07c0516b2ccd892c1265f1222f",
+          "matches": true
+        },
+        {
+          "file": "src/number/evidence-bits.mjs",
+          "sha256": "c2ddc160f201834124de52daa66465bb12f696c60c075ce692b85cf9a1ae5945",
+          "sourceSha256": "c2ddc160f201834124de52daa66465bb12f696c60c075ce692b85cf9a1ae5945",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/evidence-record.mjs",
+          "sha256": "1c0e9ac1e3c1841ed756e01c7cd453285520a9ba9ea7c5a38a42d035d6514165",
+          "sourceSha256": "1c0e9ac1e3c1841ed756e01c7cd453285520a9ba9ea7c5a38a42d035d6514165",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/evidence.mjs",
+          "sha256": "b7598909cebc8e3cffb9b2126c6cf38304d4f4351441408269c1010e6236aded",
+          "sourceSha256": "b7598909cebc8e3cffb9b2126c6cf38304d4f4351441408269c1010e6236aded",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/fca-lambek-circle.mjs",
+          "sha256": "dc33c81d7c6ed1320d6caa17c8d6d445c4b3fd366b0d143ec82fffa5f419dfcc",
+          "sourceSha256": "dc33c81d7c6ed1320d6caa17c8d6d445c4b3fd366b0d143ec82fffa5f419dfcc",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/fibration.mjs",
+          "sha256": "6f61359f91bf69efc43e00cb9dc74aec7d1875a40b27e3be7cf2b6bebe33e4a5",
+          "sourceSha256": "6f61359f91bf69efc43e00cb9dc74aec7d1875a40b27e3be7cf2b6bebe33e4a5",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-condensate/filter-fiber-sector.mjs",
+          "sha256": "efd19ae5499f5ef4fa69c94dcf2ded766bc045d1c6020a179bf6ccb5fc179394",
+          "sourceSha256": "efd19ae5499f5ef4fa69c94dcf2ded766bc045d1c6020a179bf6ccb5fc179394",
+          "matches": true
+        },
+        {
+          "file": "src/number/finite-law.mjs",
+          "sha256": "93a7956886b83dd55019d144a62548edd537d968e2e30beb56993b1d3e4bec07",
+          "sourceSha256": "93a7956886b83dd55019d144a62548edd537d968e2e30beb56993b1d3e4bec07",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/flow.mjs",
+          "sha256": "ab23cd33f751ffca420841dba4401b17f0e41d5a337d3dcddf32f762974df515",
+          "sourceSha256": "ab23cd33f751ffca420841dba4401b17f0e41d5a337d3dcddf32f762974df515",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/fluid.mjs",
+          "sha256": "d0368062bcbac8eec2bf8bb401685db30cf942acfb0039a7e38da66e84508c3d",
+          "sourceSha256": "d0368062bcbac8eec2bf8bb401685db30cf942acfb0039a7e38da66e84508c3d",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-condensate/fock-condensate.mjs",
+          "sha256": "3f6b3c01e8ccb94cfd51841e27a73abb120900fe7dee2c46bdcdb575e5569a8b",
+          "sourceSha256": "3f6b3c01e8ccb94cfd51841e27a73abb120900fe7dee2c46bdcdb575e5569a8b",
+          "matches": true
+        },
+        {
+          "file": "src/closure/formal-concepts.mjs",
+          "sha256": "6248cf1ca16cebdd9456ad587865bd45962b7dfab2f1c1fd381376a781664ed9",
+          "sourceSha256": "6248cf1ca16cebdd9456ad587865bd45962b7dfab2f1c1fd381376a781664ed9",
+          "matches": true
+        },
+        {
+          "file": "src/closure/formal-context.mjs",
+          "sha256": "3d4a6b77cce2eaa32ae692954b55f158ca0dfec3065e64bb2eb5cccfb161700e",
+          "sourceSha256": "3d4a6b77cce2eaa32ae692954b55f158ca0dfec3065e64bb2eb5cccfb161700e",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/formats-four.mjs",
+          "sha256": "2fb9764e129e69ef96b762e33030a786ab6685539e2e2963a412623dac6852de",
+          "sourceSha256": "2fb9764e129e69ef96b762e33030a786ab6685539e2e2963a412623dac6852de",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/four-corner-cell.mjs",
+          "sha256": "576cc8b39e48bc3b86a751d3553c101ff8d0e1536d15c844bd00139454505115",
+          "sourceSha256": "576cc8b39e48bc3b86a751d3553c101ff8d0e1536d15c844bd00139454505115",
+          "matches": true
+        },
+        {
+          "file": "src/sheaf/order/four-twist-product.mjs",
+          "sha256": "ccfeb38ead17b264ccc40d6d9ef1bd04e640a24e6feeb6382fac51cfd9576591",
+          "sourceSha256": "ccfeb38ead17b264ccc40d6d9ef1bd04e640a24e6feeb6382fac51cfd9576591",
+          "matches": true
+        },
+        {
+          "file": "src/sheaf/four-valued-names.mjs",
+          "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+          "sourceSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/reaction/free-energy-descent.mjs",
+          "sha256": "76e947c8f69a3145d6837377bf389ba73cd1aa8737239af49c5357a3ad7839fd",
+          "sourceSha256": "76e947c8f69a3145d6837377bf389ba73cd1aa8737239af49c5357a3ad7839fd",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/frobenius-tqft.mjs",
+          "sha256": "0d24a1eeb3ed8728aefec4e5b5a40abee78d96c1c73b81f73257c9111680a822",
+          "sourceSha256": "0d24a1eeb3ed8728aefec4e5b5a40abee78d96c1c73b81f73257c9111680a822",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/glass-overlap.mjs",
+          "sha256": "662482716a5a1a64e1c9f112acba8e58eefffcfa401b67748e7f8eb002bfe80a",
+          "sourceSha256": "662482716a5a1a64e1c9f112acba8e58eefffcfa401b67748e7f8eb002bfe80a",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/glass/glass.mjs",
+          "sha256": "e94ec9d5b353c89142c71402f53655292d5eb96fc6b2cd21dc83a9e47e032d92",
+          "sourceSha256": "e94ec9d5b353c89142c71402f53655292d5eb96fc6b2cd21dc83a9e47e032d92",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/geometry/spatial/gyrobifastigium-j26.mjs",
+          "sha256": "ac0f7dd93c17538ffb35a55ea80e2a3cab49872ab9aa8cf707b98f7beb09ccf9",
+          "sourceSha256": "ac0f7dd93c17538ffb35a55ea80e2a3cab49872ab9aa8cf707b98f7beb09ccf9",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/hardy-empirical-model.mjs",
+          "sha256": "7c4c44900dc4b305e12f290cae776dc70eb66dfbc7da04e91dcd95b8a26ecc60",
+          "sourceSha256": "7c4c44900dc4b305e12f290cae776dc70eb66dfbc7da04e91dcd95b8a26ecc60",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/hardy-model.mjs",
+          "sha256": "8dfbb18df9fb3850edd896734f26a2ad8ed685e7ceaab0d468da9f238f0e0f7d",
+          "sourceSha256": "8dfbb18df9fb3850edd896734f26a2ad8ed685e7ceaab0d468da9f238f0e0f7d",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/hauptvermutung.mjs",
+          "sha256": "fe28ec356ae38a4072c8f81a8312fb5f9f6ed75165cf8453d0909ad2c58fa725",
+          "sourceSha256": "fe28ec356ae38a4072c8f81a8312fb5f9f6ed75165cf8453d0909ad2c58fa725",
+          "matches": true
+        },
+        {
+          "file": "src/models/dynamics/substitution/hull.mjs",
+          "sha256": "c8c0f0d41f56479d6b34ca867a5892c6cdc95753e1bcf7aef09a0446b4d89ce1",
+          "sourceSha256": "c8c0f0d41f56479d6b34ca867a5892c6cdc95753e1bcf7aef09a0446b4d89ce1",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/geometry/spatial/icosahedral.mjs",
+          "sha256": "67fe59d1f779ca52ef7f05e6995b6212f92430a8a087b28ac4e8d3e75c19d494",
+          "sourceSha256": "67fe59d1f779ca52ef7f05e6995b6212f92430a8a087b28ac4e8d3e75c19d494",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/inconsistency-sheaf.mjs",
+          "sha256": "00d0785e3b65729b284ee1308daca759d33e99a3b761fc8100e3745833079d45",
+          "sourceSha256": "00d0785e3b65729b284ee1308daca759d33e99a3b761fc8100e3745833079d45",
+          "matches": true
+        },
+        {
+          "file": "src/equality/index.mjs",
+          "sha256": "591da5ad14b323fa5846697ea28682ad6048f28df2403d8db0dafdec57496325",
+          "sourceSha256": "591da5ad14b323fa5846697ea28682ad6048f28df2403d8db0dafdec57496325",
+          "matches": true
+        },
+        {
+          "file": "src/models/dynamics/substitution/index.mjs",
+          "sha256": "a42e6b991e6ec869ff0e5207f141814044979f0f3865c2e698551167db309821",
+          "sourceSha256": "cad13704a1d220adb3a93c1a51d8f62410ce1233bfd082c20f00c0bc32949e95",
+          "matches": false
+        },
+        {
+          "file": "src/models/dynamics/substitution/recurrence/index.mjs",
+          "sha256": "61a34f2e0e3a364f317f238fab9b39bf9732a84a512eda5509bc99607784b68a",
+          "sourceSha256": "61a34f2e0e3a364f317f238fab9b39bf9732a84a512eda5509bc99607784b68a",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/thermodynamics/index.mjs",
+          "sha256": "17dbae8d461dd0e430b1c1dac7052df9e7a1a9824de5fbe7d985ccb81fa6f90e",
+          "sourceSha256": "17dbae8d461dd0e430b1c1dac7052df9e7a1a9824de5fbe7d985ccb81fa6f90e",
+          "matches": true
+        },
+        {
+          "file": "src/readout/index.mjs",
+          "sha256": "ae303a370440857baaeb050154c107f9f791efa85fd56d3ca48ef4091b084545",
+          "sourceSha256": "ae303a370440857baaeb050154c107f9f791efa85fd56d3ca48ef4091b084545",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/information.mjs",
+          "sha256": "74147231b1a5bdc31351ea564fd63b75e662d1c64bbb4e29734c5eef86030bcc",
+          "sourceSha256": "74147231b1a5bdc31351ea564fd63b75e662d1c64bbb4e29734c5eef86030bcc",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/internal-real.mjs",
+          "sha256": "6830f5d16eb6a9d9ae788f54fefbba0bdba5cc6515974910c0d2a93df3acbefd",
+          "sourceSha256": "6830f5d16eb6a9d9ae788f54fefbba0bdba5cc6515974910c0d2a93df3acbefd",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/inverse-hull.mjs",
+          "sha256": "ef0bcd7a58a73602ca3c5d04786f987c22b463109bc5a7007529d57889b8e8f4",
+          "sourceSha256": "ef0bcd7a58a73602ca3c5d04786f987c22b463109bc5a7007529d57889b8e8f4",
+          "matches": true
+        },
+        {
+          "file": "src/spectral/inversion.mjs",
+          "sha256": "291928a3c767924775503bd8422a3d0fcc8198547a979f59f180bebb2563cf07",
+          "sourceSha256": "291928a3c767924775503bd8422a3d0fcc8198547a979f59f180bebb2563cf07",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/jeandel-rao-witness.mjs",
+          "sha256": "b62e167532746766796a006111a4faebf03081df3c7517f206832021ff2962ac",
+          "sourceSha256": "b62e167532746766796a006111a4faebf03081df3c7517f206832021ff2962ac",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/glass/kappa-sector-charges.mjs",
+          "sha256": "cd845fa893fa44425f4fe037bca56c60a80b70f3a1bd28e5e5beee6bfcf51944",
+          "sourceSha256": "cd845fa893fa44425f4fe037bca56c60a80b70f3a1bd28e5e5beee6bfcf51944",
+          "matches": true
+        },
+        {
+          "file": "src/models/topology/keratin.mjs",
+          "sha256": "f9c519be39070e30e1e457a181ee7d0d680e6319f1be622e03dd033f453698a7",
+          "sourceSha256": "f9c519be39070e30e1e457a181ee7d0d680e6319f1be622e03dd033f453698a7",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/knaster-tarski.mjs",
+          "sha256": "01035990b498ef32d4837ecaba94c65389103cf502e6e998f8e14097562522c5",
+          "sourceSha256": "01035990b498ef32d4837ecaba94c65389103cf502e6e998f8e14097562522c5",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/kz-coherent-sheaf.mjs",
+          "sha256": "f9e4fb0bb0d7b44994c413448a8baed43d785f8957dd99001268d2418365ea55",
+          "sourceSha256": "f9e4fb0bb0d7b44994c413448a8baed43d785f8957dd99001268d2418365ea55",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/lambek-calculus.mjs",
+          "sha256": "666bdf9fb4c6ea83481963f25f35f381f0e4608e4c3ef92b1e3b4d9238b03e5b",
+          "sourceSha256": "666bdf9fb4c6ea83481963f25f35f381f0e4608e4c3ef92b1e3b4d9238b03e5b",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/laplacian.mjs",
+          "sha256": "95a472e10723513787d5b87c71c4e321bc0fdfa5cc787812e8e3d0f800b77408",
+          "sourceSha256": "95a472e10723513787d5b87c71c4e321bc0fdfa5cc787812e8e3d0f800b77408",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/lawvere-harmonic-cohomology.mjs",
+          "sha256": "d7290fb7ff659772bc3d03663f49cd62fc4be712d9b8258f322e48c565517a29",
+          "sourceSha256": "d7290fb7ff659772bc3d03663f49cd62fc4be712d9b8258f322e48c565517a29",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/lax-slack.mjs",
+          "sha256": "e9b0168e45cfa1c2929618a79ce5403e4cb941e9f99db0ed7483cd63f71bef7a",
+          "sourceSha256": "e9b0168e45cfa1c2929618a79ce5403e4cb941e9f99db0ed7483cd63f71bef7a",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/learning-cycle.mjs",
+          "sha256": "03ceb10fcfbf8bb0703bab83db8abfd033ed652d3cd93a361dac16dbe38a6098",
+          "sourceSha256": "03ceb10fcfbf8bb0703bab83db8abfd033ed652d3cd93a361dac16dbe38a6098",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/learning-depth.mjs",
+          "sha256": "e2c02e640ed3af2e6c8531c1e25dddb670caf8dcb4b1546290632c18ca786338",
+          "sourceSha256": "e2c02e640ed3af2e6c8531c1e25dddb670caf8dcb4b1546290632c18ca786338",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/leggett-garg.mjs",
+          "sha256": "260f554f6dd7b4cbd07c795d6a8f241f9fb782453d5a411d47bdb0be463c2d9e",
+          "sourceSha256": "260f554f6dd7b4cbd07c795d6a8f241f9fb782453d5a411d47bdb0be463c2d9e",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/linear-algebra.mjs",
+          "sha256": "8bb68893a9ecc977fe00d5823e321c1ca75e6a79b47421abf95a27cdf37503c5",
+          "sourceSha256": "8bb68893a9ecc977fe00d5823e321c1ca75e6a79b47421abf95a27cdf37503c5",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/liquid/liquid-density-functional-flow.mjs",
+          "sha256": "6ecb667b35bb35eacbecf90391b2f1e79da1de74f4e071fdc72fe13de1d007b5",
+          "sourceSha256": "6ecb667b35bb35eacbecf90391b2f1e79da1de74f4e071fdc72fe13de1d007b5",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/liquid/liquid-ornstein-zernike-closure.mjs",
+          "sha256": "c083fb9529d3359b2829e1ab98090d42196e23b64e0fd37baa840734004fa4a8",
+          "sourceSha256": "c083fb9529d3359b2829e1ab98090d42196e23b64e0fd37baa840734004fa4a8",
+          "matches": true
+        },
+        {
+          "file": "src/spectral/location.mjs",
+          "sha256": "4e033e047873aac4edd12a1dcf9938151a0234b066dca1eadb66bf10e8d2c6b4",
+          "sourceSha256": "4e033e047873aac4edd12a1dcf9938151a0234b066dca1eadb66bf10e8d2c6b4",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/magic-square.mjs",
+          "sha256": "ff4a6e5ebfc44ed6e191175ea6011794bb383cd5fa1f5542c1a00f24c7232b97",
+          "sourceSha256": "ff4a6e5ebfc44ed6e191175ea6011794bb383cd5fa1f5542c1a00f24c7232b97",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/reaction/mass-action-rate.mjs",
+          "sha256": "de3e9b07f1ba263c69c1b6488befc9ff471a7590507d50791cf35baa4b51c75c",
+          "sourceSha256": "de3e9b07f1ba263c69c1b6488befc9ff471a7590507d50791cf35baa4b51c75c",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/matter-topology.mjs",
+          "sha256": "f479cc572607b71b121e88996cdfc4f5fe4cd51dface5032dc7b2715f669215e",
+          "sourceSha256": "f479cc572607b71b121e88996cdfc4f5fe4cd51dface5032dc7b2715f669215e",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/measurement-scenario.mjs",
+          "sha256": "d0b3c39382ed8c1129a77626d5fbe5e8a6313a1c4e48bfaa4d5ca380bdc55928",
+          "sourceSha256": "d0b3c39382ed8c1129a77626d5fbe5e8a6313a1c4e48bfaa4d5ca380bdc55928",
+          "matches": true
+        },
+        {
+          "file": "scripts/merge-set-of-settlings.mjs",
+          "sha256": "b048cb33a7c503325252ebfbb0d852fac118b7df40b0595aec3f7538c08ae86e",
+          "sourceSha256": "b048cb33a7c503325252ebfbb0d852fac118b7df40b0595aec3f7538c08ae86e",
+          "matches": true
+        },
+        {
+          "file": "src/models/dynamics/substitution/mld.mjs",
+          "sha256": "65ab6d8148308bdd75d5afa2b456b1203c6eb3b9c7c1f41df9f554f2eb22d725",
+          "sourceSha256": "8f6b1869890c633608c8afef752e3219e9d682e979be06b931795f2eee13b179",
+          "matches": false
+        },
+        {
+          "file": "src/articulation/predicating/positing/modal-kripke-four-valued.mjs",
+          "sha256": "67d71c7b65e20a4f88114baf2af1965ab0c52ada4991cddc216b9b4039c4e826",
+          "sourceSha256": "67d71c7b65e20a4f88114baf2af1965ab0c52ada4991cddc216b9b4039c4e826",
+          "matches": true
+        },
+        {
+          "file": "src/models/graphs/module-cohesion.mjs",
+          "sha256": "91bd0cb73ec95b26a233929f7acff1b3b1de19723437dfc513c05ea7d0e6a509",
+          "sourceSha256": "91bd0cb73ec95b26a233929f7acff1b3b1de19723437dfc513c05ea7d0e6a509",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/kinetic-theory/molecular-chaos-gluing.mjs",
+          "sha256": "ca2cae35e8592f1a056bbbe121c572fb3e9528e3cade701abbaa38efc10306b5",
+          "sourceSha256": "ca2cae35e8592f1a056bbbe121c572fb3e9528e3cade701abbaa38efc10306b5",
+          "matches": true
+        },
+        {
+          "file": "src/hyperdoctrine/morphism.mjs",
+          "sha256": "9978b0192afeacd5f51fea821a8f5d76f2bdf4da07f94e9ad9c4a41046f80319",
+          "sourceSha256": "9978b0192afeacd5f51fea821a8f5d76f2bdf4da07f94e9ad9c4a41046f80319",
+          "matches": true
+        },
+        {
+          "file": "src/number/natural-extension.mjs",
+          "sha256": "5c720f3c98d70e8d95240d191184fcada11c5a31398cb88d306f57a4cd1f0431",
+          "sourceSha256": "5c720f3c98d70e8d95240d191184fcada11c5a31398cb88d306f57a4cd1f0431",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/negative-paraconsistent-sheaf.mjs",
+          "sha256": "08c2af27a7e2d68d5d4fc798ee63eb4dc04ca6ef5ad33d87200aa19c4cb7f3aa",
+          "sourceSha256": "08c2af27a7e2d68d5d4fc798ee63eb4dc04ca6ef5ad33d87200aa19c4cb7f3aa",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/number-theory.mjs",
+          "sha256": "f3bd106123cb54431cf2b6148a5076296a21c74f9a2f160ce51dc5f2013e169a",
+          "sourceSha256": "f3bd106123cb54431cf2b6148a5076296a21c74f9a2f160ce51dc5f2013e169a",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/object.mjs",
+          "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+          "sourceSha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/opaque-coincidence.mjs",
+          "sha256": "62b0949fd0aaa0ddd1d5ffa220a64c1f5831aa16fbc0ebb1943ed6aa5a1673b6",
+          "sourceSha256": "62b0949fd0aaa0ddd1d5ffa220a64c1f5831aa16fbc0ebb1943ed6aa5a1673b6",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/optimization.mjs",
+          "sha256": "9a9306f5e77784da0d0f3bc273d357a9baf758a661d65ed4058df437fe6e3731",
+          "sourceSha256": "9a9306f5e77784da0d0f3bc273d357a9baf758a661d65ed4058df437fe6e3731",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/order-infra.mjs",
+          "sha256": "fc965943fecc1d3de02515f79d6f8c2ac48c6ed7e074a499b071bb02e8386e07",
+          "sourceSha256": "fc965943fecc1d3de02515f79d6f8c2ac48c6ed7e074a499b071bb02e8386e07",
+          "matches": true
+        },
+        {
+          "file": "src/hyperdoctrine/order.mjs",
+          "sha256": "f145f03558a41948fac00d7e96cd94a5b3c6315b71f8516484abbb2283db1378",
+          "sourceSha256": "f145f03558a41948fac00d7e96cd94a5b3c6315b71f8516484abbb2283db1378",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/ordinal-closure.mjs",
+          "sha256": "6b489b2534afeb6506a2f1294db44257d16208dbba98ce204b2431426db64d2a",
+          "sourceSha256": "6b489b2534afeb6506a2f1294db44257d16208dbba98ce204b2431426db64d2a",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/ordinal.mjs",
+          "sha256": "9c59ef69e6689b01b8d95f509a8407f362680d85d39db29084bb75ae6acaa582",
+          "sourceSha256": "9c59ef69e6689b01b8d95f509a8407f362680d85d39db29084bb75ae6acaa582",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/pairwise-stone-clopen.mjs",
+          "sha256": "9816ec253021c87c54841a624115b52e3eeae5be5446c5fbbb913a1d3ac0b19a",
+          "sourceSha256": "9816ec253021c87c54841a624115b52e3eeae5be5446c5fbbb913a1d3ac0b19a",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/dense-matter/pasta-topology.mjs",
+          "sha256": "84c673c1d1ad8535da1bc4a83cc304c3fe78b72caa716d6225b331eb035ec6df",
+          "sourceSha256": "84c673c1d1ad8535da1bc4a83cc304c3fe78b72caa716d6225b331eb035ec6df",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/persistent-h0.mjs",
+          "sha256": "593fe4b5b1a6d045dffc86be7a5371ca30c209940211438d0b1142a4b46e70c2",
+          "sourceSha256": "593fe4b5b1a6d045dffc86be7a5371ca30c209940211438d0b1142a4b46e70c2",
+          "matches": true
+        },
+        {
+          "file": "src/number/polynomial-ints.mjs",
+          "sha256": "668fead2fdb98c6d2b9e0f566625967a33d5444b16a896c80d948e75cbeb75e5",
+          "sourceSha256": "668fead2fdb98c6d2b9e0f566625967a33d5444b16a896c80d948e75cbeb75e5",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/port-condensate.mjs",
+          "sha256": "78952b0e7a43eb18f6a5aaf0bcac3306ff4fa639fdcac105ca5a5c4d13935695",
+          "sourceSha256": "78952b0e7a43eb18f6a5aaf0bcac3306ff4fa639fdcac105ca5a5c4d13935695",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/port-graph.mjs",
+          "sha256": "9a21c7507cb208158062fea3f775b09a263e7c15f7256ab9bcc5a0bd77b99a46",
+          "sourceSha256": "9a21c7507cb208158062fea3f775b09a263e7c15f7256ab9bcc5a0bd77b99a46",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/port-thread-routing.mjs",
+          "sha256": "1738827480ff8e161b3d1762c511c673f1961eddadeb958253e131759e38c438",
+          "sourceSha256": "1738827480ff8e161b3d1762c511c673f1961eddadeb958253e131759e38c438",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/probability.mjs",
+          "sha256": "834ae2043557607c1c3e42f93e820fca33d2cb726371b1063d85ef323e808585",
+          "sourceSha256": "834ae2043557607c1c3e42f93e820fca33d2cb726371b1063d85ef323e808585",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/proof-foam.mjs",
+          "sha256": "b0d48d557ed6030c256d0f6a74d19018720d86089676770a81c4e1062ceddcd3",
+          "sourceSha256": "b0d48d557ed6030c256d0f6a74d19018720d86089676770a81c4e1062ceddcd3",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/quantale-enriched-sheaf.mjs",
+          "sha256": "0ed9384d8bcd0854c9208a82ad59538efca391ea887fea60eefdd9ab86150c78",
+          "sourceSha256": "0ed9384d8bcd0854c9208a82ad59538efca391ea887fea60eefdd9ab86150c78",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/graph/quantale-enriched-site.mjs",
+          "sha256": "1a3facd08fa8ce6e41595360a5f193336d9a0760dfc6ac18c8bcdd4f655cb3f5",
+          "sourceSha256": "1a3facd08fa8ce6e41595360a5f193336d9a0760dfc6ac18c8bcdd4f655cb3f5",
+          "matches": true
+        },
+        {
+          "file": "src/models/order/quantale.mjs",
+          "sha256": "e5e419cf5102bb2cf2c166ab2c969781dc9fcfda98785f060a352e23845c58f1",
+          "sourceSha256": "e5e419cf5102bb2cf2c166ab2c969781dc9fcfda98785f060a352e23845c58f1",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/quantifying.mjs",
+          "sha256": "386abbb8f8a1b2fd9d0de6efac2f9cd4843ac79725fd224c46a2f028298c1ddc",
+          "sourceSha256": "386abbb8f8a1b2fd9d0de6efac2f9cd4843ac79725fd224c46a2f028298c1ddc",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/plasma/quasineutrality.mjs",
+          "sha256": "f737a2e6ca36cac3132c745a582f15674d77e04ae351e0c6ca860e8d963790f7",
+          "sourceSha256": "f737a2e6ca36cac3132c745a582f15674d77e04ae351e0c6ca860e8d963790f7",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/reaction/reaction-entropy.mjs",
+          "sha256": "ce8a2ed91549ae5dd5c42fe7bcd9b765362955e9750f9fcb21ca0b1aca9116d8",
+          "sourceSha256": "ce8a2ed91549ae5dd5c42fe7bcd9b765362955e9750f9fcb21ca0b1aca9116d8",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/reaction/reaction-network.mjs",
+          "sha256": "c8577014e9a52ab4b5ec33cb5f815ae1010f4fbd39e5d88b6604867bc20d4d0a",
+          "sourceSha256": "c8577014e9a52ab4b5ec33cb5f815ae1010f4fbd39e5d88b6604867bc20d4d0a",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/reaction/reaction-reachability.mjs",
+          "sha256": "44ef4456cfcba630042a91b7cdf3ee4d8a04179d3e8ec33dab5c10593f1ac9d5",
+          "sourceSha256": "44ef4456cfcba630042a91b7cdf3ee4d8a04179d3e8ec33dab5c10593f1ac9d5",
+          "matches": true
+        },
+        {
+          "file": "src/reading-points.mjs",
+          "sha256": "545b10759634b7ca9fb22df708d167e14a01016ac2e6165728a6de18bc551cf1",
+          "sourceSha256": "545b10759634b7ca9fb22df708d167e14a01016ac2e6165728a6de18bc551cf1",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/reconciliation-quote.mjs",
+          "sha256": "3355342f4d8f295f11cca22aff771d79b48280bf427e7b0faa184be4243a3785",
+          "sourceSha256": "3355342f4d8f295f11cca22aff771d79b48280bf427e7b0faa184be4243a3785",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/plasma/reconnection-curvature.mjs",
+          "sha256": "dafd8a9f9ff08a7c4ab594e89b3102c96d435bfc94be8a4a8f05a570f5e519e7",
+          "sourceSha256": "dafd8a9f9ff08a7c4ab594e89b3102c96d435bfc94be8a4a8f05a570f5e519e7",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/regime-time-section.mjs",
+          "sha256": "47d9dc72234cad14ab459e0f32332663bf9f2f20f443999f8ec208c6f77f0c98",
+          "sourceSha256": "47d9dc72234cad14ab459e0f32332663bf9f2f20f443999f8ec208c6f77f0c98",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/residuated-lattice.mjs",
+          "sha256": "5309347efb95dd01fef2fb9039eafb4bb2463993720bf276d32b5dacd435868f",
+          "sourceSha256": "5309347efb95dd01fef2fb9039eafb4bb2463993720bf276d32b5dacd435868f",
+          "matches": true
+        },
+        {
+          "file": "src/models/order/run-causal-set.mjs",
+          "sha256": "17ec2abc6aaf0602e15e6e1b4427e2a6758528f974106de32c511b95d58aef23",
+          "sourceSha256": "17ec2abc6aaf0602e15e6e1b4427e2a6758528f974106de32c511b95d58aef23",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/scott-coalgebra.mjs",
+          "sha256": "13cb6667565a07f9ebe861a46c4d638d7ca747d403d8f4b26cfbae49bcb04a39",
+          "sourceSha256": "13cb6667565a07f9ebe861a46c4d638d7ca747d403d8f4b26cfbae49bcb04a39",
+          "matches": true
+        },
+        {
+          "file": "src/number-theory/sequence-recurrence.mjs",
+          "sha256": "20e6830ffc8f9f28cf656ef55cc6a8446cd249ebfc0f45ed72c05b5bd301885f",
+          "sourceSha256": "20e6830ffc8f9f28cf656ef55cc6a8446cd249ebfc0f45ed72c05b5bd301885f",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/session-presence.mjs",
+          "sha256": "080814b22c54b4b329448ccf9f5f1df8667d07c2453e952148dbcb61d88a8e94",
+          "sourceSha256": "080814b22c54b4b329448ccf9f5f1df8667d07c2453e952148dbcb61d88a8e94",
+          "matches": true
+        },
+        {
+          "file": "src/settlement-wire.mjs",
+          "sha256": "f8fcc68478b1a2e8b42fa6b69b56d8d7a72156a2a818c3fdd0fcd2aec5388aaa",
+          "sourceSha256": "f8fcc68478b1a2e8b42fa6b69b56d8d7a72156a2a818c3fdd0fcd2aec5388aaa",
+          "matches": true
+        },
+        {
+          "file": "src/settlement.mjs",
+          "sha256": "d3961b535a7a708634261308ee9508aca62cd3eb8bc0d412d0d5c80c710704a3",
+          "sourceSha256": "d3961b535a7a708634261308ee9508aca62cd3eb8bc0d412d0d5c80c710704a3",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/settling-associated-sheaf.mjs",
+          "sha256": "44920dc8de91d11a574efd8e277065cf9fba57749807b46dfd77b43512036c2c",
+          "sourceSha256": "44920dc8de91d11a574efd8e277065cf9fba57749807b46dfd77b43512036c2c",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/settling-cohomology-h1.mjs",
+          "sha256": "b948d41c695014776a66c6a824e75fb502125d64a886687b0ee9c1c19928f696",
+          "sourceSha256": "b948d41c695014776a66c6a824e75fb502125d64a886687b0ee9c1c19928f696",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/settling-local-constancy.mjs",
+          "sha256": "82a0f65767d01c60575d8feee0657bdaabb95542b8b41c80af2f8239f4019c98",
+          "sourceSha256": "82a0f65767d01c60575d8feee0657bdaabb95542b8b41c80af2f8239f4019c98",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/graph/settling-site.mjs",
+          "sha256": "8243723809091ac7a3679788770450bb0b291ff2bec7a8539daaade2372c817c",
+          "sourceSha256": "8243723809091ac7a3679788770450bb0b291ff2bec7a8539daaade2372c817c",
+          "matches": true
+        },
+        {
+          "file": "src/obstruction/settling.mjs",
+          "sha256": "8af907b2de7fa8d5b769cb80f7e88140e26d48cc9b208d020e0358f2ff9ae7bf",
+          "sourceSha256": "8af907b2de7fa8d5b769cb80f7e88140e26d48cc9b208d020e0358f2ff9ae7bf",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/site.mjs",
+          "sha256": "22e0050213a0c1ba75bb25f0d0726e12526cfc0d90ba6c6fabafd703b7a75a3d",
+          "sourceSha256": "fe5fbdffe7b0d8da8951400cac91519718a3ccc79b3c93834d082b19ccf616b6",
+          "matches": false
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/sofic.mjs",
+          "sha256": "41f0c24f752358ac2b273c83139b8b3a0c4d16ca284753ac1b695311dbf06fa6",
+          "sourceSha256": "41f0c24f752358ac2b273c83139b8b3a0c4d16ca284753ac1b695311dbf06fa6",
+          "matches": true
+        },
+        {
+          "file": "src/models/dynamics/substitution/sofic.mjs",
+          "sha256": "1e68e910cb97e3d36b21854f13c40459edd9d7af02c4271870178ee8145f9c1b",
+          "sourceSha256": "1e68e910cb97e3d36b21854f13c40459edd9d7af02c4271870178ee8145f9c1b",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/spectral.mjs",
+          "sha256": "0b61b78140e4550cfdd640ab3448dd01d27172b0db4731c9affc6892781e7c34",
+          "sourceSha256": "0b61b78140e4550cfdd640ab3448dd01d27172b0db4731c9affc6892781e7c34",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/stochastic.mjs",
+          "sha256": "b9c1710a53dfc96ca932b6270e8e9a1d6906c82d79b86c68f87aec8dc13959fc",
+          "sourceSha256": "b9c1710a53dfc96ca932b6270e8e9a1d6906c82d79b86c68f87aec8dc13959fc",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/quantum-contextuality/support-contextuality.mjs",
+          "sha256": "9eaafe6eefffbb9e893cc7b688c4076754f264dadf2c9c664fef945c65f1bf4e",
+          "sourceSha256": "9eaafe6eefffbb9e893cc7b688c4076754f264dadf2c9c664fef945c65f1bf4e",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/reaction/support-projection.mjs",
+          "sha256": "fa6305a2d36de4720c8046e6e3489dde56769557e45fd54b82496b3f6b6c139a",
+          "sourceSha256": "fa6305a2d36de4720c8046e6e3489dde56769557e45fd54b82496b3f6b6c139a",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/tarski-sheaf-closure.mjs",
+          "sha256": "0a6f11af2081dd953e0e502c639ffaf8c99b7e8955204573307db65cf5dfe192",
+          "sourceSha256": "0a6f11af2081dd953e0e502c639ffaf8c99b7e8955204573307db65cf5dfe192",
+          "matches": true
+        },
+        {
+          "file": "src/models/tiling/tile.mjs",
+          "sha256": "45d871c2cc7b13b63687b42a300e5ecd448ea9863d8d60b61e6b9c93f21dc122",
+          "sourceSha256": "45d871c2cc7b13b63687b42a300e5ecd448ea9863d8d60b61e6b9c93f21dc122",
+          "matches": true
+        },
+        {
+          "file": "src/models/dynamics/substitution/tiling.mjs",
+          "sha256": "0dcaeffbf0cfd3988683309afe7536375459c44e362e6cc0a34a599f3be93dca",
+          "sourceSha256": "0dcaeffbf0cfd3988683309afe7536375459c44e362e6cc0a34a599f3be93dca",
+          "matches": true
+        },
+        {
+          "file": "src/models/physics/models/plasma/topological-wave-sheaf.mjs",
+          "sha256": "ced7d81ea4ea2e166f4e72f72560023f845c0d056054f342197a36f82d916f56",
+          "sourceSha256": "ced7d81ea4ea2e166f4e72f72560023f845c0d056054f342197a36f82d916f56",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/transfinite-cell-complex.mjs",
+          "sha256": "5dce6ba725367162fe4819e409427d41f761680e8e4994e5c8771ae7b75302d1",
+          "sourceSha256": "5dce6ba725367162fe4819e409427d41f761680e8e4994e5c8771ae7b75302d1",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/twist-product.mjs",
+          "sha256": "59fc871aad8298a1d8bf31163b74da0558c6567cb1f264bcca10c98fb8b42b16",
+          "sourceSha256": "59fc871aad8298a1d8bf31163b74da0558c6567cb1f264bcca10c98fb8b42b16",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/valuation-fiber-algebra.mjs",
+          "sha256": "e9bb76470c63df506de198f1bcd2ccbf43cd76953458bcb1c2953cc418fc9e20",
+          "sourceSha256": "e9bb76470c63df506de198f1bcd2ccbf43cd76953458bcb1c2953cc418fc9e20",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/value-category.mjs",
+          "sha256": "6f0811a80f1f6003b849ecf67b822a6271830dcfa7e77e665a21a9888f8c152e",
+          "sourceSha256": "6f0811a80f1f6003b849ecf67b822a6271830dcfa7e77e665a21a9888f8c152e",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/verification-tournament.mjs",
+          "sha256": "369feb5e86ed219864bad262708e3df907a6513142ed5d75037a4beea14e4ea4",
+          "sourceSha256": "369feb5e86ed219864bad262708e3df907a6513142ed5d75037a4beea14e4ea4",
+          "matches": true
+        },
+        {
+          "file": "src/articulation/predicating/positing/settling/analysis/weave-draft.mjs",
+          "sha256": "a180a24c91e85ed0e839b1d6be8915e884444024e569db8390ab0edf750f6931",
+          "sourceSha256": "a180a24c91e85ed0e839b1d6be8915e884444024e569db8390ab0edf750f6931",
+          "matches": true
+        },
+        {
+          "file": "src/number/wire-ratio.mjs",
+          "sha256": "9f1c25940ec35b65f703ab6336ccd8032750dc1af1164f303a0b13baa203be8e",
+          "sourceSha256": "9f1c25940ec35b65f703ab6336ccd8032750dc1af1164f303a0b13baa203be8e",
+          "matches": true
+        }
+      ]
+    }
+  ]
+}

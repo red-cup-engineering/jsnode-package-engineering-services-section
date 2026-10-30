@@ -1,0 +1,9 @@
+{
+  "package": "0.1.4-dev.58",
+  "oldTarget": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/services/computer-content-engineering-services-section/services/computer-content-address-engineering-services-section/services/uri-services-section",
+  "selectedArtifact": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/uri-0.1.4-dev.58",
+  "sourceParity": "uri-dev58-source-parity.json",
+  "acceptedFace": "http-url",
+  "positiveAndNegativePassed": true,
+  "otherConsumersUnchanged": true
+}

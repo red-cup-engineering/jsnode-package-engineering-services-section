@@ -1,0 +1,49 @@
+{
+  "found": true,
+  "reachable": true,
+  "manifest": {
+    "name": "@red-cup-engineering/uri-services-section",
+    "version": "0.1.4-dev.58",
+    "type": "module",
+    "description": "Groups the firm's RFC 3986 Uniform Resource Identifier services: generic, machine-agnostic syntax that carries no firm-specific semantics. Use when adding or finding software that parses, renders, or compares URIs and the schemes built on them (starting with the RFC 8141 Uniform Resource Name family below it).",
+    "exports": {
+      "./ni-uri": "./src/ni-uri.mjs",
+      "./package.json": "./package.json",
+      "./http-url": {
+        "types": "./src/http-url.d.mts",
+        "import": "./src/http-url.mjs"
+      },
+      "./address-transformations": "./src/address-transformations.mjs",
+      "./uri-template": "./src/uri-template.mjs"
+    },
+    "dependencies": {
+      "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
+      "@red-cup-engineering/json-services-section": "0.4.0"
+    },
+    "scripts": {
+      "test": "node --test test/*.test.mjs"
+    },
+    "private": false,
+    "files": [
+      "package.json",
+      "README*",
+      "LICENSE*",
+      "src"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/red-cup-engineering/uri-engineering-services-section.git"
+    },
+    "gitHead": "287c0f268304e5a52abd13b58c3a7c54756938a8",
+    "_id": "@red-cup-engineering/uri-services-section@0.1.4-dev.58",
+    "contentDigest": "sha256-55dc130e9815e5a6060738e1378b86044ef06b7dabbcbd1d2c5199fea05ea6d3",
+    "dist": {
+      "shasum": "80b0cfd2a461819e352e59c5bbc48122ea9d6f7c",
+      "integrity": "sha512-Zu7q8jVrCiQNbNok2c2I/IhC4zkscrMvit8/TVWUX1X0aa4lczyHJU6rXzCtoEVXTqAigQWQLQK67OWHNjZ2lA==",
+      "tarball": "https://registry.561.group/@red-cup-engineering/uri-services-section/-/uri-services-section-0.1.4-dev.58.tgz"
+    },
+    "_npmUser": {
+      "name": "github-services"
+    }
+  }
+}

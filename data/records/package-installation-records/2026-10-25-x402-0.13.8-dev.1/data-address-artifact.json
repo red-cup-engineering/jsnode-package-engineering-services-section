@@ -1,0 +1,56 @@
+{
+  "observedAt": "2026-10-25T00:09:29.676Z",
+  "manifest": {
+    "name": "@red-cup-engineering/semiotic-content-address",
+    "version": "0.1.0",
+    "private": false,
+    "type": "module",
+    "description": "Canonical NFC/CBOR semantic carrier commitments, raw-byte NI addresses and their source-owning conformance audit.",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/red-cup-engineering/semiotic-content-address-system.git"
+    },
+    "exports": {
+      ".": "./src/semiotic-content-address.mjs",
+      "./raw-content-address": "./src/raw-content-address.mjs",
+      "./audit": "./src/audit-content-addressing.mjs",
+      "./package.json": "./package.json"
+    },
+    "bin": {
+      "semiotic-content-address-audit": "./src/audit-content-addressing.mjs"
+    },
+    "scripts": {
+      "test": "node --test test/*.test.mjs",
+      "audit": "node src/audit-content-addressing.mjs ."
+    },
+    "engines": {
+      "node": ">=22"
+    },
+    "dependencies": {
+      "@red-cup-engineering/cbor-services-section": "0.1.1",
+      "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
+      "@red-cup-engineering/uri-services-section": "0.1.1"
+    },
+    "files": [
+      "src",
+      "README.md"
+    ],
+    "gitHead": "9033949c7f3a128cfe5384d44051e549962c4c04",
+    "_id": "@red-cup-engineering/semiotic-content-address@0.1.0",
+    "contentDigest": "sha256-d795988c5b5a60ff0d77afeda1a4de4107f4bc95b987b560e215787da03d2596",
+    "dist": {
+      "shasum": "c8a2bb22a2690fce6f36bbde737822e52563abc3",
+      "integrity": "sha512-5+Rap5Ya8biH9nRzVl4HadfIuNomBYfxdDtV7Ly35wvTPrEYrglXZRuXY9Mg0vGQXruTrlBzxaAiYQUXvgyIaQ==",
+      "tarball": "https://registry.561.group/@red-cup-engineering/semiotic-content-address/-/semiotic-content-address-0.1.0.tgz"
+    },
+    "_npmUser": {
+      "name": "github-services"
+    }
+  },
+  "received": {
+    "integrity": "sha512-5+Rap5Ya8biH9nRzVl4HadfIuNomBYfxdDtV7Ly35wvTPrEYrglXZRuXY9Mg0vGQXruTrlBzxaAiYQUXvgyIaQ==",
+    "bytes": 7454,
+    "artifactDownloaded": true
+  },
+  "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-0.13.8-dev.1/node_modules/@red-cup-engineering/semiotic-content-address"
+}

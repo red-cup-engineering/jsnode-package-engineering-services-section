@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-10-25T00:08:50.656Z",
+  "deps": [
+    {
+      "name": "@red-cup-engineering/cbor-services-section",
+      "version": "0.1.1",
+      "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/cbor-services-section"
+    },
+    {
+      "name": "@red-cup-engineering/cryptographic-computer-data-engineering-services-section",
+      "version": "0.3.1",
+      "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/cryptographic-computer-data-engineering-services-section"
+    },
+    {
+      "name": "@red-cup-engineering/exact-number-data-service",
+      "version": "0.1.1",
+      "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/exact-number-data-service"
+    },
+    {
+      "name": "@red-cup-engineering/json-services-section",
+      "version": "0.4.0",
+      "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/json-services-section"
+    },
+    {
+      "name": "@red-cup-engineering/semiotic-content-address",
+      "version": "0.1.0",
+      "root": null
+    },
+    {
+      "name": "@red-cup-engineering/uri-services-section",
+      "version": "0.1.1",
+      "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/uri-services-section"
+    }
+  ]
+}
