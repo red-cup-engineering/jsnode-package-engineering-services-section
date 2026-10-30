@@ -8,7 +8,12 @@ import { createJsnodeOperationPackage } from "../src/create-jsnode-operation-pac
 import { projectJsnodeOperationPackage } from "../src/project-jsnode-operation-package.mjs";
 import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "../src/jsnode-package.mjs";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
-import { requiresLocalRegistry } from "./support/local-registry.mjs";
+// The admitted work-order fixtures in this file explicitly have no runtime or
+// development dependencies. The staged producer therefore exercises its real
+// native syntax, behavioral, package packing, local tarball installation and
+// import/CLI/receipt receivers without any network supplier. Fail if a future
+// change silently introduces a registry fetch rather than skipping the Work.
+process.env.npm_config_offline = "true";
 
 function translate(text = JSNODE_PACKAGE_DIALECT_EXAMPLE) {
   return translateMarkdownJsnodeOperationPackageSpecification({
@@ -34,7 +39,7 @@ test("translates the grouped v2 Markdown dialect through admission and projectio
   assert.ok(projection.files.some((file) => file.path === "src/numbers.mjs"));
 });
 
-test("creates a two-operation Markdown v2 topic with one shared source and one CLI", requiresLocalRegistry, async (t) => {
+test("creates a two-operation Markdown v2 topic with one shared source and one CLI", async (t) => {
   const parent = await mkdtemp("/tmp/markdown-v2-topic-");
   t.after(() => rm(parent, { recursive: true, force: true }));
   const translation = translate();

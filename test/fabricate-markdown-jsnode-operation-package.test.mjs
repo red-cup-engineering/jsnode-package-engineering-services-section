@@ -11,7 +11,12 @@ import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "@red-cup-engineering/jsnode-pack
 
 const fixturePath = fileURLToPath(new URL("./fixtures/greet-person.md", import.meta.url));
 const fixture = await readFile(fixturePath, "utf8");
-import { requiresLocalRegistry } from "./support/local-registry.mjs";
+// The admitted work-order fixtures in this file explicitly have no runtime or
+// development dependencies. The staged producer therefore exercises its real
+// native syntax, behavioral, package packing, local tarball installation and
+// import/CLI/receipt receivers without any network supplier. Fail if a future
+// change silently introduces a registry fetch rather than skipping the Work.
+process.env.npm_config_offline = "true";
 const registry = "http://127.0.0.1:4873";
 
 test("receiving rejects a substituted work-order requirement before admitting creation evidence", () => {
@@ -50,7 +55,7 @@ function request(source, destination, publish = false) {
   };
 }
 
-test("fabricates the admitted Markdown work order through package birth and binds all realization evidence", requiresLocalRegistry, async () => {
+test("fabricates the admitted Markdown work order through package birth and binds all realization evidence", async () => {
   const root = await mkdtemp(path.join("/tmp", "markdown-jsnode-package-"));
   const destination = path.join(root, "greet-person-service");
   try {
@@ -80,7 +85,7 @@ test("fabricates the admitted Markdown work order through package birth and bind
   }
 });
 
-test("publish:false writes the admitted source-to-realization receipt FROG folds with traceability", requiresLocalRegistry, async () => {
+test("publish:false writes the admitted source-to-realization receipt FROG folds with traceability", async () => {
   const root = await mkdtemp(path.join("/tmp", "markdown-jsnode-package-receipt-"));
   const destination = path.join(root, "greet-person-service");
   try {
@@ -111,7 +116,7 @@ test("publish:false writes the admitted source-to-realization receipt FROG folds
   }
 });
 
-test("omitting publish performs development fabrication without registry publication", requiresLocalRegistry, async () => {
+test("omitting publish performs development fabrication without registry publication", async () => {
   const root = await mkdtemp(path.join("/tmp", "markdown-jsnode-package-development-"));
   const destination = path.join(root, "greet-person-service");
   try {
@@ -127,7 +132,7 @@ test("omitting publish performs development fabrication without registry publica
   }
 });
 
-test("the public Markdown driver reaches grouped fabrication with publication omitted", requiresLocalRegistry, async () => {
+test("the public Markdown driver reaches grouped fabrication with publication omitted", async () => {
   const root = await mkdtemp(path.join("/tmp", "markdown-jsnode-topic-"));
   const translation = translateMarkdownJsnodeOperationPackageSpecification({ type: "MarkdownJsnodeOperationPackageSpecificationTranslationRequest", version: 1, source: { type: "MarkdownDocumentSource", path: "/test/topic.md", text: JSNODE_PACKAGE_DIALECT_EXAMPLE } });
   const candidate = translation.jsnodeOperationPackageSpecificationCandidate;
