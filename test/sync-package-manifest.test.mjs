@@ -45,3 +45,18 @@ test("without add, a used but undeclared house package is reported, not declared
   assert.ok(!changes.some((change) => change.action === "added"));
   assert.deepEqual(undeclared.map(({ dependency, wanted }) => [dependency.slice(R.length), wanted]), [["undeclared", "dependencies"], ["unknown-test", "devDependencies"]]);
 });
+
+
+test("the existing manifest synchronizer projects exact receiving enrollment from the canonical plan", () => {
+  const sourcePlan = ["test/a.test.mjs", "test/deep/b.test.mjs"];
+  const input = { ...manifest, receivingTests: ["test/stale.test.mjs"] };
+  const options = { rangeOf: () => "workspace:*", receivingTests: sourcePlan };
+  const first = syncPackageManifest(input, imports, options);
+  assert.deepEqual(first.manifest.receivingTests, sourcePlan);
+  assert.ok(first.changes.some(change => change.field === "receivingTests" && change.action === "reprojected"));
+  const second = syncPackageManifest(first.manifest, imports, options);
+  assert.ok(!second.changes.some(change => change.field === "receivingTests"), "idempotent source projection");
+  assert.throws(() => syncPackageManifest(input, imports, { ...options, receivingTests: ["../escape.test.mjs"] }), TypeError);
+  // Historical pure dependency callers that supply no test plan remain untouched.
+  assert.deepEqual(syncPackageManifest(manifest, imports, { rangeOf: () => "workspace:*" }).manifest.receivingTests, undefined);
+});
