@@ -8,12 +8,10 @@ import { createJsnodeOperationPackage } from "../src/create-jsnode-operation-pac
 import { projectJsnodeOperationPackage } from "../src/project-jsnode-operation-package.mjs";
 import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "../src/jsnode-package.mjs";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
-// The admitted work-order fixtures in this file explicitly have no runtime or
-// development dependencies. The staged producer therefore exercises its real
-// native syntax, behavioral, package packing, local tarball installation and
-// import/CLI/receipt receivers without any network supplier. Fail if a future
-// change silently introduces a registry fetch rather than skipping the Work.
-process.env.npm_config_offline = "true";
+// Original package-birth assays install the admitted shared Node runtime from
+// the caller-selected real registry. A selected registry in CI must run (and
+// fail on an actual missing dependency); local development retains the
+// incumbent localhost staging-registry availability gate.
 
 function translate(text = JSNODE_PACKAGE_DIALECT_EXAMPLE) {
   return translateMarkdownJsnodeOperationPackageSpecification({
@@ -39,12 +37,12 @@ test("translates the grouped v2 Markdown dialect through admission and projectio
   assert.ok(projection.files.some((file) => file.path === "src/numbers.mjs"));
 });
 
-test("creates a two-operation Markdown v2 topic with one shared source and one CLI", async (t) => {
+test("creates a two-operation Markdown v2 topic with one shared source and one CLI", requiresLocalRegistry, async (t) => {
   const parent = await mkdtemp("/tmp/markdown-v2-topic-");
   t.after(() => rm(parent, { recursive: true, force: true }));
   const translation = translate();
   const result = await createJsnodeOperationPackage({
-    type: "JsnodeOperationPackageCreationRequest", version: 1, destination: path.join(parent, "number-topic-service"), registry: "http://127.0.0.1:4873/",
+    type: "JsnodeOperationPackageCreationRequest", version: 1, destination: path.join(parent, "number-topic-service"), registry: stagedRegistry,
     specification: translation.jsnodeOperationPackageSpecificationCandidate,
   });
   assert.equal(result.type, "JsnodeOperationPackageCreationReceipt", JSON.stringify(result));

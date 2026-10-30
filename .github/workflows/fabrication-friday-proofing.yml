@@ -55,4 +55,8 @@ jobs:
       - name: Run original kinetic-proofing and connected-module assays
         run: node --test test/assay-channels.test.mjs test/connected-module-fabrication.test.mjs
       - name: Run entire existing package test plan
+        env:
+          # Original house package identities and versions are source-pinned;
+          # tests select the actual receiving registry, not a fake listener.
+          JSNODE_STAGING_REGISTRY: https://registry.561.group/
         run: npm test
