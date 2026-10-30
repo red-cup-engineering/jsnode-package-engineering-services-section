@@ -5,7 +5,7 @@
 // line and listed in the report. The last line on stdout is one JSON report,
 //   {"kind":"package-test-run.v1","ok":…,"package":…,"planned":…,"files":…,"ran":…,"passed":…,"failed":…,"requires":[…]}
 // counting the tests node ran (ran = passed + failed + skipped + todo), so a caller can tell "requires" from
-// "fails". Exits non-zero when any test that ran failed.
+// "fails". Exits non-zero when any test failed or when no test could execute.
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -33,7 +33,11 @@ const report = (counts, status, error = null) => {
   process.stdout.write(`\n${JSON.stringify({ kind: "package-test-run.v1", ok: status === 0, package: manifest.name ?? null, planned: plan.tests.length, files: run.length, ...counts, requires, ...(error === null ? {} : { error }) })}\n`);
   process.exit(status);
 };
-if (run.length === 0) report({ ran: 0, passed: 0, failed: 0 }, 0);
+// Absence of executable evidence is not a successful package assay. Preserve
+// the distinction between an empty plan and a plan whose prerequisites were
+// honestly reported as unmet; neither produces an invented passed test.
+if (run.length === 0) report({ ran: 0, passed: 0, failed: 0 }, 2,
+  plan.tests.length === 0 ? "no admitted executable tests" : "no admitted tests available under current requirements");
 
 // The caller's reporter (or node's default) to stdout, and a TAP copy to read the counts from.
 const flags = process.argv.slice(2);
