@@ -66,18 +66,15 @@ jobs:
         # source test or stale dependency declaration must refuse before
         # verifying the package carrier.
         run: npm run sync:manifest
-      - name: Receive original package-carrier verification without publisher credentials
-        # The original publish-package gate correctly requires a credentialed
-        # release office at Step 0, even for no-apply planning. Public CI must
-        # not acquire that authority or label the release as accepted.
-        # Reuse the Engineering package-carrier verifier; it packs and checks
-        # the original actual files, exports and module graph in scratch only.
+      - name: Receive original carrier and its independently installed package tests
+        # The original publish-package gate requires a credentialed Office.
+        # Public CI verifies actual package bytes and installed test programs
+        # without publication, altered versions, host isolation or a new runner.
         run: |
-          # The original carrier verifier intentionally excludes .npmrc from
-          # its scratch copy. Retain source-owned scoped registry policy as
-          # environment only, never copying auth material or routing house
-          # packages to npmjs. This mirrors the incumbent JSNode staged
-          # package creator's npm_config_@scope:registry boundary.
+          set -euo pipefail
+          # The original publisher excludes .npmrc from its source scratch.
+          # Forward only scoped public registry *addresses* from committed
+          # source, never credentials. npmjs remains the default registry.
           house_scopes=()
           while IFS= read -r declaration; do
             case "$declaration" in
@@ -88,3 +85,19 @@ jobs:
           done < .npmrc
           test "${#house_scopes[@]}" -gt 0
           env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/verify-package-carrier.mjs --package-dir . --registry https://registry.npmjs.org/
+          # Second, independently receive the package actually carried by npm.
+          # Use its own archive and installed dependencies, not checkout imports.
+          scratch="$(mktemp -d)"
+          trap 'rm -rf "$scratch"' EXIT
+          env "${house_scopes[@]}" npm pack --json --ignore-scripts --pack-destination "$scratch" > "$scratch/pack.json"
+          archive="$(node --input-type=module -e 'import fs from "node:fs"; const entries=JSON.parse(fs.readFileSync(process.argv[1],"utf8")); if(entries.length!==1 || typeof entries[0].filename!=="string" || !/^[a-zA-Z0-9._-]+\.tgz$/.test(entries[0].filename)) process.exit(2); process.stdout.write(entries[0].filename);' "$scratch/pack.json")"
+          test -f "$scratch/$archive"
+          (cd "$scratch"; sha512sum "$archive" > archive.sha512)
+          mkdir "$scratch/consumer"
+          printf '%s\n' '{"name":"jsnode-installed-source-receiver","private":true,"type":"module"}' > "$scratch/consumer/package.json"
+          env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s npm install --prefix "$scratch/consumer" --ignore-scripts --no-package-lock --no-audit --no-fund --registry=https://registry.npmjs.org/ "$scratch/$archive"
+          installed="$scratch/consumer/node_modules/@red-cup-engineering/jsnode-package-services-section"
+          node --input-type=module -e 'import fs from "node:fs"; import path from "node:path"; const [sourcePath, installedPath,root]=process.argv.slice(1); const authored=JSON.parse(fs.readFileSync(sourcePath,"utf8")), received=JSON.parse(fs.readFileSync(installedPath,"utf8")); if(authored.name!==received.name || authored.version!==received.version || !Array.isArray(received.receivingTests) || JSON.stringify(authored.receivingTests)!==JSON.stringify(received.receivingTests)) throw new Error("installed package receiving enrollment differs from exact source"); for(const test of received.receivingTests){const file=path.join(root,test); if(!fs.lstatSync(file).isFile()) throw new Error("installed declared test is not a regular file: "+test);} process.stdout.write(JSON.stringify({kind:"jsnode.installed-enrollment",files:received.receivingTests.length})+"\n");' "$PWD/package.json" "$installed/package.json" "$installed"
+          (cd "$installed"; env "${house_scopes[@]}" JSNODE_STAGING_REGISTRY=https://registry.561.group/ timeout --signal=TERM --kill-after=5s 240s npm test | tee "$scratch/installed-tests.log")
+          node --input-type=module -e 'import fs from "node:fs"; const [logPath,manifestPath]=process.argv.slice(1); const text=fs.readFileSync(logPath,"utf8"), manifest=JSON.parse(fs.readFileSync(manifestPath,"utf8")); const reports=text.split("\n").filter(line=>line.startsWith("{\"kind\":\"package-test-run.v1\"")); if(reports.length!==1) throw new Error("installed test runner did not return one native report"); const report=JSON.parse(reports[0]); if(!report.ok || report.files!==manifest.receivingTests.length || report.planned!==report.files || report.failed!==0 || report.ran!==report.passed || report.passed<1 || report.requires.length!==0) throw new Error("installed package tests incomplete: "+JSON.stringify(report)); process.stdout.write(JSON.stringify({kind:"jsnode.packed-installed-receiving",package:manifest.name,version:manifest.version,files:report.files,passed:report.passed,failed:report.failed,skipped:report.ran-report.passed})+"\n");' "$scratch/installed-tests.log" "$installed/package.json"
+          (cd "$scratch"; sha512sum --check archive.sha512)
