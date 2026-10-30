@@ -9,6 +9,10 @@ on:
       - 'src/package-check-outcome.mjs'
       - 'src/package-files.mjs'
       - 'test/package-test-plan.test.mjs'
+      - 'src/sync-package-manifest.mjs'
+      - 'scripts/sync-package-manifest.mjs'
+      - 'test/sync-package-manifest.test.mjs'
+      - 'package.json'
       - 'test/native-check-receiving.test.mjs'
       - '.github/workflows/assay-proof-native.yml'
   push:
@@ -21,6 +25,10 @@ on:
       - 'src/package-check-outcome.mjs'
       - 'src/package-files.mjs'
       - 'test/package-test-plan.test.mjs'
+      - 'src/sync-package-manifest.mjs'
+      - 'scripts/sync-package-manifest.mjs'
+      - 'test/sync-package-manifest.test.mjs'
+      - 'package.json'
       - 'test/native-check-receiving.test.mjs'
       - '.github/workflows/assay-proof-native.yml'
 permissions:
@@ -48,3 +56,7 @@ jobs:
         run: node --test test/assay-completion.test.mjs
       - name: Receive package runner enrollment and source-native TAP controls
         run: node --test test/package-test-plan.test.mjs test/native-check-receiving.test.mjs
+      - name: Receive source-derived manifest and installed enrollment
+        run: |
+          npm run sync:manifest
+          node --test test/sync-package-manifest.test.mjs
