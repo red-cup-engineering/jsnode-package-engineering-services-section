@@ -5,6 +5,7 @@ import {tmpdir} from "node:os";
 import path from "node:path";
 import test from "node:test";
 import {projectJsnodeExampleTests} from "../src/project-jsnode-example-tests.mjs";
+import {receiveIsolatedAssayOutcome} from "../src/assay-completion.mjs";
 
 const caseSource = operation => ({
   name: "reserved-name",
@@ -49,7 +50,9 @@ test("native Node executes tests fabricated from legal ESM reserved, default, an
       const generated=projectJsnodeExampleTests(operation,examples,derived);
       assert.equal(generated.type,"JavascriptNodeOperationTestSource");
       assert.equal(generated.path,"test/reserved-name-examples.test.mjs");
-      assert.match(generated.text,/import \{ "[^"]+" as fabricatedOperation \} from "\.\.\/src\/operation\.mjs";/);
+      assert.match(generated.text,/const moduleUnderAssay = await import\("\.\.\/src\/operation\.mjs"\);/);
+      assert.match(generated.text,/const fabricatedOperation = moduleUnderAssay\["[^"]+"\];/);
+      assert.match(generated.text,/const assert = Object\.freeze\(\{/);
       assert.doesNotMatch(generated.text,/import \{ class \}|import \{ default \}/);
       const sourcePath=path.join(directory,operation.module),testPath=path.join(directory,generated.path);
       await writeFile(sourcePath,implementation(exportName),"utf8");
@@ -135,5 +138,274 @@ test("source-generated clause checks detect mutation and unstable replay rather 
           name+" must demonstrate that output-only testing missed this defect:\n"+uncheckedRun.stdout);
       }
     }
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+
+test("generated JSNode example tests reject code that drops an admitted JSON own key", async () => {
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-json-assay-identity-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const original=JSON.parse('{"__proto__":{"marker":7},"n":1}');
+    assert.equal(Object.hasOwn(original,"__proto__"),true);
+    const operation=caseSource("class");
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"retain original own keys",operation:operation.name,input:original,output:original},
+    ]);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+
+    // A generated oracle must reject an implementation that preserves only
+    // the ordinary property while discarding the original own "__proto__".
+    await writeFile(sourceFile,[
+      'function implementation(value) { return {n:value.n}; }',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    const wrong=runNode(["--test",testFile],directory);
+    assert.notEqual(wrong.status,0,
+      "the original generated test must reject an implementation missing a JSON own property:\n"+wrong.stdout);
+    assert.match(wrong.stdout,/# fail 1\b/u);
+
+    // The same source-derived test still admits the correct JSON-preserving
+    // implementation and its exact expected value.
+    await writeFile(sourceFile,[
+      'function implementation(value) { return structuredClone(value); }',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    const correct=runNode(["--test",testFile],directory);
+    assert.equal(correct.status,0,correct.stderr+"\n"+correct.stdout);
+    assert.match(correct.stdout,/# pass 1\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+test("source-derived positive, negative, replay and scalar assays retain exact JSON values",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-json-assay-clauses-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const original=JSON.parse('{"__proto__":{"outer":7},"nested":[{"__proto__":{"inner":9},"n":2}]}');
+    const invalid=JSON.parse('{"__proto__":{"deny":true},"deny":true}');
+    assert.equal(Object.hasOwn(original.nested[0],"__proto__"),true);
+    const cases=[
+      {name:"complete replay",operation:operation.name,input:original,output:original,
+        throws:null,checks:{inputUnchanged:true,stableReplay:true}},
+      {name:"reject forbidden own key",operation:operation.name,input:invalid,output:null,
+        throws:"TypeError"},
+      {name:"ordinary scalar",operation:operation.name,input:4,output:4,throws:null},
+    ];
+    const generated=projectJsnodeExampleTests(operation,[],cases);
+    assert.match(generated.text,/\["__proto__"\]/u);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(sourceFile,[
+      'function implementation(value) {',
+      '  if (value !== null && typeof value === "object" && value.deny && Object.hasOwn(value,"__proto__")) throw new TypeError("forbidden");',
+      '  return structuredClone(value);',
+      '}',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    await writeFile(testFile,generated.text,"utf8");
+    const syntax=runNode(["--check",testFile],directory);
+    assert.equal(syntax.status,0,syntax.stderr);
+    const executed=runNode(["--test",testFile],directory);
+    assert.equal(executed.status,0,executed.stderr+"\n"+executed.stdout);
+    assert.match(executed.stdout,/# pass 3\b/u);
+    assert.match(executed.stdout,/# fail 0\b/u);
+    assert.equal(Object.hasOwn(original,"__proto__"),true);
+    assert.equal(Object.hasOwn(invalid,"__proto__"),true);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+
+test("ordinary admitted JSON assays retain their original historical test-source form",()=>{
+  const operation=caseSource("default");
+  const original=projectJsnodeExampleTests(operation,examples,derived);
+  assert.doesNotMatch(original.text,/JSON\.parse\(/u,
+    "unaffected source/assay receipts must not be rewritten by a fix for a distinct JSON key");
+  assert.match(original.text,/fabricatedOperation\(2\), 4/u);
+  assert.match(original.text,/fabricatedOperation\(-1\)/u);
+
+  // A string VALUE containing key-looking text is not an object member.
+  const textValue={text:'"__proto__":',n:2};
+  const quoted=projectJsnodeExampleTests(operation,[
+    {name:"quoted property spelling",input:textValue,output:textValue},
+  ]);
+  assert.doesNotMatch(quoted.text,/JSON\.parse\(/u);
+  assert.deepEqual(textValue,{text:'"__proto__":',n:2});
+});
+
+
+test("candidate cannot forge generated own-key assays by replacing global JSON.parse",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-json-assay-global-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const original=JSON.parse('{"__proto__":{"marker":7},"n":1}');
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"retain admitted own key",operation:operation.name,input:original,output:original},
+    ]);
+    assert.doesNotMatch(generated.text,/JSON\.parse\(/u,
+      "an imported candidate must not reinterpret both operands by replacing a global parser");
+    assert.match(generated.text,/\["__proto__"\]/u);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(sourceFile,[
+      'const originalParse=JSON.parse;',
+      'JSON.parse=(text,...args)=>typeof text==="string" && text.includes("marker") ? {n:1} : originalParse(text,...args);',
+      'function implementation(value) { return {n:value.n}; }',
+      'export { implementation as "class" };',
+    ].join("\n"),"utf8");
+    const corrupted=runNode(["--test",testFile],directory);
+    assert.notEqual(corrupted.status,0,
+      "candidate source must not rewrite admitted JSON expectations to pass a wrong result:\n"+corrupted.stdout);
+    assert.match(corrupted.stdout,/# fail 1\b/u);
+    assert.match(corrupted.stdout,/retain admitted own key/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+
+test("supplier replacement of global structuredClone cannot falsely pass the original mutation/replay assay",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-clone-tamper-"));
+  try{
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const guarded=projectJsnodeExampleTests(operation,[],[{
+      name:"input source is unchanged",operation:operation.name,
+      input:{n:2},output:{ok:true},throws:null,
+      checks:{inputUnchanged:true,stableReplay:true},
+    }]);
+    assert.doesNotMatch(guarded.text,/structuredClone\s*\(/u,
+      "a source-derived input oracle cannot depend on a supplier-mutable global");
+    const sourceFile=path.join(directory,operation.module);
+    const assayFile=path.join(directory,guarded.path);
+    await writeFile(assayFile,guarded.text,"utf8");
+    await writeFile(sourceFile,[
+      "globalThis.structuredClone = value => value;",
+      'function implementation(value){value.tampered=true;return {ok:true};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    const falseAcceptance=runNode(["--test",assayFile],directory);
+    assert.notEqual(falseAcceptance.status,0,
+      "mutating supplier code must not pass by aliasing the admitted snapshot:\n"+falseAcceptance.stdout);
+    assert.match(falseAcceptance.stdout,/# fail 1\b/u);
+    await writeFile(sourceFile,[
+      'function implementation(value){return {ok:true};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    const lawful=runNode(["--test",assayFile],directory);
+    assert.equal(lawful.status,0,lawful.stderr+"\n"+lawful.stdout);
+    assert.match(lawful.stdout,/# pass 1\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+test("replayed clauses reuse one admitted source snapshot, including JSON own keys",()=>{
+  const operation=caseSource("class");
+  let reads=0;
+  const nested=JSON.parse('{"__proto__":{"source":"original"}}');
+  const input={nested};
+  Object.defineProperty(input,"n",{enumerable:true,get(){return ++reads;}});
+  const generated=projectJsnodeExampleTests(operation,[],[{
+    name:"source cut",operation:operation.name,input,output:{ok:true},
+    throws:null,checks:{inputUnchanged:true,stableReplay:true},
+  }]);
+  assert.equal(reads,1,"the producer must not re-read the source getter at later test positions");
+  assert.equal((generated.text.match(/"n":1/g)||[]).length,3);
+  assert.doesNotMatch(generated.text,/"n":2/u);
+  assert.match(generated.text,/\["__proto__"\]/u);
+  assert.doesNotMatch(generated.text,/structuredClone\s*\(/u);
+});
+
+
+test("candidate module mutating shared native assertions cannot forge generated Code assay success",async()=>{
+  // Requirement: source-derived acceptance is independent of candidate code.
+  // Candidate static ESM imports run before generated test callbacks and can
+  // otherwise replace the shared node:assert/strict default's methods.
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-assert-oracle-custody-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const ownKey=JSON.parse('{"__proto__":{"marker":7},"n":1}');
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"must preserve original own key",operation:operation.name,input:ownKey,output:ownKey},
+    ],[
+      {name:"must reject malformed value",operation:operation.name,input:ownKey,output:null,throws:"TypeError"},
+    ]);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(sourceFile,[
+      'import assert from "node:assert/strict";',
+      'assert.deepStrictEqual=()=>undefined;',
+      'assert.rejects=async()=>undefined;',
+      'function implementation(value){return {n:value.n};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    // Both requirements are false. Supplier-authored source must not be
+    // allowed to set the generated acceptance oracle through module state.
+    const executed=runNode(["--test",testFile],directory);
+    assert.notEqual(executed.status,0,
+      "incorrect candidate tampered with the native assertion singleton and falsely passed both generated assays:\n"+
+      executed.stdout);
+    assert.match(executed.stdout,/# fail [1-9]\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+
+test("supplier cannot forge the assertion oracle by synchronizing native ESM exports",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-assert-sync-tamper-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const sourceValue=JSON.parse('{"__proto__":{"marker":8},"n":2}');
+    const generated=projectJsnodeExampleTests(operation,[
+      {name:"preserve source key",operation:operation.name,input:sourceValue,output:sourceValue},
+    ]);
+    const sourceFile=path.join(directory,operation.module);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(sourceFile,[
+      'import assert from "node:assert/strict";',
+      'import {syncBuiltinESMExports} from "node:module";',
+      'assert.deepStrictEqual=()=>undefined;',
+      'assert.rejects=async()=>undefined;',
+      'syncBuiltinESMExports();',
+      'function implementation(value){return {n:value.n};}',
+      'export {implementation as "class"};',
+    ].join("\n"),"utf8");
+    const observed=runNode(["--test",testFile],directory);
+    assert.notEqual(observed.status,0,
+      "candidate's native ESM synchronization must not replace prior captured assertion references:\n"+observed.stdout);
+    assert.match(observed.stdout,/# fail [1-9]\b/u);
+  } finally {await rm(directory,{recursive:true,force:true});}
+});
+
+test("early supplier exit does not become complete generated Code assay receiving",async()=>{
+  const directory=await mkdtemp(path.join(tmpdir(),"jsnode-exit-receiving-"));
+  try {
+    await mkdir(path.join(directory,"src"));
+    await mkdir(path.join(directory,"test"));
+    const operation=caseSource("class");
+    const examples=[{name:"must execute",operation:operation.name,input:2,output:4}];
+    const generated=projectJsnodeExampleTests(operation,examples);
+    const testFile=path.join(directory,generated.path);
+    await writeFile(testFile,generated.text,"utf8");
+    await writeFile(path.join(directory,operation.module),'process.exit(0);',"utf8");
+    const run=runNode(["--test",testFile],directory);
+    const received=receiveIsolatedAssayOutcome({
+      isolated:true,status:run.status,stdout:run.stdout,stderr:run.stderr,
+    },[operation.name+": must execute"]);
+    assert.equal(received.passed,false,"exit status alone is not an original assay-completion receipt");
+    assert.ok(["ASSAY_INCOMPLETE","ASSAY_TEST_FAILED"].includes(received.code),JSON.stringify(received));
+    if(run.status===0) assert.equal(received.reason==="ROOT_NAMES_MISMATCH"||
+      received.reason==="ROOT_RESULTS_INCOMPLETE"||
+      received.reason==="ROOT_PLAN_COUNT_MISMATCH",true,JSON.stringify(received));
   } finally {await rm(directory,{recursive:true,force:true});}
 });
