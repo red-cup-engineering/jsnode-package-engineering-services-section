@@ -337,7 +337,7 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     const developmentDependencies = dependencies(candidate.devDependencies, "devDependencies");
     if (app !== null) {
       for (const [name, version] of Object.entries({
-        "@red-cup-engineering/javascript-node-services-section": "0.3.0",
+        "@red-cup-engineering/javascript-node-services-section": "0.3.2",
       })) {
         if (Object.hasOwn(runtimeDependencies, name) && !["0.2.0", version].includes(runtimeDependencies[name])) {
           refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${name} must be pinned to ${version} for projected machine faces`);

@@ -8,7 +8,11 @@ import { createJsnodeOperationPackage } from "../src/create-jsnode-operation-pac
 import { projectJsnodeOperationPackage } from "../src/project-jsnode-operation-package.mjs";
 import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "../src/jsnode-package.mjs";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
-import { requiresLocalRegistry } from "./support/local-registry.mjs";
+import { requiresLocalRegistry, stagedRegistry } from "./support/local-registry.mjs";
+// Original package-birth assays install the admitted shared Node runtime from
+// the caller-selected real registry. A selected registry in CI must run (and
+// fail on an actual missing dependency); local development retains the
+// incumbent localhost staging-registry availability gate.
 
 function translate(text = JSNODE_PACKAGE_DIALECT_EXAMPLE) {
   return translateMarkdownJsnodeOperationPackageSpecification({
@@ -39,7 +43,7 @@ test("creates a two-operation Markdown v2 topic with one shared source and one C
   t.after(() => rm(parent, { recursive: true, force: true }));
   const translation = translate();
   const result = await createJsnodeOperationPackage({
-    type: "JsnodeOperationPackageCreationRequest", version: 1, destination: path.join(parent, "number-topic-service"), registry: "http://127.0.0.1:4873/",
+    type: "JsnodeOperationPackageCreationRequest", version: 1, destination: path.join(parent, "number-topic-service"), registry: stagedRegistry,
     specification: translation.jsnodeOperationPackageSpecificationCandidate,
   });
   assert.equal(result.type, "JsnodeOperationPackageCreationReceipt", JSON.stringify(result));

@@ -9,6 +9,11 @@ export async function localRegistryAvailable(url = "http://127.0.0.1:4873/") {
   });
 }
 
-export const hasLocalRegistry = await localRegistryAvailable();
-/** The test option that skips a test needing the local registry, with the declared reason. */
-export const requiresLocalRegistry = hasLocalRegistry ? {} : { skip: "requires a local registry at http://127.0.0.1:4873/ (staged dependency installation)" };
+// A caller may select the real house registry for independent CI receiving.
+// The original local developer mode continues to probe localhost:4873.
+// Explicit CI selection must never silently skip a dependency refusal.
+const hasSelectedRegistry = Object.hasOwn(process.env, "JSNODE_STAGING_REGISTRY");
+export const stagedRegistry = hasSelectedRegistry ? process.env.JSNODE_STAGING_REGISTRY : "http://127.0.0.1:4873/";
+export const hasLocalRegistry = hasSelectedRegistry ? false : await localRegistryAvailable(stagedRegistry);
+export const requiresLocalRegistry = hasSelectedRegistry || hasLocalRegistry ? {} :
+  { skip: "requires a local registry at http://127.0.0.1:4873/ (staged dependency installation)" };

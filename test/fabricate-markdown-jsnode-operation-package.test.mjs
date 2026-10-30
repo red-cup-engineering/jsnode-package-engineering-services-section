@@ -5,14 +5,19 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
+import { dataKindDirectory } from "@red-cup-engineering/eavt-services-section/data-artifact-address";
 import { fabricateMarkdownJsnodeOperationPackage, selectSingleJsnodeProjection, publishJsnodeOperationPackageToRegistry } from "../src/fabricate-markdown-jsnode-operation-package.mjs";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "@red-cup-engineering/jsnode-package-services-section/translate-markdown-jsnode-operation-package-specification";
 import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "@red-cup-engineering/jsnode-package-services-section/jsnode-package-dialect";
+import { requiresLocalRegistry, stagedRegistry } from "./support/local-registry.mjs";
 
 const fixturePath = fileURLToPath(new URL("./fixtures/greet-person.md", import.meta.url));
 const fixture = await readFile(fixturePath, "utf8");
-import { requiresLocalRegistry } from "./support/local-registry.mjs";
-const registry = "http://127.0.0.1:4873";
+// Original package-birth assays install the admitted shared Node runtime from
+// the caller-selected real registry. A selected registry in CI must run (and
+// fail on an actual missing dependency); local development retains the
+// incumbent localhost staging-registry availability gate.
+const registry = stagedRegistry;
 
 test("receiving rejects a substituted work-order requirement before admitting creation evidence", () => {
   const translated = translateMarkdownJsnodeOperationPackageSpecification({
@@ -56,8 +61,13 @@ test("fabricates the admitted Markdown work order through package birth and bind
   try {
     const result = await fabricateMarkdownJsnodeOperationPackage(request(fixture, destination));
     assert.equal(result.type, "MarkdownJsnodeOperationPackageFabricationReceipt");
+    // Source-file provenance uses the Data source's exact SHA-256 hex
+    // digest; the separately admitted *specification identity* is RFC 6920
+    // canonical semiotic NI. Conflating the two would break the source wire.
     assert.match(result.sourceDigest, /^sha256:[a-f0-9]{64}$/u);
-    assert.match(result.specificationDigest, /^sha256:[a-f0-9]{64}$/u);
+    assert.match(result.specificationDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+    assert.equal(result.sourceDigest, result.artifactSpecification.source.provenance.digest);
+    assert.equal(result.specificationDigest, result.artifactSpecification.specificationDigest);
     assert.equal(result.jsnodeOperationPackageCreationReceipt.type, "JsnodeOperationPackageCreationReceipt");
     assert.equal(result.artifactFabricationRealizationReceipt.type, "ArtifactFabricationRealizationReceipt");
     assert.equal(result.artifactFabricationRealizationReceipt.specificationDigest, result.specificationDigest);
@@ -86,7 +96,9 @@ test("publish:false writes the admitted source-to-realization receipt FROG folds
   try {
     const result = await fabricateMarkdownJsnodeOperationPackage(request(fixture, destination));
     assert.equal(result.type, "MarkdownJsnodeOperationPackageFabricationReceipt", JSON.stringify(result));
-    assert.equal(result.receiptPath, path.join(destination, "data", "records", `${new Date().toISOString().slice(0, 10)}-greet-person-fabrication-receipt.json`));
+    // The original EAVT placement owner selects fabrication-receipt-records;
+    // retain actual disk readback below instead of accepting an old path.
+    assert.equal(result.receiptPath, path.join(dataKindDirectory(destination, "record", "fabrication-receipt"), `${new Date().toISOString().slice(0, 10)}-greet-person-fabrication-receipt.json`));
 
     const diskReceipt = JSON.parse(await readFile(result.receiptPath, "utf8"));
     assert.equal(diskReceipt.type, "MarkdownJsnodeOperationPackageFabricationReceipt");
@@ -138,7 +150,11 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     const result = await fabricateMarkdownJsnodeOperationPackage(input);
     assert.equal(result.type, "MarkdownJsnodeOperationPackageFabricationReceipt", JSON.stringify(result));
     const manifest = JSON.parse(await readFile(path.join(destination, "package.json"), "utf8"));
-    assert.deepEqual(Object.values(manifest.bin), ["apps/number-topic-cli.mjs"]);
+    // Machine-facing catalog is data; the command runner belongs to the
+    // independently installed shared runtime, not a fabricated package bin.
+    assert.equal(Object.hasOwn(manifest, "bin"), false);
+    assert.equal(manifest.dependencies["@red-cup-engineering/javascript-node-services-section"], "0.3.2");
+    assert.match(await readFile(path.join(destination, "apps", "number-topic-cli.mjs"), "utf8"), /export const catalog/u);
     assert.equal(result.jsnodeOperationPackageRegistryPublication.type, "JsnodeOperationPackageRegistryPublicationSkipped");
     assert.equal(result.artifactSpecification.projections[0].configuration.version, 2);
     // Controlled receiving fixture: reconstruct a source-free order from this
@@ -146,11 +162,13 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     // This does not claim the authored package was inference-derived.
     const { type, version, specificationDigest, ...candidate } = result.artifactSpecification;
     const order = admitArtifactFabricationSpecification({
-      type: "ArtifactFabricationSpecificationCandidate", version: 1, ...candidate,
+      type: "ArtifactFabricationSpecificationCandidate", version, ...candidate,
       projections: candidate.projections.map((projection) => ({
         ...projection, configuration: { ...projection.configuration, sources: [], tests: [] },
       })),
     });
+    assert.equal(result.derivation, undefined, "authored package is not an inference-derived work order");
+    assert.equal(order.type, "ArtifactFabricationSpecification", JSON.stringify(order));
     const bound = { ...result, derivation: {
       type: "JsnodeClosureDerivation", version: 2,
       workOrderSpecification: order, workOrderSpecificationDigest: order.specificationDigest,
@@ -160,7 +178,7 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     const altered = structuredClone(bound);
     const { type: orderType, version: orderVersion, specificationDigest: oldDigest, ...alteredCandidate } = altered.derivation.workOrderSpecification;
     alteredCandidate.requirements[0].statement = "A different requirement supplied after fabrication.";
-    const alteredOrder = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: 1, ...alteredCandidate });
+    const alteredOrder = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: orderVersion, ...alteredCandidate });
     altered.derivation.workOrderSpecification = alteredOrder;
     altered.derivation.workOrderSpecificationDigest = alteredOrder.specificationDigest;
     assert.throws(() => admitMarkdownJsnodeOperationPackageFabricationReceipt(altered), { code: "WORK_ORDER_REALIZATION_BINDING_MISMATCH" });
