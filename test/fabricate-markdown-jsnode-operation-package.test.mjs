@@ -61,9 +61,10 @@ test("fabricates the admitted Markdown work order through package birth and bind
   try {
     const result = await fabricateMarkdownJsnodeOperationPackage(request(fixture, destination));
     assert.equal(result.type, "MarkdownJsnodeOperationPackageFabricationReceipt");
-    // Independent native semiotic identity profile (RFC 6920), not the older
-    // raw-hex spelling. Both addresses must bind the actually admitted source.
-    assert.match(result.sourceDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+    // Source-file provenance uses the Data source's exact SHA-256 hex
+    // digest; the separately admitted *specification identity* is RFC 6920
+    // canonical semiotic NI. Conflating the two would break the source wire.
+    assert.match(result.sourceDigest, /^sha256:[a-f0-9]{64}$/u);
     assert.match(result.specificationDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
     assert.equal(result.sourceDigest, result.artifactSpecification.source.provenance.digest);
     assert.equal(result.specificationDigest, result.artifactSpecification.specificationDigest);
@@ -161,11 +162,13 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     // This does not claim the authored package was inference-derived.
     const { type, version, specificationDigest, ...candidate } = result.artifactSpecification;
     const order = admitArtifactFabricationSpecification({
-      type: "ArtifactFabricationSpecificationCandidate", version: 1, ...candidate,
+      type: "ArtifactFabricationSpecificationCandidate", version, ...candidate,
       projections: candidate.projections.map((projection) => ({
         ...projection, configuration: { ...projection.configuration, sources: [], tests: [] },
       })),
     });
+    assert.equal(result.derivation, undefined, "authored package is not an inference-derived work order");
+    assert.equal(order.type, "ArtifactFabricationSpecification", JSON.stringify(order));
     const bound = { ...result, derivation: {
       type: "JsnodeClosureDerivation", version: 2,
       workOrderSpecification: order, workOrderSpecificationDigest: order.specificationDigest,
@@ -175,7 +178,7 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     const altered = structuredClone(bound);
     const { type: orderType, version: orderVersion, specificationDigest: oldDigest, ...alteredCandidate } = altered.derivation.workOrderSpecification;
     alteredCandidate.requirements[0].statement = "A different requirement supplied after fabrication.";
-    const alteredOrder = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: 1, ...alteredCandidate });
+    const alteredOrder = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: orderVersion, ...alteredCandidate });
     altered.derivation.workOrderSpecification = alteredOrder;
     altered.derivation.workOrderSpecificationDigest = alteredOrder.specificationDigest;
     assert.throws(() => admitMarkdownJsnodeOperationPackageFabricationReceipt(altered), { code: "WORK_ORDER_REALIZATION_BINDING_MISMATCH" });
