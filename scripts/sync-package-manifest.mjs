@@ -6,6 +6,7 @@
  *   node scripts/sync-package-manifest.mjs --check [REPOSITORY]   report packages out of sync; exit 1 if any
  *   node scripts/sync-package-manifest.mjs --write [REPOSITORY]   remove and move declarations, keeping each file's formatting
  *   node scripts/sync-package-manifest.mjs --write --add [REPOSITORY]   also declare house packages used but undeclared
+ *   --receiving-tests explicitly projects installed receiving enrollment from the same canonical source test plan
  *
  * Packages are the tracked package.json files outside legacy, vendor, node_modules and test fixtures. A house
  * package used but undeclared takes the range the repository already declares it with, `workspace:*` when the
@@ -17,9 +18,11 @@ import { join, resolve } from "node:path";
 import { importsOfFiles } from "../src/package-imports.mjs";
 import { ownedFiles, packageRoots } from "../src/package-tree.mjs";
 import { formatManifestLike, syncPackageManifest } from "../src/sync-package-manifest.mjs";
+import { testPlan } from "../src/package-test-plan.mjs";
 
 const mode = process.argv.includes("--write") ? "write" : "check";
 const adding = process.argv.includes("--add");
+const enrolling = process.argv.includes("--receiving-tests");
 const repository = resolve(process.argv.slice(2).find((argument) => !argument.startsWith("--")) ?? ".");
 const tracked = execFileSync("git", ["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
 const roots = packageRoots(tracked);
@@ -40,9 +43,14 @@ const rangeOf = (name) => {
 };
 const report = [];
 for (const [root, manifest] of manifests) {
-  const files = ownedFiles(root, roots, tracked).filter(({ path }) => /\.(?:[cm]?[jt]s|[jt]sx)$/u.test(path))
+  const owned = ownedFiles(root, roots, tracked);
+  const files = owned.filter(({ path }) => /\.(?:[cm]?[jt]s|[jt]sx)$/u.test(path))
     .map(({ path, file }) => ({ path, text: readFileSync(join(repository, file), "utf8") }));
-  const { manifest: synced, changes, undeclared, unresolved } = syncPackageManifest(manifest, importsOfFiles(files), { rangeOf, add: adding });
+  const receiving = enrolling ? testPlan({ files: owned.map(item => item.path), manifest }) : null;
+  if (receiving?.problems.length) throw new TypeError(`source test plan refused: ${receiving.problems.join("; ")}`);
+  const { manifest: synced, changes, undeclared, unresolved } = syncPackageManifest(manifest, importsOfFiles(files), {
+    rangeOf, add: adding, ...(receiving?.tests.length ? { receivingTests: receiving.tests } : {}),
+  });
   if (!changes.length && !undeclared.length && !unresolved.length) continue;
   report.push({ package: manifest.name, path: root, changes, undeclared, unresolved });
   if (mode === "write" && changes.length) {

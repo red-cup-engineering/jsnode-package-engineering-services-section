@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { packageFiles } from "../src/package-files.mjs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
@@ -97,6 +98,16 @@ test("run-package-tests runs the plan, reports an unmet requirement as requires,
   assert.match(check.stdout, /3\/3 files parse/u);
 });
 
+
+test("the original installed package enrolls exactly its canonical source-owned test plan", () => {
+  const root = fileURLToPath(new URL("../", import.meta.url));
+  const manifest = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+  const plan = testPlan({ files: packageFiles(root), manifest });
+  assert.deepEqual(plan.problems, []);
+  assert.ok(plan.tests.length > 0, "original package must expose real executable tests");
+  assert.deepEqual(manifest.receivingTests, plan.tests,
+    "installed receiving enrollment must be generated from the ONE original test plan, never a separate hand-maintained list");
+});
 test("installed receiving refuses enrollment drift and all unavailable tests without discarding legacy empty plans", (t) => {
   const root = mkdtempSync(join(tmpdir(), "empty-test-receiving-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
