@@ -1,0 +1,26 @@
+{
+  "observedAt": "2026-10-25T00:27:52.165Z",
+  "selections": [
+    {
+      "name": "@red-cup-engineering/alpaca-services-section",
+      "version": "0.1.4-dev.1",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/alpaca-services-section"
+    },
+    {
+      "name": "@red-cup-engineering/json-services-section",
+      "version": "0.4.2-dev.2",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/json-services-section"
+    },
+    {
+      "name": "@red-cup-engineering/metrologic",
+      "version": "0.14.2",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2"
+    }
+  ],
+  "alpacaDependency": {
+    "name": "@red-cup-engineering/issuer-research-media-service",
+    "version": "0.1.3-dev.1",
+    "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-24-issuer-research-0.1.5/earning-loop-worker-service-previous-installed-package"
+  },
+  "scope": "APP selected JSON, issuer packet, attention and entropy interfaces. Other consumers keep their own namespace bindings; unused Alpaca/Metrologic faces are not claimed as whole dependency closure."
+}

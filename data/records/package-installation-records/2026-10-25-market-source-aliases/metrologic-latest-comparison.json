@@ -1,0 +1,468 @@
+{
+  "observedAt": "2026-10-25T00:24:21.909Z",
+  "manifest": {
+    "name": "@red-cup-engineering/metrologic",
+    "version": "0.14.2",
+    "type": "module",
+    "description": "Metrologic: the data layer's mathematics, the shared JavaScript implementation of the mathematical operations every layer above it uses.",
+    "keywords": [
+      "bilattice",
+      "four-valued",
+      "belnap",
+      "paraconsistent",
+      "chu-space",
+      "star-autonomous",
+      "category-theory",
+      "predication",
+      "exact-arithmetic",
+      "fixed-point"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/red-cup-engineering/computer-data-engineering-services-section.git",
+      "directory": "lib/metrologic"
+    },
+    "engines": {
+      "node": ">=22"
+    },
+    "exports": {
+      "./hyperdoctrine/order": {
+        "default": "./src/hyperdoctrine/order.mjs"
+      },
+      "./hyperdoctrine/adjoints": {
+        "default": "./src/hyperdoctrine/adjoints.mjs"
+      },
+      "./hyperdoctrine/comprehension": {
+        "default": "./src/hyperdoctrine/comprehension.mjs"
+      },
+      "./readout": {
+        "default": "./src/readout/index.mjs"
+      },
+      "./obstruction/attention-allocation": {
+        "default": "./src/obstruction/attention-allocation.mjs"
+      },
+      "./obstruction/settling": {
+        "default": "./src/obstruction/settling.mjs"
+      },
+      "./spectral/inversion": {
+        "default": "./src/spectral/inversion.mjs"
+      },
+      "./spectral/location": {
+        "default": "./src/spectral/location.mjs"
+      },
+      "./equality": {
+        "default": "./src/equality/index.mjs"
+      },
+      "./package.json": "./package.json",
+      "./number-theory/sequence-recurrence": {
+        "import": "./src/number-theory/sequence-recurrence.mjs"
+      },
+      "./tiling/tile": "./src/models/tiling/tile.mjs",
+      "./sheaf/four-valued-names": {
+        "import": "./src/sheaf/four-valued-names.mjs"
+      },
+      "./chu": {
+        "import": "./src/chu.mjs"
+      },
+      "./sheaf/order/four-twist-product": {
+        "import": "./src/sheaf/order/four-twist-product.mjs"
+      },
+      "./sheaf/topology/d-frame": {
+        "import": "./src/sheaf/topology/d-frame.mjs"
+      },
+      "./graph/port-graph": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/port-graph.mjs"
+      },
+      "./articulation/four-corner-cell": {
+        "import": "./src/articulation/four-corner-cell.mjs"
+      },
+      "./articulation/predicating/equality": {
+        "import": "./src/articulation/predicating/equality.mjs"
+      },
+      "./articulation/predicating/fibration": {
+        "import": "./src/articulation/predicating/fibration.mjs"
+      },
+      "./articulation/predicating/geometry/spatial/cut-and-project": {
+        "import": "./src/articulation/predicating/geometry/spatial/cut-and-project.mjs"
+      },
+      "./articulation/predicating/geometry/spatial/gyrobifastigium-j26": {
+        "import": "./src/articulation/predicating/geometry/spatial/gyrobifastigium-j26.mjs"
+      },
+      "./articulation/predicating/positing/closure-operator-fiber": {
+        "import": "./src/articulation/predicating/positing/closure-operator-fiber.mjs"
+      },
+      "./articulation/predicating/positing/dihedral-gauge": {
+        "import": "./src/articulation/predicating/positing/dihedral-gauge.mjs"
+      },
+      "./articulation/predicating/positing/modal-kripke-four-valued": {
+        "import": "./src/articulation/predicating/positing/modal-kripke-four-valued.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/algebra-hierarchy": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/algebra-hierarchy.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/aperiodic-classification": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/aperiodic-classification.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/bigraded-cohomology": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/bigraded-cohomology.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/bigraded-diamond": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/bigraded-diamond.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/bitopological-settling-site": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/bitopological-settling-site.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/causal-manifoldlikeness": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/causal-manifoldlikeness.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/causal-microsupport": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/causal-microsupport.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/causal-mld-classification": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/causal-mld-classification.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/causal": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/causal.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/closure-rule-system": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/closure-rule-system.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/continuum-colimit": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/continuum-colimit.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/laplacian": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/laplacian.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/numeric-laplacian": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/numeric-laplacian.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/coordination-cohomology": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/coordination-cohomology.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/crdt-cohomological-calm": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/crdt-cohomological-calm.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/d-frame": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/d-frame.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/evidence": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/evidence.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/fca-lambek-circle": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/fca-lambek-circle.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/flow": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/flow.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/frobenius-tqft": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/frobenius-tqft.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/hauptvermutung": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/hauptvermutung.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/inconsistency-sheaf": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/inconsistency-sheaf.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/inverse-hull": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/inverse-hull.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/lawvere-harmonic-cohomology": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/lawvere-harmonic-cohomology.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/lax-slack": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/lax-slack.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/matter-topology": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/matter-topology.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/negative-paraconsistent-sheaf": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/negative-paraconsistent-sheaf.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/ordinal-closure": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/ordinal-closure.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/pairwise-stone-clopen": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/pairwise-stone-clopen.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/port-graph": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/port-graph.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/port-thread-routing": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/port-thread-routing.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/quantale-enriched-sheaf": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/quantale-enriched-sheaf.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/regime-time-section": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/regime-time-section.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/scott-coalgebra": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/scott-coalgebra.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/settling-associated-sheaf": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/settling-associated-sheaf.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/settling-cohomology-h1": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/settling-cohomology-h1.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/settling-local-constancy": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/settling-local-constancy.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/tarski-sheaf-closure": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/tarski-sheaf-closure.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/transfinite-cell-complex": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/transfinite-cell-complex.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/twist-product": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/twist-product.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/verification-tournament": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/verification-tournament.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/weave-draft": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/weave-draft.mjs"
+      },
+      "./articulation/predicating/positing/settling/bigraded-cohomology": {
+        "import": "./src/articulation/predicating/positing/settling/bigraded-cohomology.mjs"
+      },
+      "./articulation/predicating/positing/settling/carrier": {
+        "import": "./src/articulation/predicating/positing/settling/carrier.mjs"
+      },
+      "./articulation/predicating/positing/settling/certificate": {
+        "import": "./src/articulation/predicating/positing/settling/certificate.mjs"
+      },
+      "./articulation/predicating/positing/settling/closure": {
+        "import": "./src/articulation/predicating/positing/settling/closure.mjs"
+      },
+      "./articulation/predicating/positing/settling/dynamics/substitution/hull": {
+        "import": "./src/models/dynamics/substitution/hull.mjs"
+      },
+      "./articulation/predicating/positing/settling/dynamics/substitution": {
+        "import": "./src/models/dynamics/substitution/index.mjs"
+      },
+      "./articulation/predicating/positing/settling/dynamics/substitution/mld": {
+        "import": "./src/models/dynamics/substitution/mld.mjs"
+      },
+      "./articulation/predicating/positing/settling/dynamics/substitution/recurrence": {
+        "import": "./src/models/dynamics/substitution/recurrence/index.mjs"
+      },
+      "./articulation/predicating/positing/settling/dynamics/substitution/sofic": {
+        "import": "./src/models/dynamics/substitution/sofic.mjs"
+      },
+      "./articulation/predicating/positing/settling/dynamics/substitution/tiling": {
+        "import": "./src/models/dynamics/substitution/tiling.mjs"
+      },
+      "./articulation/predicating/positing/settling/learning-cycle": {
+        "import": "./src/articulation/predicating/positing/settling/learning-cycle.mjs"
+      },
+      "./articulation/predicating/positing/settling/learning-depth": {
+        "import": "./src/articulation/predicating/positing/settling/learning-depth.mjs"
+      },
+      "./articulation/predicating/positing/settling/object": {
+        "import": "./src/articulation/predicating/positing/settling/object.mjs"
+      },
+      "./articulation/predicating/positing/settling/optimization": {
+        "import": "./src/articulation/predicating/positing/settling/optimization.mjs"
+      },
+      "./articulation/predicating/positing/settling/ordinal": {
+        "import": "./src/articulation/predicating/positing/settling/ordinal.mjs"
+      },
+      "./articulation/predicating/positing/settling/probability": {
+        "import": "./src/articulation/predicating/positing/settling/probability.mjs"
+      },
+      "./articulation/predicating/positing/settling/stochastic": {
+        "import": "./src/articulation/predicating/positing/settling/stochastic.mjs"
+      },
+      "./articulation/predicating/positing/settling/value-category": {
+        "import": "./src/articulation/predicating/positing/settling/value-category.mjs"
+      },
+      "./articulation/predicating/positing/valuation-fiber-algebra": {
+        "import": "./src/articulation/predicating/positing/valuation-fiber-algebra.mjs"
+      },
+      "./articulation/predicating/quantifying": {
+        "import": "./src/articulation/predicating/quantifying.mjs"
+      },
+      "./settlement": {
+        "import": "./src/settlement.mjs"
+      },
+      "./settlement/wire": {
+        "import": "./src/settlement-wire.mjs"
+      },
+      "./number/wire-ratio": "./src/number/wire-ratio.mjs",
+      "./number/natural-extension": "./src/number/natural-extension.mjs",
+      "./articulation/predicating/geometry/spatial/icosahedral": "./src/articulation/predicating/geometry/spatial/icosahedral.mjs",
+      "./models/order/d-frame-site": "./src/articulation/predicating/positing/settling/graph/d-frame-site.mjs",
+      "./models/topology/alexandrov-site": "./src/articulation/predicating/positing/settling/graph/alexandrov-site.mjs",
+      "./models/topology/quantale-enriched-site": "./src/articulation/predicating/positing/settling/graph/quantale-enriched-site.mjs",
+      "./models/topology/settling-site": "./src/articulation/predicating/positing/settling/graph/settling-site.mjs",
+      "./models/topology/keratin": "./src/models/topology/keratin.mjs",
+      "./models/order/run-causal-set": "./src/models/order/run-causal-set.mjs",
+      "./models/physics/models/kinetic-theory/molecular-chaos-gluing": "./src/models/physics/models/kinetic-theory/molecular-chaos-gluing.mjs",
+      "./models/physics/models/glass/kappa-sector-charges": "./src/models/physics/models/glass/kappa-sector-charges.mjs",
+      "./models/physics/models/quantum-contextuality/reconciliation-quote": "./src/models/physics/models/quantum-contextuality/reconciliation-quote.mjs",
+      "./models/graphs/module-cohesion": "./src/models/graphs/module-cohesion.mjs",
+      "./models/graphs/directed-multigraph": "./src/models/graphs/directed-multigraph.mjs",
+      "./settling/schema/site": "./src/articulation/predicating/positing/settling/site.mjs",
+      "./closure/src/directed-evidence": "./src/closure/directed-evidence.mjs",
+      "./models/physics/models/quantum-contextuality/measurement-scenario": "./src/models/physics/models/quantum-contextuality/measurement-scenario.mjs",
+      "./models/physics/models/quantum-contextuality/contextual-obstruction": "./src/models/physics/models/quantum-contextuality/contextual-obstruction.mjs",
+      "./articulation/predicating/positing/evidence-record": {
+        "import": "./src/articulation/predicating/positing/evidence-record.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/coloring": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/coloring.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/alexandrov-husainov": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/alexandrov-husainov.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/aperiodic-autocorrelation": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/aperiodic-autocorrelation.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/causal-involutivity": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/causal-involutivity.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/causal-polarization": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/causal-polarization.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/chromatic-lorentzian": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/chromatic-lorentzian.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/collatz": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/collatz.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/conservation": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/conservation.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/differential": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/differential.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/discrete-set-number-graph": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/discrete-set-number-graph.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/glass-overlap": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/glass-overlap.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/information": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/information.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/internal-real": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/internal-real.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/jeandel-rao-witness": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/jeandel-rao-witness.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/knaster-tarski": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/knaster-tarski.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/kz-coherent-sheaf": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/kz-coherent-sheaf.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/lambek-calculus": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/lambek-calculus.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/linear-algebra": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/linear-algebra.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/number-theory": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/number-theory.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/order-infra": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/order-infra.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/persistent-h0": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/persistent-h0.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/residuated-lattice": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/residuated-lattice.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/sofic": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/sofic.mjs"
+      },
+      "./articulation/predicating/positing/settling/analysis/spectral": {
+        "import": "./src/articulation/predicating/positing/settling/analysis/spectral.mjs"
+      },
+      "./closure/formal-context": "./src/closure/formal-context.mjs",
+      "./closure/formal-concepts": "./src/closure/formal-concepts.mjs",
+      "./models/physics/models/kinetic-theory/boltzmann-entropy": "./src/models/physics/models/kinetic-theory/boltzmann-entropy.mjs",
+      "./number/evidence-bits": "./src/number/evidence-bits.mjs",
+      "./number/polynomial-ints": "./src/number/polynomial-ints.mjs",
+      "./models/order/finite-preorder": {
+        "import": "./src/models/order/finite-preorder.mjs"
+      },
+      "./models/order/quantale": "./src/models/order/quantale.mjs",
+      "./number/finite-law": {
+        "import": "./src/number/finite-law.mjs"
+      },
+      "./number/finite-capacity": {
+        "import": "./src/number/finite-capacity.mjs"
+      },
+      "./obstruction/capacity-flow": {
+        "default": "./src/obstruction/capacity-flow.mjs"
+      },
+      "./mark": {
+        "import": "./src/mark.mjs"
+      },
+      "./models/games/concurrent-game": {
+        "import": "./src/models/games/concurrent-game.mjs"
+      },
+      "./chu/knowledge-relations": {
+        "import": "./src/chu-knowledge-relations.mjs"
+      },
+      "./chu/indexed-knowledge-relations": {
+        "import": "./src/indexed-knowledge-relations.mjs"
+      }
+    },
+    "files": [
+      "README.md",
+      "src",
+      "scripts",
+      "specifications"
+    ],
+    "sideEffects": false,
+    "dependencies": {
+      "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
+      "@red-cup-engineering/exact-number-data-service": "0.1.1",
+      "@red-cup-engineering/json-services-section": "0.4.0"
+    },
+    "scripts": {
+      "test": "node --max-old-space-size=256 --test --test-concurrency=1 --test-timeout=15000"
+    },
+    "private": false,
+    "gitHead": "65e8f7dbde2cff190caf73a2b8141f1ee5f99082",
+    "_id": "@red-cup-engineering/metrologic@0.14.2",
+    "contentDigest": "sha256-e43154ccb5c55edbb21770c971f59906b9fcac8dd312cecb669724e555a1e432",
+    "dist": {
+      "shasum": "f73907ee1e5104585a6b7634270c06f3b583fa54",
+      "integrity": "sha512-UEIcGwpazSu5MscBkXORFQMEboTP/0nEm8/PIQFmxlcLc6mQrjfMWKWNcIeHETZ1jdflwL6em7n0NoELPCWJuA==",
+      "tarball": "https://registry.561.group/@red-cup-engineering/metrologic/-/metrologic-0.14.2.tgz"
+    },
+    "_npmUser": {
+      "name": "github-services"
+    }
+  },
+  "received": {
+    "integrity": "sha512-UEIcGwpazSu5MscBkXORFQMEboTP/0nEm8/PIQFmxlcLc6mQrjfMWKWNcIeHETZ1jdflwL6em7n0NoELPCWJuA==",
+    "bytes": 403423,
+    "artifactDownloaded": true
+  },
+  "compare": [
+    {
+      "file": "src/obstruction/attention-allocation.mjs",
+      "matches": true
+    },
+    {
+      "file": "src/models/dynamics/substitution/index.mjs",
+      "matches": false
+    },
+    {
+      "file": "src/models/dynamics/substitution/mld.mjs",
+      "matches": false
+    },
+    {
+      "file": "src/articulation/predicating/positing/settling/site.mjs",
+      "matches": false
+    }
+  ],
+  "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2"
+}

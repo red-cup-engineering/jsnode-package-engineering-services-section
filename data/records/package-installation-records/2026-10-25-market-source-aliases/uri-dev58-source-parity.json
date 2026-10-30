@@ -1,0 +1,30 @@
+{
+  "source": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/services/computer-content-engineering-services-section/services/computer-content-address-engineering-services-section/services/uri-services-section",
+  "artifact": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/uri-0.1.4-dev.58",
+  "rows": [
+    {
+      "name": "ni-uri",
+      "sourceSha256": "21c97093a4ef867e88352bcf4ecf9332fd1132a3576dacbda7f48364ca76d353",
+      "artifactSha256": "21c97093a4ef867e88352bcf4ecf9332fd1132a3576dacbda7f48364ca76d353",
+      "equal": true
+    },
+    {
+      "name": "http-url",
+      "sourceSha256": "20fc8cfb64ba0a3de2dab8821d4e9371ac9bf6a1bc0a50c019d1f4ff0067d0fc",
+      "artifactSha256": "20fc8cfb64ba0a3de2dab8821d4e9371ac9bf6a1bc0a50c019d1f4ff0067d0fc",
+      "equal": true
+    },
+    {
+      "name": "address-transformations",
+      "sourceSha256": "2009e01d1afc24d99faab4096bc867fd966812eb0617b0d5127ed42fe327b1df",
+      "artifactSha256": "2009e01d1afc24d99faab4096bc867fd966812eb0617b0d5127ed42fe327b1df",
+      "equal": true
+    },
+    {
+      "name": "uri-template",
+      "sourceSha256": "9fd0ceb1056aab6c2349a8a57db7f909181b204941d98a6c33066c8e9b26f988",
+      "artifactSha256": "9fd0ceb1056aab6c2349a8a57db7f909181b204941d98a6c33066c8e9b26f988",
+      "equal": true
+    }
+  ]
+}
