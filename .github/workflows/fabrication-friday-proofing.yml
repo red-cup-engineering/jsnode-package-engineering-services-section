@@ -66,6 +66,4 @@ jobs:
         # No --apply, --bump, --pin or --repin is admitted by this workflow.
         # A refusal belongs to publication qualification, not to source tests.
         run: |
-          timeout --signal=TERM --kill-after=5s 240s \\
-            node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/publish-package.mjs \\
-              --package . --registry https://registry.561.group/
+          timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/publish-package.mjs --package . --registry https://registry.561.group/
