@@ -18,15 +18,95 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Check out exact source
+      - name: Check out exact source without retaining token
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Refuse checkout authorization surviving into supplier-derived tests
+        shell: bash
+        run: |
+          if git config --local --name-only --get-regexp '^http[.].*[.]extraheader$' >/dev/null 2>&1; then
+            echo '::error::Checkout retained GitHub HTTP authorization in .git/config'
+            exit 1
+          fi
       - name: Install Node 24
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
-      - name: Resolve actual original package dependencies
-        run: npm install --no-audit --no-fund --ignore-scripts
+      # pnpm-lock.yaml is the repository's committed dependency contract.
+      # Pin the installer code and manager version; do not let an npm install
+      # silently resolve a different, uncommitted dependency tree.
+      - name: Install pinned pnpm 10
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # signed v4 tag
+        with:
+          version: '10.20.0'
+          run_install: false
+          cache: true
+          cache_dependency_path: pnpm-lock.yaml
+        # Only the public package-manager bootstrap uses npmjs; original
+        # package dependencies still resolve from committed .npmrc.
+        env:
+          npm_config_registry: https://registry.npmjs.org/
+      - name: Resolve committed original package dependency closure
+        env:
+          npm_config_fetch_retries: '0'
+          npm_config_fetch_timeout: '20000'
+        run: |
+          pnpm --version
+          set +e
+          timeout --signal=TERM --kill-after=5s 240s \
+            pnpm install --frozen-lockfile --ignore-scripts --network-concurrency=2 --reporter=append-only
+          status=$?
+          if [ "$status" -eq 124 ] || [ "$status" -eq 137 ]; then
+            echo '::error::Pinned dependency closure not received within 240s; do not run or accept downstream assays.'
+          fi
+          exit "$status"
       - name: Run original kinetic-proofing and connected-module assays
         run: node --test test/assay-channels.test.mjs test/connected-module-fabrication.test.mjs
       - name: Run entire existing package test plan
+        env:
+          # Original house package identities and versions are source-pinned;
+          # tests select the actual receiving registry, not a fake listener.
+          JSNODE_STAGING_REGISTRY: https://registry.561.group/
         run: npm test
+      - name: Receive canonical manifest synchronization without writes
+        # The original manifest source now opts into testPlan-derived
+        # receivingTests enrollment. A second hand-maintained list, dropped
+        # source test or stale dependency declaration must refuse before
+        # verifying the package carrier.
+        run: npm run sync:manifest
+      - name: Receive original carrier and its independently installed package tests
+        # The original publish-package gate requires a credentialed Office.
+        # Public CI verifies actual package bytes and installed test programs
+        # without publication, altered versions, host isolation or a new runner.
+        run: |
+          set -euo pipefail
+          # The original publisher excludes .npmrc from its source scratch.
+          # Forward only scoped public registry *addresses* from committed
+          # source, never credentials. npmjs remains the default registry.
+          house_scopes=()
+          while IFS= read -r declaration; do
+            case "$declaration" in
+              @*:registry=https://registry.561.group/)
+                house_scopes+=("npm_config_${declaration}")
+                ;;
+            esac
+          done < .npmrc
+          test "${#house_scopes[@]}" -gt 0
+          env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/verify-package-carrier.mjs --package-dir . --registry https://registry.npmjs.org/
+          # Second, independently receive the package actually carried by npm.
+          # Use its own archive and installed dependencies, not checkout imports.
+          scratch="$(mktemp -d)"
+          trap 'rm -rf "$scratch"' EXIT
+          env "${house_scopes[@]}" npm pack --json --ignore-scripts --pack-destination "$scratch" > "$scratch/pack.json"
+          archive="$(node --input-type=module -e 'import fs from "node:fs"; const entries=JSON.parse(fs.readFileSync(process.argv[1],"utf8")); if(entries.length!==1 || typeof entries[0].filename!=="string" || !/^[a-zA-Z0-9._-]+\.tgz$/.test(entries[0].filename)) process.exit(2); process.stdout.write(entries[0].filename);' "$scratch/pack.json")"
+          test -f "$scratch/$archive"
+          (cd "$scratch"; sha512sum "$archive" > archive.sha512)
+          mkdir "$scratch/consumer"
+          printf '%s\n' '{"name":"jsnode-installed-source-receiver","private":true,"type":"module"}' > "$scratch/consumer/package.json"
+          env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s npm install --prefix "$scratch/consumer" --ignore-scripts --no-package-lock --no-audit --no-fund --registry=https://registry.npmjs.org/ "$scratch/$archive"
+          installed="$scratch/consumer/node_modules/@red-cup-engineering/jsnode-package-services-section"
+          node --input-type=module -e 'import fs from "node:fs"; import path from "node:path"; const [sourcePath, installedPath,root]=process.argv.slice(1); const authored=JSON.parse(fs.readFileSync(sourcePath,"utf8")), received=JSON.parse(fs.readFileSync(installedPath,"utf8")); if(authored.name!==received.name || authored.version!==received.version || !Array.isArray(received.receivingTests) || JSON.stringify(authored.receivingTests)!==JSON.stringify(received.receivingTests)) throw new Error("installed package receiving enrollment differs from exact source"); for(const test of received.receivingTests){const file=path.join(root,test); if(!fs.lstatSync(file).isFile()) throw new Error("installed declared test is not a regular file: "+test);} process.stdout.write(JSON.stringify({kind:"jsnode.installed-enrollment",files:received.receivingTests.length})+"\n");' "$PWD/package.json" "$installed/package.json" "$installed"
+          (cd "$installed"; env "${house_scopes[@]}" JSNODE_STAGING_REGISTRY=https://registry.561.group/ timeout --signal=TERM --kill-after=5s 240s npm test | tee "$scratch/installed-tests.log")
+          node --input-type=module -e 'import fs from "node:fs"; const [logPath,manifestPath]=process.argv.slice(1); const text=fs.readFileSync(logPath,"utf8"), manifest=JSON.parse(fs.readFileSync(manifestPath,"utf8")); const reports=text.split("\n").filter(line=>line.startsWith("{\"kind\":\"package-test-run.v1\"")); if(reports.length!==1) throw new Error("installed test runner did not return one native report"); const report=JSON.parse(reports[0]); if(!report.ok || report.files!==manifest.receivingTests.length || report.planned!==report.files || report.failed!==0 || report.ran!==report.passed || report.passed<1 || report.requires.length!==0) throw new Error("installed package tests incomplete: "+JSON.stringify(report)); process.stdout.write(JSON.stringify({kind:"jsnode.packed-installed-receiving",package:manifest.name,version:manifest.version,files:report.files,passed:report.passed,failed:report.failed,skipped:report.ran-report.passed})+"\n");' "$scratch/installed-tests.log" "$installed/package.json"
+          (cd "$scratch"; sha512sum --check archive.sha512)
