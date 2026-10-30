@@ -8,6 +8,7 @@
  * Usage is read by `importsOfFiles` (./package-imports.mjs), the reader the design-rule deck shares.
  */
 import { HOUSE_SCOPE } from "./package-imports.mjs";
+import { TEST_FILE } from "./package-test-plan.mjs";
 
 const RUNTIME_SECTIONS = ["dependencies", "optionalDependencies"];
 
@@ -33,7 +34,7 @@ export function loadsByNameOf(manifest) {
  * the range to add it with; when it returns nothing the package is reported unresolved, never guessed.
  * Returns `{ manifest, changes, undeclared, unresolved }`; `changes` is empty when the manifest is already in sync.
  */
-export function syncPackageManifest(manifest, imports, { rangeOf = () => null, add: adding = true } = {}) {
+export function syncPackageManifest(manifest, imports, { rangeOf = () => null, add: adding = true, receivingTests } = {}) {
   const self = manifest.name;
   const wantRuntime = new Set([...imports.runtime.keys(), ...scriptNamedPackages(manifest), ...loadsByNameOf(manifest)].filter((name) => name !== self));
   const wantTest = new Set([...imports.test.keys()].filter((name) => name !== self && !wantRuntime.has(name)));
@@ -72,6 +73,22 @@ export function syncPackageManifest(manifest, imports, { rangeOf = () => null, a
   for (const name of [...wantTest].sort()) if (next.devDependencies?.[name] === undefined && peers[name] === undefined) add("devDependencies", name);
   for (const key of [...RUNTIME_SECTIONS, "devDependencies"]) if (next[key] && Object.keys(next[key]).length === 0 && manifest[key] === undefined) delete next[key];
   for (const key of [...RUNTIME_SECTIONS, "devDependencies"]) if (next[key] && Object.keys(next[key]).length === 0 && Object.keys(manifest[key] ?? {}).some((name) => HOUSE_SCOPE.test(name))) delete next[key];
+  // Original package-test-plan owns test discovery; source receiving is an
+  // explicit manifest projection of that same plan, never another selector.
+  // Keep existing callers unchanged until they supply a source-derived plan.
+  if (receivingTests !== undefined) {
+    if (!Array.isArray(receivingTests) || receivingTests.length === 0 ||
+        receivingTests.some(path => typeof path !== "string" || !TEST_FILE.test(path) ||
+          !path.split("/").every(part => /^[a-zA-Z0-9._-]+$/u.test(part) && part !== "." && part !== "..")) ||
+        new Set(receivingTests).size !== receivingTests.length ||
+        receivingTests.some((path, index) => index > 0 && path <= receivingTests[index - 1])) {
+      throw new TypeError("receivingTests must be the nonempty, distinct, sorted canonical test-plan paths");
+    }
+    if (JSON.stringify(next.receivingTests) !== JSON.stringify(receivingTests)) {
+      next.receivingTests = [...receivingTests];
+      changes.push({ field: "receivingTests", action: "reprojected", paths: [...receivingTests] });
+    }
+  }
   return Object.freeze({ manifest: next, changes: Object.freeze(changes), undeclared: Object.freeze(undeclared), unresolved: Object.freeze(unresolved) });
 }
 
