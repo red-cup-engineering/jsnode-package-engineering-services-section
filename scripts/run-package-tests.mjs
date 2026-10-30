@@ -5,7 +5,7 @@
 // line and listed in the report. The last line on stdout is one JSON report,
 //   {"kind":"package-test-run.v1","ok":…,"package":…,"planned":…,"files":…,"ran":…,"passed":…,"failed":…,"requires":[…]}
 // counting the tests node ran (ran = passed + failed + skipped + todo), so a caller can tell "requires" from
-// "fails". Exits non-zero when any test failed or when no test could execute.
+// "fails". Exits non-zero on test failure, enrollment drift, or no runnable tests remaining from a declared plan.
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -33,11 +33,24 @@ const report = (counts, status, error = null) => {
   process.stdout.write(`\n${JSON.stringify({ kind: "package-test-run.v1", ok: status === 0, package: manifest.name ?? null, planned: plan.tests.length, files: run.length, ...counts, requires, ...(error === null ? {} : { error }) })}\n`);
   process.exit(status);
 };
-// Absence of executable evidence is not a successful package assay. Preserve
-// the distinction between an empty plan and a plan whose prerequisites were
-// honestly reported as unmet; neither produces an invented passed test.
-if (run.length === 0) report({ ran: 0, passed: 0, failed: 0 }, 2,
-  plan.tests.length === 0 ? "no admitted executable tests" : "no admitted tests available under current requirements");
+// The optional installed-receiver enrollment is an exact source-plan contract,
+// not an alternative selector. A missing, duplicated, reordered, or extra file
+// is a refusal before any native subprocess: it cannot be called a smaller
+// successful plan just because the present files happen to pass.
+const enrolled = Object.hasOwn(manifest, "receivingTests");
+if (enrolled && (!Array.isArray(manifest.receivingTests) || manifest.receivingTests.length === 0
+  || JSON.stringify(manifest.receivingTests) !== JSON.stringify(plan.tests))) {
+  report({ ran: 0, passed: 0, failed: 0 }, 2,
+    "installed receiving enrollment differs from canonical test plan");
+}
+// Preserve the historical empty, un-enrolled package case. By contrast, a
+// declared test that is not runnable due to host/environment requirements
+// cannot supply successful receiving evidence.
+if (run.length === 0) {
+  const emptyLegacyPlan = plan.tests.length === 0 && !enrolled;
+  report({ ran: 0, passed: 0, failed: 0 }, emptyLegacyPlan ? 0 : 2,
+    emptyLegacyPlan ? null : "no admitted tests available under current requirements");
+}
 
 // The caller's reporter (or node's default) to stdout, and a TAP copy to read the counts from.
 const flags = process.argv.slice(2);
