@@ -60,10 +60,11 @@ jobs:
           # tests select the actual receiving registry, not a fake listener.
           JSNODE_STAGING_REGISTRY: https://registry.561.group/
         run: npm test
-      - name: Receive original release-gate plan without mutation or publication
-        # Reuse the installed, exactly pinned Engineering publisher; no local
-        # substitute packer, fabricated receipt, external credentials or tag.
-        # No --apply, --bump, --pin or --repin is admitted by this workflow.
-        # A refusal belongs to publication qualification, not to source tests.
+      - name: Receive original package-carrier verification without publisher credentials
+        # The original publish-package gate correctly requires a credentialed
+        # release office at Step 0, even for no-apply planning. Public CI must
+        # not acquire that authority or label the release as accepted.
+        # Reuse the Engineering package-carrier verifier; it packs and checks
+        # the original actual files, exports and module graph in scratch only.
         run: |
-          timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/publish-package.mjs --package . --registry https://registry.561.group/
+          timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/verify-package-carrier.mjs --package-dir . --registry https://registry.npmjs.org/
