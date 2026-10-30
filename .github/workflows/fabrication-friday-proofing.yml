@@ -67,4 +67,18 @@ jobs:
         # Reuse the Engineering package-carrier verifier; it packs and checks
         # the original actual files, exports and module graph in scratch only.
         run: |
-          timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/verify-package-carrier.mjs --package-dir . --registry https://registry.npmjs.org/
+          # The original carrier verifier intentionally excludes .npmrc from
+          # its scratch copy. Retain source-owned scoped registry policy as
+          # environment only, never copying auth material or routing house
+          # packages to npmjs. This mirrors the incumbent JSNode staged
+          # package creator's npm_config_@scope:registry boundary.
+          house_scopes=()
+          while IFS= read -r declaration; do
+            case "$declaration" in
+              @*:registry=https://registry.561.group/)
+                house_scopes+=("npm_config_${declaration}")
+                ;;
+            esac
+          done < .npmrc
+          test "${#house_scopes[@]}" -gt 0
+          env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/verify-package-carrier.mjs --package-dir . --registry https://registry.npmjs.org/
