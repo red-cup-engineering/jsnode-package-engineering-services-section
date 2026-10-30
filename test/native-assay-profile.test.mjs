@@ -151,7 +151,14 @@ test("the existing JSON operation profile still plans and projects its unchanged
   const order=moduleWorkOrder(),closure=order.projections[0].configuration;
   assert.equal(planJsnodeModules(order).type,"JsnodeModuleFabricationPlan");
   const generated=testsOfClosure(closure)[0].text;
-  assert.match(generated,/import \{ "identity" as fabricatedOperation \} from/);
+  // The original Code #74 acceptance oracle must be captured before any
+  // source-supplier module is evaluated, not imported statically alongside it.
+  const trusted = generated.indexOf("const assert = Object.freeze({");
+  const imported = generated.indexOf('const moduleUnderAssay = await import("../src/identity.mjs");');
+  assert.ok(trusted >= 0 && imported > trusted,
+    "native assertions must be bound before source supplier evaluation");
+  assert.match(generated,/const fabricatedOperation = moduleUnderAssay\["identity"\];/);
+  assert.match(generated,/if \(typeof fabricatedOperation !== "function"\) throw new TypeError\("Missing callable source export"\);/);
   assert.match(generated,/await fabricatedOperation\(2\), 2/);
   assert.match(sourceMessagesOf(order,closure.operations)[0].content,/input schema/);
 });
