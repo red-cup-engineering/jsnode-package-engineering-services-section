@@ -24,14 +24,7 @@ jobs:
       - name: Refuse checkout authorization surviving into proof tests
         shell: bash
         run: |
-          if git config --local --name-only --get-regexp '^http\\..*\\.extraheader
-        with:
-          node-version: '24'
-      - name: Syntax of the original proof-stage receiver
-        run: node --check src/assay-completion.mjs
-      - name: Execute original complete TAP proof receiving regression suite
-        run: node --test test/assay-completion.test.mjs
- >/dev/null 2>&1; then
+          if git config --local --name-only --get-regexp '^http[.].*[.]extraheader$' >/dev/null 2>&1; then
             echo '::error::Checkout retained GitHub HTTP authorization in .git/config'
             exit 1
           fi
