@@ -108,3 +108,39 @@ test("the original installed package enrolls exactly its canonical source-owned 
   assert.deepEqual(manifest.receivingTests, plan.tests,
     "installed receiving enrollment must be generated from the ONE original test plan, never a separate hand-maintained list");
 });
+
+test("native package runner refuses an empty or entirely unexecutable test plan instead of reporting success", (t) => {
+  const root = mkdtempSync(join(tmpdir(), "empty-test-receiving-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const runner = fileURLToPath(new URL("../scripts/run-package-tests.mjs", import.meta.url));
+  const report = output => JSON.parse(output.trim().split("\n").at(-1));
+  const spawn = () => spawnSync(process.execPath, [runner], {
+    cwd: root, encoding: "utf8", env: { ...process.env, EMPTY_PLAN_UNAVAILABLE: "" },
+  });
+  writeFileSync(join(root, "package.json"), JSON.stringify({ name: "@x/empty-plan" }));
+  const empty = spawn();
+  assert.notEqual(empty.status, 0, "no native tests cannot prove a package passed");
+  assert.deepEqual(
+    (({ ok, planned, files, ran, passed, failed, requires }) => ({ ok, planned, files, ran, passed, failed, requires }))(report(empty.stdout)),
+    { ok: false, planned: 0, files: 0, ran: 0, passed: 0, failed: 0, requires: [] },
+  );
+  assert.match(report(empty.stdout).error, /no admitted (?:executable )?tests/u);
+
+  mkdirSync(join(root, "test"));
+  writeFileSync(join(root, "test", "needs-host.test.mjs"),
+    'import test from "node:test"; test("must not run without host", () => {});\n');
+  writeFileSync(join(root, "package.json"), JSON.stringify({
+    name: "@x/empty-plan", testRequires: {
+      "test/needs-host.test.mjs": { env: "EMPTY_PLAN_UNAVAILABLE", reason: "independent host prerequisite" },
+    },
+  }));
+  const withheld = spawn();
+  assert.notEqual(withheld.status, 0, "unmet host requirements must not yield a green test report");
+  const result = report(withheld.stdout);
+  assert.deepEqual(
+    (({ ok, planned, files, ran, passed, failed }) => ({ ok, planned, files, ran, passed, failed }))(result),
+    { ok: false, planned: 1, files: 0, ran: 0, passed: 0, failed: 0 },
+  );
+  assert.deepEqual(result.requires.map(({ test }) => test), ["test/needs-host.test.mjs"]);
+  assert.match(result.error, /no admitted tests (?:available|executable)/u);
+});
