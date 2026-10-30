@@ -4,12 +4,24 @@ on:
     paths:
       - 'src/assay-completion.mjs'
       - 'test/assay-completion.test.mjs'
+      - 'scripts/run-package-tests.mjs'
+      - 'src/package-test-plan.mjs'
+      - 'src/package-check-outcome.mjs'
+      - 'src/package-files.mjs'
+      - 'test/package-test-plan.test.mjs'
+      - 'test/native-check-receiving.test.mjs'
       - '.github/workflows/assay-proof-native.yml'
   push:
     branches: [main]
     paths:
       - 'src/assay-completion.mjs'
       - 'test/assay-completion.test.mjs'
+      - 'scripts/run-package-tests.mjs'
+      - 'src/package-test-plan.mjs'
+      - 'src/package-check-outcome.mjs'
+      - 'src/package-files.mjs'
+      - 'test/package-test-plan.test.mjs'
+      - 'test/native-check-receiving.test.mjs'
       - '.github/workflows/assay-proof-native.yml'
 permissions:
   contents: read
@@ -18,11 +30,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Refuse retained GitHub authorization before native tests
+        run: |
+          if git config --local --name-only --get-regexp '^http[.].*[.]extraheader$' >/dev/null 2>&1; then
+            echo '::error::Source checkout retained HTTP authorization'
+            exit 1
+          fi
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
       - name: Syntax of the original proof-stage receiver
         run: node --check src/assay-completion.mjs
       - name: Execute original complete TAP proof receiving regression suite
         run: node --test test/assay-completion.test.mjs
+      - name: Receive package runner enrollment and source-native TAP controls
+        run: node --test test/package-test-plan.test.mjs test/native-check-receiving.test.mjs

@@ -96,3 +96,65 @@ test("run-package-tests runs the plan, reports an unmet requirement as requires,
   assert.equal(check.status, 0, check.stderr);
   assert.match(check.stdout, /3\/3 files parse/u);
 });
+
+test("installed receiving refuses enrollment drift and all unavailable tests without discarding legacy empty plans", (t) => {
+  const root = mkdtempSync(join(tmpdir(), "empty-test-receiving-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const runner = fileURLToPath(new URL("../scripts/run-package-tests.mjs", import.meta.url));
+  const report = output => JSON.parse(output.trim().split("\n").at(-1));
+  const spawn = (available = "") => spawnSync(process.execPath, [runner], {
+    cwd: root, encoding: "utf8", env: { ...process.env, EMPTY_PLAN_UNAVAILABLE: available },
+  });
+  const manifestPath = join(root, "package.json");
+  writeFileSync(manifestPath, JSON.stringify({ name: "@x/empty-plan" }));
+  const legacy = spawn();
+  assert.equal(legacy.status, 0, legacy.stderr);
+  assert.deepEqual(
+    (({ ok, planned, files, ran, passed, failed, requires }) => ({ ok, planned, files, ran, passed, failed, requires }))(report(legacy.stdout)),
+    { ok: true, planned: 0, files: 0, ran: 0, passed: 0, failed: 0, requires: [] },
+    "a historical unenrolled empty package retains its original meaning",
+  );
+  writeFileSync(manifestPath, JSON.stringify({
+    name: "@x/empty-plan", receivingTests: ["test/missing.test.mjs"],
+  }));
+  const missing = spawn();
+  assert.notEqual(missing.status, 0, "a missing enrolled test must not be erased by discovery");
+  assert.equal(report(missing.stdout).ok, false);
+  assert.match(report(missing.stdout).error, /enrollment differs from canonical test plan/u);
+
+  mkdirSync(join(root, "test"));
+  writeFileSync(join(root, "test", "needs-host.test.mjs"),
+    'import test from "node:test"; test("requires host", () => {});\n');
+  const manifest = {
+    name: "@x/empty-plan",
+    receivingTests: ["test/needs-host.test.mjs"],
+    testRequires: {
+      "test/needs-host.test.mjs": { env: "EMPTY_PLAN_UNAVAILABLE", reason: "independent host prerequisite" },
+    },
+  };
+  writeFileSync(manifestPath, JSON.stringify(manifest));
+  const withheld = spawn();
+  assert.notEqual(withheld.status, 0, "all host-blocked tests must not yield an accepted receipt");
+  const unreceived = report(withheld.stdout);
+  assert.deepEqual(
+    (({ ok, planned, files, ran, passed, failed }) => ({ ok, planned, files, ran, passed, failed }))(unreceived),
+    { ok: false, planned: 1, files: 0, ran: 0, passed: 0, failed: 0 },
+  );
+  assert.deepEqual(unreceived.requires.map(({ test }) => test), ["test/needs-host.test.mjs"]);
+  assert.match(unreceived.error, /no admitted tests available under current requirements/u);
+
+  const received = spawn("admitted");
+  assert.equal(received.status, 0, received.stdout + received.stderr);
+  const accepted = report(received.stdout);
+  assert.deepEqual(
+    (({ ok, planned, files, ran, passed, failed, requires }) => ({ ok, planned, files, ran, passed, failed, requires }))(accepted),
+    { ok: true, planned: 1, files: 1, ran: 1, passed: 1, failed: 0, requires: [] },
+  );
+
+  writeFileSync(join(root, "test", "unexpected.test.mjs"),
+    'import test from "node:test"; test("unexpected", () => {});\n');
+  const drift = spawn("admitted");
+  assert.notEqual(drift.status, 0, "new undisclosed native test cannot silently alter the receiving plan");
+  assert.equal(report(drift.stdout).ok, false);
+  assert.match(report(drift.stdout).error, /enrollment differs from canonical test plan/u);
+});
