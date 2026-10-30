@@ -8,6 +8,7 @@ import { createJsnodeOperationPackage } from "../src/create-jsnode-operation-pac
 import { projectJsnodeOperationPackage } from "../src/project-jsnode-operation-package.mjs";
 import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "../src/jsnode-package.mjs";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
+import { requiresLocalRegistry, stagedRegistry } from "./support/local-registry.mjs";
 // Original package-birth assays install the admitted shared Node runtime from
 // the caller-selected real registry. A selected registry in CI must run (and
 // fail on an actual missing dependency); local development retains the

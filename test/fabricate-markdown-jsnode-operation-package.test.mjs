@@ -8,6 +8,7 @@ import { admitArtifactFabricationSpecification } from "@red-cup-engineering/comp
 import { fabricateMarkdownJsnodeOperationPackage, selectSingleJsnodeProjection, publishJsnodeOperationPackageToRegistry } from "../src/fabricate-markdown-jsnode-operation-package.mjs";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "@red-cup-engineering/jsnode-package-services-section/translate-markdown-jsnode-operation-package-specification";
 import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "@red-cup-engineering/jsnode-package-services-section/jsnode-package-dialect";
+import { requiresLocalRegistry, stagedRegistry } from "./support/local-registry.mjs";
 
 const fixturePath = fileURLToPath(new URL("./fixtures/greet-person.md", import.meta.url));
 const fixture = await readFile(fixturePath, "utf8");
