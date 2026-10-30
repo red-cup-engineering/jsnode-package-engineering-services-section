@@ -55,6 +55,25 @@ test("admits a complete package specification and derives operation identity and
   assert.deepEqual(admitted.examples[0].input, { name: "Ada" });
   assert.ok(Object.isFrozen(admitted));
   assert.ok(Object.isFrozen(admitted.operations[0]));
+  // Command-face source must bind its real qualified runtime, not a stale
+  // package edition whose exported runner is absent during package birth.
+  assert.equal(admitted.dependencies["@red-cup-engineering/javascript-node-services-section"], "0.3.2");
+});
+
+test("a command-face source refuses stale runtime identity and preserves prior migration", () => {
+  const runtimeName = "@red-cup-engineering/javascript-node-services-section";
+  const stale = candidate();
+  stale.dependencies[runtimeName] = "0.3.0";
+  const refused = admitJsnodeOperationPackageSpecification(stale);
+  assert.equal(refused.code, "PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT");
+
+  // The preexisting migration alias remains admitted but MUST project onto
+  // the same version-qualified provider used by the native original owner.
+  const historical = candidate();
+  historical.dependencies[runtimeName] = "0.2.0";
+  const migrated = admitJsnodeOperationPackageSpecification(historical);
+  assert.equal(migrated.type, "JsnodeOperationPackageSpecification", JSON.stringify(migrated));
+  assert.equal(migrated.dependencies[runtimeName], "0.3.2");
 });
 
 test("admits a grouped v2 topic from projected operation arguments without package-operation identity coupling", () => {
