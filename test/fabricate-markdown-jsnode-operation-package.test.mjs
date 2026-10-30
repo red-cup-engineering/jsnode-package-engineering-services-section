@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
+import { dataKindDirectory } from "@red-cup-engineering/eavt-services-section/data-artifact-address";
 import { fabricateMarkdownJsnodeOperationPackage, selectSingleJsnodeProjection, publishJsnodeOperationPackageToRegistry } from "../src/fabricate-markdown-jsnode-operation-package.mjs";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "@red-cup-engineering/jsnode-package-services-section/translate-markdown-jsnode-operation-package-specification";
 import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "@red-cup-engineering/jsnode-package-services-section/jsnode-package-dialect";
@@ -60,8 +61,12 @@ test("fabricates the admitted Markdown work order through package birth and bind
   try {
     const result = await fabricateMarkdownJsnodeOperationPackage(request(fixture, destination));
     assert.equal(result.type, "MarkdownJsnodeOperationPackageFabricationReceipt");
-    assert.match(result.sourceDigest, /^sha256:[a-f0-9]{64}$/u);
-    assert.match(result.specificationDigest, /^sha256:[a-f0-9]{64}$/u);
+    // Independent native semiotic identity profile (RFC 6920), not the older
+    // raw-hex spelling. Both addresses must bind the actually admitted source.
+    assert.match(result.sourceDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+    assert.match(result.specificationDigest, /^ni:\/\/\/sha-256;[A-Za-z0-9_-]{43}$/u);
+    assert.equal(result.sourceDigest, result.artifactSpecification.source.provenance.digest);
+    assert.equal(result.specificationDigest, result.artifactSpecification.specificationDigest);
     assert.equal(result.jsnodeOperationPackageCreationReceipt.type, "JsnodeOperationPackageCreationReceipt");
     assert.equal(result.artifactFabricationRealizationReceipt.type, "ArtifactFabricationRealizationReceipt");
     assert.equal(result.artifactFabricationRealizationReceipt.specificationDigest, result.specificationDigest);
@@ -90,7 +95,9 @@ test("publish:false writes the admitted source-to-realization receipt FROG folds
   try {
     const result = await fabricateMarkdownJsnodeOperationPackage(request(fixture, destination));
     assert.equal(result.type, "MarkdownJsnodeOperationPackageFabricationReceipt", JSON.stringify(result));
-    assert.equal(result.receiptPath, path.join(destination, "data", "records", `${new Date().toISOString().slice(0, 10)}-greet-person-fabrication-receipt.json`));
+    // The original EAVT placement owner selects fabrication-receipt-records;
+    // retain actual disk readback below instead of accepting an old path.
+    assert.equal(result.receiptPath, path.join(dataKindDirectory(destination, "record", "fabrication-receipt"), `${new Date().toISOString().slice(0, 10)}-greet-person-fabrication-receipt.json`));
 
     const diskReceipt = JSON.parse(await readFile(result.receiptPath, "utf8"));
     assert.equal(diskReceipt.type, "MarkdownJsnodeOperationPackageFabricationReceipt");
@@ -142,7 +149,11 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     const result = await fabricateMarkdownJsnodeOperationPackage(input);
     assert.equal(result.type, "MarkdownJsnodeOperationPackageFabricationReceipt", JSON.stringify(result));
     const manifest = JSON.parse(await readFile(path.join(destination, "package.json"), "utf8"));
-    assert.deepEqual(Object.values(manifest.bin), ["apps/number-topic-cli.mjs"]);
+    // Machine-facing catalog is data; the command runner belongs to the
+    // independently installed shared runtime, not a fabricated package bin.
+    assert.equal(Object.hasOwn(manifest, "bin"), false);
+    assert.equal(manifest.dependencies["@red-cup-engineering/javascript-node-services-section"], "0.3.2");
+    assert.match(await readFile(path.join(destination, "apps", "number-topic-cli.mjs"), "utf8"), /export const catalog/u);
     assert.equal(result.jsnodeOperationPackageRegistryPublication.type, "JsnodeOperationPackageRegistryPublicationSkipped");
     assert.equal(result.artifactSpecification.projections[0].configuration.version, 2);
     // Controlled receiving fixture: reconstruct a source-free order from this
