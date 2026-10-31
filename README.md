@@ -1,5 +1,19 @@
 # JSNode fabrication
 
+## Workspace scanner ownership
+
+The public `./workspace/scanner`, `./workspace/scanner/schema`, and
+`./workspace/scanner/service` exports now supply the original Fabrication
+workspace readers beside the package and workspace admissions they already
+consume. Fabrication's original exports delegate to these functions; CAIRN
+receives them directly.
+
+Filesystem access remains an explicit caller port. Declared workspaces retain
+their complete include/exclude glob patterns, deep members, and implicit root
+package. Unsupported glob syntax refuses at the supplied host boundary. The
+existing bounded traversal remains the fallback when no workspace declaration
+is admitted, preserving its depth and ignored-directory policy.
+
 <!-- 561-group-standards:badges:start -->
 [![Red Cup Engineering](https://img.shields.io/badge/561%20Group-Red%20Cup%20Engineering-c0392b)](https://github.com/red-cup-engineering)
 [![License: MIT](https://img.shields.io/badge/license-MIT-c0392b)](LICENSE)
