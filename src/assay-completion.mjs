@@ -36,6 +36,14 @@ export function assertAdmittedAssayNames(closure, derivedCases = []) {
       [...closure.examples, ...derivedCases].some(item =>
         !safeAssayName(item?.operation) || !safeAssayName(item?.name)))
     throw new TypeError("original assay names require bounded, printable, source-owned words");
+  // The name projector filters by operation. Without this source admission,
+  // a foreign example or an independently authored negative assay silently
+  // disappears while remaining tests make the completion receipt look valid.
+  // Refuse missing producers before fabrication or host execution.
+  const declaredOperations = new Set(closure.operations.map(item => item.name));
+  if ([...closure.examples, ...derivedCases].some(item =>
+      !declaredOperations.has(item.operation)))
+    throw new TypeError("original assay references an undeclared operation");
   const names = admittedAssayNames(closure, derivedCases);
   if (!names.length || names.some(name => !safeAssayName(name)) ||
       new Set(names).size !== names.length)
