@@ -273,3 +273,33 @@ test("Node TAP escapes punctuation in labels, so original exact names must refus
     examples:[{operation:"double-value",name:"C1\u0085control"}] };
   assert.throws(() => assertAdmittedAssayNames(nonPrintable), TypeError);
 });
+
+
+test("ENG-137: source examples and independent negative assays cannot disappear behind undeclared operations", () => {
+  const closure = {
+    operations: [{ name: "sort-values" }],
+    examples: [{ operation: "sort-values", name: "positive" }],
+  };
+  // Positive control: every admitted exact source and independently derived
+  // case remains a distinct, runnable TAP obligation.
+  assert.deepEqual(assertAdmittedAssayNames(closure, [
+    { operation: "sort-values", name: "negative" },
+  ]), ["sort-values: positive", "sort-values: clause assay negative"]);
+
+  // Previously the foreign case silently vanished under .filter(), leaving
+  // the positive assay to furnish a false complete-proof impression.
+  // This must refuse before Code fabrication, never make the negative case
+  // vanish and never infer an unknown operation from its case label.
+  for (const invalid of [
+    { source: closure, derived: [{ operation: "missing-op", name: "negative" }] },
+    { source: { ...closure, examples: [...closure.examples,
+      { operation: "missing-op", name: "source-example" }] }, derived: [] },
+    { source: closure, derived: [
+      { operation: "sort-values", name: "negative" },
+      { operation: "missing-op", name: "additional-refusal" },
+    ] },
+  ]) {
+    assert.throws(() => assertAdmittedAssayNames(invalid.source, invalid.derived),
+      /undeclared operation/u);
+  }
+});
