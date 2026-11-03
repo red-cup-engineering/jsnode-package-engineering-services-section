@@ -1,5 +1,5 @@
 /**
- * The one test plan of a house package (jsnode-package-services-section's run-package-tests and
+ * The one test plan of a house package (node-js-packages-engineering-services-section's run-package-tests and
  * check-package-syntax run it): which of its files are its tests, which of them declare a requirement
  * a plain checkout may not meet, and which files `check` reads, so every package is tested the same way
  * everywhere and "requires host" is told apart from "fails".
