@@ -1,6 +1,6 @@
 {
   "type": "ArtifactFabricationSpecificationCandidate",
-  "version": 1,
+  "version": 2,
   "source": {
     "type": "ArtifactFabricationSource",
     "version": 1,
@@ -28,199 +28,267 @@
   "requirements": [
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "preserve-authenticated-subject",
       "statement": "For every admitted record, return the unchanged subject with the selected bearer; a bearer choice never rewrites subject.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 19,
         "endLine": 19
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "explicit-associated-bearer",
       "statement": "If bearer is supplied and equals a member of associatedBearers, select that exact canonical bearer independently of list order.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 20,
         "endLine": 20
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "explicit-subject-self",
       "statement": "If bearer is supplied and equals subject, select subject, including when the account has other associated bearers, preserving the existing cast subject-self exception.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 21,
         "endLine": 21
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "omit-unique-association",
       "statement": "If bearer is absent and the distinct associatedBearers excluding subject has exactly one member, select that member.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 22,
         "endLine": 22
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "omit-no-association",
       "statement": "If bearer is absent and the distinct associatedBearers excluding subject is empty, select subject under the established no-association self rule.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 23,
         "endLine": 23
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "refuse-unrelated-selection",
       "statement": "If supplied bearer is neither subject nor a member of associatedBearers, throw TypeError and return no selection; the message names subject and refused bearer.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 24,
         "endLine": 24
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "refuse-ambiguous-omission",
       "statement": "If bearer is absent and more than one distinct associated bearer remains after excluding subject, throw TypeError and return no selection; the message names subject and says to select the bearer.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 25,
         "endLine": 25
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "set-presentation-invariance",
       "statement": "Repeated members and any permutation of associatedBearers preserve the selected result or TypeError refusal; subject appearing in associatedBearers is ignored for association cardinality.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 26,
         "endLine": 26
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "fresh-input-determines-selection",
       "statement": "Each invocation is determined solely by its supplied current record; a later record without a previously selected association refuses that explicit bearer even when an earlier invocation succeeded.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 27,
         "endLine": 27
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "selected-pair-only",
       "statement": "Successful output is exactly the JSON record with subject and bearer; it carries no account grants, caller hand, connection authority, display name, witness or fabricated authorization claim.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 28,
         "endLine": 28
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "deterministic-pure-operation",
       "statement": "The operation does not mutate its input, retain selection state or perform file, environment, network, clock, randomness, grant, account or credential effects; equivalent records yield equivalent selected pairs or the same refusal class.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 29,
         "endLine": 29
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     },
     {
       "type": "ArtifactFabricationRequirement",
-      "version": 1,
+      "version": 2,
       "id": "synchronous-native-contract",
       "statement": "The export is synchronous: an admitted successful call returns the plain selected pair directly, never a Promise or thenable; a refusing call throws TypeError before returning, preserving synchronous playerOfAct callers.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 31,
         "endLine": 31
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-contract"
+      ]
     }
   ],
   "prohibitions": [
     {
       "type": "ArtifactFabricationProhibition",
-      "version": 1,
+      "version": 2,
       "id": "no-first-choice",
       "statement": "Never choose an arbitrary first, last, lexicographically least or least-hash member when omitted selection is ambiguous.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 35,
         "endLine": 35
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-restrictions"
+      ]
     },
     {
       "type": "ArtifactFabricationProhibition",
-      "version": 1,
+      "version": 2,
       "id": "no-refusal-fallback",
       "statement": "Never replace an invalid explicit selection or ambiguous omission with subject-self, a different associated bearer, a previously selected bearer or any caller/display-derived identity.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 36,
         "endLine": 36
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-restrictions"
+      ]
     },
     {
       "type": "ArtifactFabricationProhibition",
-      "version": 1,
+      "version": 2,
       "id": "no-implicit-canonicalization",
       "statement": "Never normalize spelling, casing, trim identity strings, parse display names or invent aliases inside the pure operation; its references are already canonically supplied by the owner adapter.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 37,
         "endLine": 37
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-restrictions"
+      ]
     },
     {
       "type": "ArtifactFabricationProhibition",
-      "version": 1,
+      "version": 2,
       "id": "no-input-mutation",
       "statement": "Never mutate associatedBearers or any other input property while deduplicating or ordering the selection.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 38,
         "endLine": 38
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-restrictions"
+      ]
     },
     {
       "type": "ArtifactFabricationProhibition",
-      "version": 1,
+      "version": 2,
       "id": "no-stale-authorization",
       "statement": "Never treat a previous successful record as authorization for a later record; the pure function has no authority registry or cached bearer eligibility.",
       "sourceSpan": {
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 39,
         "endLine": 39
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-selection-restrictions"
+      ]
     }
   ],
   "openQuestions": [],
   "constraints": [
     {
       "type": "ArtifactFabricationConstraint",
-      "version": 1,
+      "version": 2,
       "id": "partial-cast-law",
       "kind": "law",
       "authority": "Organizing cast playerOfAct",
@@ -232,11 +300,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 43,
         "endLine": 43
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-owner-boundaries"
+      ]
     },
     {
       "type": "ArtifactFabricationConstraint",
-      "version": 1,
+      "version": 2,
       "id": "typed-module-standard",
       "kind": "standard",
       "authority": "Coding JSNode Modules meaning closure",
@@ -248,11 +320,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 44,
         "endLine": 44
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-owner-boundaries"
+      ]
     },
     {
       "type": "ArtifactFabricationConstraint",
-      "version": 1,
+      "version": 2,
       "id": "fresh-owner-relation",
       "kind": "operational",
       "authority": "MetroPlat offices providersOfAccount and handedAgency",
@@ -264,11 +340,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 45,
         "endLine": 45
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-owner-boundaries"
+      ]
     },
     {
       "type": "ArtifactFabricationConstraint",
-      "version": 1,
+      "version": 2,
       "id": "accepted-consumer-contract",
       "kind": "standard",
       "authority": "Shared-account character design revision 2 and independent review",
@@ -280,11 +360,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 46,
         "endLine": 46
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-owner-boundaries"
+      ]
     },
     {
       "type": "ArtifactFabricationConstraint",
-      "version": 1,
+      "version": 2,
       "id": "owner-fabrication-discipline",
       "kind": "operational",
       "authority": "Science source-free fabrication specification",
@@ -296,7 +380,11 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 47,
         "endLine": 47
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "authored-owner-boundaries"
+      ]
     }
   ],
   "projections": [
@@ -477,7 +565,7 @@
   "acceptanceObligations": [
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "selector-clause-assays",
       "kind": "assay",
       "statement": "For the selected explicitly authored route, specify and freeze independent real owner assays before source is authored, covering the determined selection and refusal cases plus the native synchronous, mutation, message and freshness checks. If a genuine supported inference carrier is later used, derive clause assays before supplier source through deriveJsnodeModules and pre-assay its whole declared module set. Generated awaited result/error-name tests and clause coverage cannot establish synchronous return/throw, error-message content, input immutability, effect freedom or sequential freshness; owner-selector-native-contract and review establish those separately. A pure module assay establishes no native authorization.",
@@ -485,11 +573,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 51,
         "endLine": 51
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "owner-selector-native-contract",
       "kind": "test",
       "statement": "Exercise the constructed helper itself through genuine un-awaited node:assert owner tests: success returns a non-thenable plain selected pair immediately; assert.throws observes synchronous TypeError for ambiguity and unrelated bearer with required subject/refused-bearer/message content. Deep-freeze and snapshot/compare the actual supplied input after both success and refusal, test permutations/duplicates without mutation, and perform an explicitly ordered success-to-revocation sequence in one test without stale selection. Independently review/import-audit effect-free, stateless implementation. Do not substitute awaited derived example tests for these checks.",
@@ -497,11 +589,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 52,
         "endLine": 52
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "cast-adapter-refinement",
       "kind": "test",
       "statement": "Refactor services/organizing/src/agency/cast.mjs playerOfAct to call the constructed shared owner helper using its current bearersHandedBy relation, while preserving recorded-player, held-office and decision issuer semantics, caller hand, no-subject behavior and existing errors; use the existing player-subject-one-reading and actor-account-standing fixtures with direct un-awaited result checks and assert.throws, proving native playerOfAct remains synchronous.",
@@ -509,11 +605,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 53,
         "endLine": 53
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "native-relation-refinement",
       "kind": "test",
       "statement": "Refactor MetroPlat offices to project canonical associatedBearers from current bearersHandedBy(handedAgency(binding,currentAgency),subject) union validated binding.resolveActorSubject(subject), retaining existing authored-character validation and unique owner resolution; validate denied, contested, withdrawn and native-face removal/competition using authentic owner relations; no caller-supplied relation or stale authority record is admitted.",
@@ -521,11 +621,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 54,
         "endLine": 54
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "fresh-effect-recheck",
       "kind": "test",
       "statement": "Reconstruct and revalidate the selected relation and selected operation permission immediately before every effect or inbox disclosure and after relevant suspension, preserving actor-client admitSender checks; a denied/withdrawn/stale native or told relation refuses and never falls back; selection records are request-local evidence, not reusable authority.",
@@ -533,11 +637,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 55,
         "endLine": 55
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "typed-world-connection",
       "kind": "test",
       "statement": "Extend actual world-connect domain with optional bearer and connection and return connection in WorldTurn; extend world-command with optional connection; retain strict unknown-field refusal. Server-issued account-scoped routing references bind immutable bearer selections, allow same-account same-hand concurrent characters, refuse foreign/stale/conflicting references, and never silently replace a binding.",
@@ -545,11 +653,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 56,
         "endLine": 56
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "world-state-and-authority",
       "kind": "test",
       "statement": "Carry selected context through all real world actor, room/body, presence, pending-turn, cursor, frame, report, briefing, power, played-move and nested-operation paths; preserve account authentication while intersecting current account admission with selected-bearer offices and operation eligibility; release/expiry of one connection preserves the other.",
@@ -557,11 +669,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 57,
         "endLine": 57
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "standalone-journal",
       "kind": "test",
       "statement": "Independently extend actual strict-empty world-journal domain to optional connection and journal(subject,selection) through selected players, offices, house and journalPage, retaining journalSchema; test two same-account same-hand connections, matching command journal, ambiguous omission, stale/foreign connection and unknown fields.",
@@ -569,11 +685,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 58,
         "endLine": 58
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "actor-mesh-outgoing",
       "kind": "test",
       "statement": "Extend actual actorMesh sender/client/send/read/submit interfaces to accept and revalidate selected context; the signed sender must correspond to the selected character's admitted existing native actor under the current owner relation, not literally equal a canonical bearer string. Use genuine enterprise-actor-effects fixture, including disjoint powers, typed request identity, receiver actor-processing principal checks, private inbox correlation, replay/restart and suspended withdrawal.",
@@ -581,11 +701,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 59,
         "endLine": 59
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "character-communication-outgoing",
       "kind": "test",
       "statement": "Extend actual characterCommunication.read/tell/reply and all world call sites, including connect-time optional automatic inbox, with revalidated selected context; sender, recipient inbox, read cursor and reply ownership follow that character. Use genuine character-communication fixture with shared-account concurrent characters, cross-character reply refusal and withdrawal across async recipient lookup.",
@@ -593,11 +717,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 60,
         "endLine": 60
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "causal-identity-and-attribution",
       "kind": "test",
       "statement": "Selection bearer/connection lives in validated identity-bearing operation input; actual invocation IDs distinguish different selected connections for the same account and request. Preserve authenticated invocation.subject and observed hand, and bind origin selection to actual request/task/reply evidence without elevating arbitrary receiver payload fields.",
@@ -605,11 +733,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 61,
         "endLine": 61
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "existing-owner-application",
       "kind": "review",
       "statement": "Apply the constructed helper and reviewed native consuming source changes through the verified existing owner source-application/codemod mechanism with exact source spans/digests and optimistic current-head checks; exercise that route on the actual cast/world/offices/host sources. A module proposal alone does not satisfy this obligation; no parallel engine, hand-edited generated output or fabricated receipt.",
@@ -617,11 +749,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 62,
         "endLine": 62
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "generated-contract-parity",
       "kind": "test",
       "statement": "Use existing MetroPlat operation-family descriptor generator after authored schema changes and run its --check plus descriptor drift and live carrier tests; do not edit the generated descriptor by hand.",
@@ -629,11 +765,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 63,
         "endLine": 63
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "genuine-receiving-declarations",
       "kind": "review",
       "statement": "Use one root-coordinated genuine stage-only closure runner at the exact candidate commit. Preserve MetroPlat receiving tests and host account-selection, add real host communication/actor tests and relevant Organizing tests to supported owner receiving declarations/package selection, preserve OAuth/web receiving and frozen dependency custody; no shim substitute.",
@@ -641,11 +781,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 64,
         "endLine": 64
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "release-and-live-gates",
       "kind": "review",
       "statement": "Source admission, module proposal, exact-source application, fixture receiving, independent review, integration, activation and authorized native two-character receiving are separate gates. This source order authorizes no spending, deployment, credential/grant/mask changes or native impersonation; live receiving needs root-coordinated valid standing for each distinct character.",
@@ -653,11 +797,15 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 65,
         "endLine": 65
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     },
     {
       "type": "ArtifactFabricationAcceptanceObligation",
-      "version": 1,
+      "version": 2,
       "id": "authored-source-provenance",
       "kind": "review",
       "statement": "The expressly authorized authored-source route is a local construction amendment and is not represented as full conformance to Science's supplier-fabrication procedure. Record the implementation route as explicitly authored against this exact admitted/planned meaning order, with the prior reviewed owner-assay revision and source baseline. A canonical work-order plan is specification evidence only; do not label authored bytes as deriveJsnodeModules output, fabricate supplier lot/judgment/receipt, or claim the unavailable included inference binding executed. No generated output is hand-edited; any later genuine supplier route retains separate provenance.",
@@ -665,7 +813,11 @@
         "type": "ArtifactFabricationSourceSpan",
         "startLine": 67,
         "endLine": 67
-      }
+      },
+      "parameters": [],
+      "claimIds": [
+        "unexecuted-receiving-obligations"
+      ]
     }
   ],
   "traceability": [
@@ -1229,6 +1381,108 @@
         "release-and-live-gates",
         "authored-source-provenance"
       ]
+    }
+  ],
+  "claims": [
+    {
+      "type": "ArtifactFabricationClaim",
+      "version": 1,
+      "id": "authored-selection-contract",
+      "kind": "world",
+      "statement": "The authored pure-selection requirements define the desired synchronous selection and refusal contract; they do not establish an implemented selector.",
+      "status": "derived",
+      "quantity": null,
+      "sourceSpan": {
+        "type": "ArtifactFabricationSourceSpan",
+        "startLine": 19,
+        "endLine": 31
+      },
+      "basis": {
+        "type": "ArtifactFabricationDerivedBasis",
+        "premises": [
+          {
+            "type": "ArtifactFabricationPremise",
+            "kind": "citation",
+            "ref": "WORK-ORDER.md#L19-L31; sha256:5127ba343ab9246366f1ad0a70178263bd6a064cb0c5f4ff9d5859a7e0d46969"
+          }
+        ],
+        "derivation": "Read the cited authored clauses as normative fixture requirements only. Preserve their full statements and traceability without inferring observed software behavior, external source verification, admission, execution, receiving or permissions."
+      }
+    },
+    {
+      "type": "ArtifactFabricationClaim",
+      "version": 1,
+      "id": "authored-selection-restrictions",
+      "kind": "world",
+      "statement": "The authored prohibitions rule out arbitrary selection, fallback, implicit canonicalization, mutation and stale authority as design choices; no runtime enforcement is claimed.",
+      "status": "derived",
+      "quantity": null,
+      "sourceSpan": {
+        "type": "ArtifactFabricationSourceSpan",
+        "startLine": 35,
+        "endLine": 39
+      },
+      "basis": {
+        "type": "ArtifactFabricationDerivedBasis",
+        "premises": [
+          {
+            "type": "ArtifactFabricationPremise",
+            "kind": "citation",
+            "ref": "WORK-ORDER.md#L35-L39; sha256:5127ba343ab9246366f1ad0a70178263bd6a064cb0c5f4ff9d5859a7e0d46969"
+          }
+        ],
+        "derivation": "Read the cited authored clauses as normative fixture requirements only. Preserve their full statements and traceability without inferring observed software behavior, external source verification, admission, execution, receiving or permissions."
+      }
+    },
+    {
+      "type": "ArtifactFabricationClaim",
+      "version": 1,
+      "id": "authored-owner-boundaries",
+      "kind": "world",
+      "statement": "The authored order requires the cited owner, type, fresh-relation, consumer and fabrication boundaries; their citation records required conformance, not verified implementation or authority to operate.",
+      "status": "derived",
+      "quantity": null,
+      "sourceSpan": {
+        "type": "ArtifactFabricationSourceSpan",
+        "startLine": 43,
+        "endLine": 47
+      },
+      "basis": {
+        "type": "ArtifactFabricationDerivedBasis",
+        "premises": [
+          {
+            "type": "ArtifactFabricationPremise",
+            "kind": "citation",
+            "ref": "WORK-ORDER.md#L43-L47; sha256:5127ba343ab9246366f1ad0a70178263bd6a064cb0c5f4ff9d5859a7e0d46969"
+          }
+        ],
+        "derivation": "Read the cited authored clauses as normative fixture requirements only. Preserve their full statements and traceability without inferring observed software behavior, external source verification, admission, execution, receiving or permissions."
+      }
+    },
+    {
+      "type": "ArtifactFabricationClaim",
+      "version": 1,
+      "id": "unexecuted-receiving-obligations",
+      "kind": "world",
+      "statement": "The authored acceptance clauses require separate native owner tests, source application, provenance and receiving; their enumeration is not evidence that these obligations have executed or passed.",
+      "status": "derived",
+      "quantity": null,
+      "sourceSpan": {
+        "type": "ArtifactFabricationSourceSpan",
+        "startLine": 51,
+        "endLine": 67
+      },
+      "basis": {
+        "type": "ArtifactFabricationDerivedBasis",
+        "premises": [
+          {
+            "type": "ArtifactFabricationPremise",
+            "kind": "citation",
+            "ref": "WORK-ORDER.md#L51-L67; sha256:5127ba343ab9246366f1ad0a70178263bd6a064cb0c5f4ff9d5859a7e0d46969"
+          }
+        ],
+        "derivation": "Read the cited authored clauses as normative fixture requirements only. Preserve their full statements and traceability without inferring observed software behavior, external source verification, admission, execution, receiving or permissions."
+      }
     }
   ]
 }

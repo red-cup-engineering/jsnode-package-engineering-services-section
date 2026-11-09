@@ -13,6 +13,20 @@ import * as legacyProgramme from "@red-cup-engineering/javascript-node-services-
 
 const fixture = new URL("./fixtures/shared-account-character-selection/", import.meta.url);
 const candidate = () => JSON.parse(readFileSync(new URL("work-order.candidate.json", fixture), "utf8"));
+const clauseSections = ["requirements", "prohibitions", "constraints", "acceptanceObligations"];
+// The original authored v1 fixture remains the semantic baseline, not an
+// admitted historical specification. Strip only the explicit v2 claim layer.
+function legacyCandidate(input) {
+  const legacy = structuredClone(input);
+  legacy.version = 1;
+  delete legacy.claims;
+  for (const section of clauseSections) for (const clause of legacy[section]) {
+    clause.version = 1;
+    delete clause.parameters;
+    delete clause.claimIds;
+  }
+  return legacy;
+}
 const expectedPaths = [
   "data/records/schema/select-current-bearer.input.schema.json",
   "data/records/schema/select-current-bearer.output.schema.json",
@@ -29,6 +43,50 @@ test("the current owner test plan includes this receiving case and all direct ow
   for (const name of readdirSync(new URL(".", import.meta.url)).filter(name => name.endsWith(".test.mjs"))) {
     assert.ok(plan.tests.includes("test/" + name), name);
   }
+});
+
+test("authored v2 claims preserve the complete historical order without claiming execution", () => {
+  const input = candidate();
+  assert.equal(input.version, 2);
+  // Digest of JSON.stringify(original authored v1 candidate at 703d966).
+  assert.equal(createHash("sha256").update(JSON.stringify(legacyCandidate(input))).digest("hex"),
+    "305dc31aa741d56f1db6417b7dfec36c8b8e3982b2bb1deabf898d9cc4d4b342");
+  assert.deepEqual(clauseSections.map(section => input[section].length), [12, 5, 5, 16]);
+  assert.equal(input.constraints.filter(clause => clause.kind === "operational").length, 2);
+  assert.equal(input.traceability.length, 17);
+  for (const trace of input.traceability) {
+    assert.deepEqual(trace.acceptanceObligationIds, input.acceptanceObligations.map(item => item.id));
+  }
+  const source = readFileSync(new URL("WORK-ORDER.md", fixture), "utf8");
+  assert.equal(input.source.provenance.digest, "sha256:" + createHash("sha256").update(source).digest("hex"));
+  const lines = source.split("\n");
+  assert.equal(input.claims.length, 4);
+  for (const [index, section] of clauseSections.entries()) {
+    const claim = input.claims[index];
+    assert.equal(claim.status, "derived");
+    assert.equal(claim.kind, "world");
+    assert.equal(claim.quantity, null);
+    assert.equal(claim.basis.type, "ArtifactFabricationDerivedBasis");
+    const { startLine, endLine } = claim.sourceSpan;
+    assert.deepEqual(claim.basis.premises, [{ type: "ArtifactFabricationPremise", kind: "citation",
+      ref: `WORK-ORDER.md#L${startLine}-L${endLine}; ${input.source.provenance.digest}` }]);
+    for (const clause of input[section]) {
+      assert.equal(clause.version, 2);
+      assert.deepEqual(clause.parameters, []);
+      assert.deepEqual(clause.claimIds, [claim.id]);
+      assert.ok(clause.sourceSpan.startLine >= startLine && clause.sourceSpan.endLine <= endLine);
+      assert.ok(lines.slice(startLine - 1, endLine).join("\n").includes(clause.statement), clause.id);
+    }
+  }
+});
+
+test("the historical unclaimed order remains retired without invented admission evidence", () => {
+  const legacy = legacyCandidate(candidate());
+  assert.equal(admitArtifactFabricationSpecification(legacy).code, "LEGACY_CANDIDATE_RETIRED");
+  const result = planJsnodeModules(legacy);
+  assert.equal(result.type, "JsnodeModuleDerivationRefusal");
+  assert.equal(result.phase, "artifact-specification-admission");
+  assert.equal(result.code, "LEGACY_CANDIDATE_RETIRED");
 });
 
 test("the fixed original selection order is admitted and purely planned with every native acceptance obligation retained", () => {
@@ -70,9 +128,9 @@ test("the same order reaches the genuine no-inference derivation boundary withou
 test("a semantically blocking question refuses before the planner can claim a realization", () => {
   const input = candidate();
   input.openQuestions.push({
-    type: "ArtifactFabricationOpenQuestion", version: 1, id: "unresolved-test-question",
+    type: "ArtifactFabricationOpenQuestion", version: 2, id: "unresolved-test-question",
     question: "Which bearer may an ambiguous account select without an explicit choice?",
-    blocking: true, sourceSpan: input.requirements[0].sourceSpan,
+    blocking: true, claimId: null, sourceSpan: input.requirements[0].sourceSpan,
   });
   const result = planJsnodeModules(input);
   assert.equal(result.type, "JsnodeModuleDerivationRefusal");
