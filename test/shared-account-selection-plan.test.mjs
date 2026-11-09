@@ -24,6 +24,7 @@ test("the current owner test plan includes this receiving case and all direct ow
   const manifest = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
   const plan = testPlan({ files: packageFiles(fileURLToPath(new URL("..", import.meta.url))), manifest });
   assert.deepEqual(plan.problems, []);
+  assert.deepEqual(manifest.receivingTests, plan.tests);
   assert.ok(plan.tests.includes("test/shared-account-selection-plan.test.mjs"));
   for (const name of readdirSync(new URL(".", import.meta.url)).filter(name => name.endsWith(".test.mjs"))) {
     assert.ok(plan.tests.includes("test/" + name), name);
