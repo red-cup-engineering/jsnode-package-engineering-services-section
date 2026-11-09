@@ -144,6 +144,7 @@
     "test/project-jsnode-operation-source-from-arguments.test.mjs",
     "test/project-jsnode-operation-tests.test.mjs",
     "test/publication-files.test.mjs",
+    "test/shared-account-selection-plan.test.mjs",
     "test/source-delivery-esm-integration.test.mjs",
     "test/source-export-assay-fabrication.test.mjs",
     "test/standardize-jsnode-scripts.test.mjs",
