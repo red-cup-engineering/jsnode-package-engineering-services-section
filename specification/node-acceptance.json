@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "basis": "JSNode fabrication package test plan and module projection. The plan selects only the owning package's tests and preserves declared requirements. A projected catalog is a declaration executed by the existing Node.js interpreter.",
+  "cases": [
+    {
+      "id": "JSNODE-PACKAGE-REQUIREMENTS",
+      "role": "source",
+      "kind": "refusal",
+      "claim": "A test requirement declaration must identify a test owned by the package and name a valid requirement.",
+      "file": "test/package-test-plan.test.mjs",
+      "test": "a declaration must name a test of the package and real requirements"
+    },
+    {
+      "id": "JSNODE-PACKAGE-CATALOG",
+      "role": "source",
+      "kind": "invariant",
+      "claim": "A module specification deterministically produces a shared module and a native NDJSON catalog without wrappers.",
+      "file": "test/project-jsnode-modules.test.mjs",
+      "test": "projects shared source modules and one schema-bound NDJSON catalog without wrappers"
+    },
+    {
+      "id": "JSNODE-PACKAGE-QUICKSTART",
+      "role": "consumer",
+      "kind": "example",
+      "claim": "An installed consumer receives a test plan that omits fixtures and child-package tests while retaining test requirements.",
+      "file": "examples/quickstart.test.mjs"
+    }
+  ]
+}

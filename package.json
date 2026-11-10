@@ -63,7 +63,8 @@
     "examples",
     "content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
     "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
-    "test"
+    "test",
+    "docs/API.md"
   ],
   "scripts": {
     "test": "node scripts/run-package-tests.mjs",
@@ -71,7 +72,9 @@
     "generate": "node scripts/project-jsnode-package-cli.mjs",
     "check:generated": "node scripts/project-jsnode-package-cli.mjs --check",
     "sync:manifest": "node scripts/sync-package-manifest.mjs --check --receiving-tests",
-    "check:interfaces": "node scripts/check-package-interfaces.mjs --check"
+    "check:interfaces": "node scripts/check-package-interfaces.mjs --check",
+    "test:acceptance": "node --test test/package-test-plan.test.mjs test/project-jsnode-modules.test.mjs",
+    "test:consumer": "node --test examples/quickstart.test.mjs"
   },
   "dependencies": {
     "@red-cup-engineering/signcell": "0.13.2",
@@ -111,6 +114,7 @@
     "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
   },
   "receivingTests": [
+    "examples/quickstart.test.mjs",
     "test/admit-jsnode-operation-package-creation-receipt.test.mjs",
     "test/admit-jsnode-operation-package-specification.test.mjs",
     "test/assay-channels.test.mjs",

@@ -11,7 +11,6 @@ import { readFile } from "node:fs/promises";
 
 // Resolve the declared code-layer runner under either direct or hoisted installation.
 const operationRunner = fileURLToPath(import.meta.resolve("@red-cup-engineering/javascript-node-services-section/run-javascript-node-operation-module"));
-const houseResolver = path.join(path.dirname(operationRunner), "register-house-resolver.mjs");
 const specification = {
   sources: [
     { path: "src/base.mjs", text: "export const base = 1;\n" },
@@ -26,7 +25,8 @@ const specification = {
 function run(file, arguments_, input) {
   return new Promise((resolve, reject) => {
     // A catalog is a declaration: the code layer's runner executes it.
-    const child = spawn(process.execPath, ["--import", houseResolver, operationRunner, file, ...arguments_]);
+    const { NODE_TEST_CONTEXT, HOUSE_ROOT, HOUSE_PACKAGE_BINDINGS, ...env } = process.env;
+    const child = spawn(process.execPath, [operationRunner, file, ...arguments_], { env });
     let stdout = "";
     let stderr = "";
     child.stdout.on("data", (chunk) => { stdout += chunk; });
