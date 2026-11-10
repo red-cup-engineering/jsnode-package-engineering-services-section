@@ -73,7 +73,7 @@
     "check:generated": "node scripts/project-jsnode-package-cli.mjs --check",
     "sync:manifest": "node scripts/sync-package-manifest.mjs --check --receiving-tests",
     "check:interfaces": "node scripts/check-package-interfaces.mjs --check",
-    "test:acceptance": "node --test test/package-test-plan.test.mjs test/project-jsnode-modules.test.mjs",
+    "test:acceptance": "node --test --test-reporter=tap test/package-test-plan.test.mjs test/project-jsnode-modules.test.mjs",
     "test:consumer": "node --test examples/quickstart.test.mjs"
   },
   "dependencies": {
