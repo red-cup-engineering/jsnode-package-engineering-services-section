@@ -8,7 +8,7 @@ import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizat
 import { semanticId as receiptSemanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 import { schemaFromGraph } from "@red-cup-engineering/json-schema-services-section/contracts";
 import { address, cell, cellSchema, cellSet, merge, presence, semanticId } from "@red-cup-engineering/signcell/cell";
-import { execute as executeEavt } from "@red-cup-engineering/eavt-services-section";
+import { execute as executeEavt } from "@red-cup-engineering/eavt-engineering-services-section";
 import { moduleWorkOrder } from "./fixtures/module-work-order.mjs";
 import { testsOfClosure } from "../src/derive-jsnode-package-from-closure.mjs";
 import { admitMarkdownJsnodeOperationPackageFabricationReceipt, projectFabricationReceiptCells,

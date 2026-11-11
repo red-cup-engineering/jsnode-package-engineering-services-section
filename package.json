@@ -82,7 +82,7 @@
     "@red-cup-engineering/computer-filepath-engineering-services-section": "0.1.0",
     "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0",
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
-    "@red-cup-engineering/eavt-services-section": "0.11.0",
+    "@red-cup-engineering/eavt-engineering-services-section": "^0.14.2",
     "@red-cup-engineering/execute-javascript-node-command-service": "0.3.1",
     "@red-cup-engineering/computer-file-engineering-services-section": "0.4.0",
     "@red-cup-engineering/inspect-installed-npm-package-service": "0.3.2",

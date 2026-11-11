@@ -9,8 +9,8 @@ import { basename, dirname, relative, resolve } from "node:path";
 // absence, so this one restore-on-gate-failure path unlinks a schema file this run created.
 import { appendFile, readFile, unlink } from "node:fs/promises";
 import { argument } from "@red-cup-engineering/javascript-node-services-section/argv";
-import { constitute, decode, encode } from "@red-cup-engineering/eavt-services-section";
-import { dataArtifactAddress } from "@red-cup-engineering/eavt-services-section/data-artifact-address";
+import { constitute, decode, encode } from "@red-cup-engineering/eavt-engineering-services-section";
+import { dataArtifactAddress } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { canonicalChecked } from "@red-cup-engineering/json-services-section";
 import { makeNiUri } from "@red-cup-engineering/uri-services-section/ni-uri";
