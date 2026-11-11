@@ -336,17 +336,26 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     const runtimeDependencies = dependencies(candidate.dependencies, "dependencies");
     const developmentDependencies = dependencies(candidate.devDependencies, "devDependencies");
     if (app !== null) {
-      for (const [name, version] of Object.entries({
-        "@red-cup-engineering/javascript-node-engineering-services-section": "0.3.2",
-      })) {
-        if (Object.hasOwn(runtimeDependencies, name) && !["0.2.0", version].includes(runtimeDependencies[name])) {
-          refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${name} must be pinned to ${version} for projected machine faces`);
+      const runtimeName = "@red-cup-engineering/node-js-function-engineering-services-section";
+      const runtimeVersion = "0.5.1";
+      const historicalRuntimes = [
+        "@red-cup-engineering/javascript-node-services-section",
+        "@red-cup-engineering/javascript-node-operation-engineering-services-section",
+      ];
+      // The historical packages install the same bin. An explicit supplier may
+      // also supply unrelated APIs, so refuse rather than silently remove it.
+      for (const historicalRuntime of historicalRuntimes) {
+        if (Object.hasOwn(runtimeDependencies, historicalRuntime) || Object.hasOwn(developmentDependencies, historicalRuntime)) {
+          refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${historicalRuntime} conflicts with the projected catalog runner; migrate its required APIs explicitly or select cli: null`);
         }
-        if (Object.hasOwn(developmentDependencies, name)) {
-          refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${name} must be a runtime dependency pinned to ${version} for projected machine faces`);
-        }
-        runtimeDependencies[name] = version;
       }
+      if (Object.hasOwn(runtimeDependencies, runtimeName) && runtimeDependencies[runtimeName] !== runtimeVersion) {
+        refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${runtimeName} must be pinned to ${runtimeVersion} for projected machine faces`);
+      }
+      if (Object.hasOwn(developmentDependencies, runtimeName)) {
+        refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${runtimeName} must be a runtime dependency pinned to ${runtimeVersion} for projected machine faces`);
+      }
+      runtimeDependencies[runtimeName] = runtimeVersion;
     }
     for (const name of Object.keys(runtimeDependencies)) {
       if (Object.hasOwn(developmentDependencies, name)) refuse("DUPLICATE_DEPENDENCY", `${name} occurs in dependencies and devDependencies`);

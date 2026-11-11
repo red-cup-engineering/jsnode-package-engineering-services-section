@@ -16,7 +16,9 @@
  * pass. `exportAdditions` proposes the one export each in-repository `unexported-interface` needs,
  * only where exactly one conventional file carries the subpath.
  */
-import { HOUSE_SCOPE, codeRole, houseSpecifiersOfText } from "../package-imports.mjs";
+import typescript from "typescript";
+import { HOUSE_SCOPE, codeRole, createPackageImportReader } from "../package-imports.mjs";
+const { houseSpecifiersOfText } = createPackageImportReader(typescript);
 import { exportKeyForSubpath, exportTargets, resolveExportSubpath } from "./exports/resolve.mjs";
 
 /** Every finding class this checker can emit: break classes guix-machine-release-service's BREAK_CLASSES also names. */
@@ -60,7 +62,7 @@ export function houseImportsOfFiles(importer, dir, files, { nestedRoots = [] } =
     const role = codeRole(path);
     if (!role) continue;
     const file = dir === "." || dir === "" ? path : `${dir}/${path}`;
-    for (const specifier of houseSpecifiersOfText(text)) rows.push({ importer, file, specifier, role });
+    for (const specifier of houseSpecifiersOfText(text, { fileName: path })) rows.push({ importer, file, specifier, role });
   }
   return rows;
 }

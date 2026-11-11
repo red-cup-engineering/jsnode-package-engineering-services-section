@@ -265,7 +265,7 @@ export async function createJsnodeOperationPackage(request) {
 
     if (specification.app !== null) {
     phase = "command-face";
-    // The catalog is a declaration, not a program: the installed code layer's runner executes it.
+    // The catalog is a declaration, not a program: the installed Node.js Operation Engineering runner executes it.
     const commandPath = path.join(installRoot, "node_modules", ".bin", "run-javascript-node-operation-module");
     const catalogModule = path.join(installedPackage, specification.app.path);
     for (const operation of operations) {

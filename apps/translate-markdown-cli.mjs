@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
 
-// A declaration: the code layer's run-javascript-node-operation-module executes it.
+// A declaration: Node.js Operation Engineering's run-javascript-node-operation-module executes it.
 export const command = Object.freeze({
   async run({ argv }) {
     const [sourcePath] = argv;

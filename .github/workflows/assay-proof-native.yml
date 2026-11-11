@@ -9,6 +9,9 @@ on:
       - 'src/package-check-outcome.mjs'
       - 'src/package-files.mjs'
       - 'test/package-test-plan.test.mjs'
+      - 'src/package-imports.mjs'
+      - 'src/package-imports-installed.mjs'
+      - 'test/package-imports.test.mjs'
       - 'src/sync-package-manifest.mjs'
       - 'scripts/sync-package-manifest.mjs'
       - 'test/sync-package-manifest.test.mjs'
@@ -25,6 +28,9 @@ on:
       - 'src/package-check-outcome.mjs'
       - 'src/package-files.mjs'
       - 'test/package-test-plan.test.mjs'
+      - 'src/package-imports.mjs'
+      - 'src/package-imports-installed.mjs'
+      - 'test/package-imports.test.mjs'
       - 'src/sync-package-manifest.mjs'
       - 'scripts/sync-package-manifest.mjs'
       - 'test/sync-package-manifest.test.mjs'
@@ -50,6 +56,21 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
+      - name: Supply the authenticated parser before manifest discovery
+        env:
+          TYPESCRIPT_INTEGRITY: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
+        run: |
+          parser="$(mktemp -d "$RUNNER_TEMP/jsnode-parser.XXXXXX")"
+          curl --fail --location --max-time 60 --output "$parser/typescript.tgz" https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz
+          node --input-type=module - "$parser/typescript.tgz" <<'NODE'
+          import { readFileSync } from 'node:fs';
+          import { createHash } from 'node:crypto';
+          const actual = 'sha512-' + createHash('sha512').update(readFileSync(process.argv[2])).digest('base64');
+          if (actual !== process.env.TYPESCRIPT_INTEGRITY) throw new Error('TypeScript bootstrap integrity mismatch');
+          NODE
+          tar --no-same-owner --no-same-permissions -xzf "$parser/typescript.tgz" -C "$parser"
+          mkdir node_modules
+          ln -s "$parser/package" node_modules/typescript
       - name: Syntax of the original proof-stage receiver
         run: node --check src/assay-completion.mjs
       - name: Execute original complete TAP proof receiving regression suite
@@ -59,4 +80,4 @@ jobs:
       - name: Receive source-derived manifest and installed enrollment
         run: |
           npm run sync:manifest
-          node --test test/sync-package-manifest.test.mjs
+          node --test test/package-imports.test.mjs test/sync-package-manifest.test.mjs

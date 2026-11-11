@@ -199,7 +199,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { Readable } from "node:stream";
 import { pathToFileURL } from "node:url";
-import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-engineering-services-section/operation";
+import { runJavascriptNodeOperationModule } from "@red-cup-engineering/node-js-function-engineering-services-section/operation";
 
 test("canonical migration keeps alias meaning and import effects while the code layer runs the declaration", async (t) => {
   const directory = mkdtempSync(join(dirname(fileURLToPath(import.meta.url)), ".migration-"));
@@ -233,5 +233,9 @@ test("canonical migration keeps alias meaning and import effects while the code 
   assert.deepEqual(JSON.parse(ran.out.text), { order: ["z", "a"], value: { answer: 42 } });
   const bad = streams("invalid" + String.fromCharCode(10));
   assert.equal((await runJavascriptNodeOperationModule(module, bad.streams)).exitCode, 2);
-  assert.equal(JSON.parse(bad.out.text).ok, false);
+  const problem = JSON.parse(bad.out.text);
+  assert.equal(problem.type, "https://schemas.561.group/problems/operation-refused");
+  assert.equal(problem.title, "Operation refused");
+  assert.equal(typeof problem.code, "string");
+  assert.equal(Object.hasOwn(problem, "ok"), false);
 });
