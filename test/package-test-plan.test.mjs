@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { packageFiles } from "../src/package-files.mjs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { admitTestRequires, nestedPackageRoots, ownFiles, testPlan, unmetRequirements } from "../src/package-test-plan.mjs";
+import { composePackageTestReporters } from "@red-cup-engineering/jsnode-package-services-section/package-test-reporters";
 
 const FILES = [
   "package.json", "src/a.mjs", "src/a.test.mjs", "src/web/b.test.js", "src/types.test.mts", "src/old.cjs",
@@ -168,4 +169,102 @@ test("installed receiving refuses enrollment drift and all unavailable tests wit
   assert.notEqual(drift.status, 0, "new undisclosed native test cannot silently alter the receiving plan");
   assert.equal(report(drift.stdout).ok, false);
   assert.match(report(drift.stdout).error, /enrollment differs from canonical test plan/u);
+});
+
+test("native reporter bindings survive the original runner with inherited runtime options", async (t) => {
+  const root = mkdtempSync(join(tmpdir(), "package-test-reporters-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const runner = fileURLToPath(new URL("../scripts/run-package-tests.mjs", import.meta.url));
+  writeFileSync(join(root, "package.json"), JSON.stringify({ name: "@x/reporters", type: "module" }));
+  writeFileSync(join(root, "preload helper.cjs"), 'globalThis.packageReporterReady = "upstream";\n');
+  writeFileSync(join(root, "value.test.mjs"), `
+    import assert from "node:assert/strict";
+    import { appendFileSync } from "node:fs";
+    import test from "node:test";
+    test("--test-reporter=tap", () => {
+      assert.equal(globalThis.packageReporterReady, "upstream");
+      assert.equal(process.env.NODE_OPTIONS, process.env.EXPECTED_NODE_OPTIONS);
+      appendFileSync("executions", "ran\\n");
+    });
+  `);
+  const preload = '--require "' + join(root, "preload helper.cjs") + '"';
+  const cases = [
+    { label: "inherited implicit stdout", options: "--test-reporter=tap" },
+    { label: "CLI implicit stdout", flags: ["--test-reporter", "tap"] },
+    { label: "inherited split and quoted value", options: '--test-reporter "tap"' },
+    { label: "underscore aliases", options: "--test_reporter=tap" },
+    { label: "paired inherited stdout", options: "--test-reporter=tap --test-reporter-destination=stdout" },
+    { label: "paired inherited stderr", options: "--test-reporter=tap --test-reporter-destination=stderr", stderr: true },
+    { label: "inherited reporter and CLI destination", options: "--test-reporter=tap", flags: ["--test-reporter-destination=stdout"] },
+    { label: "inherited destination and CLI reporter", options: "--test-reporter-destination=stdout", flags: ["--test-reporter=tap"] },
+    { label: "unrelated Boolean and reporter-looking value", flags: ["--expose-gc", "--test-name-pattern=--test-reporter=tap", "--test-reporter=tap"] },
+  ];
+  for (const item of cases) await t.test(item.label, () => {
+    rmSync(join(root, "executions"), { force: true });
+    const nodeOptions = [preload, item.options].filter(Boolean).join(" ");
+    const { NODE_TEST_CONTEXT, PACKAGE_TEST_DIRECTORY, ...inherited } = process.env;
+    const result = spawnSync(process.execPath, [runner, ...(item.flags ?? [])], {
+      cwd: root, encoding: "utf8", timeout: 15_000,
+      env: { ...inherited, NODE_OPTIONS: nodeOptions, EXPECTED_NODE_OPTIONS: nodeOptions },
+    });
+    assert.equal(result.status, 0, result.stdout + result.stderr);
+    assert.equal(readFileSync(join(root, "executions"), "utf8"), "ran\n", "test executes once under the retained preload");
+    const report = JSON.parse(result.stdout.trim().split("\n").at(-1));
+    assert.equal(report.ok, true);
+    assert.equal(report.passed, 1);
+    assert.equal((result.stdout.match(/^TAP version 13$/gmu) ?? []).length, item.stderr ? 0 : 1,
+      "the private receiver must not add a second visible reporter");
+    assert.equal((result.stderr.match(/^TAP version 13$/gmu) ?? []).length, item.stderr ? 1 : 0);
+  });
+});
+
+test("a private receiver cannot repair invalid original reporter cardinality", async (t) => {
+  const root = mkdtempSync(join(tmpdir(), "package-invalid-reporters-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const runner = fileURLToPath(new URL("../scripts/run-package-tests.mjs", import.meta.url));
+  writeFileSync(join(root, "package.json"), JSON.stringify({ name: "@x/invalid-reporters" }));
+  writeFileSync(join(root, "value.test.mjs"), 'import { writeFileSync } from "node:fs"; import test from "node:test"; test("must not run", () => writeFileSync("executed", "yes"));\n');
+  for (const { options, flags } of [
+    { options: "--test-reporter=tap --test-reporter=spec", flags: [] },
+    { options: "--test-reporter-destination=stdout", flags: [] },
+    { options: "--test-reporter=tap", flags: ["--test-reporter=spec", "--test-reporter-destination=stdout"] },
+  ]) await t.test(JSON.stringify({ options, flags }), () => {
+    const { NODE_TEST_CONTEXT, PACKAGE_TEST_DIRECTORY, ...inherited } = process.env;
+    const result = spawnSync(process.execPath, [runner, ...flags], {
+      cwd: root, encoding: "utf8", timeout: 15_000, env: { ...inherited, NODE_OPTIONS: options },
+    });
+    assert.notEqual(result.status, 0, result.stdout + result.stderr);
+    assert.equal(existsSync(join(root, "executed")), false);
+    assert.equal(JSON.parse(result.stdout.trim().split("\n").at(-1)).ok, false);
+  });
+});
+
+test("the public reporter composer exposes only an additive suffix and refuses ambiguous input", () => {
+  const arguments_ = ["--expose-gc", "--test-reporter-destination=stdout"];
+  const nodeOptions = '--test_reporter "tap" --title="--test-reporter=spec"';
+  const extra = [{ reporter: "./observe events.mjs", destination: "./events.jsonl" }];
+  const composed = composePackageTestReporters({ arguments: arguments_, nodeOptions, additionalReporters: extra });
+  assert.deepEqual(composed.appendedArguments,
+    ["--test-reporter=./observe events.mjs", "--test-reporter-destination=./events.jsonl"]);
+  assert.deepEqual(composed.arguments, [...arguments_, ...composed.appendedArguments]);
+  assert.deepEqual(arguments_, ["--expose-gc", "--test-reporter-destination=stdout"]);
+  assert.deepEqual(extra, [{ reporter: "./observe events.mjs", destination: "./events.jsonl" }]);
+  assert.ok(Object.isFrozen(composed) && Object.isFrozen(composed.arguments) && Object.isFrozen(composed.appendedArguments));
+  assert.deepEqual(composePackageTestReporters({ nodeOptions: '--test-reporter "tap"' }).appendedArguments,
+    ["--test-reporter-destination=stdout"]);
+  assert.deepEqual(composePackageTestReporters({
+    nodeOptions: '--title="--test-reporter=tap"', arguments: ["--test-name-pattern=--test-reporter=tap"], defaultReporter: "spec",
+  }).appendedArguments, ["--test-reporter=spec", "--test-reporter-destination=stdout"]);
+  for (const options of [
+    { nodeOptions: '--test-reporter "unterminated' },
+    { nodeOptions: '--title "invalid trailing escape\\' },
+    { arguments: ["--test-reporter"] },
+    { arguments: ["--test-reporter="] },
+    { arguments: ["--test-reporter", "--test-reporter-destination=stdout"] },
+    { arguments: ["--"] },
+    { arguments: [null] },
+    { nodeOptions: 1 },
+    { additionalReporters: [{ reporter: "tap" }] },
+    { nodeOptions: "--test-reporter=tap", arguments: ["--test-reporter=spec", "--test-reporter-destination=stdout"], additionalReporters: extra },
+  ]) assert.throws(() => composePackageTestReporters(options), TypeError);
 });

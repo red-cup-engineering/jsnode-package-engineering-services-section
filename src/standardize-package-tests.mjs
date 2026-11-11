@@ -36,6 +36,19 @@ export function isStandardTest(command) {
   const parsed = parseTestCommand(command, STANDARD_TEST);
   return parsed !== null && parsed.args.length === 0;
 }
+/**
+ * Decode the argument tokens of an admitted standard test command. This uses
+ * the codemod's same bounded shell grammar and preserves every Node option and
+ * operand; it does not execute the command or expand shell expressions.
+ * @param {string} command A run-package-tests command containing Node options only.
+ * @returns {readonly string[] | null} Frozen argument tokens with admitted shell quoting removed, or null for selectors or unsupported command syntax.
+ */
+export function standardTestArguments(command) {
+  const parsed = parseTestCommand(command, STANDARD_TEST);
+  if (parsed === null || parsed.args.length !== 0) return null;
+  return Object.freeze(parsed.flags.map(raw => raw.replace(/^(--[\w-]+=)(['"])(.*)\2$/u, "$1$3")
+    .replace(/^(['"])(.*)\1$/u, "$2")));
+}
 /** Whether a check command is the standard form: it begins with `check-package-syntax`. */
 export function isStandardCheck(command) {
   return typeof command === "string" && /^check-package-syntax(?:\s|$)/u.test(command.trim());
@@ -63,8 +76,9 @@ function parseTestCommand(command, executable) {
     if (word === "--") { index += 1; break; }
     if (!word.startsWith("-")) break;
     if (word === "--test" && executable === "node") { test = true; continue; }
-    if (/^--[\w-]+=.+$/u.test(word) || BOOLEAN_FLAGS.has(word)) { flags.push(word); continue; }
-    if (!VALUE_FLAGS.has(word) || !words[index + 1] || unquote(words[index + 1]).startsWith("-")) return null;
+    const name = word.replaceAll("_", "-");
+    if (/^--[\w-]+=.+$/u.test(word) || BOOLEAN_FLAGS.has(name)) { flags.push(word); continue; }
+    if (!VALUE_FLAGS.has(name) || !words[index + 1] || unquote(words[index + 1]).startsWith("-")) return null;
     flags.push(word, words[++index]);
   }
   return test ? { flags, args: words.slice(index) } : null;
@@ -78,7 +92,7 @@ const toPattern = (glob, shell) => new RegExp(`^${glob.replace(/^\.\//u, "").spl
 /** Node 24's default discovery, used only to compare the old command with the standard plan. */
 function nodeDiscovers(path, flags) {
   if (/(?:^|\/)node_modules\//u.test(path)) return false;
-  const extensions = flags.includes("--no-strip-types") ? /\.[cm]?js$/u : /\.[cm]?[jt]s$/u;
+  const extensions = flags.some(flag => flag.replaceAll("_", "-") === "--no-strip-types") ? /\.[cm]?js$/u : /\.[cm]?[jt]s$/u;
   return extensions.test(path) && (/(?:^|\/)test\//u.test(path)
     || /(?:^|\/)(?:test|test-.+|.+[._-]test)\.[cm]?[jt]s$/u.test(path));
 }

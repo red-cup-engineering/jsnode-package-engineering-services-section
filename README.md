@@ -10,6 +10,55 @@ surface and verified cases.
 Install the frozen closure with `pnpm install --frozen-lockfile`, then run
 `npm test`. Run `npm run test:consumer` for the example alone.
 
+## Native test reporters and receiving
+
+`run-package-tests` retains the caller's reporter destinations from both
+`NODE_OPTIONS` and command-line flags, then adds its own TAP file for the
+`package-test-run.v1` receipt. Node's single reporter with no destination keeps
+its implicit stdout binding. Already paired reporters keep their original
+destinations and ordering. Invalid original reporter/destination counts refuse
+before a receiving reporter is added or any test is launched. Other runtime
+options and the original `NODE_OPTIONS` text pass through unchanged.
+
+The public `./package-test-reporters` export supplies the same policy to
+receivers that need another reporter from that execution:
+
+```js
+import { composePackageTestReporters } from
+  "@red-cup-engineering/jsnode-package-services-section/package-test-reporters";
+import { standardTestArguments } from
+  "@red-cup-engineering/jsnode-package-services-section/standardize-package-tests";
+
+const original = standardTestArguments(manifest.scripts.test);
+if (original === null) throw new TypeError("A standard test command is required");
+const composed = composePackageTestReporters({
+  arguments: original,
+  nodeOptions: process.env.NODE_OPTIONS,
+  additionalReporters: [{ reporter: observationReporter, destination: eventFile }],
+});
+```
+
+`composed.arguments` is the complete argument array. When the original npm
+script already supplies `original`, append only `composed.appendedArguments`
+after `npm run test --`. Both arrays and the result object are frozen. The
+suffix contains any explicit default reporter/stdout binding or lone implicit
+stdout destination, followed by the added reporter/destination pairs. The
+helper never rewrites the original arguments or environment and does not
+interpret unrelated Node options. Node remains responsible for their validity.
+
+`standardTestArguments` decodes only the codemod's admitted simple command
+grammar, returning `null` for selectors or unsupported shell syntax. The
+reporter helper accepts decoded Node option tokens before the `--` delimiter
+and file selectors. It reads `NODE_OPTIONS` using Node's double-quote and
+backslash rules, which differ from shell quoting; single quotes there remain
+literal characters.
+
+The source tests compare actual native reporter output, retained preloads,
+once-only test execution, malformed configurations, and shell-decoded arguments.
+Machine assertions use a private TAP copy without replacing visible reporter
+output. See [Node's test reporters](https://nodejs.org/docs/latest-v24.x/api/test.html#test-reporters)
+and [NODE_OPTIONS](https://nodejs.org/docs/latest-v24.x/api/cli.html#node_optionsoptions).
+
 ## Workspace scanner ownership
 
 The public `./workspace/scanner`, `./workspace/scanner/schema`, and

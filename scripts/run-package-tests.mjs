@@ -13,6 +13,7 @@ import { join, resolve } from "node:path";
 import { testPlan, unmetRequirements } from "../src/package-test-plan.mjs";
 import { packageFiles, packageResolvesFrom } from "../src/package-files.mjs";
 import { packageCheckExecutionProblem, receivePackageTestReport } from "../src/package-check-outcome.mjs";
+import { composePackageTestReporters } from "../src/package-test-reporters.mjs";
 
 const directory = resolve(process.env.PACKAGE_TEST_DIRECTORY ?? process.cwd());
 const manifest = JSON.parse(readFileSync(join(directory, "package.json"), "utf8"));
@@ -52,16 +53,22 @@ if (run.length === 0) {
     emptyLegacyPlan ? null : "no admitted tests available under current requirements");
 }
 
-// The caller's reporter (or node's default) to stdout, and a TAP copy to read the counts from.
+// Retain the caller's combined inherited/CLI reporter bindings, then append a
+// private TAP copy. Invalid original bindings remain invalid before additions.
 const flags = process.argv.slice(2);
 const scratch = mkdtempSync(join(tmpdir(), "run-package-tests-"));
 const tap = join(scratch, "report.tap");
-const reporters = flags.some((flag) => flag.startsWith("--test-reporter")) ? []
-  : [`--test-reporter=${process.stdout.isTTY ? "spec" : "tap"}`, "--test-reporter-destination=stdout"];
 // Its own test run, even when started from inside another (node --test marks a child with NODE_TEST_CONTEXT).
 const { NODE_TEST_CONTEXT, ...environment } = process.env;
 let result;
-try { result = spawnSync(process.execPath, [...flags, ...reporters, "--test-reporter=tap", `--test-reporter-destination=${tap}`, "--test", ...run], { cwd: directory, stdio: "inherit", env: environment }); }
+try {
+  const composed = composePackageTestReporters({
+    arguments: flags, nodeOptions: environment.NODE_OPTIONS,
+    defaultReporter: process.stdout.isTTY ? "spec" : "tap",
+    additionalReporters: [{ reporter: "tap", destination: tap }],
+  });
+  result = spawnSync(process.execPath, [...composed.arguments, "--test", ...run], { cwd: directory, stdio: "inherit", env: environment });
+}
 catch (error) { result = { error }; }
 const summary = (() => { try { return readFileSync(tap, "utf8"); } catch { return ""; } })();
 rmSync(scratch, { recursive: true, force: true });

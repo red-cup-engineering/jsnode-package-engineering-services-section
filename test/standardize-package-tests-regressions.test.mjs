@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { testPlan } from "../src/package-test-plan.mjs";
-import { isStandardTest, standardizePackageTests, testsRunBy } from "../src/standardize-package-tests.mjs";
+import { isStandardTest, standardizePackageTests, standardTestArguments, testsRunBy } from "../src/standardize-package-tests.mjs";
 
 const standardize = (command, files) => {
   const manifest = { name: "@x/regression", scripts: { test: command, check: "check-package-syntax" } };
@@ -80,6 +80,43 @@ test("default Node discovery is compared using its test names and type-stripping
   const files = ["src/helper.mjs", "src/one.test.mjs", "src/two-test.mjs", "src/three_test.js", "src/test-four.cjs", "src/test.ts", "test/smoke.mjs", "node_modules/x/test/no.test.mjs"];
   assert.deepEqual([...testsRunBy("node --test", files)], files.slice(1, -1));
   assert.deepEqual([...testsRunBy("node --test --no-strip-types", files)], files.slice(1, -1).filter((file) => !file.endsWith(".ts")));
+  assert.deepEqual([...testsRunBy("node --test --no_strip_types", files)], files.slice(1, -1).filter((file) => !file.endsWith(".ts")));
+  const typed = ["src/helper.mjs", "test/one.test.mjs", "test/two.test.ts"];
+  for (const alias of ["--no-strip-types", "--no_strip_types"]) {
+    const migrated = standardize("node --test " + alias, typed);
+    assert.equal(migrated.manifest.scripts.test, "run-package-tests " + alias);
+    assert.deepEqual(migrated.newlyRun, [], "the standard plan does not enroll .ts cases");
+    assert.equal(migrated.kept, null);
+  }
+});
+
+test("standard command arguments agree with actual shell decoding and retain their supported boundary", t => {
+  const root = mkdtempSync(join(tmpdir(), "standard-command-arguments-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const executable = join(root, "run-package-tests");
+  writeFileSync(executable, `#!${process.execPath}\nconsole.log(JSON.stringify(process.argv.slice(2)));\n`, { mode: 0o755 });
+  for (const suffix of [
+    "",
+    '--test_reporter "tap" --test-reporter-destination=stdout',
+    "--test-reporter='tap' --test-name-pattern 'a \"quoted\" value'",
+    '--require "./setup module.cjs" --conditions=case --no_warnings',
+    '--test-reporter-destination="report with spaces.tap" --test-reporter=tap',
+    '--test-name-pattern=--test-reporter=tap',
+  ]) {
+    const command = "run-package-tests" + (suffix ? " " + suffix : "");
+    const actual = spawnSync("sh", ["-c", command], {
+      cwd: root, encoding: "utf8", env: { ...process.env, PATH: root + ":" + process.env.PATH },
+    });
+    assert.equal(actual.status, 0, actual.stderr);
+    const arguments_ = standardTestArguments(command);
+    assert.deepEqual(arguments_, JSON.parse(actual.stdout));
+    assert.ok(Object.isFrozen(arguments_));
+  }
+  for (const command of [
+    "node --test", "run-package-tests test/value.test.mjs", "run-package-tests && echo extra",
+    "run-package-tests --future-option operand", "run-package-tests --test-reporter",
+    'run-package-tests --test-name-pattern="joined"suffix',
+  ]) assert.equal(standardTestArguments(command), null, command);
 });
 
 const codemod = fileURLToPath(new URL("../scripts/standardize-package-tests.mjs", import.meta.url));

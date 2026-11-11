@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
-import {spawnSync} from "node:child_process";
 import {mkdtemp, mkdir, rm, writeFile} from "node:fs/promises";
 import {tmpdir} from "node:os";
 import path from "node:path";
 import test from "node:test";
 import {projectJsnodeExampleTests} from "../src/project-jsnode-example-tests.mjs";
 import {receiveIsolatedAssayOutcome} from "../src/assay-completion.mjs";
+import {runNodeWithTestObservation as runNode} from "./fixtures/native-node-observation.mjs";
 
 const caseSource = operation => ({
   name: "reserved-name",
@@ -24,21 +24,6 @@ const implementation = (exportName,wrong=false) => [
   `export { implementation as ${JSON.stringify(exportName)} };`,
   "",
 ].join("\n");
-
-function runNode(args,cwd) {
-  // Node's parent test worker sets NODE_TEST_CONTEXT=child-v8. If inherited
-  // by a nested node --test runner, Node skips the entire nested suite and
-  // exits 0: a dangerously false behavioral success. Remove only that
-  // worker-local marker; preserve the caller's remaining native environment.
-  const env={...process.env};
-  delete env.NODE_TEST_CONTEXT;
-  // Node 24 defaults to the human-readable spec reporter, while earlier
-  // native runners default to TAP. Select TAP explicitly for machine-read
-  // assertions about executed/failed cases, never infer a passing result
-  // merely from a child's zero exit code.
-  const nativeArgs=args.includes("--test") ? ["--test-reporter=tap",...args] : args;
-  return spawnSync(process.execPath,nativeArgs,{cwd,encoding:"utf8",timeout:15000,env});
-}
 
 test("native Node executes tests fabricated from legal ESM reserved, default, and ordinary named exports",async()=>{
   const directory=await mkdtemp(path.join(tmpdir(),"original-jsnode-exports-"));
@@ -60,9 +45,9 @@ test("native Node executes tests fabricated from legal ESM reserved, default, an
       const syntax=runNode(["--check",testPath],directory);
       assert.equal(syntax.status,0,exportName+": "+syntax.stderr);
       const applied=runNode(["--test",testPath],directory);
-      assert.equal(applied.status,0,exportName+": "+applied.stderr+"\n"+applied.stdout);
-      assert.match(applied.stdout,/# pass 3\b/);
-      assert.match(applied.stdout,/# fail 0\b/);
+      assert.equal(applied.status,0,exportName+": "+applied.stderr+"\n"+applied.tap);
+      assert.match(applied.tap,/# pass 3\b/);
+      assert.match(applied.tap,/# fail 0\b/);
     }
   } finally {await rm(directory,{recursive:true,force:true});}
 });
@@ -79,9 +64,9 @@ test("generated tests expose actual implementation disagreements, including nega
     await writeFile(testFile,assay.text,"utf8");
     const outcome=runNode(["--test",testFile],directory);
     assert.notEqual(outcome.status,0,"a wrong source may not pass the generated assays");
-    assert.match(outcome.stdout,/# fail [1-9]/);
-    assert.match(outcome.stdout,/twice two/);
-    assert.match(outcome.stdout,/negative refuses/);
+    assert.match(outcome.tap,/# fail [1-9]/);
+    assert.match(outcome.tap,/twice two/);
+    assert.match(outcome.tap,/negative refuses/);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
 
@@ -129,13 +114,13 @@ test("source-generated clause checks detect mutation and unstable replay rather 
       await writeFile(testFile,guarded.text,"utf8");
       const guardedRun=runNode(["--test",testFile],directory);
       assert.equal(guardedRun.status===0,name==="lawful",
-        name+" did not satisfy its expected independent behavior checks:\n"+guardedRun.stdout);
-      assert.match(guardedRun.stdout,name==="lawful"?/# pass 1\b/u:/# fail 1\b/u);
+        name+" did not satisfy its expected independent behavior checks:\n"+guardedRun.tap);
+      assert.match(guardedRun.tap,name==="lawful"?/# pass 1\b/u:/# fail 1\b/u);
       if(name!=="lawful"){
         await writeFile(testFile,legacy.text,"utf8");
         const uncheckedRun=runNode(["--test",testFile],directory);
         assert.equal(uncheckedRun.status,0,
-          name+" must demonstrate that output-only testing missed this defect:\n"+uncheckedRun.stdout);
+          name+" must demonstrate that output-only testing missed this defect:\n"+uncheckedRun.tap);
       }
     }
   } finally {await rm(directory,{recursive:true,force:true});}
@@ -165,8 +150,8 @@ test("generated JSNode example tests reject code that drops an admitted JSON own
     ].join("\n"),"utf8");
     const wrong=runNode(["--test",testFile],directory);
     assert.notEqual(wrong.status,0,
-      "the original generated test must reject an implementation missing a JSON own property:\n"+wrong.stdout);
-    assert.match(wrong.stdout,/# fail 1\b/u);
+      "the original generated test must reject an implementation missing a JSON own property:\n"+wrong.tap);
+    assert.match(wrong.tap,/# fail 1\b/u);
 
     // The same source-derived test still admits the correct JSON-preserving
     // implementation and its exact expected value.
@@ -175,8 +160,8 @@ test("generated JSNode example tests reject code that drops an admitted JSON own
       'export { implementation as "class" };',
     ].join("\n"),"utf8");
     const correct=runNode(["--test",testFile],directory);
-    assert.equal(correct.status,0,correct.stderr+"\n"+correct.stdout);
-    assert.match(correct.stdout,/# pass 1\b/u);
+    assert.equal(correct.status,0,correct.stderr+"\n"+correct.tap);
+    assert.match(correct.tap,/# pass 1\b/u);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
 
@@ -211,9 +196,9 @@ test("source-derived positive, negative, replay and scalar assays retain exact J
     const syntax=runNode(["--check",testFile],directory);
     assert.equal(syntax.status,0,syntax.stderr);
     const executed=runNode(["--test",testFile],directory);
-    assert.equal(executed.status,0,executed.stderr+"\n"+executed.stdout);
-    assert.match(executed.stdout,/# pass 3\b/u);
-    assert.match(executed.stdout,/# fail 0\b/u);
+    assert.equal(executed.status,0,executed.stderr+"\n"+executed.tap);
+    assert.match(executed.tap,/# pass 3\b/u);
+    assert.match(executed.tap,/# fail 0\b/u);
     assert.equal(Object.hasOwn(original,"__proto__"),true);
     assert.equal(Object.hasOwn(invalid,"__proto__"),true);
   } finally {await rm(directory,{recursive:true,force:true});}
@@ -262,9 +247,9 @@ test("candidate cannot forge generated own-key assays by replacing global JSON.p
     ].join("\n"),"utf8");
     const corrupted=runNode(["--test",testFile],directory);
     assert.notEqual(corrupted.status,0,
-      "candidate source must not rewrite admitted JSON expectations to pass a wrong result:\n"+corrupted.stdout);
-    assert.match(corrupted.stdout,/# fail 1\b/u);
-    assert.match(corrupted.stdout,/retain admitted own key/u);
+      "candidate source must not rewrite admitted JSON expectations to pass a wrong result:\n"+corrupted.tap);
+    assert.match(corrupted.tap,/# fail 1\b/u);
+    assert.match(corrupted.tap,/retain admitted own key/u);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
 
@@ -292,15 +277,15 @@ test("supplier replacement of global structuredClone cannot falsely pass the ori
     ].join("\n"),"utf8");
     const falseAcceptance=runNode(["--test",assayFile],directory);
     assert.notEqual(falseAcceptance.status,0,
-      "mutating supplier code must not pass by aliasing the admitted snapshot:\n"+falseAcceptance.stdout);
-    assert.match(falseAcceptance.stdout,/# fail 1\b/u);
+      "mutating supplier code must not pass by aliasing the admitted snapshot:\n"+falseAcceptance.tap);
+    assert.match(falseAcceptance.tap,/# fail 1\b/u);
     await writeFile(sourceFile,[
       'function implementation(value){return {ok:true};}',
       'export {implementation as "class"};',
     ].join("\n"),"utf8");
     const lawful=runNode(["--test",assayFile],directory);
-    assert.equal(lawful.status,0,lawful.stderr+"\n"+lawful.stdout);
-    assert.match(lawful.stdout,/# pass 1\b/u);
+    assert.equal(lawful.status,0,lawful.stderr+"\n"+lawful.tap);
+    assert.match(lawful.tap,/# pass 1\b/u);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
 
@@ -352,8 +337,8 @@ test("candidate module mutating shared native assertions cannot forge generated 
     const executed=runNode(["--test",testFile],directory);
     assert.notEqual(executed.status,0,
       "incorrect candidate tampered with the native assertion singleton and falsely passed both generated assays:\n"+
-      executed.stdout);
-    assert.match(executed.stdout,/# fail [1-9]\b/u);
+      executed.tap);
+    assert.match(executed.tap,/# fail [1-9]\b/u);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
 
@@ -382,8 +367,8 @@ test("supplier cannot forge the assertion oracle by synchronizing native ESM exp
     ].join("\n"),"utf8");
     const observed=runNode(["--test",testFile],directory);
     assert.notEqual(observed.status,0,
-      "candidate's native ESM synchronization must not replace prior captured assertion references:\n"+observed.stdout);
-    assert.match(observed.stdout,/# fail [1-9]\b/u);
+      "candidate's native ESM synchronization must not replace prior captured assertion references:\n"+observed.tap);
+    assert.match(observed.tap,/# fail [1-9]\b/u);
   } finally {await rm(directory,{recursive:true,force:true});}
 });
 
@@ -400,7 +385,7 @@ test("early supplier exit does not become complete generated Code assay receivin
     await writeFile(path.join(directory,operation.module),'process.exit(0);',"utf8");
     const run=runNode(["--test",testFile],directory);
     const received=receiveIsolatedAssayOutcome({
-      isolated:true,status:run.status,stdout:run.stdout,stderr:run.stderr,
+      isolated:true,status:run.status,stdout:run.tap,stderr:run.stderr,
     },[operation.name+": must execute"]);
     assert.equal(received.passed,false,"exit status alone is not an original assay-completion receipt");
     assert.ok(["ASSAY_INCOMPLETE","ASSAY_TEST_FAILED"].includes(received.code),JSON.stringify(received));
