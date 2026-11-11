@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { importsOfFiles } from "../src/package-imports.mjs";
+import typescript from "typescript";
+import { createPackageImportReader } from "../src/package-imports.mjs";
+const { importsOfFiles } = createPackageImportReader(typescript);
 import { formatManifestLike, syncPackageManifest } from "../src/sync-package-manifest.mjs";
 
 const R = "@red-cup-engineering/";
@@ -59,4 +61,16 @@ test("the existing manifest synchronizer projects exact receiving enrollment fro
   assert.throws(() => syncPackageManifest(input, imports, { ...options, receivingTests: ["../escape.test.mjs"] }), TypeError);
   // Historical pure dependency callers that supply no test plan remain untouched.
   assert.deepEqual(syncPackageManifest(manifest, imports, { rangeOf: () => "workspace:*" }).manifest.receivingTests, undefined);
+});
+
+
+test("generated contract source leaves the independently imported interpreter a test supplier", () => {
+  const name = "@red-cup-engineering/node-js-function-engineering-services-section";
+  const declaration = { name: `${R}generator`, dependencies: {}, devDependencies: { [name]: "0.5.1" } };
+  const reading = importsOfFiles([
+    { path: "src/project-tests.mjs", text: `export const text = 'import { runJavascriptNodeOperationModule } from "${name}/operation";';` },
+    { path: "test/runner.test.mjs", text: `import { runJavascriptNodeOperationModule } from "${name}/operation";` },
+  ]);
+  assert.deepEqual(syncPackageManifest(declaration, reading).manifest, declaration);
+  assert.deepEqual(syncPackageManifest(declaration, reading).changes, []);
 });

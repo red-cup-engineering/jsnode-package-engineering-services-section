@@ -30,7 +30,7 @@ export function projectJsnodeOperationPackage(specification) {
   const manifest = {
     name: specification.packageName, version: specification.packageVersion, type: "module", license: specification.license,
     exports: Object.fromEntries(operations.map((operation) => ["./" + operation.name, "./" + operation.module])),
-    // No bin: the catalog is a declaration, run by javascript-node's run-javascript-node-operation-module.
+    // No bin: the catalog is a declaration, run by Node.js Operation Engineering's installed runner.
     files: ["src", "apps", "data/records/schema", "README.md", "package.json"],
     dependencies: specification.dependencies, devDependencies: specification.devDependencies,
     scripts: { check: files.filter((file) => file.path.endsWith(".mjs")).map((file) => "node --check " + "'" + file.path.replaceAll("'", "'\"'\"'") + "'").join(" && "), test: "node --test test/*.test.mjs" },

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-services-section/operation";
+import { runJavascriptNodeOperationModule } from "@red-cup-engineering/node-js-function-engineering-services-section/operation";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";

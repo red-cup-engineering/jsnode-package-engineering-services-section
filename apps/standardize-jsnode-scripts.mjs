@@ -211,7 +211,7 @@ export function schemaContractsEqual(left, right) {
 /**
  * Projects the package manifest for a script that has become a declaration: the schema directory
  * ships with the package, and a bin entry naming the script is dropped because a declaration is
- * not executable (the code layer's run-javascript-node-operation-module runs it). Declaration modules
+ * not executable (Node.js Operation Engineering's run-javascript-node-operation-module runs it). Declaration modules
  * import no runtime, so no runtime dependency is added. Every unrelated manifest field is preserved.
  * @param {string} text
  * @param {string} scriptRelativePath

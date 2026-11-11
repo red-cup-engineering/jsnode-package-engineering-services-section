@@ -57,23 +57,79 @@ test("admits a complete package specification and derives operation identity and
   assert.ok(Object.isFrozen(admitted.operations[0]));
   // Command-face source must bind its real qualified runtime, not a stale
   // package edition whose exported runner is absent during package birth.
-  assert.equal(admitted.dependencies["@red-cup-engineering/javascript-node-services-section"], "0.3.2");
+  assert.equal(admitted.dependencies["@red-cup-engineering/node-js-function-engineering-services-section"], "0.5.1");
+  assert.equal(Object.hasOwn(admitted.dependencies, "@red-cup-engineering/javascript-node-services-section"), false);
 });
 
-test("a command-face source refuses stale runtime identity and preserves prior migration", () => {
-  const runtimeName = "@red-cup-engineering/javascript-node-services-section";
-  const stale = candidate();
-  stale.dependencies[runtimeName] = "0.3.0";
-  const refused = admitJsnodeOperationPackageSpecification(stale);
-  assert.equal(refused.code, "PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT");
+const runtimeName = "@red-cup-engineering/node-js-function-engineering-services-section";
+const historicalRuntimeName = "@red-cup-engineering/javascript-node-services-section";
+const formerRuntimeName = "@red-cup-engineering/javascript-node-operation-engineering-services-section";
 
-  // The preexisting migration alias remains admitted but MUST project onto
-  // the same version-qualified provider used by the native original owner.
-  const historical = candidate();
-  historical.dependencies[runtimeName] = "0.2.0";
-  const migrated = admitJsnodeOperationPackageSpecification(historical);
-  assert.equal(migrated.type, "JsnodeOperationPackageSpecification", JSON.stringify(migrated));
-  assert.equal(migrated.dependencies[runtimeName], "0.3.2");
+test("catalog admission selects only its exact canonical runtime without changing the authored candidate", () => {
+  const input = candidate();
+  input.dependencies[runtimeName] = "0.5.1";
+  const before = structuredClone(input);
+  const admitted = admitJsnodeOperationPackageSpecification(input);
+  assert.equal(admitted.type, "JsnodeOperationPackageSpecification", JSON.stringify(admitted));
+  assert.equal(admitted.dependencies[runtimeName], "0.5.1");
+  assert.deepEqual(input, before);
+});
+
+test("catalog admission refuses competing bins and unqualified canonical runtime selections", () => {
+  for (const field of ["dependencies", "devDependencies"]) {
+    for (const version of ["0.2.0", "0.3.2", "0.4.2"]) {
+      const input = candidate();
+      input[field][historicalRuntimeName] = version;
+      const before = structuredClone(input);
+      const refused = admitJsnodeOperationPackageSpecification(input);
+      assert.equal(refused.code, "PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${field}: ${version}`);
+      assert.match(refused.message, /migrate.*explicitly|cli: null/u);
+      assert.deepEqual(input, before, "authored supplier requirements remain intact");
+    }
+  }
+  for (const [field, version] of [["dependencies", "0.5.0"], ["devDependencies", "0.5.1"]]) {
+    const input = candidate();
+    input[field][runtimeName] = version;
+    assert.equal(admitJsnodeOperationPackageSpecification(input).code, "PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT");
+  }
+});
+
+test("module-only admission adds no runtime and preserves explicitly selected source dependencies", () => {
+  const plain = candidate();
+  plain.cli = null;
+  const noRuntime = admitJsnodeOperationPackageSpecification(plain);
+  assert.equal(noRuntime.type, "JsnodeOperationPackageSpecification", JSON.stringify(noRuntime));
+  assert.equal(noRuntime.app, null);
+  assert.deepEqual(noRuntime.dependencies, {});
+  assert.deepEqual(noRuntime.devDependencies, {});
+  for (const [field, name, version] of [
+    ["dependencies", historicalRuntimeName, "0.2.0"],
+    ["devDependencies", historicalRuntimeName, "0.3.2"],
+    ["dependencies", formerRuntimeName, "0.5.1"],
+    ["devDependencies", formerRuntimeName, "0.5.1"],
+    ["dependencies", runtimeName, "0.5.0"],
+    ["devDependencies", runtimeName, "0.5.1"],
+  ]) {
+    const input = candidate();
+    input.cli = null;
+    input[field][name] = version;
+    const admitted = admitJsnodeOperationPackageSpecification(input);
+    assert.equal(admitted.type, "JsnodeOperationPackageSpecification", JSON.stringify(admitted));
+    assert.deepEqual(admitted.dependencies, input.dependencies);
+    assert.deepEqual(admitted.devDependencies, input.devDependencies);
+  }
+});
+
+test("catalog admission refuses the renamed supplier's former package identity in either dependency map", () => {
+  for (const field of ["dependencies", "devDependencies"]) {
+    const input = candidate();
+    input[field][formerRuntimeName] = "0.5.1";
+    const before = structuredClone(input);
+    const refused = admitJsnodeOperationPackageSpecification(input);
+    assert.equal(refused.code, "PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT");
+    assert.match(refused.message, /migrate.*explicitly|cli: null/u);
+    assert.deepEqual(input, before);
+  }
 });
 
 test("admits a grouped v2 topic from projected operation arguments without package-operation identity coupling", () => {

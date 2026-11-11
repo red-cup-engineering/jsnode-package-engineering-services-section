@@ -15,7 +15,9 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { importsOfFiles } from "../src/package-imports.mjs";
+import typescript from "typescript";
+import { createPackageImportReader } from "../src/package-imports.mjs";
+const { importsOfFiles } = createPackageImportReader(typescript);
 import { ownedFiles, packageRoots } from "../src/package-tree.mjs";
 import { formatManifestLike, syncPackageManifest } from "../src/sync-package-manifest.mjs";
 import { testPlan } from "../src/package-test-plan.mjs";

@@ -21,4 +21,6 @@ test("projects module and example documentation without inventing a command prot
 test("documents the catalog command only when admitted", () => {
   const projection = projectJsnodeOperationPackageReadme({ ...specification, app: { commandName: "math", path: "apps/math-cli.mjs" } });
   assert.match(projection.text, /run-javascript-node-operation-module apps\/math-cli\.mjs <operation>/u);
+  assert.match(projection.text, /@red-cup-engineering\/node-js-function-engineering-services-section/u);
+  assert.match(projection.text, /native Node\.js resolution; no House resolver/u);
 });

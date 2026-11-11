@@ -58,3 +58,29 @@ Specification basis. JSNode fabrication package test plan and module projection.
 | ` JSNODE-PACKAGE-QUICKSTART ` | consumer example | An installed consumer receives a test plan that omits fixtures and child-package tests while retaining test requirements. |
 
 Runtime requirement. ` >=24 `
+
+
+## Source import reader
+
+The installed `package-imports` entrypoint preserves the direct
+`houseSpecifiersOfText(text, options)` and `importsOfFiles(files, options)` APIs,
+using the package's declared TypeScript 5.9.3 dependency.
+
+For committed-source bootstrap consumers, the dependency-free
+`src/package-imports.mjs` exports `createPackageImportReader(typescript)`. Supply
+the explicitly selected TypeScript 5.9.3 parser and use the returned reader.
+Direct calls to that bootstrap module require `{ typescript }` in their options.
+Missing or incompatible explicit selections refuse; the bootstrap module does not
+load an ambient parser or install dependencies.
+
+The reader admits JS, MJS, CJS, TS, MTS, CTS, JSX and TSX. Pass the real filename
+so the appropriate syntax is selected. It reads import/export, require, resolver
+and literal route syntax, including type-only demand and executable expressions
+inside templates and JSX. Generated source strings and comments are not supplier
+edges. Recovered parse errors refuse with the filename and source location.
+
+Installed manifest and interface commands use the declared exact parser dependency.
+Before workspace acquisition, a committed-source consumer must authenticate and
+supply that parser independently. The source-native CI workflow supplies the exact
+archive by SHA-512; the Guix consumer uses its explicit frozen toolchain inventory.
+Source checks alone do not qualify a frozen installation or a machine change.

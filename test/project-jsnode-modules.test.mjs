@@ -10,7 +10,7 @@ import { projectJsnodePackageCli } from "../scripts/project-jsnode-package-cli.m
 import { readFile } from "node:fs/promises";
 
 // Resolve the declared code-layer runner under either direct or hoisted installation.
-const operationRunner = fileURLToPath(import.meta.resolve("@red-cup-engineering/javascript-node-services-section/run-javascript-node-operation-module"));
+const operationRunner = fileURLToPath(import.meta.resolve("@red-cup-engineering/node-js-function-engineering-services-section/run-javascript-node-operation-module"));
 const specification = {
   sources: [
     { path: "src/base.mjs", text: "export const base = 1;\n" },
@@ -22,7 +22,7 @@ const specification = {
   ],
   cli: { path: "apps/math-cli.mjs", name: "math", description: "Runs math." },
 };
-function run(file, arguments_, input) {
+function run(file, arguments_, input, exitCode = 0) {
   return new Promise((resolve, reject) => {
     // A catalog is a declaration: the code layer's runner executes it.
     const { NODE_TEST_CONTEXT, HOUSE_ROOT, HOUSE_PACKAGE_BINDINGS, ...env } = process.env;
@@ -33,7 +33,7 @@ function run(file, arguments_, input) {
     child.stderr.on("data", (chunk) => { stderr += chunk; });
     const timeout = setTimeout(() => child.kill(), 60_000);
     child.on("error", (error) => { clearTimeout(timeout); reject(error); });
-    child.on("close", (code, signal) => { clearTimeout(timeout); code === 0 ? resolve({ stdout, stderr }) : reject(new Error(`CLI failed (${signal ?? code}): ${stderr}`)); });
+    child.on("close", (code, signal) => { clearTimeout(timeout); code === exitCode ? resolve({ stdout, stderr }) : reject(new Error(`CLI failed (${signal ?? code}): ${stderr}`)); });
     child.stdin.end(input);
   });
 }
@@ -62,6 +62,12 @@ test("projects shared source modules and one schema-bound NDJSON catalog without
   assert.equal((await run(path.join(root, "apps/math-cli.mjs"), [], "")).stdout.includes("increment"), true);
   assert.equal((await run(path.join(root, "apps/math-cli.mjs"), ["increment"], "2\n")).stdout, "3\n");
   assert.equal((await run(path.join(root, "apps/math-cli.mjs"), ["double"], "2\n4\n")).stdout, "4\n8\n");
+  const refused = await run(path.join(root, "apps/math-cli.mjs"), ["increment"], '"wrong type"\n2\n', 2);
+  const [problem, recovered] = refused.stdout.trim().split("\n").map(JSON.parse);
+  assert.equal(problem.type, "https://schemas.561.group/problems/operation-refused");
+  assert.equal(problem.code, "InvalidInput");
+  assert.equal(Object.hasOwn(problem, "ok"), false);
+  assert.equal(recovered, 3);
   assert.equal(first.find((file) => file.path === "apps/math-cli.mjs").mode, 0o644);
   const changed = projectJsnodeModules({ ...specification, cli: { ...specification.cli, description: "Runs integer math." } });
   assert.notEqual(changed.find((file) => file.path === specification.cli.path).text, first.find((file) => file.path === specification.cli.path).text);

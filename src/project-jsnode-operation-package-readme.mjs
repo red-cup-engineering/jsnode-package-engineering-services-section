@@ -19,7 +19,7 @@ function renderReadme(specification) {
       for (const example of examples) lines.push("", `##### ${example.name}`, "", "Input:", "", "~~~json", JSON.stringify(example.input, null, 2), "~~~", "", "Output:", "", "~~~json", JSON.stringify(example.output, null, 2), "~~~");
     }
   }
-  if (specification.app !== null) lines.push("", "## Catalog command", "", `\`${specification.app.path}\` declares the catalog; run it with \`run-javascript-node-operation-module ${specification.app.path} <operation>\`.`);
+  if (specification.app !== null) lines.push("", "## Catalog command", "", `\`${specification.app.path}\` declares the catalog; run it with \`run-javascript-node-operation-module ${specification.app.path} <operation>\`.`, "", "The installed runner is supplied by `@red-cup-engineering/node-js-function-engineering-services-section`, selected in this package's runtime dependencies. It loads this declaration through native Node.js resolution; no House resolver is required.");
   return `${lines.join("\n")}\n`;
 }
 

@@ -717,3 +717,30 @@ An incomplete or failing composition is refused as a whole, without automatic
 repair purchases or attributing an interaction failure to one arbitrary supplier.
 The result retains the original order, source lots and assay evidence; it remains
 a proposal for an independent receiver, not accepted or deployed software.
+
+## Projected catalog runtime
+
+New catalog-bearing package specifications select
+`@red-cup-engineering/node-js-function-engineering-services-section@0.5.1`
+as a runtime dependency. That owner supplies the public module interpreter and
+`run-javascript-node-operation-module` bin. Projected declarations remain data;
+they gain neither a private interpreter nor a package-local executable wrapper.
+Generated tests use the same canonical interpreter, while creation receives the
+installed bin and compares its raw NDJSON values with the imported operations.
+No House resolver or source-tree package discovery is used.
+
+The historical `@red-cup-engineering/javascript-node-services-section` and
+former `@red-cup-engineering/javascript-node-operation-engineering-services-section`
+also provide that bin name. An authored app specification selecting either in a
+dependency map is refused rather than silently discarding requirements or
+allowing an install-order-dependent runner. Migrate its required APIs explicitly,
+or select `cli: null` for a module-only package. Module-only specifications keep
+their authored dependency selections unchanged and acquire no automatic runtime.
+Historical guard-to-declaration conversion remains supported.
+
+This fabrication package still needs the historical supplier for its parser,
+module-analysis and command-admission APIs. The canonical runtime is a declared
+test supplier here and a production supplier in generated app packages. Source
+tests against a locally selected candidate archive do not establish registry
+availability. Publish and independently receive the canonical 0.5.1 artifact
+before integrating this consumer selection or claiming registry-based creation.
