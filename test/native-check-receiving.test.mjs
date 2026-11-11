@@ -5,6 +5,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { runNodeWithTestObservation } from './fixtures/native-node-observation.mjs';
 
 const syntax = fileURLToPath(new URL('../scripts/check-package-syntax.mjs', import.meta.url));
 const runner = fileURLToPath(new URL('../scripts/run-package-tests.mjs', import.meta.url));
@@ -115,11 +116,10 @@ test('actual nested Node suites with skips and TODOs retain native counts', t =>
   const {root} = fixture(t);
   writeFileSync(join(root,'test','actual.test.mjs'), `import {describe,it} from 'node:test';
 describe('nested',()=>{it('pass',()=>{});it.skip('skip',()=>{});it.todo('later');});\n`);
-  const {NODE_TEST_CONTEXT, ...environment} = process.env;
-  const native = spawnSync(process.execPath, ['--test','--test-reporter=tap','test/actual.test.mjs'], {cwd: root,encoding:'utf8',env:environment});
+  const native = runNodeWithTestObservation(['--test','test/actual.test.mjs'], root);
   assert.equal(native.error, undefined);
   assert.equal(native.status, 0, native.stderr);
-  const result = observe(t, runner, {status: native.status, report: native.stdout});
+  const result = observe(t, runner, {status: native.status, report: native.tap});
   assert.equal(result.status, 0, result.stderr);
   const receipt = reportOf(result);
   assert.equal(receipt.ran, 3);

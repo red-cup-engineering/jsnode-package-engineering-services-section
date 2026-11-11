@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/jsnode-package-services-section",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "type": "module",
   "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
   "repository": {
@@ -47,6 +47,7 @@
     "./workspace/publication-files": "./src/workspace/publication-files.mjs",
     "./plan-jsnode-modules": "./src/plan-jsnode-modules.mjs",
     "./package-test-plan": "./src/package-test-plan.mjs",
+    "./package-test-reporters": "./src/package-test-reporters.mjs",
     "./standardize-package-tests": "./src/standardize-package-tests.mjs",
     "./workspace/scanner": "./src/workspace/scanner/index.mjs",
     "./workspace/scanner/schema": "./src/workspace/scanner/schema.mjs",

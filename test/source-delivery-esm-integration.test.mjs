@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import {spawnSync} from "node:child_process";
 import {mkdtemp, mkdir, rm, writeFile} from "node:fs/promises";
 import {tmpdir} from "node:os";
 import path from "node:path";
@@ -7,21 +6,7 @@ import test from "node:test";
 import {projectJsnodeExampleTests} from "../src/project-jsnode-example-tests.mjs";
 import {projectJsnodeModules} from "../src/project-jsnode-modules.mjs";
 import {moduleOfDelivery} from "../src/derive-jsnode-package-from-closure.mjs";
-
-function runNode(args,cwd) {
-  // Node's parent test worker sets NODE_TEST_CONTEXT=child-v8. If inherited
-  // by a nested node --test runner, Node skips the entire nested suite and
-  // exits 0: a dangerously false behavioral success. Remove only that
-  // worker-local marker; preserve the caller's remaining native environment.
-  const env={...process.env};
-  delete env.NODE_TEST_CONTEXT;
-  // Node 24 defaults to the human-readable spec reporter, while earlier
-  // native runners default to TAP. Select TAP explicitly for machine-read
-  // assertions about executed/failed cases, never infer a passing result
-  // merely from a child's zero exit code.
-  const nativeArgs=args.includes("--test") ? ["--test-reporter=tap",...args] : args;
-  return spawnSync(process.execPath,nativeArgs,{cwd,encoding:"utf8",timeout:15000,env});
-}
+import {runNodeWithTestObservation as runNode} from "./fixtures/native-node-observation.mjs";
 
 test("real source delivery, module projection, CLI and generated assays agree on legal exported names",async()=>{
   const directory=await mkdtemp(path.join(tmpdir(),"jsnode-complete-esm-contract-"));
@@ -60,7 +45,7 @@ test("real source delivery, module projection, CLI and generated assays agree on
       assert.equal(syntax.status,0,exportName+": "+syntax.stderr);
       const run=runNode(["--test",path.join(directory,assay.path)],directory);
       assert.equal(run.status,0,exportName+": "+run.stdout+"\n"+run.stderr);
-      assert.match(run.stdout,/# pass 1\b/u);
+      assert.match(run.tap,/# pass 1\b/u);
       const actual=runNode(["--input-type=module","-e",
         'import {catalog} from "./apps/catalog.mjs"; if(await catalog.operations["source-contract"].operation(2)!==4) process.exit(11);'],directory);
       assert.equal(actual.status,0,exportName+": catalog import fails: "+actual.stderr);
