@@ -8,7 +8,7 @@ import { readJavascriptFileExportDocumentation } from "@red-cup-engineering/read
 import { admitJavascriptExportDescription } from "@red-cup-engineering/read-javascript-file-export-documentation-service/description";
 import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 import { projectJsnodeOperationSourceFromArguments } from "./project-jsnode-operation-source-from-arguments.mjs";
-import { parseJavaScript } from "@red-cup-engineering/javascript-node-services-section/javascript-parser";
+import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
 import { planJsnodePackageCollapse, applyJsnodePackageCollapsePlan } from "@red-cup-engineering/javascript-node-services-section/syntax";
 
 class SpecificationRefusal extends Error {
