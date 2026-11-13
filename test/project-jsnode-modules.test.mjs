@@ -10,7 +10,7 @@ import { projectJsnodePackageCli } from "../scripts/project-jsnode-package-cli.m
 import { readFile } from "node:fs/promises";
 
 // Resolve the declared code-layer runner under either direct or hoisted installation.
-const operationRunner = fileURLToPath(import.meta.resolve("@red-cup-engineering/javascript-node-services-section/run-javascript-node-operation-module"));
+const operationRunner = fileURLToPath(import.meta.resolve("@red-cup-engineering/javascript-node-engineering-services-section/run-javascript-node-operation-module"));
 const specification = {
   sources: [
     { path: "src/base.mjs", text: "export const base = 1;\n" },

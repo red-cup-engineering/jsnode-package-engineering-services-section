@@ -13,7 +13,7 @@ import {
   parse as parseJson,
   requireJsonValue,
 
-} from "@red-cup-engineering/json-services-section";
+} from "@red-cup-engineering/json-engineering-services-section";
 import {
   admissionFailureContract,
   packageManifestAdmissionContract,

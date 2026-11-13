@@ -21,7 +21,7 @@ function contractTestSource(specification) {
   const bindings = Object.values(operations).map((operation) => `${JSON.stringify(operation.binding)}: ${operation.binding}`).join(", ");
   return [
     'import assert from "node:assert/strict";',
-    ...(specification.app === null ? [] : ['import { Readable } from "node:stream";', 'import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-services-section/operation";', `import { catalog } from ${JSON.stringify(`../${specification.app.path}`)};`]),
+    ...(specification.app === null ? [] : ['import { Readable } from "node:stream";', 'import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-engineering-services-section/operation";', `import { catalog } from ${JSON.stringify(`../${specification.app.path}`)};`]),
     'import test from "node:test";',
     ...imports,
     "",

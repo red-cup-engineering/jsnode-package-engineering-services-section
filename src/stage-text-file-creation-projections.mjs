@@ -9,7 +9,7 @@ import { lstat, mkdir, mkdtemp, readdir, rm } from "node:fs/promises";
 import path from "node:path";
 import { readFileText } from "@red-cup-engineering/computer-file-engineering-services-section/read-file";
 import { writeFileText } from "@red-cup-engineering/computer-file-engineering-services-section/write-file";
-import { serializeLines } from "@red-cup-engineering/jsonl-services-section";
+import { serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
 import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 

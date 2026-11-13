@@ -17,7 +17,7 @@
   },
   {
     "consumer": "@red-cup-engineering/mcp-engineering-services-section",
-    "dependency": "@red-cup-engineering/json-schema-services-section",
+    "dependency": "@red-cup-engineering/json-schema-engineering-services-section",
     "version": "0.5.0",
     "error": {
       "message": "request must carry exactly expectedName, expectedVersion, packageRoot, projectRoot, type, and version, with optional entry"

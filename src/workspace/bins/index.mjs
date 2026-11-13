@@ -15,7 +15,7 @@ import {
 
 } from "../schemas/bins.mjs";
 
-import { jsonResource } from "@red-cup-engineering/json-services-section";
+import { jsonResource } from "@red-cup-engineering/json-engineering-services-section";
 
 function classifyTarget(target) {
   if (target === "./dist/src/scripts/infograph.mjs") return "cli";

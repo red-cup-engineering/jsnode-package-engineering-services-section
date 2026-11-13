@@ -1,7 +1,7 @@
 {
   "observedAt": "2026-10-25T00:20:08.925Z",
   "manifest": {
-    "name": "@red-cup-engineering/npm-workspace-publication-service",
+    "name": "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section",
     "version": "0.14.18",
     "description": "Verifies exact registry dependency specifications, orders a package estate into leaf-first tiers, and publishes with npm; dry-run by default.",
     "type": "module",
@@ -12,13 +12,13 @@
       "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
       "@red-cup-engineering/computer-file-engineering-services-section": "0.4.0",
       "@red-cup-engineering/metrologic": "0.4.0",
-      "@red-cup-engineering/uri-services-section": "0.1.1",
+      "@red-cup-engineering/uri-engineering-services-section": "0.1.1",
       "@red-cup-engineering/computer-content-address-engineering-services-section": "0.2.0",
       "@red-cup-engineering/execute-javascript-node-command-service": "0.3.1",
       "@red-cup-engineering/git-services-section": "0.1.2",
-      "@red-cup-engineering/javascript-node-services-section": "0.3.2",
+      "@red-cup-engineering/javascript-node-engineering-services-section": "0.3.2",
       "@red-cup-engineering/npm-registry-read-service": "0.1.2",
-      "@red-cup-engineering/npm-registry-snapshot-services-section": "0.1.1"
+      "@red-cup-engineering/npm-registry-snapshot-engineering-services-section": "0.1.1"
     },
     "private": false,
     "license": "MIT",
@@ -119,12 +119,12 @@
       "url": "git+https://github.com/red-cup-engineering/npm-workspace-publication-service.git"
     },
     "gitHead": "2caddbcae151b494ac49f38050b8bf5cdfe6c1c2",
-    "_id": "@red-cup-engineering/npm-workspace-publication-service@0.14.18",
+    "_id": "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section@0.14.18",
     "contentDigest": "sha256-f3e04c0b8641186d4cb73d2cc3eadd72cad74d3abb8ff82ec5e1e379d5fb4173",
     "dist": {
       "shasum": "cdcd13a0077b482285f29a2fd30280a018e5c06d",
       "integrity": "sha512-dRfdb5nVmU2pnC58yfV7xMkVnTWwlvVUL+A6PsobeMhE3GVi32a+D3bp4HuCLi2FL00J7F7rzNlyNtkg02bnIQ==",
-      "tarball": "https://registry.561.group/@red-cup-engineering/npm-workspace-publication-service/-/npm-workspace-publication-service-0.14.18.tgz"
+      "tarball": "https://registry.561.group/@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section/-/npm-workspace-publication-service-0.14.18.tgz"
     },
     "_npmUser": {
       "name": "github-services"

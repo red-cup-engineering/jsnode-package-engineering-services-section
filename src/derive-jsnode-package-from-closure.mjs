@@ -22,10 +22,10 @@
  * the provider, and the caller judges the accepted lot once the whole pipeline has assayed it.
  */
 import path from "node:path";
-import { parseJsonValue } from "@red-cup-engineering/json-services-section";
-import { readJsnodeModuleExports } from "@red-cup-engineering/javascript-node-services-section/syntax";
+import { parseJsonValue } from "@red-cup-engineering/json-engineering-services-section";
+import { readJsnodeModuleExports } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
 import { inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";
-import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 import { bindOperationMeaningClosure } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";

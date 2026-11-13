@@ -62,40 +62,40 @@
       ]
     },
     {
-      "name": "@red-cup-engineering/cbor-services-section",
+      "name": "@red-cup-engineering/cbor-engineering-services-section",
       "version": "0.1.1",
       "candidates": [
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/cbor-services-section",
-          "name": "@red-cup-engineering/cbor-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/cbor-engineering-services-section",
+          "name": "@red-cup-engineering/cbor-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/cbor-services-section",
-          "name": "@red-cup-engineering/cbor-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/cbor-engineering-services-section",
+          "name": "@red-cup-engineering/cbor-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/cbor-services-section",
-          "name": "@red-cup-engineering/cbor-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/cbor-engineering-services-section",
+          "name": "@red-cup-engineering/cbor-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cbor-services-section",
-          "name": "@red-cup-engineering/cbor-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cbor-engineering-services-section",
+          "name": "@red-cup-engineering/cbor-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cbor-services-section",
-          "name": "@red-cup-engineering/cbor-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cbor-engineering-services-section",
+          "name": "@red-cup-engineering/cbor-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true
@@ -144,19 +144,19 @@
       ]
     },
     {
-      "name": "@red-cup-engineering/cloudflare-r2-services-section",
+      "name": "@red-cup-engineering/cloudflare-r2-engineering-services-section",
       "version": "0.5.2",
       "candidates": [
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cloudflare-r2-services-section",
-          "name": "@red-cup-engineering/cloudflare-r2-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cloudflare-r2-engineering-services-section",
+          "name": "@red-cup-engineering/cloudflare-r2-engineering-services-section",
           "version": "0.5.2",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cloudflare-r2-services-section",
-          "name": "@red-cup-engineering/cloudflare-r2-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/cloudflare-r2-engineering-services-section",
+          "name": "@red-cup-engineering/cloudflare-r2-engineering-services-section",
           "version": "0.5.2",
           "gitHead": null,
           "exact": true
@@ -363,33 +363,33 @@
       ]
     },
     {
-      "name": "@red-cup-engineering/json-schema-services-section",
+      "name": "@red-cup-engineering/json-schema-engineering-services-section",
       "version": "0.5.0",
       "candidates": [
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/json-schema-services-section",
-          "name": "@red-cup-engineering/json-schema-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/json-schema-engineering-services-section",
+          "name": "@red-cup-engineering/json-schema-engineering-services-section",
           "version": "0.5.0",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/json-schema-services-section",
-          "name": "@red-cup-engineering/json-schema-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/json-schema-engineering-services-section",
+          "name": "@red-cup-engineering/json-schema-engineering-services-section",
           "version": "0.5.0",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-schema-services-section",
-          "name": "@red-cup-engineering/json-schema-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-schema-engineering-services-section",
+          "name": "@red-cup-engineering/json-schema-engineering-services-section",
           "version": "0.5.0",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-schema-services-section",
-          "name": "@red-cup-engineering/json-schema-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-schema-engineering-services-section",
+          "name": "@red-cup-engineering/json-schema-engineering-services-section",
           "version": "0.5.0",
           "gitHead": null,
           "exact": true
@@ -397,40 +397,40 @@
       ]
     },
     {
-      "name": "@red-cup-engineering/json-services-section",
+      "name": "@red-cup-engineering/json-engineering-services-section",
       "version": "0.4.1",
       "candidates": [
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/json-services-section",
-          "name": "@red-cup-engineering/json-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/json-engineering-services-section",
+          "name": "@red-cup-engineering/json-engineering-services-section",
           "version": "0.4.0",
           "gitHead": null,
           "exact": false
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/json-services-section",
-          "name": "@red-cup-engineering/json-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/json-engineering-services-section",
+          "name": "@red-cup-engineering/json-engineering-services-section",
           "version": "0.4.0",
           "gitHead": null,
           "exact": false
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/json-services-section",
-          "name": "@red-cup-engineering/json-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/json-engineering-services-section",
+          "name": "@red-cup-engineering/json-engineering-services-section",
           "version": "0.4.0",
           "gitHead": null,
           "exact": false
         },
         {
           "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/services/computer-content-engineering-services-section/services/computer-serialized-content-engineering-services-section/services/json-services-section",
-          "name": "@red-cup-engineering/json-services-section",
+          "name": "@red-cup-engineering/json-engineering-services-section",
           "version": "0.4.2-dev.2",
           "gitHead": null,
           "exact": false
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-services-section",
-          "name": "@red-cup-engineering/json-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-engineering-services-section",
+          "name": "@red-cup-engineering/json-engineering-services-section",
           "version": "0.4.0",
           "gitHead": null,
           "exact": false
@@ -438,40 +438,40 @@
       ]
     },
     {
-      "name": "@red-cup-engineering/uri-services-section",
+      "name": "@red-cup-engineering/uri-engineering-services-section",
       "version": "0.1.1",
       "candidates": [
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/uri-services-section",
-          "name": "@red-cup-engineering/uri-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/issuer-research-0.1.5/node_modules/@red-cup-engineering/uri-engineering-services-section",
+          "name": "@red-cup-engineering/uri-engineering-services-section",
           "version": "0.1.3",
           "gitHead": "257a3cef4b5bd6c7f7be3398042696747ecd4cc7",
           "exact": false
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/uri-services-section",
-          "name": "@red-cup-engineering/uri-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/mcp-0.1.7/node_modules/@red-cup-engineering/uri-engineering-services-section",
+          "name": "@red-cup-engineering/uri-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/uri-services-section",
-          "name": "@red-cup-engineering/uri-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/uri-engineering-services-section",
+          "name": "@red-cup-engineering/uri-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true
         },
         {
           "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/services/computer-content-engineering-services-section/services/computer-content-address-engineering-services-section/services/uri-services-section",
-          "name": "@red-cup-engineering/uri-services-section",
+          "name": "@red-cup-engineering/uri-engineering-services-section",
           "version": "0.1.3",
           "gitHead": null,
           "exact": false
         },
         {
-          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/uri-services-section",
-          "name": "@red-cup-engineering/uri-services-section",
+          "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/uri-engineering-services-section",
+          "name": "@red-cup-engineering/uri-engineering-services-section",
           "version": "0.1.1",
           "gitHead": null,
           "exact": true

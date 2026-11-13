@@ -9,7 +9,7 @@
  * admissible material.
  */
 
-import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 
 export const binSurfaceEntrySchema = {
   $id: "metroplat/bins/entry",

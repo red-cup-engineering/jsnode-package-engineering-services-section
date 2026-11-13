@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // standardize-package-tests: apply the STD-TEST codemod to every package of the repository the current
 // directory is in. Dry run by default: prints the report as JSON. --write rewrites each changed package.json in
-// its own formatting. The devDependency on @red-cup-engineering/jsnode-package-services-section is declared workspace:*, as
+// its own formatting. The devDependency on @red-cup-engineering/jsnode-package-engineering-services-section is declared workspace:*, as
 // every house dependency is: house packages are composed in workspaces, not installed standalone.
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";

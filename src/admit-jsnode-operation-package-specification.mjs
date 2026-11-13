@@ -1,6 +1,6 @@
 import path from "node:path";
-import { freezeJson } from "@red-cup-engineering/json-services-section";
-import { isJsonValue } from "@red-cup-engineering/json-services-section";
+import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
+import { isJsonValue } from "@red-cup-engineering/json-engineering-services-section";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
 import { admitNonemptySingleLineText } from "@red-cup-engineering/computer-text-content-engineering-services-section/admit-nonempty-single-line-text";
 import { formNpmScopedPackageName } from "@red-cup-engineering/npm-scoped-package-name-formation-service";
@@ -9,7 +9,7 @@ import { admitJavascriptExportDescription } from "@red-cup-engineering/read-java
 import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 import { projectJsnodeOperationSourceFromArguments } from "./project-jsnode-operation-source-from-arguments.mjs";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
-import { planJsnodePackageCollapse, applyJsnodePackageCollapsePlan } from "@red-cup-engineering/javascript-node-services-section/syntax";
+import { planJsnodePackageCollapse, applyJsnodePackageCollapsePlan } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
 
 class SpecificationRefusal extends Error {
   constructor(code, message, refusedPath = null) {
@@ -179,7 +179,7 @@ function runnableFaces(text, operationPath) {
 }
 
 // The runtime the old guard called must not survive into a module below the code layer.
-const RUNTIME_SPECIFIER = "@red-cup-engineering/javascript-node-services-section/operation";
+const RUNTIME_SPECIFIER = "@red-cup-engineering/javascript-node-engineering-services-section/operation";
 function withoutDeadRuntimeImports(text) {
   const program = parseJavaScript(text);
   let result = text;
@@ -337,7 +337,7 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     const developmentDependencies = dependencies(candidate.devDependencies, "devDependencies");
     if (app !== null) {
       for (const [name, version] of Object.entries({
-        "@red-cup-engineering/javascript-node-services-section": "0.3.2",
+        "@red-cup-engineering/javascript-node-engineering-services-section": "0.3.2",
       })) {
         if (Object.hasOwn(runtimeDependencies, name) && !["0.2.0", version].includes(runtimeDependencies[name])) {
           refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${name} must be pinned to ${version} for projected machine faces`);

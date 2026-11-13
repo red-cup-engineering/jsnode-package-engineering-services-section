@@ -13,20 +13,20 @@ import {
   admissionFailure,
   admitPackageManifest,
 
-} from "@red-cup-engineering/jsnode-package-services-section/workspace/package-manifest";
+} from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/package-manifest";
 import {
   admitPnpmLockfile,
 
-} from "@red-cup-engineering/jsnode-package-services-section/workspace/lockfile";
+} from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/lockfile";
 import {
   admitWorkspaceDeclaration,
 
-} from "@red-cup-engineering/jsnode-package-services-section/workspace/workspace-declaration";
-import { binSurfaceOfPackageManifest } from "@red-cup-engineering/jsnode-package-services-section/workspace/bins";
+} from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/workspace-declaration";
+import { binSurfaceOfPackageManifest } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/bins";
 
-import { exportSurfaceOfPackageManifest } from "@red-cup-engineering/jsnode-package-services-section/workspace/exports";
-import { packageSurfaceOf } from "@red-cup-engineering/jsnode-package-services-section/workspace/package-surface";
-import { publicationArtifactTargetPathsOf, publicationReleasePolicyOf, publicationStatusProofOf } from "@red-cup-engineering/jsnode-package-services-section/workspace/publication-status";
+import { exportSurfaceOfPackageManifest } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/exports";
+import { packageSurfaceOf } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/package-surface";
+import { publicationArtifactTargetPathsOf, publicationReleasePolicyOf, publicationStatusProofOf } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/publication-status";
 import {
   packageRootScan,
   workspacePackageManifestPath,

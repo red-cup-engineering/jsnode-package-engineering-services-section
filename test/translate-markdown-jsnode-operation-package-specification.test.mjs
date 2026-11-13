@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-services-section/operation";
+import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-engineering-services-section/operation";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
@@ -30,7 +30,7 @@ test("translates the grouped v2 Markdown dialect through admission and projectio
   assert.equal(admitted.operations.length, 2);
   assert.equal(
     translation.artifactSpecificationCandidate.projections[0].target,
-    "@red-cup-engineering/jsnode-package-services-section/admit-jsnode-operation-package-specification",
+    "@red-cup-engineering/jsnode-package-engineering-services-section/admit-jsnode-operation-package-specification",
   );
   const projection = projectJsnodeOperationPackage(admitted);
   assert.equal(projection.type, "JsnodeOperationPackageProjection");

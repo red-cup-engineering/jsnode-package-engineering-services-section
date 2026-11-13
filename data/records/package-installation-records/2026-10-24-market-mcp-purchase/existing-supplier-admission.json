@@ -43,20 +43,20 @@
   },
   {
     "consumer": "@red-cup-engineering/mcp-engineering-services-section",
-    "dependency": "@red-cup-engineering/json-schema-services-section",
+    "dependency": "@red-cup-engineering/json-schema-engineering-services-section",
     "version": "0.5.0",
     "result": {
       "type": "InstalledNpmPackageResolutionRead",
       "version": 1,
-      "expectedName": "@red-cup-engineering/json-schema-services-section",
+      "expectedName": "@red-cup-engineering/json-schema-engineering-services-section",
       "expectedVersion": "0.5.0",
       "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-economic-systems-engineering-services-section/services/computer-business-systems-engineering-services-section/apps/market.561.group",
       "entry": {
         "kind": "package"
       },
       "entryPath": null,
-      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-schema-services-section",
-      "name": "@red-cup-engineering/json-schema-services-section",
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@red-cup-engineering/json-schema-engineering-services-section",
+      "name": "@red-cup-engineering/json-schema-engineering-services-section",
       "packageVersion": "0.5.0",
       "conformant": true,
       "defects": []

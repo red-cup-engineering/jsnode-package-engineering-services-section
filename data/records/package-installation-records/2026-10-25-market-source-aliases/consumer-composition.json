@@ -2,14 +2,14 @@
   "observedAt": "2026-10-25T00:27:52.165Z",
   "selections": [
     {
-      "name": "@red-cup-engineering/alpaca-services-section",
+      "name": "@red-cup-engineering/alpaca-engineering-services-section",
       "version": "0.1.4-dev.1",
-      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/alpaca-services-section"
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/alpaca-engineering-services-section"
     },
     {
-      "name": "@red-cup-engineering/json-services-section",
+      "name": "@red-cup-engineering/json-engineering-services-section",
       "version": "0.4.2-dev.2",
-      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/json-services-section"
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/json-engineering-services-section"
     },
     {
       "name": "@red-cup-engineering/metrologic",

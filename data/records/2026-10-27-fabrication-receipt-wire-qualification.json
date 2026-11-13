@@ -152,7 +152,7 @@
       "ownerReport": {
         "kind": "package-test-run.v1",
         "ok": true,
-        "package": "@red-cup-engineering/jsnode-package-services-section",
+        "package": "@red-cup-engineering/jsnode-package-engineering-services-section",
         "planned": 41,
         "files": 41,
         "ran": 303,

@@ -3,7 +3,7 @@
  * that declaration; it does not authenticate the source or grant capabilities.
  */
 import { semanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
-import { schemaFromGraph } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFromGraph } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 import { confined } from "./project-jsnode-module-paths.mjs";
 import moduleSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };

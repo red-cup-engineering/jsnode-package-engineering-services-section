@@ -15,7 +15,7 @@
  *   of a call to a dependency import with the operation's own parameters, in order.
  * A relative import is the package's own territory and never a misfold.
  */
-import { readJsnodeAst } from "@red-cup-engineering/javascript-node-services-section/syntax";
+import { readJsnodeAst } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
 
 const isDependency = (specifier) => typeof specifier === "string" && !specifier.startsWith(".") && !specifier.startsWith("/") && !specifier.startsWith("node:");
 

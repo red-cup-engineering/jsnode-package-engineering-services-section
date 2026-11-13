@@ -1,19 +1,19 @@
 import { lstat, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
-import { freezeJson } from "@red-cup-engineering/json-services-section";
-import { admitJavascriptNodeCommandExecutionRequest } from "@red-cup-engineering/javascript-node-services-section/admit-javascript-node-command-execution-request";
+import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
+import { admitJavascriptNodeCommandExecutionRequest } from "@red-cup-engineering/javascript-node-engineering-services-section/admit-javascript-node-command-execution-request";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operation-package-specification.mjs";
-import { parse } from "@red-cup-engineering/json-services-section";
-import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-services-section";
-import { packNpmPackage } from "@red-cup-engineering/npm-package-services-section/pack-npm-package";
+import { parse } from "@red-cup-engineering/json-engineering-services-section";
+import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
+import { packNpmPackage } from "@red-cup-engineering/npm-package-engineering-services-section/pack-npm-package";
 import { inspectInstalledNpmPackage, inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";
 import { projectJsnodeOperationPackage } from "./project-jsnode-operation-package.mjs";
 import { publishStagedDirectoryAtAbsentPath } from "@red-cup-engineering/computer-file-engineering-services-section/publish-staged-directory-at-absent-path";
 import { stageTextFileCreationProjections } from "./stage-text-file-creation-projections.mjs";
 import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
-import { validateJsonSchema } from "@red-cup-engineering/json-schema-services-section/validation";
+import { validateJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
 // The house npm scopes routed to the canonical registry (~/.npmrc's own @scope:registry lines); every other package name (a bare "rrule", say) is third-party and must resolve from npm's own default registry (npmjs), per house working discipline's "third-party packages resolve from npmjs; house scopes must resolve from the canonical registry".

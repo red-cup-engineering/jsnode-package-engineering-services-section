@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { bindNativeAssayProfile, deriveJsnodeModules, assayCasesOfDelivery, assayDeliverySchema } from "../src/derive-jsnode-package-from-closure.mjs";
 import { moduleWorkOrder } from "./fixtures/module-work-order.mjs";
 import { controlledLocalAssayFixture } from "./fixtures/controlled-local-assay.mjs";

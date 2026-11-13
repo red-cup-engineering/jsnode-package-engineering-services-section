@@ -7,7 +7,7 @@ import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { admitTestRequires, nestedPackageRoots, ownFiles, testPlan, unmetRequirements } from "../src/package-test-plan.mjs";
-import { composePackageTestReporters } from "@red-cup-engineering/jsnode-package-services-section/package-test-reporters";
+import { composePackageTestReporters } from "@red-cup-engineering/jsnode-package-engineering-services-section/package-test-reporters";
 
 const FILES = [
   "package.json", "src/a.mjs", "src/a.test.mjs", "src/web/b.test.js", "src/types.test.mts", "src/old.cjs",

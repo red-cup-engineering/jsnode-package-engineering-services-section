@@ -8,7 +8,7 @@
  * artifacts such as `dist/` files and executable service entrypoints.
  */
 
-import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { packageSurfaceContract } from "./package-surface.mjs";
 
 export const publicationArtifactTargetSchema = {

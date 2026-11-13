@@ -1,6 +1,6 @@
 npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
 
-> @red-cup-engineering/jsnode-package-services-section@0.5.1-dev.5 test
+> @red-cup-engineering/jsnode-package-engineering-services-section@0.5.1-dev.5 test
 > node scripts/run-package-tests.mjs --test-concurrency=2 --test-timeout=30000
 
 TAP version 13
@@ -1751,4 +1751,4 @@ ok 289 - actual publication consumer retains missing, nonexecutable, private, ex
 # todo 0
 # duration_ms 16711.852119
 
-{"kind":"package-test-run.v1","ok":true,"package":"@red-cup-engineering/jsnode-package-services-section","planned":40,"files":40,"ran":289,"passed":284,"failed":0,"requires":[]}
+{"kind":"package-test-run.v1","ok":true,"package":"@red-cup-engineering/jsnode-package-engineering-services-section","planned":40,"files":40,"ran":289,"passed":284,"failed":0,"requires":[]}

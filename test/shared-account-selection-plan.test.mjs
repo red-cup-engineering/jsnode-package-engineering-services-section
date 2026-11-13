@@ -8,8 +8,8 @@ import { admitArtifactFabricationSpecification } from "@red-cup-engineering/comp
 import { deriveJsnodeModules, planJsnodeModules } from "../src/derive-jsnode-package-from-closure.mjs";
 import { testPlan } from "../src/package-test-plan.mjs";
 import { packageFiles } from "../src/package-files.mjs";
-import * as canonicalProgramme from "@red-cup-engineering/javascript-node-services-section/module-closure";
-import * as legacyProgramme from "@red-cup-engineering/javascript-node-services-section/execute-javascript-program";
+import * as canonicalProgramme from "@red-cup-engineering/javascript-node-engineering-services-section/module-closure";
+import * as legacyProgramme from "@red-cup-engineering/javascript-node-engineering-services-section/execute-javascript-program";
 
 const fixture = new URL("./fixtures/shared-account-character-selection/", import.meta.url);
 const candidate = () => JSON.parse(readFileSync(new URL("work-order.candidate.json", fixture), "utf8"));
@@ -142,7 +142,7 @@ test("the migrated legacy programme export retains the canonical Node carrier an
   assert.equal(legacyProgramme.executeJavascriptProgram, canonicalProgramme.executeJavascriptProgram);
   const source = [
     'import assert from "node:assert/strict";',
-    'import { executeJavascriptProgram } from "@red-cup-engineering/javascript-node-services-section/execute-javascript-program";',
+    'import { executeJavascriptProgram } from "@red-cup-engineering/javascript-node-engineering-services-section/execute-javascript-program";',
     'await assert.rejects(executeJavascriptProgram({fixture:true}), error => error instanceof TypeError && error.code === "programme-carrier-unavailable");',
   ].join("\n");
   const result = spawnSync(process.execPath, ["--conditions=workerd", "--input-type=module", "-e", source], {

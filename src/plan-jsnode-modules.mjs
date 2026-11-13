@@ -48,7 +48,7 @@ export function moduleFabricationPlan(candidate) {
     const projection = workOrder.projections[0];
     if (workOrder.artifact.kind !== "jsnode-modules" || workOrder.projections.length !== 1
         || projection.id !== "jsnode-modules"
-        || projection.target !== "@red-cup-engineering/jsnode-package-services-section/derive-jsnode-package-from-closure") {
+        || projection.target !== "@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure") {
       return refuse({ code: "INVALID_MODULE_PROJECTION", message: "one jsnode-modules projection to the module fabricator is required" });
     }
     const closure = moduleMeaningClosure.assert(projection.configuration);

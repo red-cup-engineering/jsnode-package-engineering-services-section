@@ -12,7 +12,7 @@
 export const STANDARD_TEST = "run-package-tests";
 export const STANDARD_CHECK = "check-package-syntax";
 /** The package that carries both commands: the owner of the test plan. */
-export const TEST_PLAN_PACKAGE = "@red-cup-engineering/jsnode-package-services-section";
+export const TEST_PLAN_PACKAGE = "@red-cup-engineering/jsnode-package-engineering-services-section";
 
 // Only known option arities are rewritten. An unknown bare option may take the next token as its value;
 // treating that value as a file selector would silently drop it. Equals-form options are unambiguous.

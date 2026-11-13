@@ -169,7 +169,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { standardizeJsnodeScripts } from "../apps/standardize-jsnode-scripts.mjs";
 
-import { readJsnodeOperationArguments } from "@red-cup-engineering/javascript-node-services-section/syntax";
+import { readJsnodeOperationArguments } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
 import { projectJsnodeOperationSourceFromArguments } from "../src/project-jsnode-operation-source-from-arguments.mjs";
 
 const SAFE_PROJECTION = projectJsnodeOperationSourceFromArguments(readJsnodeOperationArguments({ path: "scripts/echo.mjs", text: `/**

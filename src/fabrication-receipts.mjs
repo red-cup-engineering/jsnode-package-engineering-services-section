@@ -3,7 +3,7 @@ import { constitute } from "@red-cup-engineering/eavt-engineering-services-secti
 import { admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { semanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
-import { canonicalJson } from "@red-cup-engineering/json-services-section/canonical-json";
+import { canonicalJson } from "@red-cup-engineering/json-engineering-services-section/canonical-json";
 import { address as cellAddress, admitCell, bytesToHex, cell, cellSchema, cellSet,
   retainedCarrier, semanticId as cellSemanticId } from "@red-cup-engineering/signcell/cell";
 

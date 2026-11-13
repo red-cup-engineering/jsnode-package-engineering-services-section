@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { admitArtifactFabricationRealizationPlan, admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
-import { admitJavascriptNodeCommandExecutionRequest } from "@red-cup-engineering/javascript-node-services-section/admit-javascript-node-command-execution-request";
+import { admitJavascriptNodeCommandExecutionRequest } from "@red-cup-engineering/javascript-node-engineering-services-section/admit-javascript-node-command-execution-request";
 import { createJsnodeOperationPackage } from "./create-jsnode-operation-package.mjs";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { fileURLToPath } from "node:url";
@@ -11,7 +11,7 @@ import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operati
 import { projectJsnodeOperationModules } from "./project-jsnode-operation-package.mjs";
 import { deriveJsnodePackageFromClosure } from "./derive-jsnode-package-from-closure.mjs";
 import { writeTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/write-text-file";
-import { admitMarkdownJsnodeOperationPackageFabricationReceipt } from "@red-cup-engineering/jsnode-package-services-section/fabrication-receipts";
+import { admitMarkdownJsnodeOperationPackageFabricationReceipt } from "@red-cup-engineering/jsnode-package-engineering-services-section/fabrication-receipts";
 import { semanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
 import { dataKindDirectory } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 
@@ -67,7 +67,7 @@ function commandRequest({ command, arguments: args, directory, environment }) {
  * @returns {Promise<object>} A JsnodeOperationPackageRegistryPublicationReceipt or a phase-named JsnodeOperationPackageRegistryPublicationRefusal.
  */
 export async function publishJsnodeOperationPackageToRegistry({ destination, packageName, packageVersion, registry }, { execute = executeJavascriptNodeCommand } = {}) {
-  const gate = fileURLToPath(new URL("./scripts/publish-package.mjs", import.meta.resolve("@red-cup-engineering/npm-workspace-publication-service/package.json")));
+  const gate = fileURLToPath(new URL("./scripts/publish-package.mjs", import.meta.resolve("@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section/package.json")));
   const execution = execute(commandRequest({
     command: process.execPath,
     arguments: [gate, "--package", destination, "--registry", registry, "--apply"],
@@ -152,7 +152,7 @@ function realizationPlanCandidate(specification) {
 
 export function selectSingleJsnodeProjection(specification) {
   const projections = specification.projections.filter(({ id }) => id === "jsnode-operation-package");
-  if (specification.projections.length !== 1 || projections.length !== 1 || !["@red-cup-engineering/jsnode-operation-package-specification-admission-service", "@red-cup-engineering/jsnode-package-services-section/admit-jsnode-operation-package-specification"].includes(projections[0].target)) {
+  if (specification.projections.length !== 1 || projections.length !== 1 || !["@red-cup-engineering/jsnode-operation-package-specification-admission-service", "@red-cup-engineering/jsnode-package-engineering-services-section/admit-jsnode-operation-package-specification"].includes(projections[0].target)) {
     return immutable({ type: "MarkdownJsnodeOperationPackageFabricationRefusal", version: 1, phase: "jsnode-projection-selection", code: "INVALID_JSNODE_PROJECTION", message: "the admitted specification must contain exactly one JSNode operation-package projection for the canonical admission service", path: null });
   }
   return projections[0];

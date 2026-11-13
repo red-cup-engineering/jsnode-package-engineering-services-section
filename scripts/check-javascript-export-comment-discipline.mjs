@@ -2,9 +2,9 @@
 import { readFile } from "node:fs/promises";
 import { once } from "node:events";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
-import { freezeJson } from "@red-cup-engineering/json-services-section";
-import { parseJavascriptArgv } from "@red-cup-engineering/javascript-node-services-section/argv";
-import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-services-section";
+import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
+import { parseJavascriptArgv } from "@red-cup-engineering/javascript-node-engineering-services-section/argv";
+import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
 import { readJavascriptFileExportDocumentation } from "@red-cup-engineering/read-javascript-file-export-documentation-service";
 import { admitJavascriptExportDescription } from "@red-cup-engineering/read-javascript-file-export-documentation-service/description";
 import { requireTextFileRead } from "@red-cup-engineering/computer-file-engineering-services-section/require-text-file-read";

@@ -17,12 +17,12 @@
           "differentiate-sequences": "./bin/differentiate-sequences.mjs"
         },
         "dependencies": {
-          "@red-cup-engineering/cbor-services-section": "0.1.1",
+          "@red-cup-engineering/cbor-engineering-services-section": "0.1.1",
           "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
           "@red-cup-engineering/exact-number-data-service": "0.1.1",
-          "@red-cup-engineering/json-services-section": "0.4.0",
-          "@red-cup-engineering/semiotic-content-address": "0.1.0",
-          "@red-cup-engineering/uri-services-section": "0.1.1"
+          "@red-cup-engineering/json-engineering-services-section": "0.4.0",
+          "@red-cup-engineering/semiotic-content-address-system": "0.1.0",
+          "@red-cup-engineering/uri-engineering-services-section": "0.1.1"
         },
         "exports": {
           "./artifact-fabrication": "./src/artifact-fabrication.mjs",
@@ -169,11 +169,11 @@
           "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0",
           "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
           "@red-cup-engineering/eavt-services-section": "0.11.0",
-          "@red-cup-engineering/json-schema-services-section": "0.5.0",
-          "@red-cup-engineering/json-services-section": "0.4.0",
-          "@red-cup-engineering/jsonl-services-section": "0.1.0",
+          "@red-cup-engineering/json-schema-engineering-services-section": "0.5.0",
+          "@red-cup-engineering/json-engineering-services-section": "0.4.0",
+          "@red-cup-engineering/jsonl-engineering-services-section": "0.1.0",
           "@red-cup-engineering/metrologic": "0.4.0",
-          "@red-cup-engineering/uri-services-section": "0.1.1",
+          "@red-cup-engineering/uri-engineering-services-section": "0.1.1",
           "@red-cup-engineering/signcell": "0.2.0",
           "@red-cup-engineering/signchain": "0.1.0",
           "@red-cup-engineering/signgraph": "0.1.0",
@@ -182,10 +182,10 @@
           "@red-cup-engineering/html-structural-projection-service": "0.3.2",
           "@red-cup-engineering/http-services-section": "0.6.2",
           "@red-cup-engineering/immutable-content-custody-service": "0.4.1",
-          "@red-cup-engineering/javascript-node-code-fabrication-services-section": "0.1.1",
-          "@red-cup-engineering/javascript-node-services-section": "0.3.2",
+          "@red-cup-engineering/javascript-node-code-fabrication-engineering-services-section": "0.1.1",
+          "@red-cup-engineering/javascript-node-engineering-services-section": "0.3.2",
           "@red-cup-engineering/mcp-engineering-services-section": "0.1.1",
-          "@red-cup-engineering/node-process-services-section": "0.2.2",
+          "@red-cup-engineering/node-process-engineering-services-section": "0.2.2",
           "@red-cup-engineering/node-job-service": "0.1.1",
           "@red-cup-engineering/signcraft": "0.1.1",
           "@red-cup-engineering/computer-networking-engineering-services-section": "0.1.2",
@@ -228,7 +228,7 @@
     },
     {
       "manifest": {
-        "name": "@red-cup-engineering/json-services-section",
+        "name": "@red-cup-engineering/json-engineering-services-section",
         "version": "0.4.1",
         "type": "module",
         "private": false,
@@ -301,12 +301,12 @@
           "url": "git+https://github.com/red-cup-engineering/json-services-section.git"
         },
         "gitHead": "5874c33d6bee0323ea0a17094f18c9dc20024d25",
-        "_id": "@red-cup-engineering/json-services-section@0.4.1",
+        "_id": "@red-cup-engineering/json-engineering-services-section@0.4.1",
         "contentDigest": "sha256-833155ad51f0daddd0eb7615ea8d0943dac0248d69bddaa3f493f158ed723078",
         "dist": {
           "shasum": "c4ada5ccc9cc1768590eca925fd9b601d4928c8b",
           "integrity": "sha512-m8WXUbLI1KxAJdeabJ27PyrF8HxjuhFMqVEouANXAo0eFhEQsNUPGVgeISfpqBqYai10B45F2NG5muu3iMKUSA==",
-          "tarball": "https://registry.561.group/@red-cup-engineering/json-services-section/-/json-services-section-0.4.1.tgz"
+          "tarball": "https://registry.561.group/@red-cup-engineering/json-engineering-services-section/-/json-services-section-0.4.1.tgz"
         },
         "_npmUser": {
           "name": "github-services"
@@ -337,7 +337,7 @@
           "test": "node --test test/*.test.mjs"
         },
         "dependencies": {
-          "@red-cup-engineering/json-services-section": "0.4.0",
+          "@red-cup-engineering/json-engineering-services-section": "0.4.0",
           "@red-cup-engineering/signcell": "0.2.0"
         },
         "repository": {

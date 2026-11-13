@@ -116,7 +116,7 @@ test("retains requested import evaluation order and imports no runtime", () => {
     bodyText: "/**\n * Example.\n */\nexport function example() {\n  return 1;\n}",
     imports: [
       { source: "lodash", names: ["chunk"] },
-      { source: "@red-cup-engineering/json-services-section", names: ["parse"] },
+      { source: "@red-cup-engineering/json-engineering-services-section", names: ["parse"] },
       { source: "node:path", names: ["basename"] },
     ],
   };
@@ -124,7 +124,7 @@ test("retains requested import evaluation order and imports no runtime", () => {
   const importLines = projection.text.split("\n").filter((line) => line.startsWith("import "));
   assert.deepEqual(importLines, [
     'import { chunk } from "lodash";',
-    'import { parse } from "@red-cup-engineering/json-services-section";',
+    'import { parse } from "@red-cup-engineering/json-engineering-services-section";',
     'import { basename } from "node:path";',
   ]);
 });
@@ -137,7 +137,7 @@ test("declares the operation without importing or calling a runtime, a shebang o
 });
 
 test("drops the runtime import the old guard called when nothing else uses it", () => {
-  const imports = [{ source: "@red-cup-engineering/javascript-node-services-section/operation", names: ["runJavascriptNodeOperation"] }];
+  const imports = [{ source: "@red-cup-engineering/javascript-node-engineering-services-section/operation", names: ["runJavascriptNodeOperation"] }];
   assert.doesNotMatch(projectJsnodeOperationSourceFromArguments({ ...doubleValueArguments, imports }).text, /runJavascriptNodeOperation/u);
 });
 
@@ -199,7 +199,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { Readable } from "node:stream";
 import { pathToFileURL } from "node:url";
-import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-services-section/operation";
+import { runJavascriptNodeOperationModule } from "@red-cup-engineering/javascript-node-engineering-services-section/operation";
 
 test("canonical migration keeps alias meaning and import effects while the code layer runs the declaration", async (t) => {
   const directory = mkdtempSync(join(dirname(fileURLToPath(import.meta.url)), ".migration-"));

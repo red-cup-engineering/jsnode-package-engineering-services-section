@@ -25,9 +25,9 @@ receivers that need another reporter from that execution:
 
 ```js
 import { composePackageTestReporters } from
-  "@red-cup-engineering/jsnode-package-services-section/package-test-reporters";
+  "@red-cup-engineering/jsnode-package-engineering-services-section/package-test-reporters";
 import { standardTestArguments } from
-  "@red-cup-engineering/jsnode-package-services-section/standardize-package-tests";
+  "@red-cup-engineering/jsnode-package-engineering-services-section/standardize-package-tests";
 
 const original = standardTestArguments(manifest.scripts.test);
 if (original === null) throw new TypeError("A standard test command is required");
@@ -126,7 +126,7 @@ copy. Domain behavior stays with the existing engine consuming that data.
 
 ```js
 import { projectJsnodeModules } from
-  "@red-cup-engineering/jsnode-package-services-section/project-jsnode-modules";
+  "@red-cup-engineering/jsnode-package-engineering-services-section/project-jsnode-modules";
 
 const files = projectJsnodeModules({
   dataModules: [{
@@ -227,7 +227,7 @@ consumer receiving remain distinct. Package orders retain their own obligations.
 For an existing consumer, call fabrication MCP `derive_jsnode_modules` with
 `{ "workOrder": <ArtifactFabricationSpecificationCandidate> }`. The canonical
 order's artifact kind and sole projection ID are `jsnode-modules`; its target is
-`@red-cup-engineering/jsnode-package-services-section/derive-jsnode-package-from-closure`.
+`@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure`.
 The projection configuration contains only `operations`, `examples`, and exact
 `dependencies`. Operations require input and output schemas; examples contain
 `name`, `operation`, `input`, and `output`. The original requirements,
@@ -654,7 +654,7 @@ consumer receiving remain distinct. Package orders retain their own obligations.
 For an existing consumer, call fabrication MCP `derive_jsnode_modules` with
 `{ "workOrder": <ArtifactFabricationSpecificationCandidate> }`. The canonical
 order's artifact kind and sole projection ID are `jsnode-modules`; its target is
-`@red-cup-engineering/jsnode-package-services-section/derive-jsnode-package-from-closure`.
+`@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure`.
 The projection configuration contains only `operations`, `examples`, and exact
 `dependencies`. Operations require input and output schemas; examples contain
 `name`, `operation`, `input`, and `output`. The original requirements,

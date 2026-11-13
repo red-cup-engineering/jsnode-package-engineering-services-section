@@ -3,8 +3,8 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, 
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { scanDeclaredWorkspace, scanPackageRoot, scanWorkspace, scanWorkspaceDeclaration } from '@red-cup-engineering/jsnode-package-services-section/workspace/scanner/service';
-import { workspaceScanContract } from '@red-cup-engineering/jsnode-package-services-section/workspace/scanner/schema';
+import { scanDeclaredWorkspace, scanPackageRoot, scanWorkspace, scanWorkspaceDeclaration } from '@red-cup-engineering/jsnode-package-engineering-services-section/workspace/scanner/service';
+import { workspaceScanContract } from '@red-cup-engineering/jsnode-package-engineering-services-section/workspace/scanner/schema';
 
 const filesystem = {
   readFileUtf8: file => readFileSync(file, 'utf8'),

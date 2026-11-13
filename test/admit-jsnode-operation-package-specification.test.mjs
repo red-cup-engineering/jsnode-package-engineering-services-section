@@ -57,11 +57,11 @@ test("admits a complete package specification and derives operation identity and
   assert.ok(Object.isFrozen(admitted.operations[0]));
   // Command-face source must bind its real qualified runtime, not a stale
   // package edition whose exported runner is absent during package birth.
-  assert.equal(admitted.dependencies["@red-cup-engineering/javascript-node-services-section"], "0.3.2");
+  assert.equal(admitted.dependencies["@red-cup-engineering/javascript-node-engineering-services-section"], "0.3.2");
 });
 
 test("a command-face source refuses stale runtime identity and preserves prior migration", () => {
-  const runtimeName = "@red-cup-engineering/javascript-node-services-section";
+  const runtimeName = "@red-cup-engineering/javascript-node-engineering-services-section";
   const stale = candidate();
   stale.dependencies[runtimeName] = "0.3.0";
   const refused = admitJsnodeOperationPackageSpecification(stale);
@@ -142,7 +142,7 @@ test("legacy migration accepts one declaration (operation, catalog or command) i
 });
 
 test("legacy migration drops the runtime import the old guard called", () => {
-  const text = `#!/usr/bin/env node\nimport { runJavascriptNodeOperation } from "@red-cup-engineering/javascript-node-services-section/operation";\n${functionText}\nif (import.meta.main) {\n  const result = await runJavascriptNodeOperation({ name: "greet-person", description: "Greets.", operation: greetPerson }, { arguments: process.argv.slice(2), standardInput: process.stdin, standardOutput: process.stdout });\n  process.exitCode = result.exitCode;\n}\n`;
+  const text = `#!/usr/bin/env node\nimport { runJavascriptNodeOperation } from "@red-cup-engineering/javascript-node-engineering-services-section/operation";\n${functionText}\nif (import.meta.main) {\n  const result = await runJavascriptNodeOperation({ name: "greet-person", description: "Greets.", operation: greetPerson }, { arguments: process.argv.slice(2), standardInput: process.stdin, standardOutput: process.stdout });\n  process.exitCode = result.exitCode;\n}\n`;
   const admitted = admitJsnodeOperationPackageSpecification(withSource(text));
   assert.equal(admitted.version, 2, JSON.stringify(admitted));
   assert.doesNotMatch(admitted.sources[0].text, /runJavascriptNodeOperation|import\.meta\.main/u);

@@ -1,4 +1,4 @@
-import { schemaFromGraph } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFromGraph } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 
 /** Judge each assay value in its own explicit schema universe. Neither another
  * operation nor an earlier plan can supply a missing resource or change its

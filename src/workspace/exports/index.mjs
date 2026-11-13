@@ -16,7 +16,7 @@ import {
 
 } from "../schemas/exports.mjs";
 
-import { jsonResource } from "@red-cup-engineering/json-services-section";
+import { jsonResource } from "@red-cup-engineering/json-engineering-services-section";
 
 function stringField(value, key) {
   const field = value[key];

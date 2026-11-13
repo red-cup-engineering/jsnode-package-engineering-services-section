@@ -14,7 +14,7 @@ export function moduleWorkOrder(inputSchema = { type: "integer" }, input = 2, ou
     requirements: [{ type: "ArtifactFabricationRequirement", version: 2, id: "identity", statement: "Preserve the supplied value", parameters: [], claimIds: ["fixture-contract"], sourceSpan: span }],
     prohibitions: [], openQuestions: [],
     constraints: ["law", "standard"].map(kind => ({ type: "ArtifactFabricationConstraint", version: 2, id: kind, kind, authority: "test", revision: "1", locator: "test:planner", applicability: "Identity", statement: "Preserve value", parameters: [], claimIds: ["fixture-contract"], sourceSpan: span })),
-    projections: [{ type: "ArtifactFabricationProjection", version: 1, id: "jsnode-modules", target: "@red-cup-engineering/jsnode-package-services-section/derive-jsnode-package-from-closure", sourceSpan: span,
+    projections: [{ type: "ArtifactFabricationProjection", version: 1, id: "jsnode-modules", target: "@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure", sourceSpan: span,
       configuration: { operations: [{ name: "identity", description: "Preserve value", module: "src/identity.mjs", exportName: "identity", inputSchema, outputSchema }], examples: [{ name: "number", operation: "identity", input, output }], dependencies: {} } }],
     acceptanceObligations: [{ type: "ArtifactFabricationAcceptanceObligation", version: 2, id: "example", kind: "test", statement: "Preserve example", parameters: [], claimIds: ["fixture-contract"], sourceSpan: span }],
     traceability: [{ type: "ArtifactFabricationTrace", version: 1, requirementId: "identity", constraintIds: ["law", "standard"], projectionIds: ["jsnode-modules"], acceptanceObligationIds: ["example"] }],

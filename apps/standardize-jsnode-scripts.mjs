@@ -8,18 +8,18 @@ import { basename, dirname, relative, resolve } from "node:path";
 // friction (missing-capability, delete-file-service): no house service restores a path to exact
 // absence, so this one restore-on-gate-failure path unlinks a schema file this run created.
 import { appendFile, readFile, unlink } from "node:fs/promises";
-import { argument } from "@red-cup-engineering/javascript-node-services-section/argv";
+import { argument } from "@red-cup-engineering/javascript-node-engineering-services-section/argv";
 import { constitute, decode, encode } from "@red-cup-engineering/eavt-engineering-services-section";
 import { dataArtifactAddress } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
-import { canonicalChecked } from "@red-cup-engineering/json-services-section";
-import { makeNiUri } from "@red-cup-engineering/uri-services-section/ni-uri";
+import { canonicalChecked } from "@red-cup-engineering/json-engineering-services-section";
+import { makeNiUri } from "@red-cup-engineering/uri-engineering-services-section/ni-uri";
 import { walkPosixPaths } from "@red-cup-engineering/computer-filepath-engineering-services-section/walk-posix-paths";
 import { isDeadOperationRuntimeImport, projectJsnodeOperationSourceFromArguments } from "../src/project-jsnode-operation-source-from-arguments.mjs";
-import { readJsnodeOperationArguments } from "@red-cup-engineering/javascript-node-services-section/syntax";
+import { readJsnodeOperationArguments } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
 import { readTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/read-text-file";
 import { writeTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/write-text-file";
-import { parseJavaScript } from "@red-cup-engineering/javascript-node-services-section/javascript-parser";
+import { parseJavaScript } from "@red-cup-engineering/javascript-node-engineering-services-section/javascript-parser";
 
 
 // friction (term-engineering-services-section-node-import-migration, 2026-09-04): no house

@@ -1,10 +1,10 @@
 import { schemaPath, confined, projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
 export { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
 import { posix as path } from "node:path";
-import { compileJsonSchema } from "@red-cup-engineering/json-schema-services-section/validation";
+import { compileJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
 import { projectJsnodeDataModules } from "./project-jsnode-data-modules.mjs";
 export { projectJsnodeDataModules } from "./project-jsnode-data-modules.mjs";
-import { readJsnodeModuleExports, readJsnodeModuleRequests } from "@red-cup-engineering/javascript-node-services-section/syntax";
+import { readJsnodeModuleExports, readJsnodeModuleRequests } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
 
 import specificationSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };
 const specificationContract = compileJsonSchema(specificationSchema);

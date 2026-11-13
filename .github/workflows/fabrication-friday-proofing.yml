@@ -93,7 +93,7 @@ jobs:
             esac
           done < .npmrc
           test "${#house_scopes[@]}" -gt 0
-          env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-service/scripts/verify-package-carrier.mjs --package-dir . --registry https://registry.npmjs.org/
+          env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s node node_modules/@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section/scripts/verify-package-carrier.mjs --package-dir . --registry https://registry.npmjs.org/
           # Second, independently receive the package actually carried by npm.
           # Use its own archive and installed dependencies, not checkout imports.
           scratch="$(mktemp -d)"
@@ -105,7 +105,7 @@ jobs:
           mkdir "$scratch/consumer"
           printf '%s\n' '{"name":"jsnode-installed-source-receiver","private":true,"type":"module"}' > "$scratch/consumer/package.json"
           env "${house_scopes[@]}" timeout --signal=TERM --kill-after=5s 240s npm install --prefix "$scratch/consumer" --ignore-scripts --no-package-lock --no-audit --no-fund --registry=https://registry.npmjs.org/ "$scratch/$archive"
-          installed="$scratch/consumer/node_modules/@red-cup-engineering/jsnode-package-services-section"
+          installed="$scratch/consumer/node_modules/@red-cup-engineering/jsnode-package-engineering-services-section"
           test -f "$installed/docs/API.md"
           node --input-type=module -e 'import fs from "node:fs"; import path from "node:path"; const [sourcePath, installedPath,root]=process.argv.slice(1); const authored=JSON.parse(fs.readFileSync(sourcePath,"utf8")), received=JSON.parse(fs.readFileSync(installedPath,"utf8")); if(authored.name!==received.name || authored.version!==received.version || !Array.isArray(received.receivingTests) || JSON.stringify(authored.receivingTests)!==JSON.stringify(received.receivingTests)) throw new Error("installed package receiving enrollment differs from exact source"); for(const test of received.receivingTests){const file=path.join(root,test); if(!fs.lstatSync(file).isFile()) throw new Error("installed declared test is not a regular file: "+test);} process.stdout.write(JSON.stringify({kind:"jsnode.installed-enrollment",files:received.receivingTests.length})+"\n");' "$PWD/package.json" "$installed/package.json" "$installed"
           (cd "$installed"; env "${house_scopes[@]}" JSNODE_STAGING_REGISTRY=https://registry.561.group/ timeout --signal=TERM --kill-after=5s 240s npm test | tee "$scratch/installed-tests.log")

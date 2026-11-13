@@ -1,10 +1,10 @@
 
-import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import {
   admissionFailureContract,
   packageManifestAdmissionContract,
 
-} from "@red-cup-engineering/jsnode-package-services-section/workspace/schemas/admission";
+} from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/schemas/admission";
 
 const nonemptyStringSchema = { type: "string", minLength: 1 };
 

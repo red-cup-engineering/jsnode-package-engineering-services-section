@@ -9,7 +9,7 @@
  * the membrane that relates them as one package boundary.
  */
 
-import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
+import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { binSurfaceContract } from "./bins.mjs";
 import { exportSurfaceContract } from "./exports.mjs";
 

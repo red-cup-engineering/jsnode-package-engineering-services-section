@@ -101,9 +101,9 @@
       "@red-cup-engineering/a2a-services-section": "0.1.2",
       "@red-cup-engineering/activitypub-services-section": "0.8.4",
       "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.1",
-      "@red-cup-engineering/cbor-services-section": "0.1.1",
+      "@red-cup-engineering/cbor-engineering-services-section": "0.1.1",
       "@red-cup-engineering/computer-data-engineering-services-section": "0.3.1",
-      "@red-cup-engineering/cloudflare-r2-services-section": "0.5.2",
+      "@red-cup-engineering/cloudflare-r2-engineering-services-section": "0.5.2",
       "@red-cup-engineering/computer-serialized-content-engineering-services-section": "0.1.0",
       "@red-cup-engineering/computer-system-engine": "0.1.2",
       "@red-cup-engineering/computer-system-platform": "0.5.5",
@@ -115,9 +115,9 @@
       "@red-cup-engineering/hive-blockchain-client-service": "0.1.5",
       "@red-cup-engineering/hive-fleet-operations-service": "0.4.12",
       "@red-cup-engineering/http-services-section": "0.6.4",
-      "@red-cup-engineering/json-schema-services-section": "0.5.0",
-      "@red-cup-engineering/json-services-section": "0.4.1",
-      "@red-cup-engineering/uri-services-section": "0.1.1",
+      "@red-cup-engineering/json-schema-engineering-services-section": "0.5.0",
+      "@red-cup-engineering/json-engineering-services-section": "0.4.1",
+      "@red-cup-engineering/uri-engineering-services-section": "0.1.1",
       "@red-cup-engineering/web-page-tiling-engine": "0.14.2",
       "@x402/core": "2.19.0",
       "@x402/evm": "2.19.0",
@@ -132,9 +132,9 @@
       "node": ">=22.18"
     },
     "devDependencies": {
-      "@lenticule-science/astronomy-position-computation-service": "0.8.2",
+      "@lenticule-science/astronomy-position-computation-computer-simulation-system-engineering-services-section": "0.8.2",
       "@red-cup-engineering/computer-code-engineering-services-section": "0.1.2",
-      "@red-cup-engineering/pacing-intelligence-services-section": "0.2.2",
+      "@red-cup-engineering/pacing-intelligence-engineering-services-section": "0.2.2",
       "viem": "2.55.8"
     },
     "repository": {

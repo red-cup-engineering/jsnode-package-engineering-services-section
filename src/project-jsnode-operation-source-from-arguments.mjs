@@ -1,4 +1,4 @@
-import { canonicalChecked } from "@red-cup-engineering/json-services-section";
+import { canonicalChecked } from "@red-cup-engineering/json-engineering-services-section";
 
 function renderImportLine(importRecord) {
   if (typeof importRecord.text === "string") return importRecord.text;
@@ -11,7 +11,7 @@ function renderImportLine(importRecord) {
   return `import ${parts.join(", ")} from "${source}";`;
 }
 
-const OPERATION_RUNTIME_SPECIFIER = "@red-cup-engineering/javascript-node-services-section/operation";
+const OPERATION_RUNTIME_SPECIFIER = "@red-cup-engineering/javascript-node-engineering-services-section/operation";
 
 /** Whether an import record only binds the runtime the old main guard called, which no declaration module imports. */
 export function isDeadOperationRuntimeImport(importRecord, bodyText) {

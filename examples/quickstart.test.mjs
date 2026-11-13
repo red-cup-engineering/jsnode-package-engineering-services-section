@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { testPlan } from "@red-cup-engineering/jsnode-package-services-section/package-test-plan";
+import { testPlan } from "@red-cup-engineering/jsnode-package-engineering-services-section/package-test-plan";
 
 test("JSNODE-PACKAGE-QUICKSTART", () => {
   const plan = testPlan({

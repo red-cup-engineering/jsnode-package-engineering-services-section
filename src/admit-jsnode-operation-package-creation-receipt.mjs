@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
-import { freezeJson } from "@red-cup-engineering/json-services-section";
-import { isJsonValue } from "@red-cup-engineering/json-services-section";
+import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
+import { isJsonValue } from "@red-cup-engineering/json-engineering-services-section";
 import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 
 class ReceiptRefusal extends Error {

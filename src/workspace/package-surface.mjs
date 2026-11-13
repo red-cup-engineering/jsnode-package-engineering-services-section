@@ -13,7 +13,7 @@ import {
   packageSurfaceContract as packageSurfaceSchemaContract,
 
 } from "./schemas/package-surface.mjs";
-import { jsonResource } from "@red-cup-engineering/json-services-section";
+import { jsonResource } from "@red-cup-engineering/json-engineering-services-section";
 
 function packagePathSegments(packageName) {
   return packageName.split("/").filter((part) => part.length > 0);

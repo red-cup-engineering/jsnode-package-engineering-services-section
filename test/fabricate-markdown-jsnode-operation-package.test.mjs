@@ -1,4 +1,4 @@
-import { admitMarkdownJsnodeOperationPackageFabricationReceipt, foldFabricationReceiptIntoWorldRows } from "@red-cup-engineering/jsnode-package-services-section/fabrication-receipts";
+import { admitMarkdownJsnodeOperationPackageFabricationReceipt, foldFabricationReceiptIntoWorldRows } from "@red-cup-engineering/jsnode-package-engineering-services-section/fabrication-receipts";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import path from "node:path";
@@ -7,8 +7,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { dataKindDirectory } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 import { fabricateMarkdownJsnodeOperationPackage, selectSingleJsnodeProjection, publishJsnodeOperationPackageToRegistry } from "../src/fabricate-markdown-jsnode-operation-package.mjs";
-import { translateMarkdownJsnodeOperationPackageSpecification } from "@red-cup-engineering/jsnode-package-services-section/translate-markdown-jsnode-operation-package-specification";
-import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "@red-cup-engineering/jsnode-package-services-section/jsnode-package-dialect";
+import { translateMarkdownJsnodeOperationPackageSpecification } from "@red-cup-engineering/jsnode-package-engineering-services-section/translate-markdown-jsnode-operation-package-specification";
+import { JSNODE_PACKAGE_DIALECT_EXAMPLE } from "@red-cup-engineering/jsnode-package-engineering-services-section/jsnode-package-dialect";
 import { requiresLocalRegistry, stagedRegistry } from "./support/local-registry.mjs";
 
 const fixturePath = fileURLToPath(new URL("./fixtures/greet-person.md", import.meta.url));
@@ -153,7 +153,7 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     // Machine-facing catalog is data; the command runner belongs to the
     // independently installed shared runtime, not a fabricated package bin.
     assert.equal(Object.hasOwn(manifest, "bin"), false);
-    assert.equal(manifest.dependencies["@red-cup-engineering/javascript-node-services-section"], "0.3.2");
+    assert.equal(manifest.dependencies["@red-cup-engineering/javascript-node-engineering-services-section"], "0.3.2");
     assert.match(await readFile(path.join(destination, "apps", "number-topic-cli.mjs"), "utf8"), /export const catalog/u);
     assert.equal(result.jsnodeOperationPackageRegistryPublication.type, "JsnodeOperationPackageRegistryPublicationSkipped");
     assert.equal(result.artifactSpecification.projections[0].configuration.version, 2);

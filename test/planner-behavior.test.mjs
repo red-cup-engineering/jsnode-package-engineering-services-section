@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { planJsnodeModules, testsOfClosure } from "@red-cup-engineering/jsnode-package-services-section/plan-jsnode-modules";
-import { schemaFrom } from "@red-cup-engineering/json-schema-services-section/contracts";
-import { javascriptProgram, executeJavascriptProgram } from "@red-cup-engineering/javascript-node-services-section/module-closure";
+import { planJsnodeModules, testsOfClosure } from "@red-cup-engineering/jsnode-package-engineering-services-section/plan-jsnode-modules";
+import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
+import { javascriptProgram, executeJavascriptProgram } from "@red-cup-engineering/javascript-node-engineering-services-section/module-closure";
 
 import { moduleWorkOrder as order } from "./fixtures/module-work-order.mjs";
 

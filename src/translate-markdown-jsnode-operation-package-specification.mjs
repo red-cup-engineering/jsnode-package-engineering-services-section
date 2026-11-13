@@ -261,7 +261,7 @@ function translateV2(source, lines) {
       source: { type: "ArtifactFabricationSource", version: 1, identity: { type: "ArtifactFabricationSourceIdentity", id: artifactId }, provenance: { type: "ArtifactFabricationSourceProvenance", locator: source.path, digest, sourceSpan: span(1, lines.length) } },
       artifact: { type: "FabricatedArtifactIdentity", version: 1, id: artifactId, kind: "jsnode-modules" },
       ...(claimed ? { claims: claimList } : {}), requirements, prohibitions, openQuestions, constraints: constraintsValue,
-      projections: [{ type: "ArtifactFabricationProjection", version: 1, id: "jsnode-modules", target: "@red-cup-engineering/jsnode-package-services-section/derive-jsnode-package-from-closure", configuration: moduleRecord.value, sourceSpan: moduleRecord.sourceSpan }],
+      projections: [{ type: "ArtifactFabricationProjection", version: 1, id: "jsnode-modules", target: "@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure", configuration: moduleRecord.value, sourceSpan: moduleRecord.sourceSpan }],
       acceptanceObligations, traceability: traceabilityValue,
     };
     return frozen({ type: "MarkdownJsnodeModuleSpecificationTranslation", version: 1, artifactSpecificationCandidate });
@@ -298,7 +298,7 @@ function translateV2(source, lines) {
     return { type: "JsnodeOperationPackageExample", name: attribute[1], operation: attribute[2], input: value.input, output: value.output };
   });
   const candidate = { type: "JsnodeOperationPackageSpecificationCandidate", version: 2, packageName: metadata.packageName, packageVersion: metadata.packageVersion, license: metadata.license, topic: metadata.topic, ...(Object.hasOwn(metadata, "cli") ? { cli: metadata.cli } : {}), sources, operations, tests, examples, dependencies: metadata.dependencies, devDependencies: metadata.devDependencies };
-  const projection = { type: "ArtifactFabricationProjection", version: 1, id: "jsnode-operation-package", target: "@red-cup-engineering/jsnode-package-services-section/admit-jsnode-operation-package-specification", configuration: candidate, sourceSpan: span(packageFence.startLine, sections["## Examples"][1]) };
+  const projection = { type: "ArtifactFabricationProjection", version: 1, id: "jsnode-operation-package", target: "@red-cup-engineering/jsnode-package-engineering-services-section/admit-jsnode-operation-package-specification", configuration: candidate, sourceSpan: span(packageFence.startLine, sections["## Examples"][1]) };
   const obligation = { type: "ArtifactFabricationAcceptanceObligation", version: claimed ? 2 : 1, ...(claimed ? { parameters: [], claimIds: conjecturedIds(claimList) } : {}), id: "jsnode-package-assays", kind: "assay", statement: closure
     ? "The derived JSNode package must pass the package-birth pipeline: its examples typed by their schemas, tests derived from the examples before the source, and its import and command faces giving the admitted outputs."
     : "The existing JSNode package-birth pipeline must admit, stage, test, pack, install, and assay the projected package.", sourceSpan: span(sections[closure ? "## Examples" : "## Tests"][0] + 1, sections["## Examples"][1]) };
@@ -393,7 +393,7 @@ export function translateMarkdownJsnodeOperationPackageSpecification(request) {
     }
     if (examples.length === 0) refuse("MISSING_EXAMPLES", "Examples must contain at least one JSON example", span(sections["## Examples"][0] + 1));
     const jsnodeOperationPackageSpecificationCandidate = { type: "JsnodeOperationPackageSpecificationCandidate", version: 1, packageName: metadata.packageName, packageVersion: metadata.packageVersion, license: metadata.license, operation: { type: "JavascriptNodeOperationSource", path: operationAttribute[1], text: operationFence.text }, tests, examples, dependencies: metadata.dependencies, devDependencies: metadata.devDependencies };
-    const projection = { type: "ArtifactFabricationProjection", version: 1, id: "jsnode-operation-package", target: "@red-cup-engineering/jsnode-package-services-section/admit-jsnode-operation-package-specification", configuration: jsnodeOperationPackageSpecificationCandidate, sourceSpan: span(packageFence.startLine, sections["## Examples"][1]) };
+    const projection = { type: "ArtifactFabricationProjection", version: 1, id: "jsnode-operation-package", target: "@red-cup-engineering/jsnode-package-engineering-services-section/admit-jsnode-operation-package-specification", configuration: jsnodeOperationPackageSpecificationCandidate, sourceSpan: span(packageFence.startLine, sections["## Examples"][1]) };
     const obligation = { type: "ArtifactFabricationAcceptanceObligation", version: claimed ? 2 : 1, ...(claimed ? { parameters: [], claimIds: conjecturedIds(claimList) } : {}), id: "jsnode-package-assays", kind: "assay", statement: "The existing JSNode package-birth pipeline must admit, stage, test, pack, install, and assay the projected package.", sourceSpan: span(sections["## Tests"][0] + 1, sections["## Examples"][1]) };
     const coveredIds = new Set([...requirements, ...prohibitions].map((value) => value.id));
     if (coveredIds.size !== requirements.length + prohibitions.length) refuse("DUPLICATE_CLAUSE_ID", "requirement and prohibition IDs must be globally unique", span(1));

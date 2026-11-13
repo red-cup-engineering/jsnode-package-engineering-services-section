@@ -1,6 +1,6 @@
 /** Deterministic source fabrication for schema-admitted, immutable JSON data. */
 import { types } from "node:util";
-import { compileJsonSchema } from "@red-cup-engineering/json-schema-services-section/validation";
+import { compileJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
 import { confined } from "./project-jsnode-module-paths.mjs";
 
 const reserved = new Set([
