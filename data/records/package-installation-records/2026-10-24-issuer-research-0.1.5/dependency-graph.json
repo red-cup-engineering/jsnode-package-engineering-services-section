@@ -1,7 +1,7 @@
 {
   "type": "InstalledCarrierBindingObservation",
   "version": 1,
-  "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+  "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
   "entrypoints": [
     "node_modules/@red-cup-engineering/issuer-research-media-service/src/prepared-cohort.mjs"
   ],

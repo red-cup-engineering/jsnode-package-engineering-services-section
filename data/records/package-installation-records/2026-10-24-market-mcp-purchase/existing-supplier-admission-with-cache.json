@@ -97,12 +97,12 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/signcell",
         "expectedVersion": "0.2.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
         "entryPath": null,
-        "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/signcell",
+        "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/signcell",
         "name": "@red-cup-engineering/signcell",
         "packageVersion": "0.2.0",
         "conformant": true,
@@ -114,12 +114,12 @@
       "version": 1,
       "expectedName": "@red-cup-engineering/signcell",
       "expectedVersion": "0.2.0",
-      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
       "entry": {
         "kind": "package"
       },
       "entryPath": null,
-      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/signcell",
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/signcell",
       "name": "@red-cup-engineering/signcell",
       "packageVersion": "0.2.0",
       "conformant": true,
@@ -161,7 +161,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/oauth-services-section",
         "expectedVersion": "0.1.2",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -186,7 +186,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/oauth-services-section",
         "expectedVersion": "0.1.2",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },
@@ -243,12 +243,12 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
         "expectedVersion": "0.1.1",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
         "entryPath": null,
-        "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+        "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
         "name": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
         "packageVersion": "0.1.1",
         "conformant": true,
@@ -260,12 +260,12 @@
       "version": 1,
       "expectedName": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
       "expectedVersion": "0.1.1",
-      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+      "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
       "entry": {
         "kind": "package"
       },
       "entryPath": null,
-      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
+      "packageRoot": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23/node_modules/@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
       "name": "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section",
       "packageVersion": "0.1.1",
       "conformant": true,
@@ -307,7 +307,7 @@
         "version": 1,
         "expectedName": "@a2a-js/sdk",
         "expectedVersion": "1.0.0-beta.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -332,7 +332,7 @@
         "version": 1,
         "expectedName": "@a2a-js/sdk",
         "expectedVersion": "1.0.0-beta.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },
@@ -389,7 +389,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
         "expectedVersion": "0.2.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -414,7 +414,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/a2a-rmn-part-service",
         "expectedVersion": "0.2.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },
@@ -471,7 +471,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/activitypub-services-section",
         "expectedVersion": "0.5.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -496,7 +496,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/activitypub-services-section",
         "expectedVersion": "0.5.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },
@@ -554,7 +554,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/x402-services-section",
         "expectedVersion": "0.2.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -579,7 +579,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/x402-services-section",
         "expectedVersion": "0.2.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },
@@ -678,7 +678,7 @@
         "version": 1,
         "expectedName": "express",
         "expectedVersion": "5.2.1",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -703,7 +703,7 @@
         "version": 1,
         "expectedName": "express",
         "expectedVersion": "5.2.1",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },
@@ -760,7 +760,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
         "expectedVersion": "0.1.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -785,7 +785,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/relation-model-notation-cbor-codec",
         "expectedVersion": "0.1.0",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },
@@ -842,7 +842,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/ni-services-section",
         "expectedVersion": "0.1.2",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/cve-triage-0.2.0-dev.23",
         "entry": {
           "kind": "package"
         },
@@ -867,7 +867,7 @@
         "version": 1,
         "expectedName": "@red-cup-engineering/ni-services-section",
         "expectedVersion": "0.1.2",
-        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
+        "projectRoot": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/issuer-research-0.1.5",
         "entry": {
           "kind": "package"
         },

@@ -3,7 +3,7 @@
   "currentSourceCommit": "ce493909979c8329ab17d6560dbff39b2311a86c",
   "artifactSourceCommit": "65e8f7dbde2cff190caf73a2b8141f1ee5f99082",
   "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/lib/metrologic",
-  "p": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2",
+  "p": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2",
   "scope": "Only two actual APP public operations and their complete native static import closure; other supplier exports and other consumers retain their own original selections.",
   "matches": [
     {
@@ -25,7 +25,7 @@
   "audit": {
     "type": "InstalledCarrierBindingObservation",
     "version": 1,
-    "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2",
+    "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-engineering-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-source-aliases/metrologic-0.14.2",
     "entrypoints": [
       "src/obstruction/attention-allocation.mjs",
       "src/models/physics/models/kinetic-theory/boltzmann-entropy.mjs"
