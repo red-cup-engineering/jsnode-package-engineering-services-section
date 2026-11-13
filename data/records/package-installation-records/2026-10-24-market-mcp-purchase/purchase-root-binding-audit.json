@@ -3,7 +3,7 @@
   "version": 1,
   "root": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section",
   "entrypoints": [
-    "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/purchase.mjs"
+    "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/purchase.mjs"
   ],
   "scopes": [
     "@red-cup-engineering",
@@ -14,13 +14,13 @@
   "complete": true,
   "modules": [
     {
-      "file": "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/purchase.mjs",
+      "file": "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/purchase.mjs",
       "name": "@red-cup-engineering/x402-exact-purchase-service",
       "version": "0.2.0",
       "sha256": "717b805a896e33a9c47af71684b3431805c2cf91b2d0ca6579a3bb6e19fd7d24"
     },
     {
-      "file": "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/successor-deployment.mjs",
+      "file": "services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/x402-purchase-root-0.2.0/node_modules/@red-cup-engineering/x402-exact-purchase-service/src/successor-deployment.mjs",
       "name": "@red-cup-engineering/x402-exact-purchase-service",
       "version": "0.2.0",
       "sha256": "92e60225cb887cae2ea210e27efe475866847739e96bc7152ee33756e3c12029"

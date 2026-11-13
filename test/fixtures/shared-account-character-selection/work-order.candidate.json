@@ -313,7 +313,7 @@
       "kind": "standard",
       "authority": "Coding JSNode Modules meaning closure",
       "revision": "git-blob:90939d6ca005aa13433a168b333c5e305f185038",
-      "locator": "https://github.com/red-cup-engineering/computer-coding-services-section/blob/86f9e9f909439c288d7277c7d3d4afc206929d57/services/jsnode-package-services-section/src/derive-jsnode-package-from-closure.mjs",
+      "locator": "https://github.com/red-cup-engineering/computer-coding-services-section/blob/86f9e9f909439c288d7277c7d3d4afc206929d57/services/jsnode-package-engineering-services-section/src/derive-jsnode-package-from-closure.mjs",
       "applicability": "Only the declared pure JSON operation and source-free projection",
       "statement": "A declared export consumes one schema-admitted JSON value and returns its schema-admitted successful value with native TypeError for partial refusal cases. This specific selector additionally requires synchronous return and throw to refine playerOfAct. Generated awaited input/output/error-name assays cover only their finite observable portion; sync, mutation, message, effect and native consumer invariants require separate real owner tests and review.",
       "sourceSpan": {

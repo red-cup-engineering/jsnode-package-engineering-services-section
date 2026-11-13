@@ -4,8 +4,8 @@
     {
       "name": "@red-cup-engineering/alpaca-engineering-services-section",
       "version": "0.1.4-dev.1",
-      "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-services-section",
-      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/alpaca-engineering-services-section",
+      "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-web-engineering-services-section/services/web-platform-services-section/services/web2-platform-services-section/services/web2-financial-platform-services-section/services/web2-financial-brokerage-platform-services-section/services/alpaca-engineering-services-section",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/alpaca-engineering-services-section",
       "manifest": {
         "dependencies": {
           "@red-cup-engineering/eavt-services-section": "0.11.0",
@@ -135,7 +135,7 @@
         "bytes": 47645,
         "artifactDownloaded": true
       },
-      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/alpaca-services-section-0.1.4-dev.1.tgz",
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/alpaca-services-section-0.1.4-dev.1.tgz",
       "comparisons": [
         {
           "file": "src/autonomous-portfolio.mjs",
@@ -299,7 +299,7 @@
       "name": "@red-cup-engineering/json-engineering-services-section",
       "version": "0.4.2-dev.2",
       "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/services/computer-content-engineering-services-section/services/computer-serialized-content-engineering-services-section/services/json-services-section",
-      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/json-engineering-services-section",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/json-engineering-services-section",
       "manifest": {
         "name": "@red-cup-engineering/json-engineering-services-section",
         "version": "0.4.2-dev.2",
@@ -390,7 +390,7 @@
         "bytes": 22374,
         "artifactDownloaded": true
       },
-      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/json-services-section-0.4.2-dev.2.tgz",
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/json-services-section-0.4.2-dev.2.tgz",
       "comparisons": [
         {
           "file": "scripts/admit-json-type.mjs",
@@ -584,7 +584,7 @@
       "name": "@red-cup-engineering/metrologic",
       "version": "0.4.2",
       "current": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-data-engineering-services-section/lib/metrologic",
-      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/metrologic",
+      "target": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-source-aliases/node_modules/@red-cup-engineering/metrologic",
       "manifest": {
         "name": "@red-cup-engineering/metrologic",
         "version": "0.4.2",
@@ -1027,7 +1027,7 @@
         "bytes": 380710,
         "artifactDownloaded": true
       },
-      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/metrologic-0.4.2.tgz",
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/logs/package-installation-logs/2026-10-25-market-source-aliases/metrologic-0.4.2.tgz",
       "comparisons": [
         {
           "file": "src/hyperdoctrine/adjoints.mjs",
