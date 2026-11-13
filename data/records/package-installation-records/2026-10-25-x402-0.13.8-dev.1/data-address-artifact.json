@@ -11,7 +11,7 @@
       "url": "git+https://github.com/red-cup-engineering/semiotic-content-address-system.git"
     },
     "exports": {
-      ".": "./src/semiotic-content-address.mjs",
+      ".": "./src/semiotic-content-address-system.mjs",
       "./raw-content-address": "./src/raw-content-address.mjs",
       "./audit": "./src/audit-content-addressing.mjs",
       "./package.json": "./package.json"

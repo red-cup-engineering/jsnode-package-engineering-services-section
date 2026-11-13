@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationReceipt } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
-import { semanticId as receiptSemanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address";
+import { semanticId as receiptSemanticId } from "@red-cup-engineering/computer-content-address-engineering-services-section/semiotic-content-address-system";
 import { schemaFromGraph } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { address, cell, cellSchema, cellSet, merge, presence, semanticId } from "@red-cup-engineering/signcell/cell";
 import { execute as executeEavt } from "@red-cup-engineering/eavt-engineering-services-section";
