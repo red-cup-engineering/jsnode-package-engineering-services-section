@@ -4,8 +4,7 @@
 
 The [runnable example](examples/quickstart.test.mjs) plans the native tests
 owned by a package, including files in nested folders and their declared
-requirements. See the [public API](docs/API.md) for the installed import
-surface and verified cases.
+requirements.
 
 Install the frozen closure with `pnpm install --frozen-lockfile`, then run
 `npm test`. Run `npm run test:consumer` for the example alone.
