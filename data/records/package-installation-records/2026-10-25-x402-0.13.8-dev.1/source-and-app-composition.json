@@ -1,6 +1,6 @@
 {
   "observedAt": "2026-10-25T00:10:37.691Z",
-  "root": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/x402-0.13.8-dev.1/node_modules/@red-cup-engineering/x402-services-section",
+  "root": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/x402-0.13.8-dev.1/node_modules/@red-cup-engineering/x402-services-section",
   "gitHead": "e9bb4dfd7af353e3f2a70fb47d9f4a8673996501",
   "sourceMatches": [
     {
@@ -290,7 +290,7 @@
     }
   ],
   "previousEntry": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-networking-engineering-services-section/services/x402-services-section/src/offer.mjs",
-  "selectedEntry": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/x402-0.13.8-dev.1/node_modules/@red-cup-engineering/x402-services-section/src/offer.mjs",
+  "selectedEntry": "/home/emsenn/bare-cedar-fog/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/x402-0.13.8-dev.1/node_modules/@red-cup-engineering/x402-services-section/src/offer.mjs",
   "issuerSku": "ni:///sha-256;17l4KLnJz9NrHaT9JGP9q0YUr_08GJMNP47gXQNlMp0",
   "issuerCell": "ni:///sha-256;Tmspe1DP5hibL5_v7LTCL-sVo6X0IXE84GjnEVYioQ8",
   "issuerLaw": "ni:///sha-256;7f1U0ZlId3USP2WNZbndkrIpx_pSCFjEqLaK3WvFLoQ",

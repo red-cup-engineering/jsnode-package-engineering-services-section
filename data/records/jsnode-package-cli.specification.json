@@ -84,7 +84,7 @@
     "description": "Fabricate a package from its specification."
   },
   "externalReferences": [
-    "../../../../../../../../../../computer-data-engineering-services-section/services/serialized-computer-data-engineering-services-section/services/json-services-section/src/index.mjs",
+    "../../../../../../../../../../computer-data-engineering-services-section/services/serialized-computer-data-engineering-services-section/services/json-engineering-services-section/src/index.mjs",
     "../../../../../../../../../../computer-data-engineering-services-section/apps/computer-data-engine/src/validation.mjs",
     "../../../../../../jsnode-engineering-services-section/services/apps/jsnode-engine/src/syntax.mjs",
     "@red-cup-engineering/admit-javascript-node-command-execution-request-service",

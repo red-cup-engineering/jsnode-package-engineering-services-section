@@ -2,7 +2,7 @@
   "type": "MarkdownJsnodeOperationPackageFabricationReceipt",
   "version": 1,
   "recordedAt": "2026-09-04T22:44:08Z",
-  "workOrder": "lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
+  "workOrder": "lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
   "sourceDigest": "sha256:14253c4c3fdf86166826585409763f9f69e77369d1e61cfed8d493799b03138c",
   "specificationDigest": "sha256:56736a6678f31cf322333faca3c32a92f85f5955db9790b9aa0f5878a0cf02d4",
   "realizationDigest": "sha256:e25028d55779b6321c14c8a5715e241ed31d0f55576d917d1265e57de2f0460c",
@@ -14,7 +14,7 @@
     "version": 1,
     "packageName": "@red-cup-engineering/project-jsnode-operation-source-from-arguments-service",
     "packageVersion": "0.1.0",
-    "destination": "lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/services/project-jsnode-operation-source-from-arguments-service",
+    "destination": "lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/services/project-jsnode-operation-source-from-arguments-service",
     "filesDigest": "sha256:20309628ddfeb5602ddcb6129ea569313fbef8b07fd10073fb8cddf3857acad7",
     "assays": [
       {

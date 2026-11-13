@@ -93,7 +93,7 @@
     "noGenericProxyWalker": true,
     "directProviders": {
       "signcell": "0.13.2",
-      "json-services-section": "0.4.0",
+      "json-engineering-services-section": "0.4.0",
       "eavt-services-section": "0.11.0"
     },
     "dependencyClosure": "Original exact117-slot native closure and frozen lock unchanged."

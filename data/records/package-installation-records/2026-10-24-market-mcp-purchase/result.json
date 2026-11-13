@@ -6,7 +6,7 @@
   "error": "spawnSync bash ETIMEDOUT",
   "stdout": "",
   "stderr": "",
-  "destination": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-mcp-0.1.7-x402-purchase-0.2.0",
+  "destination": "/home/emsenn/info/lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-code-engineering-services-section/services/javascript-engineering-services-section/services/javascript-code-fabrication-services-section/services/javascript-node-code-fabrication-engineering-services-section/services/jsnode-package-engineering-services-section/data/state/registry-package-installations/market-mcp-0.1.7-x402-purchase-0.2.0",
   "noNewCash": true,
   "purchaseExecuted": false
 }
