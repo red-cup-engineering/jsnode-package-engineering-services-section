@@ -76,18 +76,49 @@ export function admitTestRequires(testRequires, tests) {
 }
 
 /**
- * A package's test plan from its files (package-relative paths, as a tracked listing gives them) and its
- * manifest. Returns `{ files, tests, requirements, check, problems }`: `tests` every test in the plan, sorted;
+ * A package's source or explicitly selected receiving test plan from its files (package-relative paths, as a tracked listing gives them) and its
+ * manifest. Returns `{ files, tests, requirements, check, problems }`: `tests` every source test sorted, or authored receivingTests in declared order;
  * `files` retains the complete input listing so migration can detect tests the plan would omit;
+ * The source profile remains the default. The receiving profile validates explicit safe, distinct,
+ * present programs, including examples not named *.test.*. Source-only requirement metadata may remain
+ * in an installed carrier; it cannot select additional receiving programs.
  * `requirements` the declared requirement of each test that has one; `check` the code files `check` reads.
  */
-export function testPlan({ files, manifest = {}, nestedRoots } = {}) {
+export function testPlan({ files, manifest = {}, nestedRoots, profile = "source" } = {}) {
   if (!Array.isArray(files)) throw new TypeError("testPlan requires the package's files");
   const own = ownFiles(files, nestedRoots === undefined ? {} : { nestedRoots });
-  const tests = own.filter((path) => TEST_FILE.test(path)).sort();
-  const { requirements, problems } = admitTestRequires(manifest.testRequires, tests);
+  if (!["source", "receiving"].includes(profile)) throw new TypeError("unknown package test profile");
+  const sourceTests = own.filter((path) => TEST_FILE.test(path)).sort();
+  const enrollment = manifest.receivingTests;
+  const safe = path => typeof path === "string" && path.length > 0 && !path.includes("\\")
+    && !path.startsWith("/") && !/^[A-Za-z]:/u.test(path)
+    && path.split("/").every(part => part !== "" && part !== "." && part !== "..");
+  const available = new Set(files.map(posix));
+  const enrollmentProblems = [];
+  if (profile === "receiving") {
+    if (!Array.isArray(enrollment) || enrollment.length === 0) {
+      enrollmentProblems.push("receivingTests must be a nonempty explicit array");
+    } else {
+      const seen = new Set();
+      for (const path of enrollment) {
+        if (!safe(path)) enrollmentProblems.push("receivingTests contains an unsafe package-relative path");
+        else if (seen.has(path)) enrollmentProblems.push(`receivingTests duplicates ${path}`);
+        else if (!available.has(path)) enrollmentProblems.push(`receivingTests names missing program ${path}`);
+        seen.add(path);
+      }
+    }
+  }
+  const receivingTests = Array.isArray(enrollment) ? enrollment.filter(path => safe(path) && available.has(path)) : [];
+  const tests = profile === "source" ? sourceTests : receivingTests;
+  // A carrier may omit source-only tests and retain their requirement metadata.
+  // Validate declarations, but only selected programs can execute or contribute a receipt.
+  const known = profile === "source" ? [...sourceTests, ...receivingTests]
+    : [...receivingTests, ...Object.keys(manifest.testRequires ?? {})];
+  const admitted = admitTestRequires(manifest.testRequires, known);
+  const requirements = Object.fromEntries(Object.entries(admitted.requirements).filter(([path]) => tests.includes(path)));
+  const problems = [...enrollmentProblems, ...admitted.problems];
   const check = own.filter((path) => CHECKED_FILE.test(path)).sort();
-  return Object.freeze({ files: Object.freeze(files.map(posix)), tests: Object.freeze(tests), requirements: Object.freeze(requirements), check: Object.freeze(check), problems: Object.freeze(problems) });
+  return Object.freeze({ profile, files: Object.freeze(files.map(posix)), tests: Object.freeze(tests), requirements: Object.freeze(requirements), check: Object.freeze(check), problems: Object.freeze(problems) });
 }
 
 /**
