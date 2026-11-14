@@ -1,3 +1,6 @@
+import { posix as path } from "node:path";
+import { pathToFileURL, fileURLToPath } from "node:url";
+
 /** Shared pure output-path projection; no source inspection or host reads. */
 export const schemaPath = (operation, side) => operation[`${side}SchemaPath`] ?? `data/records/schema/${operation.name}.${side}.schema.json`;
 
@@ -47,3 +50,29 @@ export function projectJsnodeModulePaths({ operations, sources = [], dataModules
   return Object.freeze(paths.sort());
 }
 
+
+/** Convert confined package file paths to a native ESM relative URL specifier. */
+export function relativeModuleSpecifier(from, to) {
+  const encoded = value => pathToFileURL("/" + value, { windows: false }).pathname;
+  const relative = path.relative(path.dirname(encoded(from)), encoded(to));
+  return relative.startsWith("../") ? relative : "./" + relative;
+}
+
+/** Resolve a relative ESM URL to its decoded package file path without host reads. */
+export function moduleSpecifierPath(from, specifier) {
+  const resolved = fileURLToPath(new URL(specifier, pathToFileURL("/" + from, { windows: false })),
+    { windows: false });
+  // URL resolution clamps at a filesystem root. Keep package-relative escapes
+  // visible to the caller's external-reference policy instead of aliasing them
+  // back into a local src/ path. Native conversion above still rejects invalid
+  // encoded separators; require() never enters this URL path conversion.
+  const pathname = specifier.replace(/[\t\r\n]/gu, "").split(/[?#]/u, 1)[0].replaceAll("\\", "/");
+  const decoded = decodeURIComponent(pathname);
+  let depth = path.dirname(from) === "." ? 0 : path.dirname(from).split("/").length;
+  for (const segment of decoded.split("/")) {
+    if (segment === "..") depth--;
+    else if (segment !== "" && segment !== ".") depth++;
+    if (depth < 0) return path.normalize(path.join(path.dirname(from), decoded));
+  }
+  return path.normalize(resolved.slice(1));
+}

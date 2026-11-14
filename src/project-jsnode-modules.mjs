@@ -1,4 +1,4 @@
-import { schemaPath, confined, projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
+import { schemaPath, confined, projectJsnodeModulePaths, relativeModuleSpecifier, moduleSpecifierPath } from "./project-jsnode-module-paths.mjs";
 export { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
 import { posix as path } from "node:path";
 import { compileJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
@@ -13,10 +13,6 @@ const specificationContract = compileJsonSchema(specificationSchema);
 
 function textFile(path, text, mode = 0o644) {
   return Object.freeze({ type: "TextFileCreationProjection", version: 1, path, text, mode });
-}
-function relative(from, to) {
-  const value = path.relative(path.dirname(from), to);
-  return value.startsWith(".") ? value : `./${value}`;
 }
 function json(value) {
   const text = JSON.stringify(value, null, 2);
@@ -43,7 +39,9 @@ function validateSourceImports(sources, externalReferences) {
     const specifier = request.specifier;
     if (specifier === null) throw new TypeError(`computed module request is not projectable: ${source.path}`);
     if (!specifier.startsWith(".")) continue;
-    const resolved = path.normalize(path.join(path.dirname(source.path), specifier));
+    const resolved = request.kind === "require"
+      ? path.normalize(path.join(path.dirname(source.path), specifier))
+      : moduleSpecifierPath(source.path, specifier);
     if (resolved.startsWith("src/")) {
       if (!paths.has(resolved)) throw new TypeError(`unresolvable projected import in ${source.path}: ${specifier}`);
     } else if (!external.has(specifier)) throw new TypeError(`external reference is not declared: ${source.path}: ${specifier}`);
@@ -54,11 +52,11 @@ function cliText(cli, operations) {
   // command must not initialize unrelated modules or require their suppliers.
   // The existing Function interpreter admits input before invoking this callable
   // and receives import/execution failures through its normal Problem Details.
-  const imports = operations.map((operation, index) => `async function operation${index}(value, context) {\n  const operation = (await import(${JSON.stringify(relative(cli.path, operation.module))}))[${JSON.stringify(operation.exportName)}];\n  return operation(value, context);\n}`);
+  const imports = operations.map((operation, index) => `async function operation${index}(value, context) {\n  const operation = (await import(${JSON.stringify(relativeModuleSpecifier(cli.path, operation.module))}))[${JSON.stringify(operation.exportName)}];\n  return operation(value, context);\n}`);
   const schemas = operations.flatMap((operation, index) => {
     const result = [];
-    if (Object.hasOwn(operation, "inputSchema")) result.push(`import operation${index}InputSchema from ${JSON.stringify(relative(cli.path, schemaPath(operation, "input")))} with { type: "json" };`);
-    if (Object.hasOwn(operation, "outputSchema")) result.push(`import operation${index}OutputSchema from ${JSON.stringify(relative(cli.path, schemaPath(operation, "output")))} with { type: "json" };`);
+    if (Object.hasOwn(operation, "inputSchema")) result.push(`import operation${index}InputSchema from ${JSON.stringify(relativeModuleSpecifier(cli.path, schemaPath(operation, "input")))} with { type: "json" };`);
+    if (Object.hasOwn(operation, "outputSchema")) result.push(`import operation${index}OutputSchema from ${JSON.stringify(relativeModuleSpecifier(cli.path, schemaPath(operation, "output")))} with { type: "json" };`);
     return result;
   });
   const definitions = operations.map((operation, index) => {
