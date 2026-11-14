@@ -68,3 +68,31 @@ test("package realization requires an example for each operation binding", () =>
   const input = candidate(); input.examples.pop();
   assert.equal(admitJsnodeOperationPackageSpecification(input).code, "MISSING_OPERATION_EXAMPLE");
 });
+
+test("the original package projection preserves detached invocation and JSON example members", async (t) => {
+  const record = JSON.parse('{"__proto__":{"marker":true},"constructor":"data","nested":[{"__proto__":null}]}');
+  const cases = [
+    { name: "detached invocation", body: "return this === undefined;", input: null, output: true, succeeds: true },
+    { name: "own input member", body: 'return Object.hasOwn(value, "__proto__") && Object.getPrototypeOf(value) === Object.prototype;', input: record, output: true, succeeds: true },
+    { name: "own expected output members", body: "return JSON.parse(JSON.stringify(value));", input: record, output: record, succeeds: true },
+    { name: "missing output member refuses", body: 'const result = JSON.parse(JSON.stringify(value)); delete result.__proto__; return result;', input: record, output: record, succeeds: false },
+  ];
+  for (const scenario of cases) await t.test(scenario.name, async (t) => {
+    const input = candidate();
+    input.sources = [{ type: "JavascriptNodePackageSource", path: "src/receiver.mjs", text: `export function receiver(value) { ${scenario.body} }\n` }];
+    input.operations = [{ name: "receiver", module: "src/receiver.mjs", exportName: "receiver", description: "Receives the original JSON example.", inputSchema: {}, outputSchema: {} }];
+    input.tests = [{ type: "JavascriptNodeOperationTestSource", path: "test/receiver.test.mjs", text: 'import assert from "node:assert/strict"; import test from "node:test"; import { receiver } from "../src/receiver.mjs"; test("authored export", () => assert.equal(typeof receiver, "function"));\n' }];
+    input.examples = [{ type: "JsnodeOperationPackageExample", name: scenario.name, operation: "receiver", input: scenario.input, output: scenario.output }];
+    const admitted = admitJsnodeOperationPackageSpecification(input);
+    assert.equal(admitted.type, "JsnodeOperationPackageSpecification", JSON.stringify(admitted));
+    const projection = projectJsnodeOperationPackage(admitted);
+    const root = await mkdtemp(path.join(tmpdir(), "module-package-json-"));
+    t.after(() => rm(root, { recursive: true, force: true }));
+    for (const file of projection.files) { await mkdir(path.dirname(path.join(root, file.path)), { recursive: true }); await writeFile(path.join(root, file.path), file.text); }
+    // Run the producer's actual declared receiver, without installation or registry access.
+    const environment = { ...process.env, NODE_OPTIONS: "--test-reporter=tap" }; delete environment.NODE_TEST_CONTEXT;
+    const result = spawnSync("npm", ["test"], { cwd: root, env: environment, encoding: "utf8" });
+    assert.equal(result.status, scenario.succeeds ? 0 : 1, result.stderr + result.stdout);
+    assert.match(result.stdout, scenario.succeeds ? /# pass 2/u : /ERR_ASSERTION/u);
+  });
+});

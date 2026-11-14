@@ -886,3 +886,11 @@ lookup table is never supplied as `this`. Native receiving exercises both
 module-only and catalog projections: a detached operation is accepted, while an
 operation that only satisfies the example when bound to an artificial receiver
 is rejected. This qualifies generated source behavior, not package issuance.
+
+Example inputs and expected outputs in generated contracts are decoded as JSON,
+not interpreted as JavaScript object-literal syntax. Own members such as
+`__proto__`, including nested members, remain data with ordinary JSON object
+prototypes. The original package-order admission and complete package projection
+are received through the generated package's own `npm test` script, including a
+negative control that omits an expected own output member. This requires no
+installation or registry access and does not assert packed-package receiving.

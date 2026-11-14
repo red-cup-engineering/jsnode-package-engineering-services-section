@@ -25,7 +25,7 @@ function contractTestSource(specification) {
     'import test from "node:test";',
     ...imports,
     "",
-    `const examples = ${JSON.stringify(examples, null, 2)};`,
+    `const examples = JSON.parse(${JSON.stringify(JSON.stringify(examples))});`,
     "",
     "for (const example of examples) {",
     "  test(example.name, async () => {",
