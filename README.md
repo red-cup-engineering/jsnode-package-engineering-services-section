@@ -856,3 +856,15 @@ installation, generated tests, CLI/module agreement and receipt binding with
 publication omitted or false. This qualifies that staged source-artifact
 scenario, not issuance on the house registry or this generator's entire frozen
 transitive dependency graph.
+
+### Native npm owner uptake
+
+The npm packing, name admission and export-documentation suppliers are selected
+at their current proper-owner prerequisites. The npm package's complete runtime
+graph was installed from authentic source archives through the existing read-only
+registry snapshot, then replayed with `npm ci` into a second empty consumer and
+cache. Its complete shipped fifteen-program receiving profile passed in both
+installations. This generator receives those actual installed suppliers rather
+than a local manifest override. The claim is a native source-artifact runtime
+graph, not the generator's unresolved full development lock or house-registry
+issuance. No publication or held upstream integration is authorized by it.
