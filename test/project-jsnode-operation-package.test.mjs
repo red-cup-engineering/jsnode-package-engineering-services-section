@@ -96,3 +96,30 @@ test("the original package projection preserves detached invocation and JSON exa
     assert.match(result.stdout, scenario.succeeds ? /# pass 2/u : /ERR_ASSERTION/u);
   });
 });
+
+test("native package exports, catalog, examples and docs preserve admitted URL-significant filenames", async t => {
+  for (const name of ["value#1", "value?1", "value%20x", ".hidden"]) {
+    const input=candidate();delete input.cli;
+    const modulePath=`src/${name}.mjs`, dependencyPath=`src/shared-${name}.mjs`;
+    const encodedDependency="./"+encodeURIComponent(`shared-${name}.mjs`);
+    input.sources=[
+      {type:"JavascriptNodePackageSource",path:dependencyPath,text:"export const unit=1;\n"},
+      {type:"JavascriptNodePackageSource",path:modulePath,text:`import {unit} from ${JSON.stringify(encodedDependency)}; export function increment(value) { return value+unit; }\n`},
+    ];
+    input.operations=[{name:"increment",module:modulePath,exportName:"increment",description:"Increments a number.",inputSchema:{type:"number"},outputSchema:{type:"number"}}];
+    input.examples=[{type:"JsnodeOperationPackageExample",name:"increment example",operation:"increment",input:3,output:4}];
+    input.tests=[{type:"JavascriptNodeOperationTestSource",path:"test/public.test.mjs",text:'import test from "node:test"; import assert from "node:assert/strict"; import {increment} from "@test/numbers/increment"; test("public package export",()=>assert.equal(increment(8),9));\n'}];
+    const admitted=admitJsnodeOperationPackageSpecification(input);
+    assert.equal(admitted.type,"JsnodeOperationPackageSpecification",JSON.stringify(admitted));
+    const projection=projectJsnodeOperationPackage(admitted);
+    assert.deepEqual(projection,projectJsnodeOperationPackage(admitted));
+    assert.ok(projection.files.find(file=>file.path==="README.md").text.includes(`Module: \`${modulePath}\``));
+    const root=await mkdtemp(path.join(import.meta.dirname,"fixtures",".generated-url-package-"));
+    t.after(()=>rm(root,{recursive:true,force:true}));
+    for(const file of projection.files){await mkdir(path.dirname(path.join(root,file.path)),{recursive:true});await writeFile(path.join(root,file.path),file.text);}
+    const env={...process.env,NODE_OPTIONS:"--test-reporter=tap"};delete env.NODE_TEST_CONTEXT;
+    const result=spawnSync("npm",["test"],{cwd:root,env,encoding:"utf8"});
+    assert.equal(result.status,0,name+": "+result.stdout+result.stderr);
+    assert.match(result.stdout,/# pass 2/u);
+  }
+});

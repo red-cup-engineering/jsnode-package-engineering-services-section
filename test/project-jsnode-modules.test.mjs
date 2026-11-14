@@ -170,3 +170,30 @@ test("the actual catalog keeps creation callable and propagates refusal rather t
   assert.equal(refusal.code,"UNEXPECTED_FIELDS");
   assert.equal(refusal.type === "JsnodeOperationPackageCreationReceipt",false);
 });
+
+test("catalog URLs and source closure use native ESM semantics without changing require paths", async t => {
+  const operation={name:"read-value",module:"src/read#value.mjs",exportName:"readValue",description:"Reads an integer.",inputSchema:{type:"number"},inputSchemaPath:"data/records/schema/in#put.json",outputSchema:{type:"number"},outputSchemaPath:"data/records/schema/out?put.json"};
+  const sources=[
+    {path:"src/shared#value.mjs",text:"export const value=2;\n"},
+    {path:"src/literal%20value.mjs",text:"export const value=3;\n"},
+    {path:operation.module,text:'import {value} from ".//shared%23value.mjs?selected=1#source"; import {createRequire} from "node:module"; const require=createRequire(import.meta.url); const other=require("./literal%20value.mjs"); export function readValue(input){return input+value+other.value;}\n'},
+  ];
+  const cli={path:"apps/read#catalog.mjs",name:"values",description:"Reads values."};
+  const files=projectJsnodeModules({sources,operations:[operation],cli});
+  const root=await mkdtemp(path.join(tmpdir(),"module-url-receiving-"));t.after(()=>rm(root,{recursive:true,force:true}));
+  await materialize(root,files);
+  for(const side of ["input","output"]){const target=path.join(root,operation[side+"SchemaPath"]);await mkdir(path.dirname(target),{recursive:true});await writeFile(target,JSON.stringify(operation[side+"Schema"]));}
+  const module=await import(pathToFileURL(path.join(root,cli.path)).href);
+  assert.equal(await module.catalog.operations["read-value"].operation(7),12);
+  assert.throws(()=>projectJsnodeModules({sources:[{path:"src/a.mjs",text:'import "./sub%2Fmodule.mjs";'}],operations:[]}),/encoded.*[\\/]|encoded.*characters/i);
+  assert.throws(()=>projectJsnodeModules({sources:[{path:"src/a.mjs",text:'import "./%2e%2e/outside.mjs";'}],operations:[]}),/external reference is not declared/u);
+});
+
+
+test("ESM closure checking cannot clamp package escapes back into local sources", () => {
+  for (const specifier of ["../../src/b.mjs", "../../../src/b.mjs", "./%2e%2e/%2e%2e/src/b.mjs", "../../package/src/b.mjs"]) {
+    const sources=[{path:"src/a.mjs",text:`import ${JSON.stringify(specifier)};`},{path:"src/b.mjs",text:"export const value=1;"}];
+    assert.throws(()=>projectJsnodeModules({sources,operations:[]}),/external reference is not declared/u);
+    assert.doesNotThrow(()=>projectJsnodeModules({sources,operations:[],externalReferences:[specifier]}));
+  }
+});
