@@ -1,3 +1,4 @@
+import { relativeModuleSpecifier } from "./project-jsnode-module-paths.mjs";
 import { admitTextFileCreationProjection } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection";
 
 function requireSpecification(value) {
@@ -16,12 +17,12 @@ function file(path, text) {
 function contractTestSource(specification) {
   const operations = Object.fromEntries(specification.operations.map((operation, index) => [operation.commandName, { ...operation, binding: `operation${index}` }]));
   const imports = Object.values(operations).map((operation) =>
-    `import { ${operation.exportName} as ${operation.binding} } from ${JSON.stringify(`../${operation.path}`)};`);
+    `import { ${operation.exportName} as ${operation.binding} } from ${JSON.stringify(relativeModuleSpecifier("test/operation-contracts.test.mjs", operation.path))};`);
   const examples = specification.examples.map((example) => ({ ...example, commandName: operations[example.operation].commandName, binding: operations[example.operation].binding }));
   const bindings = Object.values(operations).map((operation) => `${JSON.stringify(operation.binding)}: ${operation.binding}`).join(", ");
   return [
     'import assert from "node:assert/strict";',
-    ...(specification.app === null ? [] : ['import { Readable } from "node:stream";', 'import { runJavascriptNodeOperationModule } from "@red-cup-engineering/node-js-function-engineering-services-section/operation";', `import { catalog } from ${JSON.stringify(`../${specification.app.path}`)};`]),
+    ...(specification.app === null ? [] : ['import { Readable } from "node:stream";', 'import { runJavascriptNodeOperationModule } from "@red-cup-engineering/node-js-function-engineering-services-section/operation";', `import { catalog } from ${JSON.stringify(relativeModuleSpecifier("test/operation-contracts.test.mjs", specification.app.path))};`]),
     'import test from "node:test";',
     ...imports,
     "",
