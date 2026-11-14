@@ -107,14 +107,14 @@ test("the original installed package enrolls exactly its canonical source-owned 
   assert.deepEqual(plan.problems, []);
   assert.ok(plan.tests.length > 0, "original package must expose real executable tests");
   assert.deepEqual(manifest.receivingTests, plan.tests,
-    "installed receiving enrollment must be generated from the ONE original test plan, never a separate hand-maintained list");
+    "this package chooses to receive its complete canonical source plan");
 });
 test("installed receiving refuses enrollment drift and all unavailable tests without discarding legacy empty plans", (t) => {
   const root = mkdtempSync(join(tmpdir(), "empty-test-receiving-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const runner = fileURLToPath(new URL("../scripts/run-package-tests.mjs", import.meta.url));
   const report = output => JSON.parse(output.trim().split("\n").at(-1));
-  const spawn = (available = "") => spawnSync(process.execPath, [runner], {
+  const spawn = (available = "", receiving = false) => spawnSync(process.execPath, [runner, ...(receiving ? ["--receiving"] : [])], {
     cwd: root, encoding: "utf8", env: { ...process.env, EMPTY_PLAN_UNAVAILABLE: available },
   });
   const manifestPath = join(root, "package.json");
@@ -129,10 +129,10 @@ test("installed receiving refuses enrollment drift and all unavailable tests wit
   writeFileSync(manifestPath, JSON.stringify({
     name: "@x/empty-plan", receivingTests: ["test/missing.test.mjs"],
   }));
-  const missing = spawn();
+  const missing = spawn("", true);
   assert.notEqual(missing.status, 0, "a missing enrolled test must not be erased by discovery");
   assert.equal(report(missing.stdout).ok, false);
-  assert.match(report(missing.stdout).error, /enrollment differs from canonical test plan/u);
+  assert.match(report(missing.stdout).error, /receivingTests names missing program/u);
 
   mkdirSync(join(root, "test"));
   writeFileSync(join(root, "test", "needs-host.test.mjs"),
@@ -145,7 +145,7 @@ test("installed receiving refuses enrollment drift and all unavailable tests wit
     },
   };
   writeFileSync(manifestPath, JSON.stringify(manifest));
-  const withheld = spawn();
+  const withheld = spawn("", true);
   assert.notEqual(withheld.status, 0, "all host-blocked tests must not yield an accepted receipt");
   const unreceived = report(withheld.stdout);
   assert.deepEqual(
@@ -155,7 +155,7 @@ test("installed receiving refuses enrollment drift and all unavailable tests wit
   assert.deepEqual(unreceived.requires.map(({ test }) => test), ["test/needs-host.test.mjs"]);
   assert.match(unreceived.error, /no admitted tests available under current requirements/u);
 
-  const received = spawn("admitted");
+  const received = spawn("admitted", true);
   assert.equal(received.status, 0, received.stdout + received.stderr);
   const accepted = report(received.stdout);
   assert.deepEqual(
@@ -165,10 +165,44 @@ test("installed receiving refuses enrollment drift and all unavailable tests wit
 
   writeFileSync(join(root, "test", "unexpected.test.mjs"),
     'import test from "node:test"; test("unexpected", () => {});\n');
-  const drift = spawn("admitted");
-  assert.notEqual(drift.status, 0, "new undisclosed native test cannot silently alter the receiving plan");
-  assert.equal(report(drift.stdout).ok, false);
-  assert.match(report(drift.stdout).error, /enrollment differs from canonical test plan/u);
+  const source = spawn("admitted");
+  assert.equal(source.status, 0, source.stdout + source.stderr);
+  assert.equal(report(source.stdout).profile, "source");
+  assert.equal(report(source.stdout).planned, 2);
+  const receiver = spawn("admitted", true);
+  assert.equal(receiver.status, 0, receiver.stdout + receiver.stderr);
+  assert.equal(report(receiver.stdout).profile, "receiving");
+  assert.equal(report(receiver.stdout).planned, 1);
+  writeFileSync(join(root, "test", "unexpected.test.mjs"),
+    'import test from "node:test"; test("unlisted failure", () => { throw Error("sentinel"); });\n');
+  assert.notEqual(spawn("admitted").status, 0, "source must execute unlisted failing tests");
+  assert.equal(spawn("admitted", true).status, 0, "receiving is an explicitly separate obligation");
+  for (const receivingTests of [undefined, [], ["../escape.mjs"], ["test/needs-host.test.mjs", "test/needs-host.test.mjs"]]) {
+    writeFileSync(manifestPath, JSON.stringify({ ...manifest, receivingTests }));
+    assert.notEqual(spawn("admitted", true).status, 0);
+  }
+  mkdirSync(join(root, "examples"));
+  writeFileSync(join(root, "examples", "consumer.mjs"), 'import test from "node:test"; test("consumer", () => {});\n');
+  writeFileSync(manifestPath, JSON.stringify({ ...manifest,
+    receivingTests: ["examples/consumer.mjs"],
+    testRequires: { ...manifest.testRequires, "./test/omitted.test.mjs": { env: "MISSING_SOURCE_HOST" }, "examples/consumer.mjs": { env: "EMPTY_PLAN_UNAVAILABLE" } },
+  }));
+  assert.notEqual(spawn("", true).status, 0, "non-test-pattern consumers retain requirements");
+  assert.equal(spawn("admitted", true).status, 0, "installed receiver may omit source-only tests");
+  assert.notEqual(spawn("admitted").status, 0, "source metadata typos remain errors");
+  for (const name of ["test/*.mjs", "test/a?.mjs"]) {
+    writeFileSync(join(root, name), "");
+    writeFileSync(manifestPath, JSON.stringify({ receivingTests: [name] }));
+    assert.notEqual(spawn("admitted", true).status, 0, "literal globs cannot become receiving selectors");
+  }
+  writeFileSync(join(root, "--test-only"), 'require("node:assert/strict").equal(1, 1);\n');
+  writeFileSync(manifestPath, JSON.stringify({ receivingTests: ["--test-only"] }));
+  const optionName = spawn("admitted", true);
+  assert.notEqual(optionName.status, 0, "root option-like names are not executable receiving paths");
+  assert.equal(report(optionName.stdout).ran, 0);
+  writeFileSync(join(root, "--test-only"), 'throw Error("enrolled failure");\n');
+  assert.notEqual(spawn("admitted", true).status, 0, "option-looking enrolled failure cannot run unlisted tests instead");
+
 });
 
 test("native reporter bindings survive the original runner with inherited runtime options", async (t) => {

@@ -792,3 +792,28 @@ test supplier here and a production supplier in generated app packages. Source
 tests against a locally selected candidate archive do not establish registry
 availability. Publish and independently receive the canonical 0.5.1 artifact
 before integrating this consumer selection or claiming registry-based creation.
+
+### Source and installed receiving test profiles
+
+`run-package-tests [node flags]` runs every discovered source-owned test. An
+explicit `receivingTests` subset does not filter or invalidate this source plan.
+Use `run-package-tests --receiving [node flags]` to run the separately authored
+installed-carrier obligations in their declared order. The selector must be the
+first argument; later arguments remain native Node flags and operands unchanged.
+Every report names its `profile` (`source` or `receiving`). These are distinct
+claims, not interchangeable coverage measurements.
+
+Receiving requires a nonempty array of distinct safe package-relative paths,
+all present in the carrier. Programs may be examples rather than `*.test.*`.
+Missing, duplicate or unsafe entries refuse before execution. Segments use ASCII
+letters, digits, dots, underscores and hyphens; root option-like names beginning
+with a hyphen refuse rather than relying on Node child-process option parsing. `testRequires`
+applies to selected programs in either profile; an entirely unavailable plan
+refuses. Installed carriers may retain requirements for omitted source-only
+tests, but source mode still diagnoses unknown requirement paths. Neither mode
+silently converts incomplete native execution into success. An unenrolled empty
+source package retains its historical empty-plan behavior.
+
+This package chooses to ship its entire source plan as receiving tests;
+`sync-package-manifest --receiving-tests` remains an explicit way to make that
+choice, not a requirement imposed on all consumers.
