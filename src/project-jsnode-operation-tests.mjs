@@ -29,7 +29,8 @@ function contractTestSource(specification) {
     "",
     "for (const example of examples) {",
     "  test(example.name, async () => {",
-    "    const importedOutput = await ({" + bindings + "})[example.binding](example.input);",
+    "    const operation = ({" + bindings + "})[example.binding];",
+    "    const importedOutput = await operation(example.input);",
     "    assert.deepEqual(importedOutput, example.output);",
     ...(specification.app === null ? [] : [
       "    // The catalog is a declaration; the code layer runs it over captured streams.",

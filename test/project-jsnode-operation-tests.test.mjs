@@ -20,7 +20,7 @@ test("preserves authored tests and projects one module contract test", () => {
   assert.deepEqual(projections.map(({ path }) => path), ["test/math.test.mjs", "test/operation-contracts.test.mjs"]);
   assert.equal(projections[0].text, "authored\n");
   assert.match(projections[1].text, /import \{ addOne as operation0 \} from "\.\.\/src\/math\.mjs"/u);
-  assert.match(projections[1].text, /await \(\{.*operation0/u);
+  assert.match(projections[1].text, /const operation = \(\{.*operation0/u);
   assert.doesNotMatch(projections[1].text, /runJavascriptNodeOperationModule/u);
 });
 
@@ -69,4 +69,31 @@ test("the generated catalog contract executes against the declared canonical int
   assert.equal(result.status, 0, result.stderr + result.stdout);
   assert.match(result.stdout, /# pass 1/u);
   assert.match(result.stdout, /# fail 0/u);
+});
+
+test("generated receiving contracts use detached invocation, not an artificial receiver", async (t) => {
+  const { projectJsnodeModules } = await import("../src/project-jsnode-modules.mjs");
+  for (const app of [null, { path: "apps/receiver-cli.mjs", commandName: "receiver" }]) {
+    for (const expectsDetached of [true, false]) {
+      await t.test(`${app ? "catalog" : "module"}: ${expectsDetached ? "accept detached" : "reject receiver-dependent"}`, async (t) => {
+        const root = await mkdtemp(join(dirname(fileURLToPath(import.meta.url)), "fixtures", ".generated-contract-"));
+        t.after(() => rm(root, { recursive: true, force: true }));
+        const sources = [{ path: "src/receiver.mjs", text: `export function receiver(value) { return this ${expectsDetached ? "===" : "!=="} undefined; }\n` }];
+        const files = projectJsnodeModules({ sources, operations: [{ name: "receiver", module: sources[0].path, exportName: "receiver", description: "Observes detached invocation." }], ...(app ? { cli: { path: app.path, name: app.commandName, description: "Receiver contract." } } : {}) });
+        const projected = projectJsnodeOperationTests({
+          type: "JsnodeOperationPackageSpecification", version: 2, app, tests: [],
+          operations: [{ path: sources[0].path, exportName: "receiver", commandName: "receiver", documentation: { description: "Observes detached invocation." } }],
+          examples: [{ type: "JsnodeOperationPackageExample", name: "detached invocation", operation: "receiver", input: null, output: true }],
+        });
+        for (const file of [...files, ...projected]) {
+          await mkdir(dirname(join(root, file.path)), { recursive: true });
+          await writeFile(join(root, file.path), file.text);
+        }
+        const environment = Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== "NODE_TEST_CONTEXT"));
+        const result = spawnSync(process.execPath, ["--test", "--test-reporter=tap", join(root, "test/operation-contracts.test.mjs")], { encoding: "utf8", env: environment });
+        assert.equal(result.status, expectsDetached ? 0 : 1, result.stderr + result.stdout);
+        assert.match(result.stdout, expectsDetached ? /# pass 1/u : /ERR_ASSERTION/u);
+      });
+    }
+  }
 });
