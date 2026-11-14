@@ -9,7 +9,7 @@ import { admitJavascriptExportDescription } from "@red-cup-engineering/read-java
 import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 import { projectJsnodeOperationSourceFromArguments } from "./project-jsnode-operation-source-from-arguments.mjs";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
-import { planJsnodePackageCollapse, applyJsnodePackageCollapsePlan } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
+import { projectJsnodeModuleReferences } from "./project-jsnode-module-references.mjs";
 
 class SpecificationRefusal extends Error {
   constructor(code, message, refusedPath = null) {
@@ -325,8 +325,8 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
       if (admittedOperations.filter((other) => other.path === operation.path).length === 1) paths.set(operation.path, operation);
       if (operation.originalPath) paths.set(operation.originalPath, operation);
     }
-    const mapping = { files: admittedOperations.flatMap((operation) => operation.originalPath ? [{ from: operation.originalPath, to: operation.path }] : []), packageExports: [] };
-    const projectReference = (file, originalPath = file.path) => ({ ...file, text: applyJsnodePackageCollapsePlan(file.text, originalPath, planJsnodePackageCollapse(file.text, originalPath, mapping)).text });
+    const mapping = admittedOperations.flatMap((operation) => operation.originalPath ? [{ from: operation.originalPath, to: operation.path }] : []);
+    const projectReference = (file, originalPath = file.path) => ({ ...file, text: projectJsnodeModuleReferences(file.text, originalPath, mapping) });
     sourceModules = sourceModules.map((source) => projectReference(source, admittedOperations.find((operation) => operation.source?.path === source.path)?.originalPath ?? source.path));
     const migratedTests = tests.map((test) => projectReference(test));
     const examples = isV2 ? packageExamples(candidate.examples, paths).map((example) => ({ ...example, operation: paths.get(example.operation).commandName })) : operationExamples(candidate.examples).map((example) => ({ ...example, type: "JsnodeOperationPackageExample", operation: admittedOperations[0].commandName }));

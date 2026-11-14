@@ -817,3 +817,9 @@ source package retains its historical empty-plan behavior.
 This package chooses to ship its entire source plan as receiving tests;
 `sync-package-manifest --receiving-tests` remains an explicit way to make that
 choice, not a requirement imposed on all consumers.
+
+### Parser-owned source sites and atomic relocation
+
+The fabrication source uses the genuine JavaScript parser service directly, including its binding-aware module-reference sites. Package-owned relocation is an atomic transformation of caller-supplied file mappings; it does not restore the retired JavaScriptNode syntax facade or persist a separately applicable edit plan. See `content/text/documents/specifications/jsnode-module-reference-projection.md` for the supported profile and refusal behavior.
+
+The development parser and export-documentation dependency selections are source prerequisites. Selected native source and packed-consumer qualification does not establish registry issuance, the complete installed dependency graph, or activation. The existing pnpm lock remains unreconciled; frozen installation is not qualified by these source checks.
