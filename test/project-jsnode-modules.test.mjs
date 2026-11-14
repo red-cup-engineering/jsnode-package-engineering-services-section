@@ -103,3 +103,12 @@ test("projects the checked-in catalog binding without drift and executes its mod
   })}\n`);
   assert.equal(JSON.parse(admitted.stdout).type, "JsnodeOperationPackageSpecification");
 });
+
+test("module projection uses bound loader requests without treating local require parameters as dependencies", () => {
+  const operation = { name: "value", module: "src/value.mjs", exportName: "value", description: "Returns a value." };
+  const shadowed = "export function value(require) { return require('./not-a-module.mjs'); }";
+  assert.ok(projectJsnodeModules({ sources: [{ path: "src/value.mjs", text: shadowed }], operations: [operation] }).some(file => file.path === "src/value.mjs"));
+  const canonical = "import {createRequire as factory} from 'node:module'; const load=factory(import.meta.url); export const value=()=>load('./missing.cjs');";
+  assert.throws(() => projectJsnodeModules({ sources: [{ path: "src/value.mjs", text: canonical }], operations: [operation] }), /unresolvable projected import/);
+  assert.throws(() => projectJsnodeModules({ sources: [{ path: "src/value.mjs", text: "// export const value = 1;\nconst hidden = 1;" }], operations: [operation] }), /export/);
+});

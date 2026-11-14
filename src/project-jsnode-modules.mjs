@@ -4,7 +4,9 @@ import { posix as path } from "node:path";
 import { compileJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
 import { projectJsnodeDataModules } from "./project-jsnode-data-modules.mjs";
 export { projectJsnodeDataModules } from "./project-jsnode-data-modules.mjs";
-import { readJsnodeModuleExports, readJsnodeModuleRequests } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
+import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
+import { readJavaScriptModuleExportNames } from "@red-cup-engineering/javascript-parser-service/module-export-names";
+import { readJavaScriptModuleRequestSites } from "@red-cup-engineering/javascript-parser-service/module-reference-sites";
 
 import specificationSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };
 const specificationContract = compileJsonSchema(specificationSchema);
@@ -32,12 +34,12 @@ function validateOperationSchema(schema, operation, side) {
 function namedExports(text, fileName) {
   // "default" is a real ECMAScript ModuleExportName, not an omitted
   // operation; the original AST reader already distinguishes exported names.
-  return new Set(readJsnodeModuleExports(text, fileName).names);
+  return new Set(readJavaScriptModuleExportNames(parseJavaScript(text)).names);
 }
 function validateSourceImports(sources, externalReferences) {
   const paths = new Set(sources.map((source) => source.path));
   const external = new Set(externalReferences ?? []);
-  for (const source of sources) for (const request of readJsnodeModuleRequests(source.text, source.path)) {
+  for (const source of sources) for (const request of readJavaScriptModuleRequestSites(parseJavaScript(source.text))) {
     const specifier = request.specifier;
     if (specifier === null) throw new TypeError(`computed module request is not projectable: ${source.path}`);
     if (!specifier.startsWith(".")) continue;
