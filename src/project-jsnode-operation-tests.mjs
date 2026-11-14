@@ -17,16 +17,20 @@ function file(path, text) {
 function contractTestSource(specification) {
   const operations = Object.fromEntries(specification.operations.map((operation, index) => [operation.commandName, { ...operation, binding: `operation${index}` }]));
   const imports = Object.values(operations).map((operation) =>
-    `import { ${operation.exportName} as ${operation.binding} } from ${JSON.stringify(relativeModuleSpecifier("test/operation-contracts.test.mjs", operation.path))};`);
+    `const { ${JSON.stringify(operation.exportName)}: ${operation.binding} } = await import(${JSON.stringify(relativeModuleSpecifier("test/operation-contracts.test.mjs", operation.path))});`);
   const examples = specification.examples.map((example) => ({ ...example, commandName: operations[example.operation].commandName, binding: operations[example.operation].binding }));
   const bindings = Object.values(operations).map((operation) => `${JSON.stringify(operation.binding)}: ${operation.binding}`).join(", ");
   return [
-    'import assert from "node:assert/strict";',
-    ...(specification.app === null ? [] : ['import { Readable } from "node:stream";', 'import { runJavascriptNodeOperationModule } from "@red-cup-engineering/node-js-function-engineering-services-section/operation";', `import { catalog } from ${JSON.stringify(relativeModuleSpecifier("test/operation-contracts.test.mjs", specification.app.path))};`]),
+    'import nativeAssert from "node:assert/strict";',
+    ...(specification.app === null ? [] : ['import { Readable } from "node:stream";', 'import { runJavascriptNodeOperationModule } from "@red-cup-engineering/node-js-function-engineering-services-section/operation";']),
     'import test from "node:test";',
-    ...imports,
-    "",
+    "// Capture receiving intrinsics before any candidate module executes.",
+    "const assert = Object.freeze({ deepEqual: nativeAssert.deepEqual.bind(nativeAssert), equal: nativeAssert.equal.bind(nativeAssert) });",
+    "const parseJson = JSON.parse;",
+    "const stringifyJson = JSON.stringify;",
     `const examples = JSON.parse(${JSON.stringify(JSON.stringify(examples))});`,
+    ...imports,
+    ...(specification.app === null ? [] : [`const { catalog } = await import(${JSON.stringify(relativeModuleSpecifier("test/operation-contracts.test.mjs", specification.app.path))});`]),
     "",
     "for (const example of examples) {",
     "  test(example.name, async () => {",
@@ -38,12 +42,12 @@ function contractTestSource(specification) {
       "    let stdout = \"\";",
       "    const result = await runJavascriptNodeOperationModule({ catalog }, {",
       "      arguments: [example.commandName],",
-      "      standardInput: Readable.from([JSON.stringify(example.input) + \"\\n\"]),",
+      "      standardInput: Readable.from([stringifyJson(example.input) + \"\\n\"]),",
       "      standardOutput: { write(text, done) { stdout += text; done?.(); return true; } },",
       "      standardError: { write(text, done) { done?.(); return true; } },",
       "    });",
       "    assert.equal(result.exitCode, 0);",
-      "    const commandOutput = JSON.parse(stdout.trim());",
+      "    const commandOutput = parseJson(stdout.trim());",
       "    assert.deepEqual(commandOutput, example.output);",
       "    assert.deepEqual(commandOutput, importedOutput);",
     ]),

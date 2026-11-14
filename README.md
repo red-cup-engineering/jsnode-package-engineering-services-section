@@ -196,7 +196,12 @@ packaging around that same module projection. A package specification with
 function-source work orders are normalized into module bindings. The creator
 checks declared examples, runs authored and generated contract tests, packs and
 clean-installs the result, and executes its exported functions and any requested
-catalog command before materializing an absent destination.
+catalog command before materializing an absent destination. Generated source-bearing
+contract tests snapshot their assertion and JSON functions and admitted examples
+before dynamically importing operation modules or the catalog. Import-time or
+invocation-time replacement of those shared functions cannot change the recorded
+example oracle. This is not hostile-code isolation or an independent completion
+receipt: successful command exit alone does not prove all declared tests ran.
 
 The Markdown translator accepts source fences, operation bindings, tests,
 examples, and the work order's requirements and traceability. Bindings carry

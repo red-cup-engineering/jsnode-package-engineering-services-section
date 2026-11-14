@@ -19,7 +19,7 @@ test("preserves authored tests and projects one module contract test", () => {
   const projections = projectJsnodeOperationTests(specification);
   assert.deepEqual(projections.map(({ path }) => path), ["test/math.test.mjs", "test/operation-contracts.test.mjs"]);
   assert.equal(projections[0].text, "authored\n");
-  assert.match(projections[1].text, /import \{ addOne as operation0 \} from "\.\.\/src\/math\.mjs"/u);
+  assert.match(projections[1].text, /const \{ "addOne": operation0 \} = await import\("\.\.\/src\/math\.mjs"\)/u);
   assert.match(projections[1].text, /const operation = \(\{.*operation0/u);
   assert.doesNotMatch(projections[1].text, /runJavascriptNodeOperationModule/u);
 });
@@ -40,8 +40,8 @@ test("uses a distinct deterministic binding for each operation, including shared
     ...specification.examples,
     { type: "JsnodeOperationPackageExample", name: "increments one", operation: "increment", input: 1, output: 2 },
   ] });
-  assert.match(projections[1].text, /import \{ addOne as operation0 \}/u);
-  assert.match(projections[1].text, /import \{ addOne as operation1 \}/u);
+  assert.match(projections[1].text, /const \{ "addOne": operation0 \}/u);
+  assert.match(projections[1].text, /const \{ "addOne": operation1 \}/u);
   const examples = JSON.parse(JSON.parse(projections[1].text.match(/const examples = JSON.parse\((.*)\);/u)[1]));
   assert.deepEqual(examples.map(example => example.binding), ["operation0", "operation1"]);
 });
@@ -97,4 +97,50 @@ test("generated receiving contracts use detached invocation, not an artificial r
       });
     }
   }
+});
+
+
+test("generated contracts retain their assertions and declared examples before candidate import", async (t) => {
+  const { projectJsnodeModules } = await import("../src/project-jsnode-modules.mjs");
+  for (const mutation of ["assert", "JSON.parse", "invocation-assert"]) {
+    for (const correct of [true, false]) {
+      await t.test(`${mutation}: ${correct ? "correct implementation" : "reject wrong implementation"}`, async (t) => {
+        const root = await mkdtemp(join(dirname(fileURLToPath(import.meta.url)), "fixtures", ".generated-contract-"));
+        t.after(() => rm(root, { recursive: true, force: true }));
+        const text = (mutation === "assert"
+          ? 'import assert from "node:assert/strict"; assert.deepEqual = () => {}; assert.equal = () => {};\n'
+          : mutation === "JSON.parse" ? 'JSON.parse = () => [];\n' : 'import assert from "node:assert/strict";\n') + `export const addOne = value => { ${mutation === "invocation-assert" ? "assert.deepEqual = () => {}; assert.equal = () => {};" : ""} return ${correct ? "value + 1" : "0"}; };\n`;
+        const sources = [{ path: "src/math.mjs", text }];
+        const files = projectJsnodeModules({ sources, operations: [{ name: "add-one", module: sources[0].path, exportName: "addOne", description: "Adds one." }] });
+        const projected = projectJsnodeOperationTests({ ...specification, tests: [] });
+        for (const file of [...files, ...projected]) {
+          await mkdir(dirname(join(root, file.path)), { recursive: true });
+          await writeFile(join(root, file.path), file.text);
+        }
+        const environment = Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== "NODE_TEST_CONTEXT"));
+        const result = spawnSync(process.execPath, ["--test", "--test-reporter=tap", join(root, "test/operation-contracts.test.mjs")], { encoding: "utf8", env: environment });
+        assert.equal(result.status, correct ? 0 : 1, result.stderr + result.stdout);
+        assert.match(result.stdout, correct ? /# pass 1/u : /ERR_ASSERTION/u);
+        assert.match(result.stdout, /# tests 1/u);
+      });
+    }
+  }
+});
+
+test("catalog equivalence keeps its oracle after the direct import face succeeds", async (t) => {
+  const { projectJsnodeModules } = await import("../src/project-jsnode-modules.mjs");
+  const root = await mkdtemp(join(dirname(fileURLToPath(import.meta.url)), "fixtures", ".generated-contract-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const sources = [{ path: "src/math.mjs", text: 'import assert from "node:assert/strict"; let calls = 0; export function addOne(value) { if (++calls === 1) return value + 1; assert.deepEqual = () => {}; assert.equal = () => {}; return 0; }\n' }];
+  const app = { path: "apps/math-cli.mjs", commandName: "math" };
+  const files = projectJsnodeModules({ sources, operations: [{ name: "add-one", module: sources[0].path, exportName: "addOne", description: "Adds one." }], cli: { path: app.path, name: app.commandName, description: "Math." } });
+  for (const file of [...files, ...projectJsnodeOperationTests({ ...specification, app, tests: [] })]) {
+    await mkdir(dirname(join(root, file.path)), { recursive: true });
+    await writeFile(join(root, file.path), file.text);
+  }
+  const environment = Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== "NODE_TEST_CONTEXT"));
+  const result = spawnSync(process.execPath, ["--test", "--test-reporter=tap", join(root, "test/operation-contracts.test.mjs")], { encoding: "utf8", env: environment });
+  assert.equal(result.status, 1, result.stderr + result.stdout);
+  assert.match(result.stdout, /ERR_ASSERTION/u);
+  assert.match(result.stdout, /# tests 1/u);
 });
