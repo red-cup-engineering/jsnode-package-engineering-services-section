@@ -1,7 +1,7 @@
 import path from "node:path";
 import packageManifest from "../package.json" with { type: "json" };
-import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
-import { isJsonValue } from "@red-cup-engineering/json-engineering-services-section";
+import { freezeJson } from "@red-cup-engineering/json-engine";
+import { isJsonValue } from "@red-cup-engineering/json-engine";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
 import { admitNonemptySingleLineText } from "@red-cup-engineering/computer-text-content-engineering-services-section/admit-nonempty-single-line-text";
 import { formNpmScopedPackageName } from "@red-cup-engineering/npm-scoped-package-name-formation-service";

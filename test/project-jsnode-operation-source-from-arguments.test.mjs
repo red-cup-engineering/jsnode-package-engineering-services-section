@@ -116,7 +116,7 @@ test("retains requested import evaluation order and imports no runtime", () => {
     bodyText: "/**\n * Example.\n */\nexport function example() {\n  return 1;\n}",
     imports: [
       { source: "lodash", names: ["chunk"] },
-      { source: "@red-cup-engineering/json-engineering-services-section", names: ["parse"] },
+      { source: "@red-cup-engineering/json-engine", names: ["parse"] },
       { source: "node:path", names: ["basename"] },
     ],
   };
@@ -124,7 +124,7 @@ test("retains requested import evaluation order and imports no runtime", () => {
   const importLines = projection.text.split("\n").filter((line) => line.startsWith("import "));
   assert.deepEqual(importLines, [
     'import { chunk } from "lodash";',
-    'import { parse } from "@red-cup-engineering/json-engineering-services-section";',
+    'import { parse } from "@red-cup-engineering/json-engine";',
     'import { basename } from "node:path";',
   ]);
 });

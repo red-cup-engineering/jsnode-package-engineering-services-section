@@ -2,7 +2,7 @@
 import { readFile } from "node:fs/promises";
 import { once } from "node:events";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
-import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
+import { freezeJson } from "@red-cup-engineering/json-engine";
 import { parseArgs } from "node:util";
 import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
 import { readJavascriptFileExportDocumentation } from "@red-cup-engineering/read-javascript-file-export-documentation-service";

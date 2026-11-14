@@ -282,7 +282,7 @@ test("sorts imports node: builtins before scoped house packages before others", 
     bodyText: "/**\n * Example.\n */\nexport function example() {\n  return 1;\n}",
     imports: [
       { source: "lodash", names: ["chunk"] },
-      { source: "@red-cup-engineering/json-codec-service", names: ["parse"] },
+      { source: "@red-cup-engineering/json-engine", names: ["parse"] },
       { source: "node:path", names: ["basename"] },
     ],
   };
@@ -290,7 +290,7 @@ test("sorts imports node: builtins before scoped house packages before others", 
   const importLines = projection.text.split("\n").filter((line) => line.startsWith("import "));
   assert.deepEqual(importLines, [
     'import { basename } from "node:path";',
-    'import { parse } from "@red-cup-engineering/json-codec-service";',
+    'import { parse } from "@red-cup-engineering/json-engine";',
     'import { chunk } from "lodash";',
   ]);
 });

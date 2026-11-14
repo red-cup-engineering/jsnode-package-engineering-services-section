@@ -1,4 +1,4 @@
-import { canonicalChecked } from "@red-cup-engineering/json-engineering-services-section";
+import { canonicalChecked } from "@red-cup-engineering/json-engine";
 
 function renderImportLine(importRecord) {
   if (typeof importRecord.text === "string") return importRecord.text;

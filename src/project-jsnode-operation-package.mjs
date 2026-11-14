@@ -1,5 +1,5 @@
 import { relativeModuleSpecifier } from "./project-jsnode-module-paths.mjs";
-import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
+import { freezeJson } from "@red-cup-engineering/json-engine";
 import { serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
 import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { projectJsnodeOperationPackageReadme } from "./project-jsnode-operation-package-readme.mjs";

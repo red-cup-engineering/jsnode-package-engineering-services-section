@@ -1,11 +1,11 @@
 import { receivePackageTestReport } from "./package-check-outcome.mjs";
 import { lstat, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
-import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
+import { freezeJson } from "@red-cup-engineering/json-engine";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operation-package-specification.mjs";
-import { parse } from "@red-cup-engineering/json-engineering-services-section";
+import { parse } from "@red-cup-engineering/json-engine";
 import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
 import { packNpmPackage } from "@red-cup-engineering/npm-package-engineering-services-section/pack-npm-package";
 import { inspectInstalledNpmPackage, inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";

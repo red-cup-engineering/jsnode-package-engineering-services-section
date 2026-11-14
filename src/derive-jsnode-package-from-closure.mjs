@@ -22,7 +22,7 @@
  * the provider, and the caller judges the accepted lot once the whole pipeline has assayed it.
  */
 import path from "node:path";
-import { parseJsonValue } from "@red-cup-engineering/json-engineering-services-section";
+import { parseJsonValue } from "@red-cup-engineering/json-engine";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
 import { readJavaScriptModuleExportNames } from "@red-cup-engineering/javascript-parser-service/module-export-names";
 import { inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";

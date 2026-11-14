@@ -38,7 +38,7 @@ importers:
       '@red-cup-engineering/javascript-parser-service':
         specifier: 0.2.0-dev.1
         version: 0.2.0-dev.1
-      '@red-cup-engineering/json-engineering-services-section':
+      '@red-cup-engineering/json-engine':
         specifier: 0.4.3-dev.0
         version: 0.4.3-dev.0
       '@red-cup-engineering/json-schema-engineering-services-section':
@@ -189,7 +189,7 @@ packages:
     resolution: {integrity: sha512-4pgUJUk7aMQlKC/WpnGNbbqjnTo+VD/6k5q8EP/33/zTVIyWI4P8/f6xln3hqZUbyBZbooXIxP2nVgIK4TQlvQ==}
     engines: {node: '>=18'}
 
-  '@red-cup-engineering/json-engineering-services-section@0.4.3-dev.0':
+  '@red-cup-engineering/json-engine@0.4.3-dev.0':
     resolution: {integrity: sha512-dapj4lED8HmPt2bigVEUsfOnblvYBD+4qTQWpsHfKu6EKOhpeCSAKOEPpmi/Q3MYDbcO21R3/Fhc6qYbEToXjw==}
     engines: {node: '>=24.2.0'}
 
@@ -416,7 +416,7 @@ snapshots:
 
   '@red-cup-engineering/cbor-engineering-services-section@0.1.2-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/signcell': 0.17.5
       cbor2: 2.4.0
 
@@ -424,7 +424,7 @@ snapshots:
     dependencies:
       '@red-cup-engineering/cbor-engineering-services-section': 0.1.2-dev.0
       '@red-cup-engineering/computer-content-engineering-services-section': 0.2.1-dev.1
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/metrologic': 0.22.2
       '@red-cup-engineering/semiotic-content-address-system': 0.1.3-dev.1
       '@red-cup-engineering/sen-codec': 0.1.1
@@ -441,7 +441,7 @@ snapshots:
     dependencies:
       '@red-cup-engineering/computer-code-engine': 0.1.1-dev.1
       '@red-cup-engineering/eavt-engineering-services-section': 0.15.0-dev.3
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/json-schema-engineering-services-section': 0.5.6-dev.1
       '@red-cup-engineering/metrologic': 0.22.2
       '@red-cup-engineering/signcell': 0.17.5
@@ -450,7 +450,7 @@ snapshots:
 
   '@red-cup-engineering/computer-data-engineering-services-section@0.7.3-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/metrologic': 0.22.2
       '@red-cup-engineering/semiotic-content-address-system': 0.1.3-dev.1
       '@red-cup-engineering/uri-engineering-services-section': 0.1.6-dev.0
@@ -459,7 +459,7 @@ snapshots:
     dependencies:
       '@red-cup-engineering/computer-filepath-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/cryptographic-computer-data-engineering-services-section': 0.3.4-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/json-schema-engineering-services-section': 0.5.6-dev.1
       '@red-cup-engineering/jsonl-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/semiotic-content-address-system': 0.1.3-dev.1
@@ -469,13 +469,13 @@ snapshots:
   '@red-cup-engineering/computer-filepath-engineering-services-section@0.1.3-dev.0':
     dependencies:
       '@red-cup-engineering/computer-text-content-engineering-services-section': 0.1.2-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/uri-engineering-services-section': 0.1.6-dev.0
 
   '@red-cup-engineering/computer-serialized-content-engineering-services-section@0.6.1-dev.0':
     dependencies:
       '@red-cup-engineering/computer-data-engineering-services-section': 0.7.3-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/metrologic': 0.22.2
       '@red-cup-engineering/signcell': 0.17.5
       '@red-cup-engineering/signcraft': 0.9.6-dev.2
@@ -489,17 +489,17 @@ snapshots:
 
   '@red-cup-engineering/computer-text-content-engineering-services-section@0.1.2-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
 
   '@red-cup-engineering/cryptographic-computer-data-engineering-services-section@0.3.4-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/signcell': 0.17.5
 
   '@red-cup-engineering/datom-engineering-services-section@0.1.3-dev.2':
     dependencies:
       '@red-cup-engineering/eavt-engineering-services-section': 0.15.0-dev.3
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/jsonl-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/signcell': 0.17.5
 
@@ -512,7 +512,7 @@ snapshots:
       '@red-cup-engineering/computer-filepath-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/computer-text-content-engineering-services-section': 0.1.2-dev.0
       '@red-cup-engineering/datom-engineering-services-section': 0.1.3-dev.2
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/json-schema-engineering-services-section': 0.5.6-dev.1
       '@red-cup-engineering/jsonl-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/metrologic': 0.22.2
@@ -521,7 +521,7 @@ snapshots:
 
   '@red-cup-engineering/execute-javascript-node-command-service@0.4.3-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/node-js-function-engineering-services-section': 0.5.2-dev.0
       '@red-cup-engineering/signcell': 0.17.5
 
@@ -530,7 +530,7 @@ snapshots:
   '@red-cup-engineering/inspect-installed-npm-package-service@0.3.3-dev.1':
     dependencies:
       '@red-cup-engineering/javascript-file-import-engineering-services-section': 0.2.0-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/jsonl-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/read-javascript-file-export-documentation-service': 0.2.1-dev.1
 
@@ -538,7 +538,7 @@ snapshots:
     dependencies:
       '@red-cup-engineering/computer-file-engineering-services-section': 0.8.7-dev.1
       '@red-cup-engineering/javascript-parser-service': 0.2.0-dev.1
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/jsonl-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/node-js-function-engineering-services-section': 0.5.2-dev.0
 
@@ -546,12 +546,12 @@ snapshots:
     dependencies:
       '@red-cup-engineering/computer-content-engineering-services-section': 0.2.1-dev.1
       '@red-cup-engineering/javascript-parser-service': 0.2.0-dev.1
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/json-schema-engineering-services-section': 0.5.6-dev.1
 
   '@red-cup-engineering/javascript-parser-service@0.2.0-dev.1': {}
 
-  '@red-cup-engineering/json-engineering-services-section@0.4.3-dev.0':
+  '@red-cup-engineering/json-engine@0.4.3-dev.0':
     dependencies:
       '@red-cup-engineering/signcell': 0.17.5
 
@@ -561,21 +561,21 @@ snapshots:
       '@hyperjump/json-schema': 1.18.0(@hyperjump/browser@1.5.1)
       '@red-cup-engineering/computer-code-engine': 0.1.1-dev.1
       '@red-cup-engineering/cryptographic-computer-data-engineering-services-section': 0.3.4-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/uri-engineering-services-section': 0.1.6-dev.0
 
   '@red-cup-engineering/jsonl-engineering-services-section@0.1.3-dev.0':
     dependencies:
       '@red-cup-engineering/computer-content-engineering-services-section': 0.2.1-dev.1
       '@red-cup-engineering/cryptographic-computer-data-engineering-services-section': 0.3.4-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/signcell': 0.17.5
 
   '@red-cup-engineering/metrologic@0.22.2': {}
 
   '@red-cup-engineering/node-js-function-engineering-services-section@0.5.2-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/signcell': 0.17.5
       '@red-cup-engineering/signcraft': 0.9.6-dev.2
       '@red-cup-engineering/signgraph': 0.10.1
@@ -587,7 +587,7 @@ snapshots:
       '@red-cup-engineering/computer-file-engineering-services-section': 0.8.7-dev.1
       '@red-cup-engineering/computer-filepath-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/execute-javascript-node-command-service': 0.4.3-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/jsonl-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/node-js-function-engineering-services-section': 0.5.2-dev.0
       '@red-cup-engineering/npm-owner-admission-service': 0.2.1
@@ -599,7 +599,7 @@ snapshots:
 
   '@red-cup-engineering/npm-package-manifest-admission-service@0.3.2-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/npm-package-name-leaf-admission-service': 0.3.1
       '@red-cup-engineering/npm-package-version-admission-service': 0.2.1
       '@red-cup-engineering/npm-scoped-package-name-formation-service': 0.3.2-dev.0
@@ -612,7 +612,7 @@ snapshots:
     dependencies:
       '@red-cup-engineering/computer-file-engineering-services-section': 0.8.7-dev.1
       '@red-cup-engineering/inspect-installed-npm-package-service': 0.3.3-dev.1
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/jsonl-engineering-services-section': 0.1.3-dev.0
       '@red-cup-engineering/read-javascript-file-export-documentation-service': 0.2.1-dev.1
 
@@ -686,7 +686,7 @@ snapshots:
       '@red-cup-engineering/computer-content-address-engineering-services-section': 0.2.4-dev.1
       '@red-cup-engineering/computer-file-engineering-services-section': 0.8.7-dev.1
       '@red-cup-engineering/eavt-engineering-services-section': 0.15.0-dev.3
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/json-schema-engineering-services-section': 0.5.6-dev.1
       '@red-cup-engineering/otlp-engineering-services-section': 0.1.2-dev.0
       '@red-cup-engineering/signcell': 0.17.5
@@ -724,7 +724,7 @@ snapshots:
   '@red-cup-engineering/uri-engineering-services-section@0.1.6-dev.0':
     dependencies:
       '@red-cup-engineering/cryptographic-computer-data-engineering-services-section': 0.3.4-dev.0
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
 
   '@red-cup-engineering/xml-document-rendering-service@0.3.2-dev.0':
     dependencies:
@@ -738,7 +738,7 @@ snapshots:
 
   '@red-cup-engineering/yaml-frontmatter-codec-service@0.1.11-dev.0':
     dependencies:
-      '@red-cup-engineering/json-engineering-services-section': 0.4.3-dev.0
+      '@red-cup-engineering/json-engine': 0.4.3-dev.0
       '@red-cup-engineering/signcell': 0.17.5
       yaml: 2.9.1
 
