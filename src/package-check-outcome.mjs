@@ -12,7 +12,7 @@ export function packageCheckExecutionProblem(result) {
 }
 
 // Match the native Node TAP reporter's escaping of an enrolled file name.
-function tapFileName(file) {
+function tapName(file) {
   return file.replaceAll("\b", "\\b").replaceAll("\f", "\\f")
     .replaceAll("\t", "\\t").replaceAll("\n", "\\n")
     .replaceAll("\r", "\\r").replaceAll("\v", "\\v")
@@ -25,12 +25,22 @@ function tapFileName(file) {
 // source. Counts are usable only after the runner supplied complete accounting.
 // Enrolled files bind the native file-wrapper numbering exception; this is
 // execution/report completeness, not proof of a file's intended case names.
-export function receivePackageTestReport(tap, { files = [] } = {}) {
+export function receivePackageTestReport(tap, { files = [], expectedTestNames = null } = {}) {
   const refused = (problem) => ({ counts: { ran: 0, passed: 0, failed: 0 }, problem });
   if (!Array.isArray(files) || files.some(file => typeof file !== "string" || file.length === 0))
     return refused("native test file enrollment is invalid");
-  const fileNumbers = new Map(files.map((file, index) => [tapFileName(file), index + 1]));
+  // Generated contracts have an independently known root case set; authored
+  // suites do not. Keep this optional obligation distinct from native accounting.
+  if (expectedTestNames !== null && (!Array.isArray(expectedTestNames) ||
+      expectedTestNames.length === 0 || expectedTestNames.some(name => typeof name !== "string" || name.length === 0)))
+    return refused("declared native test names are invalid");
+  const expected = expectedTestNames === null ? null : new Set(expectedTestNames.map(tapName));
+  if (expected !== null && expected.size !== expectedTestNames.length)
+    return refused("declared native test names are ambiguous");
+  const fileNumbers = new Map(files.map((file, index) => [tapName(file), index + 1]));
   if (fileNumbers.size !== files.length) return refused("native test file enrollment is ambiguous");
+  if (expected !== null && [...expected].some(name => fileNumbers.has(name)))
+    return refused("declared native test name collides with an enrolled file wrapper");
   if (typeof tap !== "string") return refused("native TAP report is missing");
   const lines = tap.replaceAll("\r\n", "\n").split("\n");
   if (lines[0] !== "TAP version 13" || lines.filter(line => line === "TAP version 13").length !== 1)
@@ -97,5 +107,11 @@ export function receivePackageTestReport(tap, { files = [] } = {}) {
       plan.count > ran + count("suites") ||
       (failed === 0 && results.some(result => result.failed)))
     return refused("native TAP root outcomes contradict terminal counters");
+  if (expected !== null && (results.length !== expected.size ||
+      new Set(results.map(result => result.name)).size !== expected.size ||
+      results.some((result, index) => result.ordinal !== index + 1 || result.failed || !expected.has(result.name)) ||
+      count("tests") !== expected.size || passed !== expected.size ||
+      failed !== 0 || count("suites") !== 0 || count("skipped") !== 0 || count("todo") !== 0))
+    return refused("native tests did not complete every declared root case");
   return { counts: { ran, passed, failed }, problem: null };
 }

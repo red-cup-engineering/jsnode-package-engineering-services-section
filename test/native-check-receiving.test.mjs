@@ -151,3 +151,32 @@ test('native wrapper compatibility does not excuse duplicate ordinals without th
     assert.equal(reportOf(result).ok, false);
   }
 });
+
+test('exact generated cases are distinct from authored suite accounting', async t => {
+  const { receivePackageTestReport } = await import('../src/package-check-outcome.mjs');
+  const {root} = fixture(t);
+  const file = join(root, 'test', 'actual.test.mjs');
+  const names = ['hash#case', 'path\\case', 'tab\tcase'];
+  writeFileSync(file, 'import test from "node:test";\n' + names.map(name => `test(${JSON.stringify(name)},()=>{});`).join('\n'));
+  const env = {...process.env}; delete env.NODE_TEST_CONTEXT;
+  const run = () => spawnSync(process.execPath, ['--test', '--test-reporter=tap', 'test/actual.test.mjs'], {cwd:root, env, encoding:'utf8'});
+  let result = run();
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(receivePackageTestReport(result.stdout, {files:['test/actual.test.mjs'], expectedTestNames:names}).problem, null);
+  assert.notEqual(receivePackageTestReport(result.stdout, {expectedTestNames:[...names, 'missing']}).problem, null);
+  for (const source of [
+    'process.exit(0);',
+    'import test from "node:test"; test.skip("required",()=>{});',
+    'import test from "node:test"; test.todo("required");',
+    'import {describe,it} from "node:test"; describe("required",()=>it("child",()=>{}));',
+  ]) {
+    writeFileSync(file, source);
+    result = run();
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(receivePackageTestReport(result.stdout, {files:['test/actual.test.mjs']}).problem, null);
+    assert.notEqual(receivePackageTestReport(result.stdout, {files:['test/actual.test.mjs'], expectedTestNames:['required']}).problem, null);
+  }
+  writeFileSync(file, 'process.exit(0);');
+  result = run();
+  assert.notEqual(receivePackageTestReport(result.stdout, {files:['test/actual.test.mjs'], expectedTestNames:['test/actual.test.mjs']}).problem, null);
+});

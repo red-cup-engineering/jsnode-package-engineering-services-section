@@ -1,3 +1,4 @@
+import { receivePackageTestReport } from "./package-check-outcome.mjs";
 import { lstat, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
 import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
@@ -197,12 +198,26 @@ export async function createJsnodeOperationPackage(request) {
     const testPaths = projection.files
       .map((file) => file.path)
       .filter((filePath) => filePath.startsWith("test/") && filePath.endsWith(".test.mjs"));
-    const testReceipt = requireSuccessfulCommand(executeJavascriptNodeCommand(commandRequest({
-      command: process.execPath,
-      arguments: ["--test", ...testPaths],
-      directory: stage.stageDirectory,
-      environment,
-    })), "TEST_ASSAY_FAILED", "staged behavioral and face-equivalence tests failed");
+    const generatedTest = "test/operation-contracts.test.mjs";
+    const authoredTests = testPaths.filter(filePath => filePath !== generatedTest);
+    // Authored suites retain their native semantics; generated examples must
+    // independently complete their exact declared root cases. Separate native
+    // runs prevent an authored same-name test from replacing a missing example.
+    for (const selected of [authoredTests, [generatedTest]]) {
+      if (selected.length === 0) continue;
+      const testReceipt = requireSuccessfulCommand(executeJavascriptNodeCommand(commandRequest({
+        command: process.execPath,
+        arguments: ["--test", "--test-reporter=tap", ...selected],
+        directory: stage.stageDirectory,
+        environment,
+      })), "TEST_ASSAY_FAILED", "staged behavioral and face-equivalence tests failed");
+      const received = receivePackageTestReport(testReceipt.stdout, {
+        files: selected,
+        ...(selected[0] === generatedTest ? { expectedTestNames: specification.examples.map(example => example.name) } : {}),
+      });
+      if (received.problem !== null || received.counts.failed !== 0)
+        refuse("TEST_ASSAY_INCOMPLETE", received.problem ?? "staged tests reported failures", stage.stageDirectory);
+    }
     assays.push(assay("tests", { paths: testPaths }));
 
     phase = "packing";
