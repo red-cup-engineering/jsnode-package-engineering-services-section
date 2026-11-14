@@ -90,9 +90,8 @@ export function testPlan({ files, manifest = {}, nestedRoots, profile = "source"
   if (!["source", "receiving"].includes(profile)) throw new TypeError("unknown package test profile");
   const sourceTests = own.filter((path) => TEST_FILE.test(path)).sort();
   const enrollment = manifest.receivingTests;
-  const safe = path => typeof path === "string" && path.length > 0 && !path.includes("\\")
-    && !path.startsWith("/") && !/^[A-Za-z]:/u.test(path)
-    && path.split("/").every(part => part !== "" && part !== "." && part !== "..");
+  const safe = path => typeof path === "string" && path.length > 0 && !path.startsWith("-")
+    && path.split("/").every(part => /^[a-zA-Z0-9._-]+$/u.test(part) && part !== "." && part !== "..");
   const available = new Set(files.map(posix));
   const enrollmentProblems = [];
   if (profile === "receiving") {
@@ -113,7 +112,7 @@ export function testPlan({ files, manifest = {}, nestedRoots, profile = "source"
   // A carrier may omit source-only tests and retain their requirement metadata.
   // Validate declarations, but only selected programs can execute or contribute a receipt.
   const known = profile === "source" ? [...sourceTests, ...receivingTests]
-    : [...receivingTests, ...Object.keys(manifest.testRequires ?? {})];
+    : [...receivingTests, ...Object.keys(manifest.testRequires ?? {}).map(posix)];
   const admitted = admitTestRequires(manifest.testRequires, known);
   const requirements = Object.fromEntries(Object.entries(admitted.requirements).filter(([path]) => tests.includes(path)));
   const problems = [...enrollmentProblems, ...admitted.problems];

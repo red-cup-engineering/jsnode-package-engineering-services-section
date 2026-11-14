@@ -62,7 +62,7 @@ try {
     defaultReporter: process.stdout.isTTY ? "spec" : "tap",
     additionalReporters: [{ reporter: "tap", destination: tap }],
   });
-  result = spawnSync(process.execPath, [...composed.arguments, "--test", ...run], { cwd: directory, stdio: "inherit", env: environment });
+  result = spawnSync(process.execPath, [...composed.arguments, "--test", "--", ...run], { cwd: directory, stdio: "inherit", env: environment });
 }
 catch (error) { result = { error }; }
 const summary = (() => { try { return readFileSync(tap, "utf8"); } catch { return ""; } })();

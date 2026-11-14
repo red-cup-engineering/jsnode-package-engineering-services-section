@@ -805,7 +805,9 @@ claims, not interchangeable coverage measurements.
 
 Receiving requires a nonempty array of distinct safe package-relative paths,
 all present in the carrier. Programs may be examples rather than `*.test.*`.
-Missing, duplicate or unsafe entries refuse before execution. `testRequires`
+Missing, duplicate or unsafe entries refuse before execution. Segments use ASCII
+letters, digits, dots, underscores and hyphens; root option-like names beginning
+with a hyphen refuse rather than relying on Node child-process option parsing. `testRequires`
 applies to selected programs in either profile; an entirely unavailable plan
 refuses. Installed carriers may retain requirements for omitted source-only
 tests, but source mode still diagnoses unknown requirement paths. Neither mode

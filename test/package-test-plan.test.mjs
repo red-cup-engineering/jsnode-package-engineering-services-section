@@ -185,11 +185,23 @@ test("installed receiving refuses enrollment drift and all unavailable tests wit
   writeFileSync(join(root, "examples", "consumer.mjs"), 'import test from "node:test"; test("consumer", () => {});\n');
   writeFileSync(manifestPath, JSON.stringify({ ...manifest,
     receivingTests: ["examples/consumer.mjs"],
-    testRequires: { ...manifest.testRequires, "test/omitted.test.mjs": { env: "MISSING_SOURCE_HOST" }, "examples/consumer.mjs": { env: "EMPTY_PLAN_UNAVAILABLE" } },
+    testRequires: { ...manifest.testRequires, "./test/omitted.test.mjs": { env: "MISSING_SOURCE_HOST" }, "examples/consumer.mjs": { env: "EMPTY_PLAN_UNAVAILABLE" } },
   }));
   assert.notEqual(spawn("", true).status, 0, "non-test-pattern consumers retain requirements");
   assert.equal(spawn("admitted", true).status, 0, "installed receiver may omit source-only tests");
   assert.notEqual(spawn("admitted").status, 0, "source metadata typos remain errors");
+  for (const name of ["test/*.mjs", "test/a?.mjs"]) {
+    writeFileSync(join(root, name), "");
+    writeFileSync(manifestPath, JSON.stringify({ receivingTests: [name] }));
+    assert.notEqual(spawn("admitted", true).status, 0, "literal globs cannot become receiving selectors");
+  }
+  writeFileSync(join(root, "--test-only"), 'require("node:assert/strict").equal(1, 1);\n');
+  writeFileSync(manifestPath, JSON.stringify({ receivingTests: ["--test-only"] }));
+  const optionName = spawn("admitted", true);
+  assert.notEqual(optionName.status, 0, "root option-like names are not executable receiving paths");
+  assert.equal(report(optionName.stdout).ran, 0);
+  writeFileSync(join(root, "--test-only"), 'throw Error("enrolled failure");\n');
+  assert.notEqual(spawn("admitted", true).status, 0, "option-looking enrolled failure cannot run unlisted tests instead");
 
 });
 
