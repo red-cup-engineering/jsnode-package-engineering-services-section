@@ -123,6 +123,7 @@
     "node:test",
     "node:url",
     "typescript",
-    "../data/records/schema/jsnode-module-specification.schema.json"
+    "../data/records/schema/jsnode-module-specification.schema.json",
+    "../package.json"
   ]
 }

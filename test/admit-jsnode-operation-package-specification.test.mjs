@@ -57,7 +57,7 @@ test("admits a complete package specification and derives operation identity and
   assert.ok(Object.isFrozen(admitted.operations[0]));
   // Command-face source must bind its real qualified runtime, not a stale
   // package edition whose exported runner is absent during package birth.
-  assert.equal(admitted.dependencies["@red-cup-engineering/node-js-function-engineering-services-section"], "0.5.1");
+  assert.equal(admitted.dependencies["@red-cup-engineering/node-js-function-engineering-services-section"], "0.5.2-dev.0");
   assert.equal(Object.hasOwn(admitted.dependencies, "@red-cup-engineering/javascript-node-services-section"), false);
 });
 
@@ -67,11 +67,11 @@ const formerRuntimeName = "@red-cup-engineering/javascript-node-operation-engine
 
 test("catalog admission selects only its exact canonical runtime without changing the authored candidate", () => {
   const input = candidate();
-  input.dependencies[runtimeName] = "0.5.1";
+  input.dependencies[runtimeName] = "0.5.2-dev.0";
   const before = structuredClone(input);
   const admitted = admitJsnodeOperationPackageSpecification(input);
   assert.equal(admitted.type, "JsnodeOperationPackageSpecification", JSON.stringify(admitted));
-  assert.equal(admitted.dependencies[runtimeName], "0.5.1");
+  assert.equal(admitted.dependencies[runtimeName], "0.5.2-dev.0");
   assert.deepEqual(input, before);
 });
 
@@ -87,7 +87,7 @@ test("catalog admission refuses competing bins and unqualified canonical runtime
       assert.deepEqual(input, before, "authored supplier requirements remain intact");
     }
   }
-  for (const [field, version] of [["dependencies", "0.5.0"], ["devDependencies", "0.5.1"]]) {
+  for (const [field, version] of [["dependencies", "0.5.0"], ["dependencies", "0.5.1"], ["devDependencies", "0.5.2-dev.0"]]) {
     const input = candidate();
     input[field][runtimeName] = version;
     assert.equal(admitJsnodeOperationPackageSpecification(input).code, "PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT");
