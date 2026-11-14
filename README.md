@@ -868,3 +868,12 @@ installations. This generator receives those actual installed suppliers rather
 than a local manifest override. The claim is a native source-artifact runtime
 graph, not the generator's unresolved full development lock or house-registry
 issuance. No publication or held upstream integration is authorized by it.
+
+Publisher and installed-package inspection now select the current source
+prerequisites received through a genuine Linux npm runtime graph and a fresh
+`npm ci` replay of the same consumer lock. The publisher's five authored packed
+programs and inspection's four authored programs passed in both installations.
+This does not turn Publisher's intentionally unmet proposed native-module
+qualification assertions into supported behavior, or certify optional bound
+worker profiles, issuer-registry bytes, deployment, or this repository's stale
+development lock.

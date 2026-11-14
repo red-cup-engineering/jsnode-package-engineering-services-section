@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/jsnode-package-engineering-services-section",
-  "version": "0.6.1-dev.6",
+  "version": "0.6.1-dev.7",
   "type": "module",
   "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
   "repository": {
@@ -86,12 +86,12 @@
     "@red-cup-engineering/eavt-engineering-services-section": "0.15.0-dev.3",
     "@red-cup-engineering/execute-javascript-node-command-service": "0.4.3-dev.0",
     "@red-cup-engineering/computer-file-engineering-services-section": "0.8.7-dev.1",
-    "@red-cup-engineering/inspect-installed-npm-package-service": "0.3.3-dev.0",
+    "@red-cup-engineering/inspect-installed-npm-package-service": "0.3.3-dev.1",
     "@red-cup-engineering/json-schema-engineering-services-section": "0.5.6-dev.1",
     "@red-cup-engineering/json-engineering-services-section": "0.4.3-dev.0",
     "@red-cup-engineering/jsonl-engineering-services-section": "0.1.3-dev.0",
     "@red-cup-engineering/npm-package-engineering-services-section": "0.2.1-dev.1",
-    "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section": "0.19.1-dev.2",
+    "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section": "0.19.1-dev.3",
     "@red-cup-engineering/read-javascript-file-export-documentation-service": "0.2.1-dev.1",
     "@red-cup-engineering/uri-engineering-services-section": "0.1.6-dev.0",
     "@red-cup-engineering/yaml-frontmatter-codec-service": "0.1.11-dev.0",
