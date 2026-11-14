@@ -1,8 +1,23 @@
-import { "admitJsnodeOperationPackageSpecification" as operation0 } from "../src/admit-jsnode-operation-package-specification.mjs";
-import { "projectJsnodeOperationPackage" as operation1 } from "../src/project-jsnode-operation-package.mjs";
-import { "createJsnodeOperationPackage" as operation2 } from "../src/create-jsnode-operation-package.mjs";
-import { "projectJsnodeModules" as operation3 } from "../src/project-jsnode-modules.mjs";
-import { "translateMarkdownJsnodeOperationPackageSpecification" as operation4 } from "../src/translate-markdown-jsnode-operation-package-specification.mjs";
+async function operation0(value, context) {
+  const operation = (await import("../src/admit-jsnode-operation-package-specification.mjs"))["admitJsnodeOperationPackageSpecification"];
+  return operation(value, context);
+}
+async function operation1(value, context) {
+  const operation = (await import("../src/project-jsnode-operation-package.mjs"))["projectJsnodeOperationPackage"];
+  return operation(value, context);
+}
+async function operation2(value, context) {
+  const operation = (await import("../src/create-jsnode-operation-package.mjs"))["createJsnodeOperationPackage"];
+  return operation(value, context);
+}
+async function operation3(value, context) {
+  const operation = (await import("../src/project-jsnode-modules.mjs"))["projectJsnodeModules"];
+  return operation(value, context);
+}
+async function operation4(value, context) {
+  const operation = (await import("../src/translate-markdown-jsnode-operation-package-specification.mjs"))["translateMarkdownJsnodeOperationPackageSpecification"];
+  return operation(value, context);
+}
 import operation0InputSchema from "../data/records/schema/admit-jsnode-operation-package-specification.input.schema.json" with { type: "json" };
 import operation0OutputSchema from "../data/records/schema/admit-jsnode-operation-package-specification.output.schema.json" with { type: "json" };
 import operation1InputSchema from "../data/records/schema/project-jsnode-operation-package.input.schema.json" with { type: "json" };
