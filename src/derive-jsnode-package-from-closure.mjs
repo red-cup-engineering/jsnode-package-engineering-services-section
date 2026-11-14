@@ -23,7 +23,8 @@
  */
 import path from "node:path";
 import { parseJsonValue } from "@red-cup-engineering/json-engineering-services-section";
-import { readJsnodeModuleExports } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
+import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
+import { readJavaScriptModuleExportNames } from "@red-cup-engineering/javascript-parser-service/module-export-names";
 import { inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";
 import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
@@ -235,7 +236,7 @@ export function moduleOfDelivery(text, member) {
   if (Buffer.byteLength(source, "utf8") > 1024 * 1024)
     return { refused: "the delivered module exceeds the bounded one-module source budget" };
   let exports;
-  try { exports = new Set(readJsnodeModuleExports(source, operations[0].module).names); }
+  try { exports = new Set(readJavaScriptModuleExportNames(parseJavaScript(source)).names); }
   catch (error) {
     return { refused: "the delivered module is not readable ECMAScript source: " +
       String(error?.message ?? error).slice(0, 240) };

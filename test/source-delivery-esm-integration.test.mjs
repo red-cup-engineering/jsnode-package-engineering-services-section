@@ -3,6 +3,8 @@ import {mkdtemp, mkdir, rm, writeFile} from "node:fs/promises";
 import {tmpdir} from "node:os";
 import path from "node:path";
 import test from "node:test";
+import {parseJavaScript} from "@red-cup-engineering/javascript-parser-service";
+import {readJavaScriptModuleRequestSites} from "@red-cup-engineering/javascript-parser-service/module-reference-sites";
 import {projectJsnodeExampleTests} from "../src/project-jsnode-example-tests.mjs";
 import {projectJsnodeModules} from "../src/project-jsnode-modules.mjs";
 import {moduleOfDelivery} from "../src/derive-jsnode-package-from-closure.mjs";
@@ -36,7 +38,7 @@ test("real source delivery, module projection, CLI and generated assays agree on
       });
       const catalog=projected.find(file=>file.path==="apps/catalog.mjs");
       assert.ok(catalog,"the original package maker must emit the requested catalog");
-      assert.match(catalog.text,/import \{ "[^"]+" as operation0 \} from "\.\.\/src\/operation\.mjs"/u);
+      assert.ok(readJavaScriptModuleRequestSites(parseJavaScript(catalog.text)).some(site => site.specifier === "../src/operation.mjs"), "the actual operation supplier remains visible to dependency analysis");
       const assay=projectJsnodeExampleTests(operation,
         [{name:"double-two",operation:operation.name,input:2,output:4}]);
       for(const item of [...projected,assay])

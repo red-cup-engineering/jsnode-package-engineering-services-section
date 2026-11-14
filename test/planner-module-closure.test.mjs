@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
-import { captureModuleClosure } from "@red-cup-engineering/javascript-node-engineering-services-section/module-closure";
+import { captureModuleClosure } from "@red-cup-engineering/javascript-module-closure-service";
 
 test("planner closure retains its schema bytes and its schema import binding", () => {
   const closure = captureModuleClosure(new URL("../src/plan-jsnode-modules.mjs", import.meta.url));

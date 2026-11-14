@@ -2,7 +2,6 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { admitArtifactFabricationRealizationPlan, admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
-import { admitJavascriptNodeCommandExecutionRequest } from "@red-cup-engineering/javascript-node-engineering-services-section/admit-javascript-node-command-execution-request";
 import { createJsnodeOperationPackage } from "./create-jsnode-operation-package.mjs";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { fileURLToPath } from "node:url";
@@ -58,7 +57,7 @@ export function nearestServicesSectionCarryingData(destination) {
 }
 
 function commandRequest({ command, arguments: args, directory, environment }) {
-  return admitJavascriptNodeCommandExecutionRequest({ type: "JavascriptNodeCommandExecutionRequest", version: 1, command, arguments: args, directory, environment, input: null });
+  return { type: "JavascriptNodeCommandExecutionRequest", version: 1, command, arguments: args, directory, environment, input: null };
 }
 
 /**

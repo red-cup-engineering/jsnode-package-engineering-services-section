@@ -8,8 +8,8 @@ import { admitArtifactFabricationSpecification } from "@red-cup-engineering/comp
 import { deriveJsnodeModules, planJsnodeModules } from "../src/derive-jsnode-package-from-closure.mjs";
 import { testPlan } from "../src/package-test-plan.mjs";
 import { packageFiles } from "../src/package-files.mjs";
-import * as canonicalProgramme from "@red-cup-engineering/javascript-node-engineering-services-section/module-closure";
-import * as legacyProgramme from "@red-cup-engineering/javascript-node-engineering-services-section/execute-javascript-program";
+import * as canonicalProgramme from "@red-cup-engineering/javascript-module-closure-service";
+import * as programmeEntry from "@red-cup-engineering/javascript-module-closure-service/execute-javascript-program";
 
 const fixture = new URL("./fixtures/shared-account-character-selection/", import.meta.url);
 const candidate = () => JSON.parse(readFileSync(new URL("work-order.candidate.json", fixture), "utf8"));
@@ -48,8 +48,14 @@ test("the current owner test plan includes this receiving case and all direct ow
 test("authored v2 claims preserve the complete historical order without claiming execution", () => {
   const input = candidate();
   assert.equal(input.version, 2);
+  // The live projection target follows its renamed owner; historical source
+  // locators remain fixed to their original commit. Replay only that explicit
+  // owner-name migration to compare the unchanged authored v1 evidence.
+  const historical = legacyCandidate(input);
+  assert.equal(historical.projections[0].target, "@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure");
+  historical.projections[0].target = "@red-cup-engineering/jsnode-package-services-section/derive-jsnode-package-from-closure";
   // Digest of JSON.stringify(original authored v1 candidate at 703d966).
-  assert.equal(createHash("sha256").update(JSON.stringify(legacyCandidate(input))).digest("hex"),
+  assert.equal(createHash("sha256").update(JSON.stringify(historical)).digest("hex"),
     "305dc31aa741d56f1db6417b7dfec36c8b8e3982b2bb1deabf898d9cc4d4b342");
   assert.deepEqual(clauseSections.map(section => input[section].length), [12, 5, 5, 16]);
   assert.equal(input.constraints.filter(clause => clause.kind === "operational").length, 2);
@@ -138,11 +144,11 @@ test("a semantically blocking question refuses before the planner can claim a re
   assert.equal(result.code, "BLOCKING_OPEN_QUESTION");
 });
 
-test("the migrated legacy programme export retains the canonical Node carrier and workerd refusal", () => {
-  assert.equal(legacyProgramme.executeJavascriptProgram, canonicalProgramme.executeJavascriptProgram);
+test("the current programme entry retains the canonical Node carrier and workerd refusal", () => {
+  assert.equal(programmeEntry.executeJavascriptProgram, canonicalProgramme.executeJavascriptProgram);
   const source = [
     'import assert from "node:assert/strict";',
-    'import { executeJavascriptProgram } from "@red-cup-engineering/javascript-node-engineering-services-section/execute-javascript-program";',
+    'import { executeJavascriptProgram } from "@red-cup-engineering/javascript-module-closure-service/execute-javascript-program";',
     'await assert.rejects(executeJavascriptProgram({fixture:true}), error => error instanceof TypeError && error.code === "programme-carrier-unavailable");',
   ].join("\n");
   const result = spawnSync(process.execPath, ["--conditions=workerd", "--input-type=module", "-e", source], {
