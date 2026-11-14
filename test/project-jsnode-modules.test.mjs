@@ -8,6 +8,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { projectJsnodeModules } from "../src/project-jsnode-modules.mjs";
 import { projectJsnodePackageCli } from "../scripts/project-jsnode-package-cli.mjs";
 import { readFile } from "node:fs/promises";
+import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
+import { readJavaScriptModuleRequestSites } from "@red-cup-engineering/javascript-parser-service/module-reference-sites";
 
 // Resolve the declared code-layer runner under either direct or hoisted installation.
 const operationRunner = fileURLToPath(import.meta.resolve("@red-cup-engineering/node-js-function-engineering-services-section/run-javascript-node-operation-module"));
@@ -33,7 +35,7 @@ function run(file, arguments_, input, exitCode = 0) {
     child.stderr.on("data", (chunk) => { stderr += chunk; });
     const timeout = setTimeout(() => child.kill(), 60_000);
     child.on("error", (error) => { clearTimeout(timeout); reject(error); });
-    child.on("close", (code, signal) => { clearTimeout(timeout); code === exitCode ? resolve({ stdout, stderr }) : reject(new Error(`CLI failed (${signal ?? code}): ${stderr}`)); });
+    child.on("close", (code, signal) => { clearTimeout(timeout); code === exitCode ? resolve({ stdout, stderr }) : reject(new Error(`CLI failed (${signal ?? code}): ${stderr} ${stdout}`)); });
     child.stdin.end(input);
   });
 }
@@ -111,4 +113,59 @@ test("module projection uses bound loader requests without treating local requir
   const canonical = "import {createRequire as factory} from 'node:module'; const load=factory(import.meta.url); export const value=()=>load('./missing.cjs');";
   assert.throws(() => projectJsnodeModules({ sources: [{ path: "src/value.mjs", text: canonical }], operations: [operation] }), /unresolvable projected import/);
   assert.throws(() => projectJsnodeModules({ sources: [{ path: "src/value.mjs", text: "// export const value = 1;\nconst hidden = 1;" }], operations: [operation] }), /export/);
+});
+
+test("catalog commands defer only operation evaluation and preserve native refusal and invocation semantics", async t => {
+  const root = await mkdtemp(path.join(tmpdir(), "catalog-command-boundary-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const marker = path.join(root, "evaluated.txt");
+  const record = label => `import {appendFileSync} from 'node:fs'; appendFileSync(${JSON.stringify(marker)}, ${JSON.stringify(label + "\n")});\n`;
+  const files = projectJsnodeModules({
+    sources: [
+      { path: "src/good.mjs", text: record("good") + "function value(input, context) { return {input, detached:this === undefined, arguments:context?.arguments ?? null}; } export {value as default};" },
+      { path: "src/broken.mjs", text: record("broken") + "throw Object.assign(new Error('selected initialization failed'), {code:'BROKEN_OPERATION'}); export const broken = value => value;" },
+      { path: "src/noncallable.mjs", text: "export const value = 3;" },
+      { path: "src/missing-supplier.mjs", text: "import 'unavailable-command-fixture-package'; export const value = x => x;" },
+    ],
+    operations: [
+      { name: "good", module: "src/good.mjs", exportName: "default", description: "Receives input and context.", inputSchema: {type:"integer"}, outputSchema: {type:"object"} },
+      { name: "broken", module: "src/broken.mjs", exportName: "broken", description: "Refuses during initialization." },
+      { name: "noncallable", module: "src/noncallable.mjs", exportName: "value", description: "Refuses a non-callable export." },
+      { name: "missing", module: "src/missing-supplier.mjs", exportName: "value", description: "Refuses an unavailable supplier." },
+      { name: "wrong-output", module: "src/good.mjs", exportName: "default", description: "Rejects the result.", outputSchema: {type:"number"} },
+    ],
+    cli: {path:"apps/commands.mjs",name:"commands",description:"Independent command boundaries."},
+  });
+  const declaration = files.find(file => file.path === "apps/commands.mjs");
+  const dynamicSuppliers = readJavaScriptModuleRequestSites(parseJavaScript(declaration.text))
+    .filter(site => site.kind === "dynamic-import").map(site => site.specifier);
+  assert.deepEqual(dynamicSuppliers, ["../src/good.mjs", "../src/broken.mjs", "../src/noncallable.mjs", "../src/missing-supplier.mjs", "../src/good.mjs"], "all operation suppliers remain statically inspectable, not hidden behind computed imports");
+  await materialize(root, files);
+  const cli = path.join(root, "apps/commands.mjs");
+  const observed = () => readFile(marker,"utf8").catch(error => { if (error.code === 'ENOENT') return ''; throw error; });
+  await run(cli,["--help"],""); await run(cli,["broken","--help"],"");
+  assert.equal(JSON.parse((await run(cli,["unknown"],"",2)).stdout).code,"UnknownOperation");
+  assert.equal(JSON.parse((await run(cli,["good"],'"invalid"\n',2)).stdout).code,"InvalidInput");
+  assert.equal(await observed(), "", "help, unknown commands and invalid input do not evaluate operation modules");
+  const success = (await run(cli,["good","--carry"],"2\n3\n")).stdout.trim().split('\n').map(JSON.parse);
+  assert.deepEqual(success,[{input:2,detached:true,arguments:null},{input:3,detached:true,arguments:null}]);
+  assert.equal(await observed(), "good\n", "the actual ESM module is evaluated once for repeated inputs");
+  assert.equal(JSON.parse((await run(cli,["broken"],"{}\n",2)).stdout).code,"BROKEN_OPERATION");
+  assert.equal(await observed(), "good\nbroken\n");
+  const declared = await import(pathToFileURL(cli).href);
+  assert.deepEqual(await declared.catalog.operations.good.operation(5, {arguments:["direct-context"]}), {input:5,detached:true,arguments:["direct-context"]});
+  assert.equal(JSON.parse((await run(cli,["missing"],"{}\n",2)).stdout).code,"ERR_MODULE_NOT_FOUND");
+  assert.equal(JSON.parse((await run(cli,["noncallable"],"{}\n",2)).stdout).type,"https://schemas.561.group/problems/operation-refused");
+  assert.equal(JSON.parse((await run(cli,["wrong-output"],"{}\n",2)).stdout).code,"InvalidOutput");
+  await writeFile(path.join(root,"src/noncallable.mjs"),"export const other = () => 1;\n");
+  assert.equal(JSON.parse((await run(cli,["noncallable"],"{}\n",2)).stdout).type,"https://schemas.561.group/problems/operation-refused", "a missing materialized export cannot become success");
+});
+
+test("the actual catalog keeps creation callable and propagates refusal rather than reporting delivery", async () => {
+  const cli = fileURLToPath(new URL("../apps/jsnode-package-cli.mjs", import.meta.url));
+  assert.match((await run(cli,["create","--help"],"")).stdout,/create/i);
+  const refusal = JSON.parse((await run(cli,["create"],"{}\n",2)).stdout);
+  assert.equal(refusal.type,"https://schemas.561.group/problems/operation-refused");
+  assert.equal(typeof refusal.code,"string");
+  assert.equal(refusal.type === "JsnodeOperationPackageCreationReceipt",false);
 });

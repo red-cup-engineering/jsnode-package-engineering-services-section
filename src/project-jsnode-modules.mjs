@@ -50,7 +50,11 @@ function validateSourceImports(sources, externalReferences) {
   }
 }
 function cliText(cli, operations) {
-  const imports = operations.map((operation, index) => `import { ${JSON.stringify(operation.exportName)} as operation${index} } from ${JSON.stringify(relative(cli.path, operation.module))};`);
+  // Each command owns its module evaluation. Metadata/help and another selected
+  // command must not initialize unrelated modules or require their suppliers.
+  // The existing Function interpreter admits input before invoking this callable
+  // and receives import/execution failures through its normal Problem Details.
+  const imports = operations.map((operation, index) => `async function operation${index}(value, context) {\n  const operation = (await import(${JSON.stringify(relative(cli.path, operation.module))}))[${JSON.stringify(operation.exportName)}];\n  return operation(value, context);\n}`);
   const schemas = operations.flatMap((operation, index) => {
     const result = [];
     if (Object.hasOwn(operation, "inputSchema")) result.push(`import operation${index}InputSchema from ${JSON.stringify(relative(cli.path, schemaPath(operation, "input")))} with { type: "json" };`);
