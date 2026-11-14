@@ -4,6 +4,9 @@
       "path": "src/admit-jsnode-operation-package-specification.mjs"
     },
     {
+      "path": "src/project-jsnode-module-references.mjs"
+    },
+    {
       "path": "src/project-jsnode-operation-source-from-arguments.mjs"
     },
     {
