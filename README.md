@@ -877,3 +877,12 @@ This does not turn Publisher's intentionally unmet proposed native-module
 qualification assertions into supported behavior, or certify optional bound
 worker profiles, issuer-registry bytes, deployment, or this repository's stale
 development lock.
+
+### Generated operation contract invocation
+
+Generated package contract tests select each imported export and invoke it as a
+detached function, matching the projected catalog callable. The internal export
+lookup table is never supplied as `this`. Native receiving exercises both
+module-only and catalog projections: a detached operation is accepted, while an
+operation that only satisfies the example when bound to an artificial receiver
+is rejected. This qualifies generated source behavior, not package issuance.
