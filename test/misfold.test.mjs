@@ -32,3 +32,16 @@ test("a misfold is refused with the reason, and a folded module is not", () => {
   assert.match(misfoldRefusal(misfoldsOfModule('export { toSlug as slugify } from "@scope/strings";', "src/slug.mjs", ["slugify"])), /slugify is a re-export of @scope\/strings/u);
   assert.equal(misfoldRefusal([]), undefined);
 });
+
+
+test("dependency identity follows lexical bindings rather than parameter spelling", () => {
+  assert.deepEqual(kinds('import { toSlug } from "@scope/strings"; export function slugify(toSlug) { return toSlug(toSlug); }'), []);
+  assert.deepEqual(kinds('import { toSlug as convert } from "@scope/strings"; export const slugify = text => convert(text);'), ["delegation"]);
+});
+
+test("source admission retains filename diagnostics and rejects non-JavaScript module kinds", () => {
+  assert.throws(() => misfoldsOfModule('export const =', "src/bad.mjs", []), error => error instanceof SyntaxError && error.message.includes("src/bad.mjs") && Number.isInteger(error.pos));
+  assert.throws(() => misfoldsOfModule('export const x = 1;', "src/value.ts", []), /TypeScript/u);
+  assert.deepEqual(misfoldsOfModule('{"import":"ordinary data"}', "data.json", []), []);
+  assert.throws(() => misfoldsOfModule('{bad}', "data.json", []), SyntaxError);
+});

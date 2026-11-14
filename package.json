@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/jsnode-package-engineering-services-section",
-  "version": "0.6.0",
+  "version": "0.6.1-dev.0",
   "type": "module",
   "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
   "repository": {
@@ -64,7 +64,8 @@
     "examples",
     "content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
     "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
-    "test"
+    "test",
+    "content/text/documents/specifications/jsnode-module-reference-projection.md"
   ],
   "scripts": {
     "test": "node scripts/run-package-tests.mjs",
@@ -77,7 +78,7 @@
     "test:consumer": "node --test examples/quickstart.test.mjs"
   },
   "dependencies": {
-    "@red-cup-engineering/javascript-parser-service": "^0.1.1",
+    "@red-cup-engineering/javascript-parser-service": "0.2.0-dev.0",
     "@red-cup-engineering/signcell": "0.13.2",
     "@red-cup-engineering/computer-filepath-engineering-services-section": "0.1.0",
     "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0",
@@ -86,13 +87,12 @@
     "@red-cup-engineering/execute-javascript-node-command-service": "0.3.1",
     "@red-cup-engineering/computer-file-engineering-services-section": "0.4.0",
     "@red-cup-engineering/inspect-installed-npm-package-service": "0.3.2",
-    "@red-cup-engineering/javascript-node-engineering-services-section": "0.3.2",
     "@red-cup-engineering/json-schema-engineering-services-section": "0.5.0",
     "@red-cup-engineering/json-engineering-services-section": "0.4.0",
     "@red-cup-engineering/jsonl-engineering-services-section": "0.1.0",
     "@red-cup-engineering/npm-package-engineering-services-section": "0.1.2",
     "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section": "0.14.0",
-    "@red-cup-engineering/read-javascript-file-export-documentation-service": "0.1.5",
+    "@red-cup-engineering/read-javascript-file-export-documentation-service": "0.2.1-dev.0",
     "@red-cup-engineering/uri-engineering-services-section": "0.1.1",
     "@red-cup-engineering/yaml-frontmatter-codec-service": "0.1.7",
     "@red-cup-engineering/computer-data-engineering-services-section": "0.7.0",
@@ -144,6 +144,7 @@
     "test/planner-semver.test.mjs",
     "test/pnpm-lockfile-importers.test.mjs",
     "test/project-jsnode-data-modules.test.mjs",
+    "test/project-jsnode-module-references.test.mjs",
     "test/project-jsnode-modules.test.mjs",
     "test/project-jsnode-operation-package-readme.test.mjs",
     "test/project-jsnode-operation-package.test.mjs",

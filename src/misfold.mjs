@@ -15,16 +15,16 @@
  *   of a call to a dependency import with the operation's own parameters, in order.
  * A relative import is the package's own territory and never a misfold.
  */
-import { readJsnodeAst } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
+import { parseJavaScript, bindJavaScript } from "@red-cup-engineering/javascript-parser-service";
 
 const isDependency = (specifier) => typeof specifier === "string" && !specifier.startsWith(".") && !specifier.startsWith("/") && !specifier.startsWith("node:");
 
 /** Local names bound by imports from dependencies, each with its module request. */
-function dependencyBindings(program) {
+function dependencyBindings(program, references) {
   const bindings = new Map();
   for (const statement of program.body) {
     if (statement.type !== "ImportDeclaration" || !isDependency(statement.source.value)) continue;
-    for (const specifier of statement.specifiers) bindings.set(specifier.local.name, statement.source.value);
+    for (const specifier of statement.specifiers) bindings.set(references.get(specifier.local), statement.source.value);
   }
   return bindings;
 }
@@ -32,24 +32,36 @@ function dependencyBindings(program) {
 const unwrapAwait = (node) => (node?.type === "AwaitExpression" ? node.argument : node);
 
 /** Whether a function only forwards its own parameters, in order, to one dependency binding. */
-function delegatedTo(fn, bindings) {
+function delegatedTo(fn, bindings, references) {
   const body = fn.body;
   let returned;
   if (body.type !== "BlockStatement") returned = body;
   else if (body.body.length === 1 && body.body[0].type === "ReturnStatement") returned = body.body[0].argument;
   else return undefined;
   const call = unwrapAwait(returned);
-  if (call?.type !== "CallExpression" || call.callee.type !== "Identifier" || !bindings.has(call.callee.name)) return undefined;
+  if (call?.type !== "CallExpression" || call.callee.type !== "Identifier" || !bindings.has(references.get(call.callee))) return undefined;
   const params = fn.params.map((param) => (param.type === "Identifier" ? param.name : null));
   const args = call.arguments.map((arg) => (arg.type === "Identifier" ? arg.name : null));
   if (params.includes(null) || args.includes(null) || params.length !== args.length || params.some((name, i) => name !== args[i])) return undefined;
-  return bindings.get(call.callee.name);
+  return bindings.get(references.get(call.callee));
 }
 
 /** The misfolds among a module's exports of `exportNames`: `[{ export, kind, dependency }]`. */
 export function misfoldsOfModule(text, fileName, exportNames) {
-  const program = readJsnodeAst(text, fileName);
-  const bindings = dependencyBindings(program);
+  if (typeof text !== "string") throw new TypeError("source text must be a string");
+  if (typeof fileName !== "string" || fileName.length === 0) throw new TypeError("fileName must be a nonempty string");
+  if (/\.(?:[cm]?tsx?|jsx)$/iu.test(fileName)) throw new SyntaxError(`${fileName}: TypeScript and JSX are not JavaScript`);
+  let program;
+  try {
+    // JSON has no module exports. Preserve admission rather than treating data as JS.
+    if (/\.json$/iu.test(fileName)) { JSON.parse(text); return Object.freeze([]); }
+    program = parseJavaScript(text);
+  } catch (error) {
+    if (error instanceof SyntaxError) error.message = `${fileName}: ${error.message}`;
+    throw error;
+  }
+  const { references } = bindJavaScript(program);
+  const bindings = dependencyBindings(program, references);
   const wanted = new Set(exportNames);
   const found = [];
   for (const statement of program.body) {
@@ -66,20 +78,20 @@ export function misfoldsOfModule(text, fileName, exportNames) {
     }
     for (const specifier of statement.specifiers ?? []) {
       const name = specifier.exported.name ?? specifier.exported.value;
-      if (wanted.has(name) && bindings.has(specifier.local.name)) found.push({ export: name, kind: "alias", dependency: bindings.get(specifier.local.name) });
+      if (wanted.has(name) && bindings.has(references.get(specifier.local))) found.push({ export: name, kind: "alias", dependency: bindings.get(references.get(specifier.local)) });
     }
     const declaration = statement.declaration;
     if (declaration?.type === "FunctionDeclaration" && wanted.has(declaration.id.name)) {
-      const dependency = delegatedTo(declaration, bindings);
+      const dependency = delegatedTo(declaration, bindings, references);
       if (dependency !== undefined) found.push({ export: declaration.id.name, kind: "delegation", dependency });
     }
     if (declaration?.type === "VariableDeclaration") {
       for (const declarator of declaration.declarations) {
         if (declarator.id.type !== "Identifier" || !wanted.has(declarator.id.name)) continue;
         const init = declarator.init;
-        if (init?.type === "Identifier" && bindings.has(init.name)) found.push({ export: declarator.id.name, kind: "alias", dependency: bindings.get(init.name) });
+        if (init?.type === "Identifier" && bindings.has(references.get(init))) found.push({ export: declarator.id.name, kind: "alias", dependency: bindings.get(references.get(init)) });
         else if (["ArrowFunctionExpression", "FunctionExpression"].includes(init?.type)) {
-          const dependency = delegatedTo(init, bindings);
+          const dependency = delegatedTo(init, bindings, references);
           if (dependency !== undefined) found.push({ export: declarator.id.name, kind: "delegation", dependency });
         }
       }
