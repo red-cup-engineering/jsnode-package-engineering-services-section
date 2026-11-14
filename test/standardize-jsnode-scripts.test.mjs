@@ -169,10 +169,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { standardizeJsnodeScripts } from "../apps/standardize-jsnode-scripts.mjs";
 
-import { readJsnodeOperationArguments } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
+import { readScriptStandardizationArguments } from "../src/read-script-standardization-arguments.mjs";
 import { projectJsnodeOperationSourceFromArguments } from "../src/project-jsnode-operation-source-from-arguments.mjs";
 
-const SAFE_PROJECTION = projectJsnodeOperationSourceFromArguments(readJsnodeOperationArguments({ path: "scripts/echo.mjs", text: `/**
+const SAFE_PROJECTION = projectJsnodeOperationSourceFromArguments(readScriptStandardizationArguments({ path: "scripts/echo.mjs", text: `/**
  * Returns a value.
  * @param {string} value A value.
  * @returns {string} The value.
@@ -341,4 +341,61 @@ test("canonical migration cannot reorder imports or change alias bindings", () =
   const original = { imports: [{ source: "z", names: ["decode"], bindings: [{ imported: "parse", local: "decode" }] }, { source: "a", names: [] }], bodyText: "export function f(x) { return x; }" };
   assert.equal(argumentsMigrationEqual(original, { ...original, imports: [...original.imports].reverse() }), false);
   assert.equal(argumentsMigrationEqual(original, { ...original, imports: [{ source: "z", names: ["decode"], bindings: [{ imported: "other", local: "decode" }] }, original.imports[1]] }), false);
+});
+
+test('app-owned extraction preserves authored imports, aliases, attributes and exact function bytes', () => {
+  const body='/**\r\n * Keeps the value.\r\n * @param {string} value The value.\r\n * @returns {string} The value.\r\n */\r\nexport async function echo(value) { return value; }';
+  const imports=["import './side-effect.mjs';",'import original, { before as after } from "./bindings.mjs";', 'import data from "./data.json" with { type: "json" };'];
+  const source=imports.join('\r\n')+'\r\n'+body;
+  const read=readScriptStandardizationArguments({path:'scripts/echo.mjs',text:source,inputSchema:false,outputSchema:{const:'fixed'}});
+  assert.deepEqual(read.imports.map(x=>x.text),imports);
+  assert.deepEqual(read.imports[1].bindings,[{imported:'before',local:'after'}]);
+  assert.equal(read.imports[1].default,'original');
+  assert.equal(read.bodyText,body);assert.equal(read.exportName,'echo');assert.equal(read.isAsync,true);
+  assert.equal(read.description,'Keeps the value.');assert.equal(read.params[0].name,'value');
+  assert.equal(read.inputSchema,false);assert.deepEqual(read.outputSchema,{const:'fixed'});
+  assert.deepEqual(read.residue,[]);
+});
+
+test('unrepresented declarations and duplicate guards remain residue rather than discardable source', () => {
+  const guard='if (import.meta.main) { process.stdout.write("x"); }';
+  const read=readScriptStandardizationArguments({path:'scripts/echo.mjs',text:'export function echo(x){return x;}\nconst important=sideEffect();\n'+guard+'\n'+guard});
+  assert.equal(read.residue.length,2);
+  assert.ok(read.residue.includes('const important=sideEffect();'));
+  assert.throws(()=>projectJsnodeOperationSourceFromArguments({...read,description:'Echoes.'}),/unrepresented/);
+  const arrow=readScriptStandardizationArguments({path:'scripts/echo.mjs',text:'export const echo=x=>x;'});
+  assert.equal(arrow.exportName,null);assert.equal(arrow.residue.length,1);
+});
+
+test('stream evidence respects lexical process bindings and malformed source refuses', () => {
+  const shadow=readScriptStandardizationArguments({path:'scripts/echo.mjs',text:'export function echo(process){return process.stdin;}'});
+  assert.equal(shadow.readsStdin,false);
+  const genuine=readScriptStandardizationArguments({path:'scripts/echo.mjs',text:'export function echo(x){return x;} if(import.meta.main){for await(const x of process.stdin)process.stdout.write(x)}'});
+  assert.equal(genuine.readsStdin,true);assert.equal(genuine.writesStdout,true);
+  assert.throws(()=>readScriptStandardizationArguments({path:'scripts/echo.mjs',text:'export function'}),SyntaxError);
+  assert.throws(()=>readScriptStandardizationArguments({path:'scripts/../echo.mjs',text:''}),TypeError);
+});
+
+test('only the selected main guard supplies stream eligibility evidence', () => {
+  const read = text => readScriptStandardizationArguments({path:'scripts/echo.mjs',text});
+  const bodyOnly = read('export function echo(){return process.stdin;} if(import.meta.main){process.stdout.write("x");}');
+  assert.equal(bodyOnly.readsStdin,false); assert.equal(bodyOnly.writesStdout,true);
+  const absent = read('export function echo(){process.stdout.write("x"); return process.stdin;}');
+  assert.equal(absent.readsStdin,false); assert.equal(absent.writesStdout,false);
+  const shadow = read('export function echo(x){return x;} if(import.meta.main){const process={stdin:[],stdout:{write(){}}}; process.stdin; process.stdout.write("x");}');
+  assert.equal(shadow.readsStdin,false); assert.equal(shadow.writesStdout,false);
+  const duplicate = read('export function echo(x){return x;} if(import.meta.main){} if(import.meta.main){process.stdin;process.stdout;}');
+  assert.equal(duplicate.readsStdin,false); assert.equal(duplicate.writesStdout,false);
+  assert.equal(duplicate.residue.length,1);
+});
+
+test('standardizer command refuses malformed options before discovering or writing paths', async () => {
+  const {spawnSync}=await import('node:child_process');
+  const {fileURLToPath}=await import('node:url');
+  const command=fileURLToPath(new URL('../apps/standardize-jsnode-scripts.mjs',import.meta.url));
+  for (const args of [['--unknown'],['--root'],['unexpected'],['--apply=true']]) {
+    const result=spawnSync(process.execPath,[command,...args],{encoding:'utf8',timeout:10000});
+    assert.equal(result.error,undefined);assert.notEqual(result.status,0);assert.equal(result.stdout,'');
+    assert.match(result.stderr,/ERR_PARSE_ARGS/);
+  }
 });

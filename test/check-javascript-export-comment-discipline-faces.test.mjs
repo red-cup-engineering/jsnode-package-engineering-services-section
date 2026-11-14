@@ -119,3 +119,17 @@ for (const example of examples) {
     assert.deepEqual(commandOutput, importedOutput);
   });
 }
+
+test('native help flags bypass input and strict arguments refuse before processing', () => {
+  const script=fileURLToPath(new URL('../scripts/check-javascript-export-comment-discipline.mjs',import.meta.url));
+  for (const flags of [['--help'],['-h']]) {
+    const result=spawnSync(process.execPath,[script,...flags],{input:'not JSON\n',encoding:'utf8',timeout:10000});
+    assert.equal(result.error,undefined);assert.equal(result.status,0,result.stderr);
+    assert.match(result.stdout,/checkJavascriptExportCommentDiscipline/);
+  }
+  for (const flags of [['--unknown'],['--help=yes'],['unexpected']]) {
+    const result=spawnSync(process.execPath,[script,...flags],{input:'not JSON\n',encoding:'utf8',timeout:10000});
+    assert.equal(result.error,undefined);assert.notEqual(result.status,0);assert.equal(result.stdout,'');
+    assert.match(result.stderr,/ERR_PARSE_ARGS/);
+  }
+});

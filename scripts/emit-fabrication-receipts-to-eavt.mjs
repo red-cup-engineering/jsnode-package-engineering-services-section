@@ -5,7 +5,7 @@ import { execute as executeEavt } from "@red-cup-engineering/eavt-engineering-se
 import { foldFabricationReceiptIntoWorldRows } from "@red-cup-engineering/jsnode-package-engineering-services-section/fabrication-receipts";
 import { walkPosixPaths } from "@red-cup-engineering/computer-filepath-engineering-services-section/walk-posix-paths";
 import { readTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/read-text-file";
-import { runJavascriptNodeOperation } from "@red-cup-engineering/javascript-node-engineering-services-section/operation";
+import { runJavascriptNodeOperation } from "@red-cup-engineering/node-js-function-engineering-services-section/operation";
 
 const RECEIPT_PATH_PATTERN = /\/data\/records\/fabrication-receipt-records\/\d{4}-\d{2}-\d{2}-.*fabrication-receipt\.json$/u;
 

@@ -8,7 +8,7 @@ import { basename, dirname, relative, resolve } from "node:path";
 // friction (missing-capability, delete-file-service): no house service restores a path to exact
 // absence, so this one restore-on-gate-failure path unlinks a schema file this run created.
 import { appendFile, readFile, unlink } from "node:fs/promises";
-import { argument } from "@red-cup-engineering/javascript-node-engineering-services-section/argv";
+import { parseArgs as parseNativeArgs } from "node:util";
 import { constitute, decode, encode } from "@red-cup-engineering/eavt-engineering-services-section";
 import { dataArtifactAddress } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
@@ -16,10 +16,10 @@ import { canonicalChecked } from "@red-cup-engineering/json-engineering-services
 import { makeNiUri } from "@red-cup-engineering/uri-engineering-services-section/ni-uri";
 import { walkPosixPaths } from "@red-cup-engineering/computer-filepath-engineering-services-section/walk-posix-paths";
 import { isDeadOperationRuntimeImport, projectJsnodeOperationSourceFromArguments } from "../src/project-jsnode-operation-source-from-arguments.mjs";
-import { readJsnodeOperationArguments } from "@red-cup-engineering/javascript-node-engineering-services-section/syntax";
+import { readScriptStandardizationArguments } from "../src/read-script-standardization-arguments.mjs";
 import { readTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/read-text-file";
 import { writeTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/write-text-file";
-import { parseJavaScript } from "@red-cup-engineering/javascript-node-engineering-services-section/javascript-parser";
+import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
 
 
 // friction (term-engineering-services-section-node-import-migration, 2026-09-04): no house
@@ -331,7 +331,7 @@ export function readDeclaredOperationArguments(text, path) {
   const face = parseJavaScript(text).body.find((statement) => statement.type === "ExportNamedDeclaration"
     && statement.declaration?.type === "VariableDeclaration"
     && statement.declaration.declarations.some((declarator) => declarator.id?.name === "operation"));
-  return readJsnodeOperationArguments({ text: face ? text.slice(0, face.start) + text.slice(face.end) : text, path });
+  return readScriptStandardizationArguments({ text: face ? text.slice(0, face.start) + text.slice(face.end) : text, path });
 }
 
 /**
@@ -346,7 +346,7 @@ async function processCandidate({ absolutePath, predicate, apply }) {
   });
   if (originalText === null) return outcome("skipped", "source-missing");
   const scriptsRelativePath = "scripts/" + basename(absolutePath);
-  const originalArguments = readJsnodeOperationArguments({ text: originalText, path: scriptsRelativePath });
+  const originalArguments = readScriptStandardizationArguments({ text: originalText, path: scriptsRelativePath });
   if (!currentArgumentsMatch(originalArguments, predicate)) return outcome("skipped", "current-source-predicate-mismatch");
   const packageDirectory = packageDirectoryOf(absolutePath);
   const commandName = basename(absolutePath, ".mjs");
@@ -553,16 +553,11 @@ export async function standardizeJsnodeScripts({ rulePath = DEFAULT_RULE_PATH, r
 
 /** @param {string[]} argv @returns {{rulePath?: string, readoutPath?: string, tracePath?: string, root?: string, scope?: string, limit?: number, apply: boolean}} */
 function parseArgs(argv) {
-  const limitText = argument("--limit", argv);
-  return {
-    rulePath: argument("--rule", argv),
-    readoutPath: argument("--readout", argv),
-    tracePath: argument("--trace", argv),
-    root: argument("--root", argv),
-    scope: argument("--scope", argv),
-    ...(limitText === undefined ? {} : { limit: Number(limitText) }),
-    apply: argv.includes("--apply"),
-  };
+  const { values } = parseNativeArgs({ args: argv, options: {
+    limit: {type:'string'}, rule: {type:'string'}, readout: {type:'string'}, trace: {type:'string'}, root: {type:'string'}, scope: {type:'string'}, apply: {type:'boolean',default:false},
+  }, strict:true, allowPositionals:false });
+  return { rulePath:values.rule, readoutPath:values.readout, tracePath:values.trace, root:values.root, scope:values.scope,
+    ...(values.limit === undefined ? {} : {limit:Number(values.limit)}), apply:values.apply };
 }
 
 if (import.meta.main) {
