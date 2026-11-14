@@ -264,3 +264,28 @@ test("the selected current catalog creates and receives an actual dependency-fre
   const module=await import(pathToFileURL(path.join(destination,"src/add-one.mjs")));
   assert.equal(module.addOne(41),42);
 });
+
+test("incomplete generated examples refuse before packing even when authored tests pass", async (t) => {
+  for (const exampleName of ["required behavior", "test/operation-contracts.test.mjs"]) {
+    await t.test(exampleName, async t => {
+      const parent = await mkdtemp(path.join("/tmp", "create-jsnode-incomplete-"));
+      t.after(() => rm(parent, {recursive:true, force:true}));
+      const destination = path.join(parent, "not-created");
+      const candidate = {
+        type:"JsnodeOperationPackageSpecificationCandidate", version:2,
+        packageName:"@test/incomplete", packageVersion:"0.1.0", license:"MIT", topic:"completion-receiving", cli:null,
+        sources:[{type:"JavascriptNodePackageSource",path:"src/identity.mjs",text:'export const identity = value => value; process.exit(0);\n'}],
+        operations:[{name:"identity",module:"src/identity.mjs",exportName:"identity",description:"Returns its input."}],
+        // Authored same-name success is not evidence the generated case ran.
+        tests:[{type:"JavascriptNodeOperationTestSource",path:"test/authored.test.mjs",text:'import {describe,it,test} from "node:test"; test('+JSON.stringify(exampleName)+',()=>{}); describe("authored suite",()=>{it("child",()=>{});it.skip("not required",()=>{});it.todo("future");});\n'}],
+        examples:[{type:"JsnodeOperationPackageExample",name:exampleName,operation:"identity",input:1,output:1}],
+        dependencies:{},devDependencies:{},
+      };
+      const result = await createJsnodeOperationPackage(request(destination, candidate));
+      assert.equal(result.type,"JsnodeOperationPackageCreationRefusal",JSON.stringify(result));
+      assert.equal(result.phase,"tests",JSON.stringify(result));
+      assert.equal(result.code,"TEST_ASSAY_INCOMPLETE",JSON.stringify(result));
+      await assert.rejects(access(destination));
+    });
+  }
+});

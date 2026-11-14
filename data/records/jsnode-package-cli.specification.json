@@ -16,6 +16,9 @@
       "path": "src/create-jsnode-operation-package.mjs"
     },
     {
+      "path": "src/package-check-outcome.mjs"
+    },
+    {
       "path": "src/project-jsnode-modules.mjs"
     },
     {

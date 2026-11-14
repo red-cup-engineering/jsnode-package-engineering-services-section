@@ -200,8 +200,16 @@ catalog command before materializing an absent destination. Generated source-bea
 contract tests snapshot their assertion and JSON functions and admitted examples
 before dynamically importing operation modules or the catalog. Import-time or
 invocation-time replacement of those shared functions cannot change the recorded
-example oracle. This is not hostile-code isolation or an independent completion
-receipt: successful command exit alone does not prove all declared tests ran.
+example oracle. The creator receives authored tests and generated examples in
+separate native TAP runs. Authored suites retain their ordinary skip/TODO
+semantics; the generated run must complete every exact declared example once,
+with no suites, failures, skips, TODOs or cancellation. An authored same-name
+success cannot substitute for a missing generated case. Declared names that
+collide with enrolled native file-wrapper identities or another escaped name
+refuse completion because those observations are ambiguous. Both runs use the
+existing package-test report receiver, without changing the source-free assay
+contract. These are execution-completion observations, not hostile-code
+isolation or proof that the supplied examples establish every requirement.
 
 The Markdown translator accepts source fences, operation bindings, tests,
 examples, and the work order's requirements and traceability. Bindings carry

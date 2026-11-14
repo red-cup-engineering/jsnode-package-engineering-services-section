@@ -70,6 +70,10 @@ test("the generated catalog contract executes against the declared canonical int
   assert.equal(result.status, 0, result.stderr + result.stdout);
   assert.match(result.stdout, /# pass 1/u);
   assert.match(result.stdout, /# fail 0/u);
+  const { receivePackageTestReport } = await import("../src/package-check-outcome.mjs");
+  assert.equal(receivePackageTestReport(result.stdout, {
+    files: [generated.path], expectedTestNames: specification.examples.map(example => example.name),
+  }).problem, null);
 });
 
 test("generated receiving contracts use detached invocation, not an artificial receiver", async (t) => {
