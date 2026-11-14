@@ -1,7 +1,6 @@
 import { lstat, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
 import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
-import { admitJavascriptNodeCommandExecutionRequest } from "@red-cup-engineering/javascript-node-engineering-services-section/admit-javascript-node-command-execution-request";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operation-package-specification.mjs";
@@ -63,7 +62,7 @@ function requireSuccessfulCommand(receipt, code, message) {
 }
 
 function commandRequest({ command, arguments: args, directory, environment, input = null }) {
-  return admitJavascriptNodeCommandExecutionRequest({ type: "JavascriptNodeCommandExecutionRequest", version: 1, command, arguments: args, directory, environment, input });
+  return { type: "JavascriptNodeCommandExecutionRequest", version: 1, command, arguments: args, directory, environment, input };
 }
 
 function assay(name, details = {}) {
