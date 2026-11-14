@@ -153,7 +153,7 @@ test("the public Markdown driver reaches grouped fabrication with publication om
     // Machine-facing catalog is data; the command runner belongs to the
     // independently installed shared runtime, not a fabricated package bin.
     assert.equal(Object.hasOwn(manifest, "bin"), false);
-    assert.equal(manifest.dependencies["@red-cup-engineering/node-js-function-engineering-services-section"], "0.5.1");
+    assert.equal(manifest.dependencies["@red-cup-engineering/node-js-function-engineering-services-section"], "0.5.2-dev.0");
     assert.equal(Object.hasOwn(manifest.dependencies, "@red-cup-engineering/javascript-node-services-section"), false);
     assert.match(await readFile(path.join(destination, "apps", "number-topic-cli.mjs"), "utf8"), /export const catalog/u);
     assert.equal(result.jsnodeOperationPackageRegistryPublication.type, "JsnodeOperationPackageRegistryPublicationSkipped");

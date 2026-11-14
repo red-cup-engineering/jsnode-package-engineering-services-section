@@ -769,7 +769,7 @@ a proposal for an independent receiver, not accepted or deployed software.
 ## Projected catalog runtime
 
 New catalog-bearing package specifications select
-`@red-cup-engineering/node-js-function-engineering-services-section@0.5.1`
+`@red-cup-engineering/node-js-function-engineering-services-section@0.5.2-dev.0`
 as a runtime dependency. That owner supplies the public module interpreter and
 `run-javascript-node-operation-module` bin. Projected declarations remain data;
 they gain neither a private interpreter nor a package-local executable wrapper.
@@ -786,12 +786,14 @@ or select `cli: null` for a module-only package. Module-only specifications keep
 their authored dependency selections unchanged and acquire no automatic runtime.
 Historical guard-to-declaration conversion remains supported.
 
-This fabrication package still needs the historical supplier for its parser,
-module-analysis and command-admission APIs. The canonical runtime is a declared
-test supplier here and a production supplier in generated app packages. Source
-tests against a locally selected candidate archive do not establish registry
-availability. Publish and independently receive the canonical 0.5.1 artifact
-before integrating this consumer selection or claiming registry-based creation.
+The runtime version comes from this package's exact runtime dependency declaration,
+not a second hardcoded version or an installed-package lookup. The fabrication
+package and its generated catalogs therefore select the same qualified Function
+runtime. Parser, module analysis and command execution use their current owners;
+no historical JavaScriptNode facade is required. Source and native archive
+receiving do not establish issued registry availability. A source snapshot can
+qualify local staged installation without publishing or activating its artifacts;
+issued-artifact integrity and the complete transitive lock remain separate gates.
 
 ### Source and installed receiving test profiles
 
@@ -828,7 +830,7 @@ The development parser and export-documentation dependency selections are source
 
 A projected catalog declares each command as an asynchronous callable that imports its exact authored module and selects its exact export only when invoked. The existing Function operation interpreter still admits input before the call, awaits its result, validates output, and reports import or execution failures as refused operations with a nonzero process result. The selected callable receives the original value and context with detached invocation semantics; native ESM caching controls module evaluation.
 
-Help, an unknown command, or invoking another command does not evaluate an unrelated operation module. This is not a claim that metadata is dependency-free: declared schema imports and schema admission remain eager. Projection still checks the complete declared source graph and export bindings; deferral does not admit missing projected modules. It does not make absent runtime suppliers available or waive installation/receiving gates. Creation constructs explicit request data and delegates admission immediately to the actual Execute owner before native effects; the removed JavaScriptNode admission facade is not restored. Invalid creation input yields its existing typed phase refusal. The dependency-free selected creation command is received through real staging, native tests, packing, clean installation, inspection and absent-destination publication. Registry-backed fabrication and publication are not established by this local source/archive qualification.
+Help, an unknown command, or invoking another command does not evaluate an unrelated operation module. This is not a claim that metadata is dependency-free: declared schema imports and schema admission remain eager. Projection still checks the complete declared source graph and export bindings; deferral does not admit missing projected modules. It does not make absent runtime suppliers available or waive installation/receiving gates. Creation constructs explicit request data and delegates admission immediately to the actual Execute owner before native effects; the removed JavaScriptNode admission facade is not restored. Invalid creation input yields its existing typed phase refusal. The dependency-free selected creation command is received through real staging, native tests, packing, clean installation, inspection and absent-destination publication. Issued-registry fabrication and publication are not established by this local source/archive qualification.
 
 
 ## Current whole-source native receiving
@@ -838,3 +840,19 @@ Derivation reads export evidence from the existing JavaScript parser owner. The 
 All direct supplier selections identify the actual source/archive cohort, including the genuine current Publisher carrier. This does not reconcile their transitive historical manifests or assert registry availability. The original complete source test plan remains distinct from the authored Section receiving profile. Real-registry and unavailable-platform tests retain their original qualification conditions; no publication or host mutation is inferred from controlled fixture tests.
 
 The retained shared-account work-order fixture is historical test evidence, not a new implementation assignment. Fixed-commit source locators retain their historical path; only the live projection target follows the current package owner. Historical digest comparison explicitly replays that single target rename while preserving the original digest and all authored requirement assertions.
+
+### Staged catalog runtime receiving
+
+The existing staged tests can be selected explicitly with
+`JSNODE_STAGING_REGISTRY=<read-only-snapshot-url> node scripts/run-package-tests.mjs --test-concurrency=1`.
+Explicit registry selection runs the installation cases and fails on missing
+carriers rather than silently skipping. The native source receiving used the
+existing registry snapshot assembler and read service with the authentic seven
+carriers in the Function runtime closure: Function 0.5.2-dev.0, JSON 0.4.3-dev.0,
+SignCell 0.17.5, SignCraft 0.9.6-dev.2, SignGraph 0.10.1, SignChain 0.6.4 and
+Metrologic 0.22.2. No carrier manifest was pruned or assigned a substitute version.
+The original Markdown package-birth cases exercised native packing, clean
+installation, generated tests, CLI/module agreement and receipt binding with
+publication omitted or false. This qualifies that staged source-artifact
+scenario, not issuance on the house registry or this generator's entire frozen
+transitive dependency graph.

@@ -1,4 +1,5 @@
 import path from "node:path";
+import packageManifest from "../package.json" with { type: "json" };
 import { freezeJson } from "@red-cup-engineering/json-engineering-services-section";
 import { isJsonValue } from "@red-cup-engineering/json-engineering-services-section";
 import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
@@ -337,7 +338,9 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     const developmentDependencies = dependencies(candidate.devDependencies, "devDependencies");
     if (app !== null) {
       const runtimeName = "@red-cup-engineering/node-js-function-engineering-services-section";
-      const runtimeVersion = "0.5.1";
+      // The generator and its generated machine faces use one qualified runtime
+      // selection. Never infer a version from whatever happens to be installed.
+      const runtimeVersion = exactVersion(packageManifest.dependencies[runtimeName], "projected catalog runtime");
       const historicalRuntimes = [
         "@red-cup-engineering/javascript-node-services-section",
         "@red-cup-engineering/javascript-node-operation-engineering-services-section",
