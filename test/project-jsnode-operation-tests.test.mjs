@@ -42,7 +42,8 @@ test("uses a distinct deterministic binding for each operation, including shared
   ] });
   assert.match(projections[1].text, /import \{ addOne as operation0 \}/u);
   assert.match(projections[1].text, /import \{ addOne as operation1 \}/u);
-  assert.match(projections[1].text, /"binding": "operation1"/u);
+  const examples = JSON.parse(JSON.parse(projections[1].text.match(/const examples = JSON.parse\((.*)\);/u)[1]));
+  assert.deepEqual(examples.map(example => example.binding), ["operation0", "operation1"]);
 });
 
 
