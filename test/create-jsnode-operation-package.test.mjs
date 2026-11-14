@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
 import { access, mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import {fileURLToPath,pathToFileURL} from "node:url";
 import test from "node:test";
 import { createJsnodeOperationPackage } from "../src/create-jsnode-operation-package.mjs";
 import { chmod } from "node:fs/promises";
-import { execFile } from "node:child_process";
+import { spawnSync, execFile } from "node:child_process";
 import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
@@ -244,4 +245,22 @@ test("refuses a v2 example outside its declared output schema and leaves no dest
   assert.equal(result.phase, "example-schema", JSON.stringify(result));
   assert.equal(result.code, "EXAMPLE_OUTPUT_SCHEMA_MISMATCH");
   await assert.rejects(access(destination));
+});
+
+
+test("the selected current catalog creates and receives an actual dependency-free module package", async t => {
+  const parent = await mkdtemp(path.join("/tmp", "catalog-create-native-"));
+  t.after(() => rm(parent, {recursive:true,force:true}));
+  const destination=path.join(parent,"add-one-service");
+  const runner=new URL(import.meta.resolve("@red-cup-engineering/node-js-function-engineering-services-section/run-javascript-node-operation-module"));
+  const { NODE_TEST_CONTEXT, ...environment }=process.env;
+  const result=spawnSync(process.execPath,[fileURLToPath(runner),fileURLToPath(new URL("../apps/jsnode-package-cli.mjs",import.meta.url)),"create"],{
+    input:JSON.stringify(request(destination))+"\n",encoding:"utf8",timeout:60000,env:environment,
+  });
+  assert.equal(result.error,undefined);assert.equal(result.status,0,result.stderr);
+  const receipt=JSON.parse(result.stdout);
+  assert.equal(receipt.type,"JsnodeOperationPackageCreationReceipt",result.stdout);
+  assert.deepEqual(receipt.assays.map(x=>x.name),["syntax","tests","pack","clean-installation","import-face"]);
+  const module=await import(pathToFileURL(path.join(destination,"src/add-one.mjs")));
+  assert.equal(module.addOne(41),42);
 });

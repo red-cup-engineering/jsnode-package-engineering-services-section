@@ -164,8 +164,9 @@ test("catalog commands defer only operation evaluation and preserve native refus
 test("the actual catalog keeps creation callable and propagates refusal rather than reporting delivery", async () => {
   const cli = fileURLToPath(new URL("../apps/jsnode-package-cli.mjs", import.meta.url));
   assert.match((await run(cli,["create","--help"],"")).stdout,/create/i);
-  const refusal = JSON.parse((await run(cli,["create"],"{}\n",2)).stdout);
-  assert.equal(refusal.type,"https://schemas.561.group/problems/operation-refused");
-  assert.equal(typeof refusal.code,"string");
+  const refusal = JSON.parse((await run(cli,["create"],"{}\n")).stdout);
+  assert.equal(refusal.type,"JsnodeOperationPackageCreationRefusal");
+  assert.equal(refusal.phase,"request");
+  assert.equal(refusal.code,"UNEXPECTED_FIELDS");
   assert.equal(refusal.type === "JsnodeOperationPackageCreationReceipt",false);
 });
