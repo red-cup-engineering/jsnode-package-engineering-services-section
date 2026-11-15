@@ -88,7 +88,12 @@ async function syncRepositoryManifests() {
   const repository = resolve(process.argv.slice(2).find((argument) => !argument.startsWith("--")) ?? ".");
   const tracked = execFileSync("git", ["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
   const roots = packageRoots(tracked);
-  const manifests = new Map(roots.map((root) => [root, JSON.parse(readFileSync(join(repository, root, "package.json"), "utf8"))]));
+  const sources = new Map(roots.map(root => {
+    const path = root === "." ? "package.json" : `${root}/package.json`;
+    const file = join(repository, path), text = readFileSync(file, "utf8");
+    return [root, { path, file, text, manifest: JSON.parse(text) }];
+  }));
+  const manifests = new Map([...sources].map(([root, source]) => [root, source.manifest]));
   const members = new Set([...manifests.values()].map((manifest) => manifest.name).filter(Boolean));
   const declaredRanges = new Map();
   for (const manifest of manifests.values()) for (const key of ["dependencies", "optionalDependencies", "devDependencies"]) {
@@ -103,7 +108,7 @@ async function syncRepositoryManifests() {
     if (counts) return [...counts].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])))[0][0];
     return members.has(name) ? "workspace:*" : null;
   };
-  const report = [], writtenManifestPaths = [];
+  const report = [], rewrites = [], writtenManifestPaths = [];
   for (const [root, manifest] of manifests) {
     const owned = ownedFiles(root, roots, tracked);
     const files = owned.filter(({ path }) => /\.(?:[cm]?[jt]s|[jt]sx)$/u.test(path))
@@ -116,14 +121,20 @@ async function syncRepositoryManifests() {
     if (!changes.length && !undeclared.length && !unresolved.length) continue;
     report.push({ package: manifest.name, path: root, changes, undeclared, unresolved });
     if (mode === "write" && changes.length) {
-      const path = root === "." ? "package.json" : `${root}/package.json`;
-      const file = join(repository, path);
-      const before = readFileSync(file, "utf8");
-      const after = formatManifestLike(before, synced);
-      if (before === after) continue;
-      writeFileSync(file, after);
-      writtenManifestPaths.push(path);
+      const source = sources.get(root);
+      const after = formatManifestLike(source.text, synced);
+      if (source.text !== after) rewrites.push({ source, after });
     }
+  }
+  // Refused plans must not leave a misleading partial rewrite. Finish every
+  // source read, import analysis and receiving-plan check before any write.
+  for (const { source } of rewrites) {
+    if (readFileSync(source.file, "utf8") !== source.text)
+      throw new Error(`manifest changed during planning: ${source.path}`);
+  }
+  for (const { source, after } of rewrites) {
+    writeFileSync(source.file, after);
+    writtenManifestPaths.push(source.path);
   }
   process.stdout.write(JSON.stringify({ kind: "sync-package-manifest", mode, add: adding, repository, packages: report, writtenManifestPaths: writtenManifestPaths.sort() }, null, 2) + "\n");
   if (mode === "check" && report.some((entry) => entry.changes.length)) process.exitCode = 1;

@@ -933,7 +933,9 @@ qualification remain separate from this package-runner contract.
 `sync-package-manifest --write [REPOSITORY]` edits working files only. Its JSON
 receipt's `writtenManifestPaths` contains the exact repository-relative literal
 paths written, in sorted order. `--check` and an idempotent write both return
-an empty list. Use this list, not the staged index or a recursive dirty-path
+an empty list. Planning reads the entire selected repository before starting
+any write; a missing tracked input or refused test plan leaves earlier manifests
+untouched. The write phase is not an atomic filesystem transaction. Use this list, not the staged index or a recursive dirty-path
 query, when passing the rewrite to the Group's [exact-file Git commit
 service](https://github.com/red-cup-engineering/committing-git-paths-service).
 Pass the array to its `commitGitPaths({ repository, paths, message })` API, or

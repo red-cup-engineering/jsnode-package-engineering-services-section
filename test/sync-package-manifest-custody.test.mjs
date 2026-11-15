@@ -50,3 +50,31 @@ test("manifest normalization reports only completed literal writes, not other di
   assert.equal(git("rev-parse", "HEAD"), originalHead);
   assert.deepEqual(run("--write").writtenManifestPaths, []);
 });
+
+test("a later package with unreadable tracked source prevents all manifest writes", t => {
+  const cwd = mkdtempSync(join(tmpdir(), "jsnode-manifest-plan-"));
+  t.after(() => rmSync(cwd, { recursive: true, force: true }));
+  const git = (...args) => execFileSync("git", args, { cwd, encoding: "utf8" });
+  const manifest = '{"name":"@red-cup-engineering/root","dependencies":{"@red-cup-engineering/unused":"1.0.0"}}\n';
+  const rootManifest = join(cwd, "package.json");
+  mkdirSync(join(cwd, "packages", "later"), { recursive: true });
+  const late = join(cwd, "packages", "later", "tracked.mjs");
+  writeFileSync(rootManifest, manifest);
+  writeFileSync(join(cwd, "packages", "later", "package.json"), '{"name":"@red-cup-engineering/later"}\n');
+  writeFileSync(late, "export const shipped = true;\n");
+  git("init", "-q", "-b", "main");
+  git("config", "user.name", "Planning Fixture");
+  git("config", "user.email", "planning@example.invalid");
+  git("add", "--all");
+  git("commit", "-qm", "Establish complete fixture");
+  const initialHead = git("rev-parse", "HEAD");
+  rmSync(late);
+  const result = spawnSync(process.execPath, [cli, "--write", cwd], { cwd, encoding: "utf8" });
+  assert.ifError(result.error);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /ENOENT/u);
+  assert.equal(result.stdout, "");
+  assert.equal(readFileSync(rootManifest, "utf8"), manifest);
+  assert.equal(git("rev-parse", "HEAD"), initialHead);
+  assert.equal(git("diff", "--cached", "--name-only"), "");
+});
