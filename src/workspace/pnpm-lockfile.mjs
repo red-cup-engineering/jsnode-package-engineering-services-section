@@ -137,6 +137,31 @@ export function decodePnpmLockfileImporters(text) {
   return Object.freeze({ lockfileVersion, importers: Object.freeze(importers) });
 }
 
+/**
+ * Compare a manifest's declared specifiers with a selected v9 importer.
+ * This preflight does not check resolution, integrity or artifact availability.
+ */
+export function comparePnpmImporterManifest(text, manifest, path = ".") {
+  const lock = decodePnpmLockfileImporters(text);
+  if (lock.lockfileVersion !== "9.0") throw new TypeError("pnpm-lockfile: manifest preflight requires version 9.0");
+  const importer = lock.importers.find(entry => entry.path === path);
+  if (importer === undefined) throw new TypeError("pnpm-lockfile: missing importer " + path);
+  const dependencyKey = ({ field, name }) => JSON.stringify([field, name]);
+  const locked = new Map(importer.dependencies.map(entry => [dependencyKey(entry), entry]));
+  const differences = [];
+  for (const field of DEPENDENCY_FIELDS) {
+    for (const [name, specifier] of Object.entries(manifest[field] ?? {})) {
+      const key = dependencyKey({ field, name });
+      const entry = locked.get(key);
+      locked.delete(key);
+      if (entry === undefined) differences.push({ kind: "manifest-only", field, name });
+      else if (unquoteKey(entry.specifier) !== specifier) differences.push({ kind: "specifier-mismatch", field, name });
+    }
+  }
+  for (const { field, name } of locked.values()) differences.push({ kind: "lock-only", field, name });
+  return differences;
+}
+
 /** A top-level section's entries (two-space-indented keys), each with the lines it spans. */
 function sectionEntries(lines, start) {
   const entries = new Map();

@@ -10,6 +10,8 @@ on:
       - 'src/package-files.mjs'
       - 'src/package-test-reporters.mjs'
       - 'test/fixtures/native-node-observation.mjs'
+      - 'src/workspace/pnpm-lockfile.mjs'
+      - 'test/pnpm-lockfile-importers.test.mjs'
       - 'test/package-test-plan.test.mjs'
       - 'src/package-imports.mjs'
       - 'src/package-imports-installed.mjs'
@@ -31,6 +33,8 @@ on:
       - 'src/package-files.mjs'
       - 'src/package-test-reporters.mjs'
       - 'test/fixtures/native-node-observation.mjs'
+      - 'src/workspace/pnpm-lockfile.mjs'
+      - 'test/pnpm-lockfile-importers.test.mjs'
       - 'test/package-test-plan.test.mjs'
       - 'src/package-imports.mjs'
       - 'src/package-imports-installed.mjs'
@@ -67,7 +71,7 @@ jobs:
       - name: Execute original complete TAP proof receiving regression suite
         run: node --test test/assay-completion.test.mjs
       - name: Receive package runner enrollment and source-native TAP controls
-        run: node --test test/package-test-plan.test.mjs test/native-check-receiving.test.mjs
+        run: node --test test/package-test-plan.test.mjs test/native-check-receiving.test.mjs test/pnpm-lockfile-importers.test.mjs
   native-proof:
     # Keep the original proof job on PRs and main; a fix push only runs source-proof.
     if: ${{ always() && (github.event_name == 'pull_request' || github.ref == 'refs/heads/main') }}

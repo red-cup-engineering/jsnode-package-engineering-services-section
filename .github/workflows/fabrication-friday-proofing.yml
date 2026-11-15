@@ -33,6 +33,19 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
+      - name: Check committed root manifest and lock specifiers before installing
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync } from "node:fs";
+          import { comparePnpmImporterManifest } from "./src/workspace/pnpm-lockfile.mjs";
+          const lock = readFileSync("pnpm-lock.yaml", "utf8");
+          const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+          const differences = comparePnpmImporterManifest(lock, manifest);
+          if (differences.length) {
+            console.error(JSON.stringify({ kind: "pnpm-importer-manifest-drift", importer: ".", differences }, null, 2));
+            process.exitCode = 1;
+          }
+          NODE
       # pnpm-lock.yaml is the repository's committed dependency contract.
       # Pin the installer code and manager version; do not let an npm install
       # silently resolve a different, uncommitted dependency tree.
