@@ -7,6 +7,7 @@
  *   node scripts/sync-package-manifest.mjs --write [REPOSITORY]   remove and move declarations, keeping each file's formatting
  *   node scripts/sync-package-manifest.mjs --write --add [REPOSITORY]   also declare house packages used but undeclared
  *   node scripts/sync-package-manifest.mjs --check-pnpm-root [REPOSITORY]   check literal root declarations only
+ *   node scripts/sync-package-manifest.mjs --check-pnpm-release [PACKAGE]  check the declared frozen release product
  *   --receiving-tests explicitly projects installed receiving enrollment from the same canonical source test plan
  *
  * Packages are the tracked package.json files outside legacy, vendor, node_modules and test fixtures. A house
@@ -14,17 +15,21 @@
  * repository itself defines it, and is otherwise reported unresolved.
  */
 import { execFileSync } from "node:child_process";
-import { constants, openSync, closeSync, fstatSync, readSync, readFileSync, writeFileSync } from "node:fs";
+import { constants, openSync, closeSync, fstatSync, lstatSync, readSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 const argv = process.argv.slice(2);
-if (argv.includes("--check-pnpm-root")) process.exitCode = await checkPnpmRoot(argv);
+const pnpmMode = argv.find(argument => argument === "--check-pnpm-root" || argument === "--check-pnpm-release");
+if (pnpmMode) process.exitCode = await checkPnpmContract(argv, pnpmMode);
 else await syncRepositoryManifests();
 
-async function checkPnpmRoot(args) {
-  const operands = args.filter(argument => argument !== "--check-pnpm-root");
+async function checkPnpmContract(args, mode) {
+  const release = mode === "--check-pnpm-release";
+  const lockfile = release ? "release/pnpm-lock.yaml" : "pnpm-lock.yaml";
+  const operands = args.filter(argument => argument !== mode);
   const receipt = (status, details = {}) => {
     process.stdout.write(JSON.stringify({
-      kind: "pnpm-importer-manifest-agreement/v1", importer: ".", scope: "literal-direct-declarations-only", status, ...details,
+      kind: "pnpm-importer-manifest-agreement/v1", importer: ".", scope: "literal-direct-declarations-only", status,
+      ...(release ? { lockfile } : {}), ...details,
     }) + "\n");
     return status === "agreement" ? 0 : status === "drift" ? 1 : 2;
   };
@@ -53,12 +58,18 @@ async function checkPnpmRoot(args) {
   let manifest, lock;
   try {
     manifest = JSON.parse(read(join(repository, "package.json")));
-    lock = read(join(repository, "pnpm-lock.yaml"));
   } catch { return receipt("unchecked", { reason: "unreadable-input" }); }
   if (!isRecord(manifest)) return receipt("unchecked", { reason: "invalid-manifest" });
-  if (manifest.pnpm !== undefined || manifest.peerDependencies !== undefined ||
-      /^(?:overrides|catalogs|patchedDependencies)\s*:/mu.test(lock) || /^ +excludeLinksFromLockfile:\s*true\s*$/mu.test(lock))
-    return receipt("unchecked", { reason: "requires-native-policy-check" });
+  if (release && (manifest.registryConsumption?.frozenLockfile !== "./" + lockfile ||
+      manifest.exports?.["./frozen-lockfile"] !== "./" + lockfile))
+    return receipt("unchecked", { reason: "frozen-lock-product-not-declared" });
+  try {
+    if (release && !lstatSync(join(repository, "release")).isDirectory()) throw new Error();
+    lock = read(join(repository, lockfile));
+  } catch { return receipt("unchecked", { reason: "unreadable-input" }); }
+  const requiresNativePolicy = manifest.pnpm !== undefined || manifest.peerDependencies !== undefined ||
+    /^(?:overrides|catalogs|patchedDependencies)\s*:/mu.test(lock) || /^ +excludeLinksFromLockfile:\s*true\s*$/mu.test(lock);
+  if (requiresNativePolicy && !release) return receipt("unchecked", { reason: "requires-native-policy-check" });
   const knownLiteral = value => typeof value === "string" && /^[a-zA-Z0-9*^~.<>=| +_-]{1,160}$/u.test(value);
   for (const field of ["dependencies", "devDependencies", "optionalDependencies"]) {
     const declarations = manifest[field];
@@ -68,6 +79,11 @@ async function checkPnpmRoot(args) {
   }
   try {
     const { comparePnpmImporterManifest } = await import("../src/workspace/pnpm-lockfile.mjs");
+    // Observed keys under native policy are diagnostics, not an install verdict.
+    if (requiresNativePolicy) return receipt("unchecked", {
+      reason: "requires-native-policy-check",
+      observedDifferences: comparePnpmImporterManifest(lock, manifest),
+    });
     const differences = comparePnpmImporterManifest(lock, manifest, ".", { includeSelection: true });
     return receipt(differences.length ? "drift" : "agreement", { differences });
   } catch { return receipt("unchecked", { reason: "unreadable-or-unsupported-importer" }); }
