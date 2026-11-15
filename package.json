@@ -100,7 +100,8 @@
     "@red-cup-engineering/npm-package-version-admission-service": "0.2.1",
     "@red-cup-engineering/npm-scoped-package-name-formation-service": "0.3.1",
     "typescript": "5.9.3",
-    "@red-cup-engineering/node-js-function-engineering-services-section": "0.5.2"
+    "@red-cup-engineering/node-js-function-engineering-services-section": "0.5.2",
+    "@red-cup-engineering/javascript-node-operation-service": "0.1.1"
   },
   "engines": {
     "node": ">=24"
