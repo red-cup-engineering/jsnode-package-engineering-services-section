@@ -916,3 +916,14 @@ This reads the root manifest and PNPM v9 importer and emits JSON with status
 requiring native policy or YAML handling are unchecked, not proof of drift.
 The CI preflight uses this same command. Agreement covers literal direct
 declarations only, not dependency resolution, integrity or registry stock.
+
+### Receiving enrollment before acquisition
+
+Run `node scripts/run-package-tests.mjs --check-receiving-enrollment` from this tracked package checkout, or set `PACKAGE_TEST_DIRECTORY` to the tracked consumer package directory when using this runner on another package. This checks that every explicit `receivingTests` program is present in the Git revision and selected by npm's offline, lifecycle-disabled packlist. It does not install dependencies, execute test programs, inspect an issued archive, or qualify behavior. The existing `--receiving` run against installed bytes is still required for receiving evidence. Repair missing or excluded programs against the package's current requirements; do not remove enrollment merely to pass preflight.
+
+A source preflight also checks that every selected program still has its
+committed bytes. Installed-mode qualification is stricter than an ordinary
+source run: filtered, skipped, TODO, or empty behavioral results do not carry a
+successful receiving receipt. Run the dependency-free behavioral contract with
+`node --test test/package-receiving.test.mjs`. Fabrication and downstream
+qualification remain separate from this package-runner contract.

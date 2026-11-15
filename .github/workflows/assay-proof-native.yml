@@ -1,122 +1,45 @@
 name: JSNode proof-stage native receiving
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - 'src/assay-completion.mjs'
-      - 'test/assay-completion.test.mjs'
+      - 'src/package-*.mjs'
       - 'scripts/run-package-tests.mjs'
-      - 'src/package-test-plan.mjs'
-      - 'src/package-check-outcome.mjs'
-      - 'src/package-files.mjs'
-      - 'src/package-test-reporters.mjs'
-      - 'test/fixtures/native-node-observation.mjs'
-      - 'src/workspace/pnpm-lockfile.mjs'
-      - 'test/pnpm-lockfile-importers.test.mjs'
-      - 'test/package-test-plan.test.mjs'
-      - 'src/package-imports.mjs'
-      - 'src/package-imports-installed.mjs'
-      - 'test/package-imports.test.mjs'
-      - 'src/sync-package-manifest.mjs'
-      - 'scripts/sync-package-manifest.mjs'
-      - 'test/sync-package-manifest.test.mjs'
       - 'package.json'
-      - 'test/native-check-receiving.test.mjs'
+      - 'test/package-receiving.test.mjs'
+      - '.npmignore'
       - '.github/workflows/assay-proof-native.yml'
   push:
     branches: [main, 'fix/**']
     paths:
-      - 'src/assay-completion.mjs'
-      - 'test/assay-completion.test.mjs'
+      - 'src/package-*.mjs'
       - 'scripts/run-package-tests.mjs'
-      - 'src/package-test-plan.mjs'
-      - 'src/package-check-outcome.mjs'
-      - 'src/package-files.mjs'
-      - 'src/package-test-reporters.mjs'
-      - 'test/fixtures/native-node-observation.mjs'
-      - 'src/workspace/pnpm-lockfile.mjs'
-      - 'test/pnpm-lockfile-importers.test.mjs'
-      - 'test/package-test-plan.test.mjs'
-      - 'src/package-imports.mjs'
-      - 'src/package-imports-installed.mjs'
-      - 'test/package-imports.test.mjs'
-      - 'src/sync-package-manifest.mjs'
-      - 'scripts/sync-package-manifest.mjs'
-      - 'test/sync-package-manifest.test.mjs'
       - 'package.json'
-      - 'test/native-check-receiving.test.mjs'
+      - 'test/package-receiving.test.mjs'
+      - '.npmignore'
       - '.github/workflows/assay-proof-native.yml'
 permissions:
   contents: read
 jobs:
-  # Fix pushes offer source feedback without qualifying a built or installed package.
   source-proof:
     name: JSNode source checks (no package acquisition)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Refuse retained GitHub authorization before native tests
-        run: |
-          if git config --local --name-only --get-regexp '^http[.].*[.]extraheader$' >/dev/null 2>&1; then
-            echo '::error::Source checkout retained HTTP authorization'
-            exit 1
-          fi
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
-      - name: Syntax of the original proof-stage receiver
-        run: node --check src/assay-completion.mjs
-      - name: Execute original complete TAP proof receiving regression suite
-        run: node --test test/assay-completion.test.mjs
-      - name: Receive package runner enrollment and source-native TAP controls
-        run: node --test test/package-test-plan.test.mjs test/native-check-receiving.test.mjs test/pnpm-lockfile-importers.test.mjs
-      - name: Exercise generated source assays on source-only previews
-        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/fix/') }}
-        run: node --test test/source-export-assay-fabrication.test.mjs
-  native-proof:
-    # Drafts and fix pushes receive source feedback only. Ready reviews and main still receive native proof.
-    if: ${{ always() && ((github.event_name == 'pull_request' && github.event.pull_request.draft == false) || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
-    needs: source-proof
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Refuse to qualify an unsuccessful source proof
-        env:
-          SOURCE_PROOF_RESULT: ${{ needs.source-proof.result }}
-        run: test "$SOURCE_PROOF_RESULT" = success
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          persist-credentials: false
-      - name: Refuse retained GitHub authorization before native tests
+      - name: Verify receiving programs are committed and selected by npm
+        run: node scripts/run-package-tests.mjs --check-receiving-enrollment
+      - name: Execute the contract from the local npm artifact
         run: |
-          if git config --local --name-only --get-regexp '^http[.].*[.]extraheader$' >/dev/null 2>&1; then
-            echo '::error::Source checkout retained HTTP authorization'
-            exit 1
-          fi
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: '24'
-      - name: Refuse parser acquisition until the committed lock agrees
-        run: node scripts/sync-package-manifest.mjs --check-pnpm-root
-      - name: Supply the authenticated parser before manifest discovery
-        env:
-          TYPESCRIPT_INTEGRITY: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==
-        run: |
-          parser="$(mktemp -d "$RUNNER_TEMP/jsnode-parser.XXXXXX")"
-          curl --fail --location --max-time 60 --output "$parser/typescript.tgz" https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz
-          node --input-type=module - "$parser/typescript.tgz" <<'NODE'
-          import { readFileSync } from 'node:fs';
-          import { createHash } from 'node:crypto';
-          const actual = 'sha512-' + createHash('sha512').update(readFileSync(process.argv[2])).digest('base64');
-          if (actual !== process.env.TYPESCRIPT_INTEGRITY) throw new Error('TypeScript bootstrap integrity mismatch');
-          NODE
-          tar --no-same-owner --no-same-permissions -xzf "$parser/typescript.tgz" -C "$parser"
-          mkdir node_modules
-          ln -s "$parser/package" node_modules/typescript
-      - name: Receive source-derived manifest and installed enrollment
-        run: |
-          npm run sync:manifest
-          node --test test/package-imports.test.mjs test/sync-package-manifest.test.mjs
+          set -euo pipefail
+          scratch="$(mktemp -d)"
+          trap 'rm -rf "$scratch"' EXIT
+          archive="$(npm pack . --silent --offline --ignore-scripts --cache "$scratch/cache" --pack-destination "$scratch")"
+          [[ "$archive" =~ ^[a-z0-9][a-z0-9._-]*\.tgz$ ]]
+          mkdir "$scratch/carrier"
+          tar --extract --gzip --file "$scratch/$archive" --directory "$scratch/carrier" --strip-components=1 --no-same-owner --no-same-permissions
+          (cd "$scratch/carrier"; node scripts/run-package-tests.mjs --receiving)
