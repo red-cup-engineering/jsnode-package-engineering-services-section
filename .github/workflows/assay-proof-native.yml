@@ -1,6 +1,7 @@
 name: JSNode proof-stage native receiving
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - 'src/assay-completion.mjs'
       - 'test/assay-completion.test.mjs'
@@ -76,8 +77,8 @@ jobs:
         if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/fix/') }}
         run: node --test test/source-export-assay-fabrication.test.mjs
   native-proof:
-    # Keep the original proof job on PRs and main; a fix push only runs source-proof.
-    if: ${{ always() && (github.event_name == 'pull_request' || github.ref == 'refs/heads/main') }}
+    # Drafts and fix pushes receive source feedback only. Ready reviews and main still receive native proof.
+    if: ${{ always() && ((github.event_name == 'pull_request' && github.event.pull_request.draft == false) || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
     needs: source-proof
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -98,6 +99,8 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '24'
+      - name: Refuse parser acquisition until the committed lock agrees
+        run: node scripts/sync-package-manifest.mjs --check-pnpm-root
       - name: Supply the authenticated parser before manifest discovery
         env:
           TYPESCRIPT_INTEGRITY: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==

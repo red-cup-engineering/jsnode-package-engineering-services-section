@@ -1,6 +1,7 @@
 name: Fabrication Friday source receiving
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
 
@@ -35,6 +36,11 @@ jobs:
           node-version: '24'
       - name: Check committed root manifest and lock specifiers before installing
         run: node scripts/sync-package-manifest.mjs --check-pnpm-root
+      - name: Keep dependency acquisition closed for drafts
+        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.draft }}
+        run: |
+          echo '::error::Draft preview does not qualify package acquisition or installed receiving.'
+          exit 1
       # pnpm-lock.yaml is the repository's committed dependency contract.
       # Pin the installer code and manager version; do not let an npm install
       # silently resolve a different, uncommitted dependency tree.
