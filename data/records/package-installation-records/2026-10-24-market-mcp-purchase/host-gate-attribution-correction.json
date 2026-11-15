@@ -1,0 +1,7 @@
+{
+  "observedAt": "2026-10-24T23:44:35.758Z",
+  "issue": "Operational composition wrapper incorrectly inspected decide().hookSpecificOutput; native decide() returns direct updatedInput.",
+  "effect": "Earlier commands ran without applying returned shared serialization rewrite. No earlier gate-serialization claim is established by those receipts.",
+  "correctedReceiving": "Subsequent Public36cd fetches used direct decision.updatedInput.command with actual zero exit; all future commands use this shape.",
+  "sourceConstraint": "No semantic supplier bytes changed; no paid calls or purchases executed."
+}
