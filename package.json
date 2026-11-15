@@ -91,7 +91,7 @@
     "@red-cup-engineering/json-engine": "^0.5.0",
     "@red-cup-engineering/jsonl-engineering-services-section": "^0.1.4",
     "@red-cup-engineering/npm-package-engineering-services-section": "^0.2.1",
-    "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section": "0.19.1-dev.3",
+    "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section": "^0.19.1",
     "@red-cup-engineering/read-javascript-file-export-documentation-service": "^0.2.1",
     "@red-cup-engineering/uri-engineering-services-section": "^0.1.7",
     "@red-cup-engineering/yaml-frontmatter-codec-service": "^0.1.11",
