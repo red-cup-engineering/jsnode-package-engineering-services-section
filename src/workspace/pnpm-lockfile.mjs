@@ -176,7 +176,11 @@ const requireUniqueNames = (dependencies) => {
     throw new TypeError("pnpm-lockfile: declaration shadowing requires native policy");
 };
 
-export function comparePnpmImporterManifest(text, manifest, path = ".") {
+// A selected registry version may be displayed as a bounded literal. Full
+// pnpm locators (links, peer suffixes, or URLs) are not release identities.
+const displayableSelection = value => /^\d+(?:\.\d+){2}(?:[-+][A-Za-z0-9.+-]+)?$/u.test(value) && value.length <= 160;
+
+export function comparePnpmImporterManifest(text, manifest, path = ".", { includeSelection = false } = {}) {
   const lock = decodePnpmLockfileImporters(text, { strict: true });
   if (lock.lockfileVersion !== "9.0") throw new TypeError("pnpm-lockfile: manifest preflight requires version 9.0");
   const importer = lock.importers.find(entry => entry.path === path);
@@ -186,16 +190,28 @@ export function comparePnpmImporterManifest(text, manifest, path = ".") {
   requireUniqueNames(DEPENDENCY_FIELDS.flatMap(field => Object.keys(manifest[field] ?? {})));
   const locked = new Map(importer.dependencies.map(entry => [dependencyKey(entry), entry]));
   const differences = [];
+  const difference = (kind, field, name, declaredSpecifier, entry) => {
+    const result = { kind, field, name };
+    if (includeSelection) {
+      const selection = unquoteKey(entry?.version ?? "");
+      Object.assign(result, {
+        declaredSpecifier: literalSpecifier(declaredSpecifier) ? declaredSpecifier : null,
+        lockedSpecifier: entry ? unquoteKey(entry.specifier) : null,
+        lockedVersion: displayableSelection(selection) ? selection : null,
+      });
+    }
+    return result;
+  };
   for (const field of DEPENDENCY_FIELDS) {
     for (const [name, specifier] of Object.entries(manifest[field] ?? {})) {
       const key = dependencyKey({ field, name });
       const entry = locked.get(key);
       locked.delete(key);
-      if (entry === undefined) differences.push({ kind: "manifest-only", field, name });
-      else if (unquoteKey(entry.specifier) !== specifier) differences.push({ kind: "specifier-mismatch", field, name });
+      if (entry === undefined) differences.push(difference("manifest-only", field, name, specifier, null));
+      else if (unquoteKey(entry.specifier) !== specifier) differences.push(difference("specifier-mismatch", field, name, specifier, entry));
     }
   }
-  for (const { field, name } of locked.values()) differences.push({ kind: "lock-only", field, name });
+  for (const entry of locked.values()) differences.push(difference("lock-only", entry.field, entry.name, null, entry));
   return differences;
 }
 

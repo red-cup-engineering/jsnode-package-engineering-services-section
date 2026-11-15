@@ -68,7 +68,7 @@ async function checkPnpmRoot(args) {
   }
   try {
     const { comparePnpmImporterManifest } = await import("../src/workspace/pnpm-lockfile.mjs");
-    const differences = comparePnpmImporterManifest(lock, manifest);
+    const differences = comparePnpmImporterManifest(lock, manifest, ".", { includeSelection: true });
     return receipt(differences.length ? "drift" : "agreement", { differences });
   } catch { return receipt("unchecked", { reason: "unreadable-or-unsupported-importer" }); }
 }

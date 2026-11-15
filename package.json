@@ -66,6 +66,7 @@
     "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
     "content/text/documents/specifications/jsnode-module-reference-projection.md",
     "test/package-receiving.test.mjs",
+    "test/pnpm-root-lock-receiving.test.mjs",
     "test/sync-package-manifest-custody.test.mjs"
   ],
   "scripts": {
@@ -120,6 +121,7 @@
     "@red-cup-engineering/javascript-module-closure-service": "^0.1.2"
   },
   "receivingTests": [
-    "test/package-receiving.test.mjs"
+    "test/package-receiving.test.mjs",
+    "test/pnpm-root-lock-receiving.test.mjs"
   ]
 }
