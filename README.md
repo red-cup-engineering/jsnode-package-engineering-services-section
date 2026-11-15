@@ -927,3 +927,17 @@ source run: filtered, skipped, TODO, or empty behavioral results do not carry a
 successful receiving receipt. Run the dependency-free behavioral contract with
 `node --test test/package-receiving.test.mjs`. Fabrication and downstream
 qualification remain separate from this package-runner contract.
+
+### Committing a manifest rewrite
+
+`sync-package-manifest --write [REPOSITORY]` edits working files only. Its JSON
+receipt's `writtenManifestPaths` contains the exact repository-relative literal
+paths written, in sorted order. `--check` and an idempotent write both return
+an empty list. Use this list, not the staged index or a recursive dirty-path
+query, when passing the rewrite to the Group's [exact-file Git commit
+service](https://github.com/red-cup-engineering/committing-git-paths-service).
+Pass the array to its `commitGitPaths({ repository, paths, message })` API, or
+skip committing when it is empty. A write receipt is not a commit or permission
+to publish; call the owning Git service against the same unchanged worktree.
+Run `npm run test:manifest-custody` against an installed TypeScript supplier
+for the real CLI behavior.

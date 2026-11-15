@@ -65,13 +65,15 @@
     "content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
     "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
     "content/text/documents/specifications/jsnode-module-reference-projection.md",
-    "test/package-receiving.test.mjs"
+    "test/package-receiving.test.mjs",
+    "test/sync-package-manifest-custody.test.mjs"
   ],
   "scripts": {
     "test": "node scripts/run-package-tests.mjs",
     "check": "node scripts/check-package-syntax.mjs && npm run check:generated",
     "generate": "node scripts/project-jsnode-package-cli.mjs",
     "check:generated": "node scripts/project-jsnode-package-cli.mjs --check",
+    "test:manifest-custody": "node --test test/sync-package-manifest-custody.test.mjs",
     "sync:manifest": "node scripts/sync-package-manifest.mjs --check --receiving-tests",
     "check:interfaces": "node scripts/check-package-interfaces.mjs --check"
   },

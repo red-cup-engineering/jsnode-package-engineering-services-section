@@ -103,7 +103,7 @@ async function syncRepositoryManifests() {
     if (counts) return [...counts].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])))[0][0];
     return members.has(name) ? "workspace:*" : null;
   };
-  const report = [];
+  const report = [], writtenManifestPaths = [];
   for (const [root, manifest] of manifests) {
     const owned = ownedFiles(root, roots, tracked);
     const files = owned.filter(({ path }) => /\.(?:[cm]?[jt]s|[jt]sx)$/u.test(path))
@@ -116,10 +116,15 @@ async function syncRepositoryManifests() {
     if (!changes.length && !undeclared.length && !unresolved.length) continue;
     report.push({ package: manifest.name, path: root, changes, undeclared, unresolved });
     if (mode === "write" && changes.length) {
-      const file = join(repository, root, "package.json");
-      writeFileSync(file, formatManifestLike(readFileSync(file, "utf8"), synced));
+      const path = root === "." ? "package.json" : `${root}/package.json`;
+      const file = join(repository, path);
+      const before = readFileSync(file, "utf8");
+      const after = formatManifestLike(before, synced);
+      if (before === after) continue;
+      writeFileSync(file, after);
+      writtenManifestPaths.push(path);
     }
   }
-  process.stdout.write(JSON.stringify({ kind: "sync-package-manifest", mode, add: adding, repository, packages: report }, null, 2) + "\n");
+  process.stdout.write(JSON.stringify({ kind: "sync-package-manifest", mode, add: adding, repository, packages: report, writtenManifestPaths: writtenManifestPaths.sort() }, null, 2) + "\n");
   if (mode === "check" && report.some((entry) => entry.changes.length)) process.exitCode = 1;
 }
