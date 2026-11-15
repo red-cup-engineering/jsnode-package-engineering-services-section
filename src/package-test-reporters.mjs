@@ -31,6 +31,20 @@ function environmentArguments(text) {
   return words;
 }
 
+const TEST_SELECTION_OPTIONS = new Set([
+  "--test-name-pattern", "--test-skip-pattern", "--test-only",
+  "--test-shard", "--test-rerun-failures",
+]);
+
+/** Refuse native selection directives when certifying the full enrolled plan. */
+export function assertUnfilteredPackageTestOptions(args, nodeOptions = "") {
+  for (const token of [...environmentArguments(nodeOptions), ...args]) {
+    const name = token.split("=", 1)[0].replaceAll("_", "-");
+    if (TEST_SELECTION_OPTIONS.has(name))
+      throw new TypeError(`receiving cannot use Node test selection option ${name}`);
+  }
+}
+
 function reporterCounts(args) {
   let reporters = 0, destinations = 0;
   for (let index = 0; index < args.length; index += 1) {

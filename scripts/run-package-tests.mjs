@@ -15,7 +15,7 @@ import { join, resolve } from "node:path";
 import { testPlan, unmetRequirements } from "../src/package-test-plan.mjs";
 import { packageFiles, packageResolvesFrom } from "../src/package-files.mjs";
 import { packageCheckExecutionProblem, receivePackageTestReport } from "../src/package-check-outcome.mjs";
-import { composePackageTestReporters } from "../src/package-test-reporters.mjs";
+import { assertUnfilteredPackageTestOptions, composePackageTestReporters } from "../src/package-test-reporters.mjs";
 
 const directory = resolve(process.env.PACKAGE_TEST_DIRECTORY ?? process.cwd());
 const manifest = JSON.parse(readFileSync(join(directory, "package.json"), "utf8"));
@@ -38,8 +38,8 @@ for (const test of plan.tests) {
 }
 for (const { test, unmet } of requires) process.stderr.write(`requires ${test}: ${unmet.map(({ kind, value }) => `${kind} ${value}`).join("; ")}\n`);
 
-const report = (counts, status, error = null) => {
-  process.stdout.write(`\n${JSON.stringify({ kind: "package-test-run.v1", ok: status === 0, package: manifest.name ?? null, profile, planned: plan.tests.length, files: run.length, ...counts, requires, ...(error === null ? {} : { error }) })}\n`);
+const report = (counts, status, error = null, files = run.length) => {
+  process.stdout.write(`\n${JSON.stringify({ kind: "package-test-run.v1", ok: status === 0, package: manifest.name ?? null, profile, planned: plan.tests.length, files, ...counts, requires, ...(error === null ? {} : { error }) })}\n`);
   process.exit(status);
 };
 // Preserve the historical empty, un-enrolled package case. By contrast, a
@@ -49,6 +49,14 @@ if (run.length === 0) {
   const emptyLegacyPlan = plan.tests.length === 0 && profile === "source" && !Object.hasOwn(manifest, "receivingTests");
   report({ ran: 0, passed: 0, failed: 0 }, emptyLegacyPlan ? 0 : 2,
     emptyLegacyPlan ? null : "no admitted tests available under current requirements");
+}
+
+if (profile === "receiving") {
+  try { assertUnfilteredPackageTestOptions(flags, process.env.NODE_OPTIONS); }
+  catch (error) {
+    process.stderr.write(`run-package-tests: ${error.message}\n`);
+    report({ ran: 0, passed: 0, failed: 0 }, 2, error.message, 0);
+  }
 }
 
 // Retain the caller's combined inherited/CLI reporter bindings, then append a

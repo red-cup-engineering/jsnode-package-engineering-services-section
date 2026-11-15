@@ -178,6 +178,38 @@ test('receiving reports a partially runnable plan as incomplete, without losing 
   assert.equal(complete.report.passed, 2);
 });
 
+test('receiving refuses native selection filters instead of certifying the passing subset', t => {
+  const {root} = fixture(t);
+  const file = 'test/actual.test.mjs';
+  writeFileSync(join(root, 'package.json'), JSON.stringify({
+    name: '@fixture/receiving', type: 'module', receivingTests: [file],
+  }));
+  writeFileSync(join(root, file), 'import test from "node:test"; test("accepted",()=>{}); test("rejected",()=>{throw Error("not received")});\n');
+  const {NODE_TEST_CONTEXT, NODE_OPTIONS, ...environment} = process.env;
+  const run = (flags, nodeOptions = '') => {
+    const result = spawnSync(process.execPath, [runner, ...flags], {cwd: root, encoding: 'utf8', timeout: 15000,
+      env: {...environment, NODE_OPTIONS: nodeOptions, PACKAGE_TEST_DIRECTORY: root}});
+    assert.equal(result.error, undefined);
+    return {result, report: reportOf(result)};
+  };
+  assert.equal(run(['--test-name-pattern=accepted']).result.status, 0, 'source callers may run a deliberate subset');
+  assert.equal(run(['--receiving']).report.failed, 1, 'full receiving must see the otherwise hidden failure');
+  for (const [flags, inherited] of [
+    [['--test-name-pattern=accepted'], ''],
+    [['--test_skip_pattern', 'rejected'], ''],
+    [[], '--test-name-pattern="accepted"'],
+    [['--test-only'], ''],
+    [['--test-shard=1/2'], ''],
+    [['--test-rerun-failures=previous-run.json'], ''],
+  ]) {
+    const {result, report} = run(['--receiving', ...flags], inherited);
+    assert.notEqual(result.status, 0, result.stdout);
+    assert.equal(report.ok, false);
+    assert.equal(report.files, 0, 'refused filtering must not claim that test files were executed');
+    assert.match(report.error, /receiving cannot use Node test selection option/u);
+  }
+});
+
 test('native wrapper compatibility does not excuse duplicate ordinals without the actual enrolled identity', t => {
   for (const wrapper of ['test/not-enrolled.test.mjs', 'test/actual.test.mjs # SKIP fabricated']) {
     const report = 'TAP version 13\nok 1 - first\nok 1 - '+wrapper+'\n1..2\n# tests 2\n# suites 0\n# pass 2\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1\n';
