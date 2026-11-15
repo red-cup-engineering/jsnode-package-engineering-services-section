@@ -85,7 +85,7 @@
     "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "^0.3.5",
     "@red-cup-engineering/eavt-engineering-services-section": "^0.15.1",
     "@red-cup-engineering/execute-javascript-node-command-service": "^0.4.3",
-    "@red-cup-engineering/inspect-installed-npm-package-service": "^0.3.3",
+    "@red-cup-engineering/inspect-installed-npm-package-service": "^0.3.5",
     "@red-cup-engineering/javascript-parser-service": "^0.2.0",
     "@red-cup-engineering/json-engine": "^0.5.0",
     "@red-cup-engineering/json-schema-engineering-services-section": "^0.5.7",
