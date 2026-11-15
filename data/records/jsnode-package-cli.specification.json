@@ -99,7 +99,7 @@
     "@red-cup-engineering/execute-javascript-node-command-service",
     "@red-cup-engineering/inspect-installed-npm-package-service",
     "@red-cup-engineering/is-absolute-filepath-service",
-    "@red-cup-engineering/javascript-node-engineering-services-section/argv",
+    "@red-cup-engineering/parse-javascript-argv-service",
     "@red-cup-engineering/javascript-node-engineering-services-section/operation",
     "@red-cup-engineering/jsnode-engine/syntax",
     "@red-cup-engineering/json-engineering-services-section",
