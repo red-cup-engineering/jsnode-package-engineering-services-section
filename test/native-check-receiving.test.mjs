@@ -143,6 +143,41 @@ test('actual mixed registered tests and a top-level assertion file retain native
   assert.equal(reportOf(result).passed, 4);
 });
 
+test('receiving reports a partially runnable plan as incomplete, without losing native counts', t => {
+  const {root} = fixture(t);
+  const enrolled = ['test/actual.test.mjs', 'test/conditional.test.mjs'];
+  const requirement = 'JSNODE_FIXTURE_PERMIT_RECEIVING';
+  writeFileSync(join(root, 'package.json'), JSON.stringify({
+    name: '@fixture/receiving', type: 'module', receivingTests: enrolled,
+    testRequires: {[enrolled[1]]: {env: requirement}},
+  }));
+  writeFileSync(join(root, enrolled[1]), 'import test from "node:test"; test("conditional",()=>{});\n');
+  const {NODE_TEST_CONTEXT, [requirement]: ignored, ...environment} = process.env;
+  const run = (flags, extra = {}) => {
+    const result = spawnSync(process.execPath, [runner, ...flags], {cwd: root, encoding: 'utf8', timeout: 15000,
+      env: {...environment, PACKAGE_TEST_DIRECTORY: root, ...extra}});
+    assert.equal(result.error, undefined);
+    return {result, report: reportOf(result)};
+  };
+  const incomplete = run(['--receiving']);
+  assert.notEqual(incomplete.result.status, 0, incomplete.result.stdout);
+  assert.deepEqual(incomplete.report.requires, [{test: enrolled[1], unmet: [{kind: 'env', value: requirement}]}]);
+  assert.deepEqual(Object.fromEntries(['ok','profile','planned','files','ran','passed','failed'].map(key => [key,incomplete.report[key]])),
+    {ok: false, profile: 'receiving', planned: 2, files: 1, ran: 1, passed: 1, failed: 0});
+  assert.match(incomplete.report.error, /receiving test requirements are unmet/u);
+
+  const source = run([]);
+  assert.equal(source.result.status, 0, source.result.stderr);
+  assert.equal(source.report.profile, 'source');
+  assert.equal(source.report.files, 1);
+  assert.equal(source.report.requires.length, 1);
+  const complete = run(['--receiving'], {[requirement]: '1'});
+  assert.equal(complete.result.status, 0, complete.result.stderr);
+  assert.equal(complete.report.ok, true);
+  assert.equal(complete.report.files, 2);
+  assert.equal(complete.report.passed, 2);
+});
+
 test('native wrapper compatibility does not excuse duplicate ordinals without the actual enrolled identity', t => {
   for (const wrapper of ['test/not-enrolled.test.mjs', 'test/actual.test.mjs # SKIP fabricated']) {
     const report = 'TAP version 13\nok 1 - first\nok 1 - '+wrapper+'\n1..2\n# tests 2\n# suites 0\n# pass 2\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1\n';

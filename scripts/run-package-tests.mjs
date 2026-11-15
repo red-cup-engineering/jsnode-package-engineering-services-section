@@ -5,7 +5,9 @@
 // line and listed in the report. The last line on stdout is one JSON report,
 //   {"kind":"package-test-run.v1","ok":…,"package":…,"planned":…,"files":…,"ran":…,"passed":…,"failed":…,"requires":[…]}
 // counting the tests node ran (ran = passed + failed + skipped + todo), so a caller can tell "requires" from
-// "fails". Exits non-zero on test failure, invalid receiving enrollment, or no runnable tests remaining from a declared plan.
+// "fails". A receiving run is incomplete if any enrolled program has unmet
+// requirements, even when the runnable programs passed. Source runs may
+// still report partial progress successfully.
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -68,7 +70,12 @@ catch (error) { result = { error }; }
 const summary = (() => { try { return readFileSync(tap, "utf8"); } catch { return ""; } })();
 rmSync(scratch, { recursive: true, force: true });
 const received = receivePackageTestReport(summary, { files: run });
-const problems = [packageCheckExecutionProblem(result), received.problem].filter(problem => problem !== null);
+const incompleteReceiving = profile === "receiving" && requires.length > 0;
+const problems = [
+  packageCheckExecutionProblem(result),
+  received.problem,
+  incompleteReceiving ? "receiving test requirements are unmet" : null,
+].filter(problem => problem !== null);
 const error = problems.length ? problems.join("; ") : null;
 if (error !== null) process.stderr.write(`run-package-tests: ${error}\n`);
 const passed = error === null && received.counts.failed === 0;
