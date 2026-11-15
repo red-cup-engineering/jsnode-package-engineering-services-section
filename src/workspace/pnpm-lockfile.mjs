@@ -51,15 +51,22 @@ function requireLockfileVersion(lines) {
   return unquoteKey(line.slice("lockfileVersion:".length).trim());
 }
 
-function dependencyBlock(lines, cursor, indent, field) {
+function dependencyBlock(lines, cursor, indent, field, strict) {
   const uses = [];
   const seen = new Set();
   for (;;) {
     const line = lines[cursor.pos];
     if (isBlank(line)) { cursor.pos += 1; continue; }
-    if (line === undefined || indentOf(line) !== indent) break;
+    if (line === undefined || indentOf(line) < indent) break;
+    if (indentOf(line) !== indent) {
+      if (strict) throw new TypeError("pnpm-lockfile: unsupported dependency indentation");
+      break;
+    }
     const split = splitKeyLine(line.slice(indent));
-    if (split === null) break;
+    if (split === null || (strict && split.rest.trim() !== "")) {
+      if (strict) throw new TypeError("pnpm-lockfile: unsupported dependency entry");
+      break;
+    }
     if (!split.key || seen.has(split.key))
       throw new TypeError("pnpm-lockfile: duplicated or unnamed dependency in " + field);
     seen.add(split.key);
@@ -71,7 +78,15 @@ function dependencyBlock(lines, cursor, indent, field) {
       if (isBlank(detailLine)) { cursor.pos += 1; continue; }
       if (detailLine === undefined) break;
       const detail = splitKeyLine(detailLine.trim());
-      if (detail?.key === "specifier") specifier = detail.rest.trim();
+      if (strict && (indentOf(detailLine) !== indent + 2 || !detail ||
+          !["specifier", "version"].includes(detail.key) ||
+          (detail.key === "specifier" && specifier) || (detail.key === "version" && version)))
+        throw new TypeError("pnpm-lockfile: unsupported or repeated dependency detail");
+      if (detail?.key === "specifier") {
+        specifier = detail.rest.trim();
+        if (strict && !literalSpecifier(unquoteKey(specifier)))
+          throw new TypeError("pnpm-lockfile: unsupported dependency scalar");
+      }
       else if (detail?.key === "version") version = detail.rest.trim();
       cursor.pos += 1;
     }
@@ -88,17 +103,26 @@ function dependencyBlock(lines, cursor, indent, field) {
   return Object.freeze(uses);
 }
 
-function importerDependencies(lines, cursor, importerIndent) {
+function importerDependencies(lines, cursor, importerIndent, strict) {
   const fieldIndent = importerIndent + 2;
   const uses = [];
+  const seenFields = new Set();
   for (;;) {
     const line = lines[cursor.pos];
     if (isBlank(line)) { cursor.pos += 1; continue; }
-    if (line === undefined || indentOf(line) !== fieldIndent) break;
+    if (line === undefined || indentOf(line) < fieldIndent) break;
+    if (indentOf(line) !== fieldIndent) {
+      if (strict) throw new TypeError("pnpm-lockfile: unsupported importer indentation");
+      break;
+    }
     const key = line.slice(fieldIndent).replace(/:\s*$/u, "");
-    if (!(DEPENDENCY_FIELDS).includes(key)) break;
+    if (!DEPENDENCY_FIELDS.includes(key) || (strict && seenFields.has(key))) {
+      if (strict) throw new TypeError("pnpm-lockfile: unsupported or repeated importer field");
+      break;
+    }
+    seenFields.add(key);
     cursor.pos += 1;
-    uses.push(...dependencyBlock(lines, cursor, fieldIndent + 2, key));
+    uses.push(...dependencyBlock(lines, cursor, fieldIndent + 2, key, strict));
   }
   return Object.freeze(uses);
 }
@@ -106,10 +130,12 @@ function importerDependencies(lines, cursor, importerIndent) {
 /** Decode the `importers:` subtree of a pnpm-lock.yaml v9 document. Throws
  *  when the document has no `lockfileVersion` or `importers:` root key — the
  *  representation this codec witnesses as membership. */
-export function decodePnpmLockfileImporters(text) {
+export function decodePnpmLockfileImporters(text, { strict = false } = {}) {
   if (typeof text !== "string") throw new TypeError("pnpm-lockfile: document must be a string");
   const lines = text.split("\n").map((line) => (line.endsWith("\r") ? line.slice(0, -1) : line));
   const lockfileVersion = requireLockfileVersion(lines);
+  if (strict && lines.filter(line => line.startsWith("lockfileVersion:")).length !== 1)
+    throw new TypeError("pnpm-lockfile: repeated lockfile version");
 
   const importersLineIndex = lines.findIndex((line) => line === "importers:");
   if (importersLineIndex === -1) throw new TypeError("pnpm-lockfile: missing importers: root key");
@@ -123,14 +149,17 @@ export function decodePnpmLockfileImporters(text) {
   for (;;) {
     const line = lines[cursor.pos];
     if (isBlank(line)) { cursor.pos += 1; continue; }
-    if (line === undefined || indentOf(line) !== importerIndent) break;
-    const split = splitKeyLine(line.slice(importerIndent));
-    if (split === null) break;
+    if (line === undefined || indentOf(line) === 0) break;
+    const split = indentOf(line) === importerIndent ? splitKeyLine(line.slice(importerIndent)) : null;
+    if (split === null || (strict && !["", "{}"].includes(split.rest.trim()))) {
+      if (strict) throw new TypeError("pnpm-lockfile: unsupported importer entry");
+      break;
+    }
     if (!split.key || seenImporters.has(split.key))
       throw new TypeError("pnpm-lockfile: duplicate or unnamed importer");
     seenImporters.add(split.key);
     cursor.pos += 1;
-    const dependencies = split.rest.trim() === "{}" ? Object.freeze([]) : importerDependencies(lines, cursor, importerIndent);
+    const dependencies = split.rest.trim() === "{}" ? Object.freeze([]) : importerDependencies(lines, cursor, importerIndent, strict);
     importers.push(Object.freeze({ path: split.key, dependencies }));
   }
 
@@ -141,12 +170,20 @@ export function decodePnpmLockfileImporters(text) {
  * Compare a manifest's declared specifiers with a selected v9 importer.
  * This preflight does not check resolution, integrity or artifact availability.
  */
+const literalSpecifier = value => typeof value === "string" && /^[a-zA-Z0-9*^~.<>=| +_-]{1,160}$/u.test(value);
+const requireUniqueNames = (dependencies) => {
+  if (new Set(dependencies).size !== dependencies.length)
+    throw new TypeError("pnpm-lockfile: declaration shadowing requires native policy");
+};
+
 export function comparePnpmImporterManifest(text, manifest, path = ".") {
-  const lock = decodePnpmLockfileImporters(text);
+  const lock = decodePnpmLockfileImporters(text, { strict: true });
   if (lock.lockfileVersion !== "9.0") throw new TypeError("pnpm-lockfile: manifest preflight requires version 9.0");
   const importer = lock.importers.find(entry => entry.path === path);
   if (importer === undefined) throw new TypeError("pnpm-lockfile: missing importer " + path);
   const dependencyKey = ({ field, name }) => JSON.stringify([field, name]);
+  requireUniqueNames(importer.dependencies.map(entry => entry.name));
+  requireUniqueNames(DEPENDENCY_FIELDS.flatMap(field => Object.keys(manifest[field] ?? {})));
   const locked = new Map(importer.dependencies.map(entry => [dependencyKey(entry), entry]));
   const differences = [];
   for (const field of DEPENDENCY_FIELDS) {

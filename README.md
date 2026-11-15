@@ -907,3 +907,12 @@ prototypes. The original package-order admission and complete package projection
 are received through the generated package's own `npm test` script, including a
 negative control that omits an expected own output member. This requires no
 installation or registry access and does not assert packed-package receiving.
+
+To inspect the package checkout's PNPM declaration agreement without
+installing anything, run
+`node scripts/sync-package-manifest.mjs --check-pnpm-root [REPOSITORY]`.
+This reads the root manifest and PNPM v9 importer and emits JSON with status
+`agreement` (exit 0), `drift` (exit 1), or `unchecked` (exit 2). Inputs
+requiring native policy or YAML handling are unchecked, not proof of drift.
+The CI preflight uses this same command. Agreement covers literal direct
+declarations only, not dependency resolution, integrity or registry stock.
