@@ -137,7 +137,7 @@ test("declares the operation without importing or calling a runtime, a shebang o
 });
 
 test("drops the runtime import the old guard called when nothing else uses it", () => {
-  const imports = [{ source: "@red-cup-engineering/javascript-node-operation-service", names: ["runJavascriptNodeOperation"] }];
+  const imports = [{ source: "@red-cup-engineering/node-js-function-engineering-services-section/operation", names: ["runJavascriptNodeOperation"] }];
   assert.doesNotMatch(projectJsnodeOperationSourceFromArguments({ ...doubleValueArguments, imports }).text, /runJavascriptNodeOperation/u);
 });
 

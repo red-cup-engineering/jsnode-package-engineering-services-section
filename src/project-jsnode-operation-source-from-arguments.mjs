@@ -11,7 +11,7 @@ function renderImportLine(importRecord) {
   return `import ${parts.join(", ")} from "${source}";`;
 }
 
-const OPERATION_RUNTIME_SPECIFIER = "@red-cup-engineering/javascript-node-operation-service";
+const OPERATION_RUNTIME_SPECIFIER = "@red-cup-engineering/node-js-function-engineering-services-section/operation";
 
 /** Whether an import record only binds the runtime the old main guard called, which no declaration module imports. */
 export function isDeadOperationRuntimeImport(importRecord, bodyText) {

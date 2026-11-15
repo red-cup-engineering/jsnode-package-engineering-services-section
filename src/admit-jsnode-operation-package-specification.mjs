@@ -180,7 +180,7 @@ function runnableFaces(text, operationPath) {
 }
 
 // The runtime the old guard called must not survive into a module below the code layer.
-const RUNTIME_SPECIFIER = "@red-cup-engineering/javascript-node-operation-service";
+const RUNTIME_SPECIFIER = "@red-cup-engineering/node-js-function-engineering-services-section/operation";
 function withoutDeadRuntimeImports(text) {
   const program = parseJavaScript(text);
   let result = text;
