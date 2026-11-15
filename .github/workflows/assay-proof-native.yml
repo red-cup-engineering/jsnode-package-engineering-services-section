@@ -72,6 +72,9 @@ jobs:
         run: node --test test/assay-completion.test.mjs
       - name: Receive package runner enrollment and source-native TAP controls
         run: node --test test/package-test-plan.test.mjs test/native-check-receiving.test.mjs test/pnpm-lockfile-importers.test.mjs
+      - name: Exercise generated source assays on source-only previews
+        if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/fix/') }}
+        run: node --test test/source-export-assay-fabrication.test.mjs
   native-proof:
     # Keep the original proof job on PRs and main; a fix push only runs source-proof.
     if: ${{ always() && (github.event_name == 'pull_request' || github.ref == 'refs/heads/main') }}

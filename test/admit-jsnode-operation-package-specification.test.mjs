@@ -2,7 +2,12 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import { admitJsnodeOperationPackageSpecification } from "../src/admit-jsnode-operation-package-specification.mjs";
+
+// The generator declares one runtime range; every projected machine face declares the same one.
+const runtimeRange = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"))
+  .dependencies["@red-cup-engineering/node-js-function-engineering-services-section"];
 
 const operationText = `#!/usr/bin/env node
 /**
@@ -57,7 +62,8 @@ test("admits a complete package specification and derives operation identity and
   assert.ok(Object.isFrozen(admitted.operations[0]));
   // Command-face source must bind its real qualified runtime, not a stale
   // package edition whose exported runner is absent during package birth.
-  assert.equal(admitted.dependencies["@red-cup-engineering/node-js-function-engineering-services-section"], "0.5.2-dev.0");
+  assert.match(runtimeRange, /^\^\d+\.\d+\.\d+$/u);
+  assert.equal(admitted.dependencies["@red-cup-engineering/node-js-function-engineering-services-section"], runtimeRange);
   assert.equal(Object.hasOwn(admitted.dependencies, "@red-cup-engineering/javascript-node-services-section"), false);
 });
 
@@ -65,13 +71,13 @@ const runtimeName = "@red-cup-engineering/node-js-function-engineering-services-
 const historicalRuntimeName = "@red-cup-engineering/javascript-node-services-section";
 const formerRuntimeName = "@red-cup-engineering/javascript-node-operation-engineering-services-section";
 
-test("catalog admission selects only its exact canonical runtime without changing the authored candidate", () => {
+test("catalog admission selects only its canonical runtime range without changing the authored candidate", () => {
   const input = candidate();
-  input.dependencies[runtimeName] = "0.5.2-dev.0";
+  input.dependencies[runtimeName] = runtimeRange;
   const before = structuredClone(input);
   const admitted = admitJsnodeOperationPackageSpecification(input);
   assert.equal(admitted.type, "JsnodeOperationPackageSpecification", JSON.stringify(admitted));
-  assert.equal(admitted.dependencies[runtimeName], "0.5.2-dev.0");
+  assert.equal(admitted.dependencies[runtimeName], runtimeRange);
   assert.deepEqual(input, before);
 });
 
@@ -87,7 +93,7 @@ test("catalog admission refuses competing bins and unqualified canonical runtime
       assert.deepEqual(input, before, "authored supplier requirements remain intact");
     }
   }
-  for (const [field, version] of [["dependencies", "0.5.0"], ["dependencies", "0.5.1"], ["devDependencies", "0.5.2-dev.0"]]) {
+  for (const [field, version] of [["dependencies", "0.5.0"], ["dependencies", "0.5.1"], ["devDependencies", runtimeRange]]) {
     const input = candidate();
     input[field][runtimeName] = version;
     assert.equal(admitJsnodeOperationPackageSpecification(input).code, "PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT");
@@ -165,8 +171,12 @@ test("returns specific refusal records for incomplete or contradictory candidate
   assert.equal(admitJsnodeOperationPackageSpecification(wrongIdentity).type, "JsnodeOperationPackageSpecification");
 
   const floatingDependency = candidate();
+  for (const open of [">=1.0.0", "1.x", "*", "^1.0.0-dev.0", "latest"]) {
+    floatingDependency.dependencies.example = open;
+    assert.equal(admitJsnodeOperationPackageSpecification(floatingDependency).code, "INVALID_DEPENDENCY_SPECIFICATION", open);
+  }
   floatingDependency.dependencies.example = "^1.0.0";
-  assert.equal(admitJsnodeOperationPackageSpecification(floatingDependency).code, "INVALID_EXACT_VERSION");
+  assert.equal(admitJsnodeOperationPackageSpecification(floatingDependency).type, "JsnodeOperationPackageSpecification", "a caret range on a release is bounded");
 
   const noExamples = candidate();
   noExamples.examples = [];

@@ -61,7 +61,7 @@ function request(destination, candidate = specification()) {
     type: "JsnodeOperationPackageCreationRequest",
     version: 1,
     destination,
-    registry: "http://127.0.0.1:4873/",
+    registry: "http://localhost:18821/",
     specification: candidate,
   };
 }
