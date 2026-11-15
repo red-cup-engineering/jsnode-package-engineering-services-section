@@ -53,6 +53,20 @@ function exactVersion(value, context) {
   return value;
 }
 
+// A release range is a caret on one released version: what a Group package declares for another Group package.
+const RELEASE_RANGE = /^\^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/u;
+
+/** A dependency names one exact version or one caret range on a release, never an open or prerelease range. */
+function dependencySpecification(value, context) {
+  if (typeof value === "string" && RELEASE_RANGE.test(value)) return value;
+  try {
+    admitNpmPackageVersion(value);
+  } catch {
+    refuse("INVALID_DEPENDENCY_SPECIFICATION", `${context} must be an exact version or a caret range on a release`);
+  }
+  return value;
+}
+
 function packageName(value) {
   if (typeof value !== "string") refuse("INVALID_PACKAGE_NAME", "packageName must be a scoped npm package name");
   const match = /^@([^/]+)\/([^/]+)$/u.exec(value);
@@ -86,7 +100,7 @@ function dependencies(value, context) {
   const admitted = {};
   for (const name of Object.keys(value).sort()) {
     if (!dependencyName(name)) refuse("INVALID_DEPENDENCY_NAME", `${context} contains an invalid npm package name: ${name}`);
-    admitted[name] = exactVersion(value[name], `${context}.${name}`);
+    admitted[name] = dependencySpecification(value[name], `${context}.${name}`);
   }
   return admitted;
 }
@@ -338,9 +352,10 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     const developmentDependencies = dependencies(candidate.devDependencies, "devDependencies");
     if (app !== null) {
       const runtimeName = "@red-cup-engineering/node-js-function-engineering-services-section";
-      // The generator and its generated machine faces use one qualified runtime
-      // selection. Never infer a version from whatever happens to be installed.
-      const runtimeVersion = exactVersion(packageManifest.dependencies[runtimeName], "projected catalog runtime");
+      // The generator and its generated machine faces declare one runtime range:
+      // the generator's own. Never infer a version from whatever happens to be installed.
+      const runtimeVersion = packageManifest.dependencies[runtimeName];
+      if (typeof runtimeVersion !== "string" || !RELEASE_RANGE.test(runtimeVersion)) refuse("INVALID_RUNTIME_RANGE", "projected catalog runtime must be a caret range on a release");
       const historicalRuntimes = [
         "@red-cup-engineering/javascript-node-services-section",
         "@red-cup-engineering/javascript-node-operation-engineering-services-section",
@@ -353,10 +368,10 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
         }
       }
       if (Object.hasOwn(runtimeDependencies, runtimeName) && runtimeDependencies[runtimeName] !== runtimeVersion) {
-        refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${runtimeName} must be pinned to ${runtimeVersion} for projected machine faces`);
+        refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${runtimeName} must be declared as ${runtimeVersion} for projected machine faces`);
       }
       if (Object.hasOwn(developmentDependencies, runtimeName)) {
-        refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${runtimeName} must be a runtime dependency pinned to ${runtimeVersion} for projected machine faces`);
+        refuse("PROJECTED_MACHINE_FACE_DEPENDENCY_CONFLICT", `${runtimeName} must be a runtime dependency declared as ${runtimeVersion} for projected machine faces`);
       }
       runtimeDependencies[runtimeName] = runtimeVersion;
     }
