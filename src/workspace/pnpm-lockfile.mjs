@@ -315,7 +315,7 @@ export async function pnpmImporterManifestAgreement(manifest, lockText, importer
   let lock;
   // Import failure remains a supplier failure; malformed source is a carried
   // unreadable result. Do not mistake either for a witnessed disagreement.
-  const { decodeYaml } = await import("@red-cup-engineering/yaml-frontmatter-codec-service");
+  const { decodeYaml } = await import("@red-cup-engineering/yaml-engine");
   try { lock = decodeYaml(lockText); }
   catch { return result(null, [{ reason: "unreadable-lockfile" }]); }
   if (!record(lock) || String(lock.lockfileVersion) !== "9.0" || !record(lock.importers))
