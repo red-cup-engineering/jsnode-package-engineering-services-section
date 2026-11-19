@@ -2,7 +2,7 @@ import { receivePackageTestReport } from "./package-check-outcome.mjs";
 import { lstat, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
 import { freezeJson } from "@red-cup-engineering/json-engine";
-import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
+import { validateJsnodeOperationPackageCreationRecord } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operation-package-specification.mjs";
 import { parse } from "@red-cup-engineering/json-engine";
@@ -28,16 +28,16 @@ function houseScopeRegistryEnvironment(registry) {
   return Object.fromEntries(HOUSE_NPM_SCOPES.map((scope) => [`npm_config_${scope}:registry`, registry]));
 }
 
-class CreationRefusal extends Error {
-  constructor(code, message, refusedPath = null) {
+class CreationRejection extends Error {
+  constructor(code, message, rejectedPath = null) {
     super(message);
     this.code = code;
-    this.refusedPath = refusedPath;
+    this.refusedPath = rejectedPath;
   }
 }
 
-function refuse(code, message, refusedPath = null) {
-  throw new CreationRefusal(code, message, refusedPath);
+function refuse(code, message, rejectedPath = null) {
+  throw new CreationRejection(code, message, rejectedPath);
 }
 
 async function exists(candidate) {
@@ -57,21 +57,21 @@ function processEnvironment(additions = {}) {
   };
 }
 
-function requireSuccessfulCommand(receipt, code, message) {
-  if (receipt.result.status !== 0 || receipt.result.error || receipt.result.signal) refuse(code, `${message}: ${receipt.result.stderr || receipt.result.stdout || receipt.result.error}`, receipt.request.directory);
-  return receipt.result;
+function requireSuccessfulCommand(record, code, message) {
+  if (record.result.status !== 0 || record.result.error || record.result.signal) refuse(code, `${message}: ${record.result.stderr || record.result.stdout || record.result.error}`, record.request.directory);
+  return record.result;
 }
 
 function commandRequest({ command, arguments: args, directory, environment, input = null }) {
   return { type: "JavascriptNodeCommandExecutionRequest", version: 1, command, arguments: args, directory, environment, input };
 }
 
-function assay(name, details = {}) {
+function check(name, details = {}) {
   return freezeJson({ type: "JsnodeOperationPackageAssay", version: 1, name, status: "passed", ...details });
 }
 
-function creationRefusal(error, phase) {
-  if (error instanceof CreationRefusal) {
+function creationRejection(error, phase) {
+  if (error instanceof CreationRejection) {
     return freezeJson({
       type: "JsnodeOperationPackageCreationRefusal",
       version: 1,
@@ -101,7 +101,7 @@ function creationRefusal(error, phase) {
 export async function createJsnodeOperationPackage(request) {
   let phase = "request";
   let stage = null;
-  let assayRoot = null;
+  let checkRoot = null;
   let installRoot = null;
   let npmCache = null;
   try {
@@ -152,7 +152,7 @@ export async function createJsnodeOperationPackage(request) {
     });
     if (stage.type !== "TextFileCreationStageRead") refuse(stage.code, stage.message, stage.path);
 
-    assayRoot = await mkdtemp(path.join("/tmp", "jsnode-package-assay-"));
+    checkRoot = await mkdtemp(path.join("/tmp", "jsnode-package-assay-"));
     installRoot = await mkdtemp(path.join("/tmp", "jsnode-package-install-"));
     npmCache = await mkdtemp(path.join("/tmp", "jsnode-package-npm-cache-"));
     const environment = processEnvironment({
@@ -162,7 +162,7 @@ export async function createJsnodeOperationPackage(request) {
       npm_config_loglevel: "error",
       npm_config_workspaces: "false",
     });
-    const assays = [];
+    const checks = [];
 
     if (Object.keys({ ...specification.dependencies, ...specification.devDependencies }).length > 0) {
       phase = "dependency-installation";
@@ -183,7 +183,7 @@ export async function createJsnodeOperationPackage(request) {
       });
       if (!resolution.conformant) refuse("INSTALLED_DEPENDENCY_IDENTITY_MISMATCH", JSON.stringify(resolution), stage.stageDirectory);
     }
-    if (Object.keys({ ...specification.dependencies, ...specification.devDependencies }).length > 0) assays.push(assay("staged-dependency-installation"));
+    if (Object.keys({ ...specification.dependencies, ...specification.devDependencies }).length > 0) checks.push(check("staged-dependency-installation"));
 
     phase = "syntax";
     requireSuccessfulCommand(executeJavascriptNodeCommand(commandRequest({
@@ -192,7 +192,7 @@ export async function createJsnodeOperationPackage(request) {
       directory: stage.stageDirectory,
       environment,
     })), "SYNTAX_ASSAY_FAILED", "staged syntax assay failed");
-    assays.push(assay("syntax"));
+    checks.push(check("syntax"));
 
     phase = "tests";
     const testPaths = projection.files
@@ -205,25 +205,25 @@ export async function createJsnodeOperationPackage(request) {
     // runs prevent an authored same-name test from replacing a missing example.
     for (const selected of [authoredTests, [generatedTest]]) {
       if (selected.length === 0) continue;
-      const testReceipt = requireSuccessfulCommand(executeJavascriptNodeCommand(commandRequest({
+      const testRecord = requireSuccessfulCommand(executeJavascriptNodeCommand(commandRequest({
         command: process.execPath,
         arguments: ["--test", "--test-reporter=tap", ...selected],
         directory: stage.stageDirectory,
         environment,
       })), "TEST_ASSAY_FAILED", "staged behavioral and face-equivalence tests failed");
-      const received = receivePackageTestReport(testReceipt.stdout, {
+      const received = receivePackageTestReport(testRecord.stdout, {
         files: selected,
         ...(selected[0] === generatedTest ? { expectedTestNames: specification.examples.map(example => example.name) } : {}),
       });
       if (received.problem !== null || received.counts.failed !== 0)
         refuse("TEST_ASSAY_INCOMPLETE", received.problem ?? "staged tests reported failures", stage.stageDirectory);
     }
-    assays.push(assay("tests", { paths: testPaths }));
+    checks.push(check("tests", { paths: testPaths }));
 
     phase = "packing";
-    const packed = await packNpmPackage({ type: "NpmPackagePackingRequest", version: 1, carrierDirectory: stage.stageDirectory, destinationDirectory: assayRoot });
+    const packed = await packNpmPackage({ type: "NpmPackagePackingRequest", version: 1, carrierDirectory: stage.stageDirectory, destinationDirectory: checkRoot });
     const tarballDigest = sha256Digest(await readFile(packed.artifactPath));
-    assays.push(assay("pack", { filename: packed.filename, digest: tarballDigest }));
+    checks.push(check("pack", { filename: packed.filename, digest: tarballDigest }));
 
     phase = "clean-installation";
     await writeFile(path.join(installRoot, "package.json"), JSON.stringify({ private: true, type: "module" }, null, 2) + "\n", { flag: "wx" });
@@ -244,7 +244,7 @@ export async function createJsnodeOperationPackage(request) {
       entry: { kind: "package" },
     });
     if (inspection.defects.length > 0) refuse("INSTALLED_PACKAGE_DEFECTS", JSON.stringify(inspection.defects), installedPackage);
-    assays.push(assay("clean-installation", {
+    checks.push(check("clean-installation", {
       javascriptFiles: inspection.javascriptFileCount,
       reachableJavascriptFiles: inspection.reachableJavascriptFileCount,
     }));
@@ -275,7 +275,7 @@ export async function createJsnodeOperationPackage(request) {
       if (serializeLines(importedOutputs) !== serializeLines(expectedOutputs)) refuse("IMPORT_FACE_OUTPUT_MISMATCH", `installed import outputs differ from admitted examples for ${operation.path}`, operation.path);
       importedByOperation.set(operation.commandName, importedOutputs);
     }
-    assays.push(assay("import-face", { examples: specification.examples.length }));
+    checks.push(check("import-face", { examples: specification.examples.length }));
 
     if (specification.app !== null) {
     phase = "command-face";
@@ -296,7 +296,7 @@ export async function createJsnodeOperationPackage(request) {
       if (serializeLines(commandedOutputs) !== serializeLines(expectedOutputs)) refuse("COMMAND_FACE_OUTPUT_MISMATCH", `installed command outputs differ from admitted examples for ${operation.path}`, operation.path);
       if (serializeLines(commandedOutputs) !== serializeLines(importedByOperation.get(operation.commandName))) refuse("FACE_EQUIVALENCE_FAILED", `installed import and command faces disagree for ${operation.path}`, operation.path);
     }
-    assays.push(assay("command-face", { examples: specification.examples.length }));
+    checks.push(check("command-face", { examples: specification.examples.length }));
 
     phase = "help";
     const helped = requireSuccessfulCommand(executeJavascriptNodeCommand(commandRequest({
@@ -309,7 +309,7 @@ export async function createJsnodeOperationPackage(request) {
     for (const operation of operations) if (!helped.stdout.includes(operation.commandName)) {
       refuse("HELP_OUTPUT_MISMATCH", `installed command help does not carry subcommand ${operation.commandName}`, operation.path);
     }
-    assays.push(assay("help"));
+    checks.push(check("help"));
     }
 
     phase = "stage-restoration";
@@ -317,7 +317,7 @@ export async function createJsnodeOperationPackage(request) {
     await rm(path.join(stage.stageDirectory, "package-lock.json"), { recursive: true, force: true });
 
     phase = "receipt-admission";
-    const creationReceipt = admitJsnodeOperationPackageCreationReceipt({
+    const creationRecord = validateJsnodeOperationPackageCreationRecord({
       type: "JsnodeOperationPackageCreationReceipt",
       version: 1,
       packageName: specification.packageName,
@@ -325,10 +325,10 @@ export async function createJsnodeOperationPackage(request) {
       destination: request.destination,
       filesDigest: projection.filesDigest,
       files: stage.fileDigests,
-      assays,
+      assays: checks,
     });
-    if (creationReceipt.type !== "JsnodeOperationPackageCreationReceipt") {
-      refuse(creationReceipt.code, creationReceipt.message, creationReceipt.path);
+    if (creationRecord.type !== "JsnodeOperationPackageCreationReceipt") {
+      refuse(creationRecord.code, creationRecord.message, creationRecord.path);
     }
 
     phase = "publication";
@@ -339,12 +339,12 @@ export async function createJsnodeOperationPackage(request) {
       destination: request.destination,
     });
     if (materialization.type !== "TextFileCreationMaterializationReceipt") refuse(materialization.code, materialization.message, materialization.path);
-    return creationReceipt;
+    return creationRecord;
   } catch (error) {
-    return creationRefusal(error, phase);
+    return creationRejection(error, phase);
   } finally {
     if (stage?.stageDirectory) await rm(stage.stageDirectory, { recursive: true, force: true });
-    if (assayRoot) await rm(assayRoot, { recursive: true, force: true });
+    if (checkRoot) await rm(checkRoot, { recursive: true, force: true });
     if (installRoot) await rm(installRoot, { recursive: true, force: true });
     if (npmCache) await rm(npmCache, { recursive: true, force: true });
   }

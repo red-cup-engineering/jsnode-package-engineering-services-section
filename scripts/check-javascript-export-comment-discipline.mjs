@@ -6,7 +6,7 @@ import { freezeJson } from "@red-cup-engineering/json-engine";
 import { parseArgs } from "node:util";
 import { parseLines, serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
 import { readJavascriptFileExportDocumentation } from "@red-cup-engineering/jsdoc-engine";
-import { admitJavascriptExportDescription } from "@red-cup-engineering/jsdoc-engine/description";
+import { validateJavascriptExportDescription } from "@red-cup-engineering/jsdoc-engine/description";
 import { requireTextFileRead } from "@red-cup-engineering/computer-file-engineering-services-section/require-text-file-read";
 
 const LOOSE_COMMENT_MAX_LINES = 4;
@@ -104,7 +104,7 @@ function classifyLines(text, groups) {
 function exportViolations(exportDoc) {
   const violations = [];
   try {
-    admitJavascriptExportDescription(exportDoc.description);
+    validateJavascriptExportDescription(exportDoc.description);
   } catch {
     violations.push({ code: "MISSING_EXPORT_DESCRIPTION", exportName: exportDoc.name, message: `exported ${exportDoc.name} has no JSDoc description` });
   }
@@ -178,7 +178,7 @@ export function checkJavascriptExportCommentDiscipline(reading) {
     exports: exportDocumentation.map((exportDoc) => ({
       name: exportDoc.name,
       hasDescription: (() => {
-        try { admitJavascriptExportDescription(exportDoc.description); return true; } catch { return false; }
+        try { validateJavascriptExportDescription(exportDoc.description); return true; } catch { return false; }
       })(),
       hasReturns: exportDoc.returns !== null,
       hasReturnsType: exportDoc.returns?.type != null,
@@ -225,7 +225,7 @@ function helpText(documentation) {
   if (documentation.returns) lines.push("", `Returns${documentation.returns.type ? ` {${documentation.returns.type}}` : ""}: ${documentation.returns.description}`);
   if (documentation.throws.length > 0) {
     lines.push("", "Refusals:");
-    for (const refusal of documentation.throws) lines.push(`  ${refusal.type ? `{${refusal.type}} ` : ""}${refusal.description}`);
+    for (const rejection of documentation.throws) lines.push(`  ${rejection.type ? `{${rejection.type}} ` : ""}${rejection.description}`);
   }
   return `${lines.join("\n")}\n`;
 }

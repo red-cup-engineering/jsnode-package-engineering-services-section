@@ -2,26 +2,26 @@ import path from "node:path";
 import packageManifest from "../package.json" with { type: "json" };
 import { freezeJson } from "@red-cup-engineering/json-engine";
 import { isJsonValue } from "@red-cup-engineering/json-engine";
-import { admitNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
+import { validateNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
 import { admitNonemptySingleLineText } from "@red-cup-engineering/computer-text-content-engineering-services-section/admit-nonempty-single-line-text";
 import { formNpmScopedPackageName } from "@red-cup-engineering/npm-scoped-package-name-formation-service";
 import { readJavascriptFileExportDocumentation } from "@red-cup-engineering/jsdoc-engine";
-import { admitJavascriptExportDescription } from "@red-cup-engineering/jsdoc-engine/description";
+import { validateJavascriptExportDescription } from "@red-cup-engineering/jsdoc-engine/description";
 import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 import { projectJsnodeOperationSourceFromArguments } from "./project-jsnode-operation-source-from-arguments.mjs";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
 import { projectJsnodeModuleReferences } from "./project-jsnode-module-references.mjs";
 
-class SpecificationRefusal extends Error {
-  constructor(code, message, refusedPath = null) {
+class SpecificationRejection extends Error {
+  constructor(code, message, rejectedPath = null) {
     super(message);
     this.code = code;
-    this.refusedPath = refusedPath;
+    this.refusedPath = rejectedPath;
   }
 }
 
-function refuse(code, message, refusedPath = null) {
-  throw new SpecificationRefusal(code, message, refusedPath);
+function refuse(code, message, rejectedPath = null) {
+  throw new SpecificationRejection(code, message, rejectedPath);
 }
 
 function isRecord(value) {
@@ -46,7 +46,7 @@ function safePackagePath(value, context) {
 
 function exactVersion(value, context) {
   try {
-    admitNpmPackageVersion(value);
+    validateNpmPackageVersion(value);
   } catch {
     refuse("INVALID_EXACT_VERSION", `${context} must be an exact three-part numeric version`);
   }
@@ -60,7 +60,7 @@ const RELEASE_RANGE = /^\^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/u;
 function dependencySpecification(value, context) {
   if (typeof value === "string" && RELEASE_RANGE.test(value)) return value;
   try {
-    admitNpmPackageVersion(value);
+    validateNpmPackageVersion(value);
   } catch {
     refuse("INVALID_DEPENDENCY_SPECIFICATION", `${context} must be an exact version or a caret range on a release`);
   }
@@ -97,12 +97,12 @@ function dependencyName(value) {
 
 function dependencies(value, context) {
   if (!isRecord(value)) refuse("INVALID_DEPENDENCIES", `${context} must be a JSON record`);
-  const admitted = {};
+  const validated = {};
   for (const name of Object.keys(value).sort()) {
     if (!dependencyName(name)) refuse("INVALID_DEPENDENCY_NAME", `${context} contains an invalid npm package name: ${name}`);
-    admitted[name] = dependencySpecification(value[name], `${context}.${name}`);
+    validated[name] = dependencySpecification(value[name], `${context}.${name}`);
   }
-  return admitted;
+  return validated;
 }
 
 function operationSource(value) {
@@ -126,7 +126,7 @@ function operationSource(value) {
   if (exported.length !== 1) refuse("OPERATION_EXPORT_COUNT", "the operation file must contain exactly one exported function", operationPath);
   const documentation = exported[0];
   try {
-    admitJavascriptExportDescription(documentation.description);
+    validateJavascriptExportDescription(documentation.description);
   } catch {
     refuse("MISSING_DESCRIPTION", "the exported operation must have an admitted JSDoc description", operationPath);
   }
@@ -295,8 +295,8 @@ function packageExamples(value, operationsByPath) {
   });
 }
 
-function admissionRefusal(error) {
-  if (error instanceof SpecificationRefusal) {
+function validationRejection(error) {
+  if (error instanceof SpecificationRejection) {
     return freezeJson({
       type: "JsnodeOperationPackageSpecificationRefusal",
       version: 1,
@@ -322,32 +322,32 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     if (candidate.type !== "JsnodeOperationPackageSpecificationCandidate" || ![1, 2].includes(candidate.version)) refuse("INVALID_CANDIDATE", "candidate type and version must be JsnodeOperationPackageSpecificationCandidate@1 or @2");
     const isV2 = candidate.version === 2;
     exactKeys(candidate, isV2 ? ["type", "version", "packageName", "packageVersion", "license", "topic", "sources", "operations", "tests", "examples", "dependencies", "devDependencies"] : ["type", "version", "packageName", "packageVersion", "license", "operation", "tests", "examples", "dependencies", "devDependencies"], "candidate");
-    const admittedPackageName = packageName(candidate.packageName);
-    const admittedVersion = exactVersion(candidate.packageVersion, "packageVersion");
+    const validatedPackageName = packageName(candidate.packageName);
+    const validatedVersion = exactVersion(candidate.packageVersion, "packageVersion");
     let license;
     try {
       license = admitNonemptySingleLineText(candidate.license);
     } catch {
       refuse("INVALID_LICENSE", "license must be nonempty single-line text");
     }
-    const admittedOperations = isV2 ? operations(candidate.operations) : [legacyOperationModule(operationSource(candidate.operation))];
-    let sourceModules = sources([...(isV2 ? candidate.sources : []), ...admittedOperations.flatMap((operation) => operation.source ? [operation.source] : [])]);
+    const validatedOperations = isV2 ? operations(candidate.operations) : [legacyOperationModule(operationSource(candidate.operation))];
+    let sourceModules = sources([...(isV2 ? candidate.sources : []), ...validatedOperations.flatMap((operation) => operation.source ? [operation.source] : [])]);
     const modulePaths = new Set(sourceModules.map((source) => source.path));
-    for (const operation of admittedOperations) if (!modulePaths.has(operation.path)) refuse("MISSING_OPERATION_MODULE", `operation module is absent: ${operation.path}`, operation.path);
-    const tests = testSources(candidate.tests, new Set([...admittedOperations.map((operation) => operation.path), "test/operation-contracts.test.mjs"]));
-    const paths = new Map(admittedOperations.map((operation) => [operation.commandName, operation]));
-    for (const operation of admittedOperations) {
-      if (admittedOperations.filter((other) => other.path === operation.path).length === 1) paths.set(operation.path, operation);
+    for (const operation of validatedOperations) if (!modulePaths.has(operation.path)) refuse("MISSING_OPERATION_MODULE", `operation module is absent: ${operation.path}`, operation.path);
+    const tests = testSources(candidate.tests, new Set([...validatedOperations.map((operation) => operation.path), "test/operation-contracts.test.mjs"]));
+    const paths = new Map(validatedOperations.map((operation) => [operation.commandName, operation]));
+    for (const operation of validatedOperations) {
+      if (validatedOperations.filter((other) => other.path === operation.path).length === 1) paths.set(operation.path, operation);
       if (operation.originalPath) paths.set(operation.originalPath, operation);
     }
-    const mapping = admittedOperations.flatMap((operation) => operation.originalPath ? [{ from: operation.originalPath, to: operation.path }] : []);
+    const mapping = validatedOperations.flatMap((operation) => operation.originalPath ? [{ from: operation.originalPath, to: operation.path }] : []);
     const projectReference = (file, originalPath = file.path) => ({ ...file, text: projectJsnodeModuleReferences(file.text, originalPath, mapping) });
-    sourceModules = sourceModules.map((source) => projectReference(source, admittedOperations.find((operation) => operation.source?.path === source.path)?.originalPath ?? source.path));
+    sourceModules = sourceModules.map((source) => projectReference(source, validatedOperations.find((operation) => operation.source?.path === source.path)?.originalPath ?? source.path));
     const migratedTests = tests.map((test) => projectReference(test));
-    const examples = isV2 ? packageExamples(candidate.examples, paths).map((example) => ({ ...example, operation: paths.get(example.operation).commandName })) : operationExamples(candidate.examples).map((example) => ({ ...example, type: "JsnodeOperationPackageExample", operation: admittedOperations[0].commandName }));
-    for (const operation of admittedOperations) if (!examples.some((example) => example.operation === operation.commandName)) refuse("MISSING_OPERATION_EXAMPLE", `operation requires an example: ${operation.commandName}`, operation.path);
+    const examples = isV2 ? packageExamples(candidate.examples, paths).map((example) => ({ ...example, operation: paths.get(example.operation).commandName })) : operationExamples(candidate.examples).map((example) => ({ ...example, type: "JsnodeOperationPackageExample", operation: validatedOperations[0].commandName }));
+    for (const operation of validatedOperations) if (!examples.some((example) => example.operation === operation.commandName)) refuse("MISSING_OPERATION_EXAMPLE", `operation requires an example: ${operation.commandName}`, operation.path);
     if (Object.hasOwn(candidate, "cli") && candidate.cli !== null) refuse("INVALID_CLI", "omit cli for the topic catalog or set cli to null for modules only");
-    const app = candidate.cli === null ? null : { path: `apps/${isV2 ? topic(candidate.topic) : admittedOperations[0].commandName}-cli.mjs`, commandName: isV2 ? topic(candidate.topic) : admittedOperations[0].commandName };
+    const app = candidate.cli === null ? null : { path: `apps/${isV2 ? topic(candidate.topic) : validatedOperations[0].commandName}-cli.mjs`, commandName: isV2 ? topic(candidate.topic) : validatedOperations[0].commandName };
     const runtimeDependencies = dependencies(candidate.dependencies, "dependencies");
     const developmentDependencies = dependencies(candidate.devDependencies, "devDependencies");
     if (app !== null) {
@@ -382,17 +382,17 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     return freezeJson({
       type: "JsnodeOperationPackageSpecification",
       version: 2,
-      packageName: admittedPackageName,
-      packageVersion: admittedVersion,
+      packageName: validatedPackageName,
+      packageVersion: validatedVersion,
       license,
-      topic: isV2 ? topic(candidate.topic) : admittedOperations[0].commandName,
-      sources: sourceModules, operations: admittedOperations.map(({ source, originalPath, ...operation }) => operation), app,
+      topic: isV2 ? topic(candidate.topic) : validatedOperations[0].commandName,
+      sources: sourceModules, operations: validatedOperations.map(({ source, originalPath, ...operation }) => operation), app,
       tests: migratedTests,
       examples,
       dependencies: runtimeDependencies,
       devDependencies: developmentDependencies,
     });
   } catch (error) {
-    return admissionRefusal(error);
+    return validationRejection(error);
   }
 }

@@ -15,16 +15,16 @@ import {
 
 } from "@red-cup-engineering/json-engine";
 import {
-  admissionFailureContract,
-  packageManifestAdmissionContract,
+  validationFailureValidator,
+  packageManifestValidationValidator,
 
 } from "./schemas/admission.mjs";
 
 /** A package manifest mark admitted or rejected by the package phase. */
 
 /** Build a carried admission failure for package-phase readers and services. */
-export function admissionFailure(source, reason) {
-  return admissionFailureContract.assert({
+export function validationFailure(source, reason) {
+  return validationFailureValidator.assert({
     kind: "metroplat.admission.failure",
     source,
     reason,
@@ -47,31 +47,31 @@ function manifestName(mark) {
  * total over host input: failed parsing or invalid manifest shape returns an
  * admission failure record rather than throwing.
  */
-export function admitPackageManifest(mark, source = "package.json") {
+export function validatePackageManifest(mark, source = "package.json") {
   let value;
   try {
     value = readHostMark(mark);
   } catch (error) {
-    return admissionFailure(source, error instanceof Error ? error.message : "unreadable host mark");
+    return validationFailure(source, error instanceof Error ? error.message : "unreadable host mark");
   }
 
-  if (!isJsonRecord(value)) return admissionFailure(source, "package manifest must be a JSON object");
-  if (manifestName(value) === undefined) return admissionFailure(source, "package manifest requires a non-empty name");
+  if (!isJsonRecord(value)) return validationFailure(source, "package manifest must be a JSON object");
+  if (manifestName(value) === undefined) return validationFailure(source, "package manifest requires a non-empty name");
 
   try {
-    return packageManifestAdmissionContract.assert({
+    return packageManifestValidationValidator.assert({
       kind: "metroplat.admission.package-manifest",
       source,
       manifest: value,
     }, "package manifest admission");
   } catch (error) {
-    return admissionFailure(source, error instanceof Error ? error.message : "invalid package manifest admission");
+    return validationFailure(source, error instanceof Error ? error.message : "invalid package manifest admission");
   }
 }
 
 /** Admit a package manifest or throw with the carried failure reason. */
 export function requirePackageManifest(mark, source = "package.json") {
-  const admitted = admitPackageManifest(mark, source);
-  if (admitted.kind === "metroplat.admission.failure") throw new TypeError(`${source}: ${admitted.reason}`);
-  return admitted;
+  const validated = validatePackageManifest(mark, source);
+  if (validated.kind === "metroplat.admission.failure") throw new TypeError(`${source}: ${validated.reason}`);
+  return validated;
 }

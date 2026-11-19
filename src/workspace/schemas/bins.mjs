@@ -44,8 +44,8 @@ export const binSurfaceSchema = {
   additionalProperties: false,
 };
 
-export const binSurfaceEntryContract = schemaFrom(binSurfaceEntrySchema);
-export const binSurfaceContract = schemaFrom(binSurfaceSchema, [binSurfaceEntryContract]);
+export const binSurfaceEntryValidator = schemaFrom(binSurfaceEntrySchema);
+export const binSurfaceValidator = schemaFrom(binSurfaceSchema, [binSurfaceEntryValidator]);
 
 /** One named `package.json#scripts` entry: an author-declared command, not a
  *  process-entrypoint commitment (unlike `bin`, `scripts` are never run
@@ -82,5 +82,5 @@ export const packageScriptCatalogSchema = {
   additionalProperties: false,
 };
 
-export const packageScriptCatalogEntryContract = schemaFrom(packageScriptCatalogEntrySchema);
-export const packageScriptCatalogContract = schemaFrom(packageScriptCatalogSchema, [packageScriptCatalogEntryContract]);
+export const packageScriptCatalogEntryValidator = schemaFrom(packageScriptCatalogEntrySchema);
+export const packageScriptCatalogValidator = schemaFrom(packageScriptCatalogSchema, [packageScriptCatalogEntryValidator]);

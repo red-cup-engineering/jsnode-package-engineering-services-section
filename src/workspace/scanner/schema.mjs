@@ -1,8 +1,8 @@
 
 import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import {
-  admissionFailureContract,
-  packageManifestAdmissionContract,
+  validationFailureValidator,
+  packageManifestValidationValidator,
 
 } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/schemas/admission";
 
@@ -42,10 +42,10 @@ export const workspaceScanSchema = {
   additionalProperties: false,
 };
 
-export const workspacePackageRootScanContract = schemaFrom(workspacePackageRootScanSchema, [
-  packageManifestAdmissionContract,
-  admissionFailureContract,
+export const workspacePackageRootScanValidator = schemaFrom(workspacePackageRootScanSchema, [
+  packageManifestValidationValidator,
+  validationFailureValidator,
 ]);
 
-export const workspaceScanContract = schemaFrom(workspaceScanSchema, [workspacePackageRootScanContract]);
+export const workspaceScanValidator = schemaFrom(workspaceScanSchema, [workspacePackageRootScanValidator]);
 

@@ -10,14 +10,14 @@ import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operati
 import { projectJsnodeOperationModules } from "./project-jsnode-operation-package.mjs";
 import { deriveJsnodePackageFromClosure } from "./derive-jsnode-package-from-closure.mjs";
 import { writeTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/write-text-file";
-import { admitMarkdownJsnodeOperationPackageFabricationReceipt } from "@red-cup-engineering/jsnode-package-engineering-services-section/fabrication-receipts";
+import { validateMarkdownJsnodeOperationPackageFabricationRecord } from "@red-cup-engineering/jsnode-package-engineering-services-section/fabrication-receipts";
 import { semanticId } from "@red-cup-engineering/semiotic-content-address-system";
 import { dataKindDirectory } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 
-const DEFAULT_JOURNAL_ROOT_SUFFIX = "lib/emsenn/services/561-group/services/engineering-services-section";
+const DEFAULT_LOG_ROOT_SUFFIX = "lib/emsenn/services/561-group/services/engineering-services-section";
 
-function defaultJournalRoot() {
-  return path.join(process.env.INFO_REPOSITORY_ROOT ?? "/home/emsenn/info", DEFAULT_JOURNAL_ROOT_SUFFIX);
+function defaultLogRoot() {
+  return path.join(process.env.INFO_REPOSITORY_ROOT ?? "/home/emsenn/info", DEFAULT_LOG_ROOT_SUFFIX);
 }
 
 /**
@@ -36,7 +36,7 @@ export function operationNameFromDestination(destination) {
  * @param {Date} recordedAt The instant the receipt is recorded, used only for its UTC calendar date.
  * @returns {string} The absolute receipt file path.
  */
-export function fabricationReceiptDiskPath(destination, recordedAt) {
+export function fabricationRecordDiskPath(destination, recordedAt) {
   const date = recordedAt.toISOString().slice(0, 10);
   return path.join(dataKindDirectory(destination, "record", "fabrication-receipt"), `${date}-${operationNameFromDestination(destination)}-fabrication-receipt.json`);
 }
@@ -51,7 +51,7 @@ export function nearestServicesSectionCarryingData(destination) {
   for (;;) {
     if (path.basename(dir).endsWith("-services-section") && existsSync(path.join(dir, "data"))) return dir;
     const parent = path.dirname(dir);
-    if (parent === dir) return defaultJournalRoot();
+    if (parent === dir) return defaultLogRoot();
     dir = parent;
   }
 }
@@ -111,7 +111,7 @@ function immutable(value) {
  * @param {object} value The composed step's own refusal record, or a thrown error.
  * @returns {object} An immutable MarkdownJsnodeOperationPackageFabricationRefusal.
  */
-function refusal(phase, value) {
+function rejection(phase, value) {
   return immutable({
     type: "MarkdownJsnodeOperationPackageFabricationRefusal",
     version: 1,
@@ -157,16 +157,16 @@ export function selectSingleJsnodeProjection(specification) {
   return projections[0];
 }
 
-function materializedWithoutReceipt(specification, creationReceipt, registryPublication, realizationReceipt) {
+function materializedWithoutRecord(specification, creationRecord, registryPublication, realizationRecord) {
   return immutable({
     type: "MarkdownJsnodeOperationPackageMaterializedWithoutAdmittedReceipt",
     version: 1,
     sourceDigest: specification.source.provenance.digest,
     specificationDigest: specification.specificationDigest,
     artifactSpecification: specification,
-    jsnodeOperationPackageCreationReceipt: creationReceipt,
+    jsnodeOperationPackageCreationReceipt: creationRecord,
     jsnodeOperationPackageRegistryPublication: registryPublication,
-    artifactFabricationRealizationReceiptRefusal: realizationReceipt,
+    artifactFabricationRealizationReceiptRefusal: realizationRecord,
   });
 }
 
@@ -185,7 +185,7 @@ function validRequest(request) {
 }
 
 /** Admit the work order before spending inference; return a proposal, never acceptance. */
-export async function deriveMarkdownJsnodeOperationModules(source, { infer, judge = async () => undefined, dependencyProjectRoot, isolatedAssayExecutor } = {}) {
+export async function deriveMarkdownJsnodeOperationModules(source, { infer, judge = async () => undefined, dependencyProjectRoot, isolatedAssayExecutor: isolatedCheckExecutor } = {}) {
   let phase = "translation";
   let derivation;
   try {
@@ -194,34 +194,34 @@ export async function deriveMarkdownJsnodeOperationModules(source, { infer, judg
     version: 1,
     source,
     });
-    if (!["MarkdownJsnodeOperationPackageClosureTranslation", "MarkdownJsnodeOperationPackageSpecificationTranslation"].includes(translated.type)) return refusal(phase, translated);
+    if (!["MarkdownJsnodeOperationPackageClosureTranslation", "MarkdownJsnodeOperationPackageSpecificationTranslation"].includes(translated.type)) return rejection(phase, translated);
 
     // Admission governs resource use: generated source is a realization of this
     // immutable order, never a retrospective addition to what authorized it.
     phase = "artifact-specification-admission";
     const workOrderSpecification = admitArtifactFabricationSpecification(translated.artifactSpecificationCandidate);
-    if (workOrderSpecification.type !== "ArtifactFabricationSpecification") return refusal(phase, workOrderSpecification);
+    if (workOrderSpecification.type !== "ArtifactFabricationSpecification") return rejection(phase, workOrderSpecification);
     phase = "realization-plan-preflight";
     const orderPlan = admitArtifactFabricationRealizationPlan(workOrderSpecification, realizationPlanCandidate(workOrderSpecification));
-    if (orderPlan.type !== "ArtifactFabricationRealizationPlan") return refusal(phase, orderPlan);
+    if (orderPlan.type !== "ArtifactFabricationRealizationPlan") return rejection(phase, orderPlan);
 
     if (translated.type === "MarkdownJsnodeOperationPackageClosureTranslation") {
       phase = "derivation";
-      if (typeof infer !== "function") return refusal(phase, { code: "NO_DERIVATION_CARRIER", message: "a meaning-closure's sources are derived, and no inference carrier was composed" });
-      derivation = await deriveJsnodePackageFromClosure(workOrderSpecification, { infer, judge, dependencyProjectRoot, isolatedAssayExecutor });
+      if (typeof infer !== "function") return rejection(phase, { code: "NO_DERIVATION_CARRIER", message: "a meaning-closure's sources are derived, and no inference carrier was composed" });
+      derivation = await deriveJsnodePackageFromClosure(workOrderSpecification, { infer, judge, dependencyProjectRoot, isolatedAssayExecutor: isolatedCheckExecutor });
       if (derivation.type === "JsnodeClosureDerivationRefusal") return immutable({
-        ...refusal(phase, derivation),
+        ...rejection(phase, derivation),
         message: derivation.question ?? derivation.evidence ?? `no delivery for ${derivation.operation} passed its examples`,
         workOrderSpecificationDigest: workOrderSpecification.specificationDigest,
         source: workOrderSpecification.source,
       });
       translated = completeClosureTranslation(translated, derivation);
     }
-    if (translated.type !== "MarkdownJsnodeOperationPackageSpecificationTranslation") return refusal(phase, translated);
+    if (translated.type !== "MarkdownJsnodeOperationPackageSpecificationTranslation") return rejection(phase, translated);
 
     phase = "artifact-specification-admission";
     const specification = derivation === undefined ? workOrderSpecification : admitArtifactFabricationSpecification(translated.artifactSpecificationCandidate);
-    if (specification.type !== "ArtifactFabricationSpecification") return refusal(phase, specification);
+    if (specification.type !== "ArtifactFabricationSpecification") return rejection(phase, specification);
 
     phase = "jsnode-projection-selection";
     const projection = selectSingleJsnodeProjection(specification);
@@ -229,11 +229,11 @@ export async function deriveMarkdownJsnodeOperationModules(source, { infer, judg
 
     phase = "realization-plan-preflight";
     const preflight = derivation === undefined ? orderPlan : admitArtifactFabricationRealizationPlan(specification, realizationPlanCandidate(specification));
-    if (preflight.type !== "ArtifactFabricationRealizationPlan") return refusal(phase, preflight);
+    if (preflight.type !== "ArtifactFabricationRealizationPlan") return rejection(phase, preflight);
 
     phase = "jsnode-module-projection";
     const moduleSpecification = admitJsnodeOperationPackageSpecification(projection.configuration);
-    if (moduleSpecification.type !== "JsnodeOperationPackageSpecification") return refusal(phase, moduleSpecification);
+    if (moduleSpecification.type !== "JsnodeOperationPackageSpecification") return rejection(phase, moduleSpecification);
     return immutable({
       type: "MarkdownJsnodeOperationModuleProposal", version: 1,
       workOrderSpecification, artifactSpecification: specification,
@@ -243,7 +243,7 @@ export async function deriveMarkdownJsnodeOperationModules(source, { infer, judg
       dependencies: moduleSpecification.dependencies,
       derivation: derivation ?? null,
     });
-  } catch (error) { return refusal(phase, error); }
+  } catch (error) { return rejection(phase, error); }
 }
 
 /**
@@ -252,9 +252,9 @@ export async function deriveMarkdownJsnodeOperationModules(source, { infer, judg
  * @param {{infer?: Function, judge?: Function}} [carriers] For a closure: `infer({ taskClass, objective, messages, json })` resolving to { text, lot }, and `judge(lot, outcome, evidence)`.
  * @returns {Promise<object>} A MarkdownJsnodeOperationPackageFabricationReceipt or phase-specific refusal.
  */
-export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, judge = async () => undefined, dependencyProjectRoot, isolatedAssayExecutor } = {}) {
+export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, judge = async () => undefined, dependencyProjectRoot, isolatedAssayExecutor: isolatedCheckExecutor } = {}) {
   const invalid = validRequest(request);
-  if (invalid) return refusal("request", { code: "INVALID_REQUEST", message: invalid });
+  if (invalid) return rejection("request", { code: "INVALID_REQUEST", message: invalid });
   let phase = "translation";
   let derivation;
   let workOrderSpecification;
@@ -266,23 +266,23 @@ export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, 
     }
   };
   try {
-    const proposal = await deriveMarkdownJsnodeOperationModules(request.source, { infer, judge, dependencyProjectRoot, isolatedAssayExecutor });
+    const proposal = await deriveMarkdownJsnodeOperationModules(request.source, { infer, judge, dependencyProjectRoot, isolatedAssayExecutor: isolatedCheckExecutor });
     if (proposal.type !== "MarkdownJsnodeOperationModuleProposal") return proposal;
     const { artifactSpecification: specification, projection } = proposal;
     workOrderSpecification = proposal.workOrderSpecification;
     derivation = proposal.derivation ?? undefined;
 
     phase = "jsnode-package-creation";
-    const creationReceipt = await createJsnodeOperationPackage({
+    const creationRecord = await createJsnodeOperationPackage({
     type: "JsnodeOperationPackageCreationRequest",
     version: 1,
     destination: request.destination,
     registry: request.registry,
     specification: projection.configuration,
     });
-    if (creationReceipt.type !== "JsnodeOperationPackageCreationReceipt") {
-      await judgeDerived("refused", `package birth refused at ${creationReceipt.phase ?? phase}: ${creationReceipt.code ?? ""} ${creationReceipt.message ?? ""}`.slice(0, 600));
-      return derivation === undefined ? refusal(phase, creationReceipt) : immutable({ ...refusal(phase, creationReceipt), derivations: derivation.derivations });
+    if (creationRecord.type !== "JsnodeOperationPackageCreationReceipt") {
+      await judgeDerived("refused", `package birth refused at ${creationRecord.phase ?? phase}: ${creationRecord.code ?? ""} ${creationRecord.message ?? ""}`.slice(0, 600));
+      return derivation === undefined ? rejection(phase, creationRecord) : immutable({ ...rejection(phase, creationRecord), derivations: derivation.derivations });
     }
 
     phase = "registry-publication";
@@ -292,48 +292,48 @@ export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, 
     registryPublication = immutable({ type: "JsnodeOperationPackageRegistryPublicationSkipped", version: 1, reason: "publish:false" });
     } else {
     const published = await publishJsnodeOperationPackageToRegistry({
-      destination: creationReceipt.destination,
-      packageName: creationReceipt.packageName,
-      packageVersion: creationReceipt.packageVersion,
+      destination: creationRecord.destination,
+      packageName: creationRecord.packageName,
+      packageVersion: creationRecord.packageVersion,
       registry: request.registry,
     });
-    if (published.type !== "JsnodeOperationPackageRegistryPublicationReceipt") return refusal(phase, published);
+    if (published.type !== "JsnodeOperationPackageRegistryPublicationReceipt") return rejection(phase, published);
     registryPublication = immutable(published);
     }
 
     phase = "realization-receipt-admission";
-    const creationDigest = semanticId(creationReceipt);
-    const evidence = { type: "ArtifactFabricationEvidence", locator: creationReceipt.destination, digest: creationDigest };
-    const realizationReceipt = admitArtifactFabricationRealizationReceipt(specification, realizationCandidate(specification, evidence));
-    if (realizationReceipt.type !== "ArtifactFabricationRealizationReceipt") return materializedWithoutReceipt(specification, creationReceipt, registryPublication, realizationReceipt);
+    const creationDigest = semanticId(creationRecord);
+    const evidence = { type: "ArtifactFabricationEvidence", locator: creationRecord.destination, digest: creationDigest };
+    const realizationRecord = admitArtifactFabricationRealizationReceipt(specification, realizationCandidate(specification, evidence));
+    if (realizationRecord.type !== "ArtifactFabricationRealizationReceipt") return materializedWithoutRecord(specification, creationRecord, registryPublication, realizationRecord);
 
     // FROG admits a born package only from this complete, admitted receipt.  Do
     // not write a creation-only projection: realization evidence must reach the
     // receiver with its specification and traceability intact.
     phase = "receipt-write";
-    const receiptPath = fabricationReceiptDiskPath(creationReceipt.destination, new Date());
-    const receipt = admitMarkdownJsnodeOperationPackageFabricationReceipt({
+    const recordPath = fabricationRecordDiskPath(creationRecord.destination, new Date());
+    const record = validateMarkdownJsnodeOperationPackageFabricationRecord({
     type: "MarkdownJsnodeOperationPackageFabricationReceipt",
     version: 1,
     sourceDigest: specification.source.provenance.digest,
     specificationDigest: specification.specificationDigest,
     artifactSpecification: specification,
-    jsnodeOperationPackageCreationReceipt: creationReceipt,
+    jsnodeOperationPackageCreationReceipt: creationRecord,
     jsnodeOperationPackageRegistryPublication: registryPublication,
-    artifactFabricationRealizationReceipt: realizationReceipt,
+    artifactFabricationRealizationReceipt: realizationRecord,
     ...(derivation === undefined ? {} : { derivation: { type: "JsnodeClosureDerivation", version: 3, workOrderSpecification, workOrderSpecificationDigest: workOrderSpecification.specificationDigest, tests: "admitted examples and separately derived requirement/prohibition assays, before source; hidden from source derivation", attempts: derivation.derivations, proofing: derivation.proofing } }),
-    receiptPath,
+    receiptPath: recordPath,
     });
     try {
-      await writeTextFile({ path: receiptPath, text: `${JSON.stringify(receipt, null, 2)}\n` });
+      await writeTextFile({ path: recordPath, text: `${JSON.stringify(record, null, 2)}\n` });
     } catch (error) {
-      const unwritten = new Error(`fabrication receipt could not be written to ${receiptPath}: ${error.message}`);
+      const unwritten = new Error(`fabrication receipt could not be written to ${recordPath}: ${error.message}`);
       unwritten.code = "RECEIPT_UNWRITTEN";
       throw unwritten;
     }
-    await judgeDerived("accepted", `born and assayed; receipt ${receiptPath}`);
-    return receipt;
+    await judgeDerived("accepted", `born and assayed; receipt ${recordPath}`);
+    return record;
   } catch (error) {
-    return refusal(phase, error);
+    return rejection(phase, error);
   }
 }

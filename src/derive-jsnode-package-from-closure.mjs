@@ -30,14 +30,14 @@ import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-service
 import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 import { bindOperationMeaningClosure } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
-import { channelOfPreAssayFailure, proofingOfDerivation } from "./assay-channels.mjs";
-import { assertAdmittedAssayNames, receiveIsolatedAssayOutcome } from "./assay-completion.mjs";
-import { misfoldRefusal, misfoldsOfModule } from "./misfold.mjs";
+import { channelOfPreCheckFailure, proofingOfDerivation } from "./assay-channels.mjs";
+import { assertValidatedCheckNames, receiveIsolatedCheckOutcome } from "./assay-completion.mjs";
+import { misfoldRejection, misfoldsOfModule } from "./misfold.mjs";
 
-import { moduleMeaningClosure, moduleFabricationPlan, testsOfClosure, assayInputSchemaOf, assayOutputSchemaOf } from "./plan-jsnode-modules.mjs";
-import { nativeAssayData, nativeBindingsFor, nativeAssayProfileIdentity, retainedNativeSources } from "./native-assay-profile.mjs";
-import { closedAssaySchema } from "./closed-assay-schema.mjs";
-export { bindNativeAssayProfile, nativeAssayProfileIdentity, nativeAssaySourceClosure } from "./native-assay-profile.mjs";
+import { moduleMeaningClosure, moduleFabricationPlan, testsOfClosure, checkInputSchemaOf, checkOutputSchemaOf } from "./plan-jsnode-modules.mjs";
+import { nativeCheckData, nativeBindingsFor, nativeCheckProfileIdentity, keptNativeSources } from "./native-assay-profile.mjs";
+import { closedCheckSchema } from "./closed-assay-schema.mjs";
+export { bindNativeCheckProfile, nativeCheckProfileIdentity, nativeCheckSourceClosure } from "./native-assay-profile.mjs";
 export { JSNODE_MODULE_MEANING_CLOSURE_SCHEMA, planJsnodeModules, testsOfClosure } from "./plan-jsnode-modules.mjs";
 
 const TASK_CLASS = "code-fabrication";
@@ -51,10 +51,10 @@ export async function deriveJsnodeModules(candidate, carriers = {}) {
     cause, ...(workOrder ? { workOrderSpecificationDigest: workOrder.specificationDigest, source: workOrder.source } : {}),
   });
   try {
-    const admitted = moduleFabricationPlan(candidate);
-    if (admitted.type === "JsnodeModuleDerivationRefusal") return admitted;
-    const {closure, plan} = admitted;
-    workOrder = admitted.workOrder;
+    const validated = moduleFabricationPlan(candidate);
+    if (validated.type === "JsnodeModuleDerivationRefusal") return validated;
+    const {closure, plan} = validated;
+    workOrder = validated.workOrder;
     phase = "derivation";
     if (typeof carriers.infer !== "function") return refuse({ code: "NO_DERIVATION_CARRIER", message: "no inference carrier was composed" });
     let boundCarriers = carriers;
@@ -65,8 +65,8 @@ export async function deriveJsnodeModules(candidate, carriers = {}) {
     const derivation = await deriveJsnodePackageFromClosure(workOrder, boundCarriers);
     if (derivation.type === "JsnodeClosureDerivationRefusal") return refuse(derivation);
     phase = "module-projection";
-    const retained = retainedNativeSources(closure, boundCarriers.nativeAssayBindings ?? []), originalPaths = new Set(retained.map(file => file.path));
-    const files = Object.freeze(projectJsnodeModules({ sources: [...derivation.sources, ...retained].map(({ path, text }) => ({ path, text })), operations: closure.operations })
+    const kept = keptNativeSources(closure, boundCarriers.nativeAssayBindings ?? []), originalPaths = new Set(kept.map(file => file.path));
+    const files = Object.freeze(projectJsnodeModules({ sources: [...derivation.sources, ...kept].map(({ path, text }) => ({ path, text })), operations: closure.operations })
       .filter(file => !originalPaths.has(file.path)));
     return Object.freeze({
       type: "JsnodeModuleProposal", version: 1, workOrderSpecification: workOrder,
@@ -112,8 +112,8 @@ export function jsnodeClosureOfOperationClosure(closure, { packageName, requirem
 export function assayDeliverySchema(closure) {
   const clauseIds = [...closure.requirements, ...closure.prohibitions].map(item => item.id);
   for (const op of closure.operations) if (op.nativeProfile !== undefined) {
-    closedAssaySchema(assayInputSchemaOf(op));
-    closedAssaySchema(assayOutputSchemaOf(op));
+    closedCheckSchema(checkInputSchemaOf(op));
+    closedCheckSchema(checkOutputSchemaOf(op));
   }
   return {
     type: "object", required: ["cases", "question"], additionalProperties: false,
@@ -136,7 +136,7 @@ export function assayDeliverySchema(closure) {
             // Its actual inside/outside relationship is checked below, against
             // the original operation schema, before source inference.
             input: {},
-            output: op.nativeProfile === undefined ? { anyOf: [assayOutputSchemaOf(op), { type: "null" }] } : {},
+            output: op.nativeProfile === undefined ? { anyOf: [checkOutputSchemaOf(op), { type: "null" }] } : {},
             throws: { enum: [null, "Error", "TypeError", "RangeError", "SyntaxError"] },
           },
         })),
@@ -165,7 +165,7 @@ export function assayCasesOfDelivery(text, closure) {
       throw new TypeError("input-unchanged check requires a structured input to observe");
     if (domain === "outside-schema" && op.nativeProfile !== undefined)
       throw new TypeError("outside-schema assays are unavailable for native host scenarios");
-    const inputSchema = closedAssaySchema(assayInputSchemaOf(op));
+    const inputSchema = closedCheckSchema(checkInputSchemaOf(op));
     if (domain === "outside-schema") {
       if (item.throws === null)
         throw new TypeError("outside-schema assay must expect a named thrown error");
@@ -178,9 +178,9 @@ export function assayCasesOfDelivery(text, closure) {
       inputSchema.assert(item.input);
     }
     if (op.nativeProfile !== undefined) {
-      nativeAssayData(item);
-      if (item.throws === null) closedAssaySchema(assayOutputSchemaOf(op)).assert(item.output);
-    } else if (item.throws === null) schemaFrom(assayOutputSchemaOf(op)).assert(item.output);
+      nativeCheckData(item);
+      if (item.throws === null) closedCheckSchema(checkOutputSchemaOf(op)).assert(item.output);
+    } else if (item.throws === null) schemaFrom(checkOutputSchemaOf(op)).assert(item.output);
     const name = item.operation + ":" + item.name;
     if (names.has(name)) throw new TypeError("duplicate clause assay name");
     names.add(name); item.clauses.forEach(id => covered.add(id));
@@ -189,7 +189,7 @@ export function assayCasesOfDelivery(text, closure) {
   if (missing.length) throw new TypeError("uncovered clauses: " + missing.map(item => item.id).join(", "));
   // The original example names and these independently proposed clause cases
   // share one exact TAP namespace. Reject collisions before buying any Code.
-  assertAdmittedAssayNames(closure, delivery.cases);
+  assertValidatedCheckNames(closure, delivery.cases);
   return { cases: delivery.cases };
 }
 
@@ -263,16 +263,16 @@ export function moduleOfDelivery(text, member) {
  * read-only, disabling network and host credentials, bounding resources and
  * killing all descendants. This function checks behavior evidence afterward.
  */
-export async function preAssayModules(closure, sources, derivedCases = [], dependencyResolutions = [], isolatedAssayExecutor, nativeAssayBindings) {
-  return preAssayWithProjection(closure, sources, derivedCases, dependencyResolutions, isolatedAssayExecutor,
-    () => testsOfClosure(closure, derivedCases, nativeAssayBindings),
-    () => retainedNativeSources(closure, nativeBindingsFor(closure, nativeAssayBindings)));
+export async function preAssayModules(closure, sources, derivedCases = [], dependencyResolutions = [], isolatedCheckExecutor, nativeCheckBindings) {
+  return preAssayWithProjection(closure, sources, derivedCases, dependencyResolutions, isolatedCheckExecutor,
+    () => testsOfClosure(closure, derivedCases, nativeCheckBindings),
+    () => keptNativeSources(closure, nativeBindingsFor(closure, nativeCheckBindings)));
 }
 
 // Derivation reuses the exact prior projected test bytes. A host projector is
 // never called again after the source writer has delivered an implementation.
-async function preAssayWithProjection(closure, sources, derivedCases, dependencyResolutions, isolatedAssayExecutor, projectAssays, retainedSources = () => []) {
-  if (typeof isolatedAssayExecutor !== "function") return {
+async function preAssayWithProjection(closure, sources, derivedCases, dependencyResolutions, isolatedCheckExecutor, projectChecks, keptSources = () => []) {
+  if (typeof isolatedCheckExecutor !== "function") return {
     passed: false, code: "ISOLATED_ASSAY_UNAVAILABLE",
     failure: "isolated execution capability was not composed by the host; candidate source was not executed",
   };
@@ -287,11 +287,11 @@ async function preAssayWithProjection(closure, sources, derivedCases, dependency
     // Admission of paths, named exports and complete import closure happens
     // BEFORE any executable provider is called.
     const modules = projectJsnodeModules({
-      sources: [...sources, ...retainedSources()].map(({ path, text }) => ({ path, text })),
+      sources: [...sources, ...keptSources()].map(({ path, text }) => ({ path, text })),
       operations: closure.operations,
     });
-    const assays = projectAssays();
-    const names = assertAdmittedAssayNames(closure, derivedCases);
+    const assays = projectChecks();
+    const names = assertValidatedCheckNames(closure, derivedCases);
     const files = Object.freeze([...modules, ...assays.map(({ path, text }) => ({ path, text }))].map(file =>
       Object.freeze({ path: file.path, text: file.text })));
     const testPaths = Object.freeze(assays.map(({ path }) => path));
@@ -302,7 +302,7 @@ async function preAssayWithProjection(closure, sources, derivedCases, dependency
       return { passed: false, code: "ASSAY_INPUT_UNBOUNDED",
         failure: "connected module assay input has duplicate paths or exceeds the bounded source profile" };
 
-    const run = await isolatedAssayExecutor(Object.freeze({
+    const run = await isolatedCheckExecutor(Object.freeze({
       kind: "jsnode.connected-module-pre-assay", version: 1,
       files, testPaths, expectedAssays: names,
       dependencies: Object.freeze(dependencyResolutions.map(item => Object.freeze({
@@ -311,7 +311,7 @@ async function preAssayWithProjection(closure, sources, derivedCases, dependency
       }))),
       timeoutMs: 30000, network: false, writableHostWorkspace: false,
     }));
-    return receiveIsolatedAssayOutcome(run, names);
+    return receiveIsolatedCheckOutcome(run, names);
   } catch (error) {
     return { passed: false, code: "ASSAY_EXECUTION_REFUSED",
       failure: error instanceof Error ? error.message : String(error) };
@@ -325,7 +325,7 @@ async function preAssayWithProjection(closure, sources, derivedCases, dependency
  * Returns { sources, tests, derivations } or a JsnodeClosureDerivationRefusal naming the operation,
  * the open question when the order is not closed, and every attempt.
  */
-export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge = async () => undefined, dependencyProjectRoot, isolatedAssayExecutor, nativeAssayBindings } = {}) {
+export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge = async () => undefined, dependencyProjectRoot, isolatedAssayExecutor: isolatedCheckExecutor, nativeAssayBindings: nativeCheckBindings } = {}) {
   // The native path uses one admitted order for both the providers and assays.
   // A lower-level closure remains usable by code callers without claiming admission.
   const closure = workOrder.type === "ArtifactFabricationSpecification"
@@ -336,29 +336,29 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
   if (typeof infer !== "function") throw new TypeError("a closure's sources are derived by an inference carrier the caller composes");
   // Do not purchase inference or materialize source when the host cannot
   // actually run and receive the complete hidden/declared test lot safely.
-  if (typeof isolatedAssayExecutor !== "function")
+  if (typeof isolatedCheckExecutor !== "function")
     return Object.freeze({ type: "JsnodeClosureDerivationRefusal", version: 1,
       code: "ISOLATED_ASSAY_UNAVAILABLE",
       evidence: "the host did not compose an isolated code-execution capability",
       derivations: Object.freeze([]) });
   // Direct source-free closure callers (not only the canonical Work planner)
   // must refuse impossible native runner labels before any market request.
-  try { assertAdmittedAssayNames(closure); }
+  try { assertValidatedCheckNames(closure); }
   catch (error) {
     return Object.freeze({ type: "JsnodeClosureDerivationRefusal", version: 1,
       code: "INVALID_ADMITTED_ASSAYS", evidence: error.message,
       derivations: Object.freeze([]) });
   }
   let nativeBindings;
-  try { nativeBindings = nativeBindingsFor(closure, nativeAssayBindings); }
+  try { nativeBindings = nativeBindingsFor(closure, nativeCheckBindings); }
   catch (error) {
     return Object.freeze({ type: "JsnodeClosureDerivationRefusal", version: 1,
       code: "NATIVE_ASSAY_BINDING_UNAVAILABLE", evidence: error.message,
       derivations: Object.freeze([]) });
   }
-  const retainedSources = retainedNativeSources(closure, nativeBindings);
-  const told = async (lot, outcome, evidence) => {
-    try { await judge(lot, outcome, evidence); return outcome; } catch (error) { return `${outcome} (untold: ${String(error?.message ?? error).slice(0, 200)})`; }
+  const keptSources = keptNativeSources(closure, nativeBindings);
+  const told = async (job, outcome, evidence) => {
+    try { await judge(job, outcome, evidence); return outcome; } catch (error) { return `${outcome} (untold: ${String(error?.message ?? error).slice(0, 200)})`; }
   };
   const sources = [];
   const derivations = [];
@@ -381,39 +381,39 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
       code: "ASSAY_CONTEXT_UNAVAILABLE", evidence: error.message,
       dependencyResolutions: Object.freeze(dependencyResolutions), derivations: Object.freeze(derivations) });
   }
-  let assayDelivery, assayCases;
+  let checkDelivery, checkCases;
   try {
-    assayDelivery = await infer({ taskClass: "code-fabrication-assays", objective: `Derive clause assays for ${closure.packageName} before source`, messages: assayMessagesOf(workOrder), schema: assayDeliverySchema(closure), requiredCapabilities: ["text-output"] });
-    assayCases = assayCasesOfDelivery(assayDelivery.text, closure);
-    if (assayCases.question !== undefined) throw new Error("open assay question: " + assayCases.question);
+    checkDelivery = await infer({ taskClass: "code-fabrication-assays", objective: `Derive clause assays for ${closure.packageName} before source`, messages: assayMessagesOf(workOrder), schema: assayDeliverySchema(closure), requiredCapabilities: ["text-output"] });
+    checkCases = assayCasesOfDelivery(checkDelivery.text, closure);
+    if (checkCases.question !== undefined) throw new Error("open assay question: " + checkCases.question);
   } catch (error) {
-    derivations.push({ phase: "clause-assays", outcome: assayDelivery ? "refused" : "undelivered", evidence: String(error?.message ?? error), ...(assayDelivery ? { lot: assayDelivery.lot, judged: await told(assayDelivery.lot, "refused", String(error?.message ?? error)) } : {}), ...(error?.cause === undefined ? {} : { cause: error.cause }) });
-    return Object.freeze({ type: "JsnodeClosureDerivationRefusal", version: 1, code: assayCases?.question ? "OPEN_QUESTION" : "ASSAY_DERIVATION_REFUSED", ...(assayCases?.question ? { question: assayCases.question } : {}), derivations: Object.freeze(derivations) });
+    derivations.push({ phase: "clause-assays", outcome: checkDelivery ? "refused" : "undelivered", evidence: String(error?.message ?? error), ...(checkDelivery ? { lot: checkDelivery.lot, judged: await told(checkDelivery.lot, "refused", String(error?.message ?? error)) } : {}), ...(error?.cause === undefined ? {} : { cause: error.cause }) });
+    return Object.freeze({ type: "JsnodeClosureDerivationRefusal", version: 1, code: checkCases?.question ? "OPEN_QUESTION" : "ASSAY_DERIVATION_REFUSED", ...(checkCases?.question ? { question: checkCases.question } : {}), derivations: Object.freeze(derivations) });
   }
-  derivations.push({ phase: "clause-assays", outcome: "derived", lot: assayDelivery.lot, cases: assayCases.cases });
+  derivations.push({ phase: "clause-assays", outcome: "derived", lot: checkDelivery.lot, cases: checkCases.cases });
   let tests;
-  try { tests = Object.freeze(testsOfClosure(closure, assayCases.cases, nativeBindings)); }
+  try { tests = Object.freeze(testsOfClosure(closure, checkCases.cases, nativeBindings)); }
   catch (error) {
     return Object.freeze({ type: "JsnodeClosureDerivationRefusal", version: 1,
       code: "NATIVE_ASSAY_PROJECTION_REFUSED", evidence: error.message,
       derivations: Object.freeze(derivations) });
   }
   const nativeProfiles = Object.freeze(closure.operations.filter(operation => operation.nativeProfile !== undefined).map(operation => {
-    const assay = tests.find(file => file.path === `test/${operation.name}-examples.test.mjs`);
-    return Object.freeze({ operation: operation.name, identity: nativeAssayProfileIdentity(operation.nativeProfile),
-      source: nativeAssayData(operation.nativeProfile.source), assayPath: assay.path, assayDigest: sha256Digest(assay.text),
-      ...(operation.nativeProfile.sourceClosure === undefined ? {} : { sourceClosure: nativeAssayData(operation.nativeProfile.sourceClosure) }) });
+    const check = tests.find(file => file.path === `test/${operation.name}-examples.test.mjs`);
+    return Object.freeze({ operation: operation.name, identity: nativeCheckProfileIdentity(operation.nativeProfile),
+      source: nativeCheckData(operation.nativeProfile.source), assayPath: check.path, assayDigest: sha256Digest(check.text),
+      ...(operation.nativeProfile.sourceClosure === undefined ? {} : { sourceClosure: nativeCheckData(operation.nativeProfile.sourceClosure) }) });
   }));
   // Kinetic proofing: which channels examined the source, their independence from its writer, and
   // which channel caught which defect (assay-channels.mjs).
   const catches = [];
   const proofing = () => proofingOfDerivation({
-    workOrder, assayLot: assayDelivery.lot, examples: closure.examples,
+    workOrder, assayLot: checkDelivery.lot, examples: closure.examples,
     // Every delivered source module participates, including one whose market
     // lot is absent. The proofing owner retains that writer as unknown.
     writerLots: derivations.filter(item => item.module).map(item => item.lot), catches,
   });
-  const refused = (code, operation, detail = {}) => Object.freeze({
+  const rejected = (code, operation, detail = {}) => Object.freeze({
     type: "JsnodeClosureDerivationRefusal", version: 1, code,
     ...(operation === undefined ? {} : { operation: operation.name }), ...detail, derivations: Object.freeze(derivations), proofing: proofing(),
     ...(nativeProfiles.length ? { nativeAssayProfiles: nativeProfiles } : {}),
@@ -433,26 +433,26 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
       derivations.push({ operation: operation.name, attempt: 1, outcome: "undelivered", evidence: String(error?.message ?? error).slice(0, 300),
         ...(error?.cause === undefined ? {} : { cause: error.cause }),
       });
-      return refused("DERIVATION_UNDELIVERED", operation);
+      return rejected("DERIVATION_UNDELIVERED", operation);
     }
     const read = moduleOfDelivery(delivery.text, operations);
     const record = { operation: operation.name, operations: operations.map(op => op.name), module: operation.module, attempt: 1, lot: delivery.lot };
     if (read.question !== undefined) {
       derivations.push({ ...record, outcome: "question", evidence: read.question, judged: await told(delivery.lot, "refused", `open question: ${read.question}`) });
-      return refused("OPEN_QUESTION", operation, { question: read.question });
+      return rejected("OPEN_QUESTION", operation, { question: read.question });
     }
     if (read.source === undefined) {
       derivations.push({ ...record, outcome: "refused", evidence: read.refused, excerpt: delivery.text.slice(0, 400), judged: await told(delivery.lot, "refused", read.refused) });
       catches.push({ defect: read.refused, method: "delivery-admission" });
-      return refused("DERIVATION_REJECTED", operation);
+      return rejected("DERIVATION_REJECTED", operation);
     }
     // A module that only re-exports or forwards to a declared dependency's capability is a misfold:
     // deposited beside the territory rather than folded from the order (misfold.mjs).
-    const misfold = misfoldRefusal(misfoldsOfModule(read.source, operation.module, operations.map(op => op.exportName)));
+    const misfold = misfoldRejection(misfoldsOfModule(read.source, operation.module, operations.map(op => op.exportName)));
     if (misfold !== undefined) {
       derivations.push({ ...record, outcome: "refused", evidence: misfold, judged: await told(delivery.lot, "refused", misfold) });
       catches.push({ defect: misfold, method: "fold-check" });
-      return refused("MISFOLD", operation);
+      return rejected("MISFOLD", operation);
     }
     derivations.push({ ...record, outcome: "derived" });
     sources.push(Object.freeze({ type: "JavascriptNodePackageSource", path: operation.module, text: read.source }));
@@ -470,18 +470,18 @@ export async function deriveJsnodePackageFromClosure(workOrder, { infer, judge =
     for (const record of derivations.filter(item => item.module)) Object.assign(record, {
       outcome: "unassayed", evidence: "installed dependency context changed during derivation", dependencyResolutions: currentDependencies,
     });
-    return refused("ASSAY_CONTEXT_CHANGED", undefined, { scope: "module-set" });
+    return rejected("ASSAY_CONTEXT_CHANGED", undefined, { scope: "module-set" });
   }
   dependencyResolutions = currentDependencies;
-  const assay = await preAssayWithProjection(closure, sources, assayCases.cases, dependencyResolutions, isolatedAssayExecutor, () => tests, () => retainedSources);
-  if (!assay.passed) {
+  const check = await preAssayWithProjection(closure, sources, checkCases.cases, dependencyResolutions, isolatedCheckExecutor, () => tests, () => keptSources);
+  if (!check.passed) {
     // The whole composition failed. Do not attribute an interaction failure
     // to an arbitrarily selected module or purchase automatic repairs.
     for (const record of derivations.filter(item => item.module)) Object.assign(record, {
-      outcome: "composition-refused", evidence: assay.failure, dependencyResolutions,
+      outcome: "composition-refused", evidence: check.failure, dependencyResolutions,
     });
-    catches.push({ defect: assay.failure, method: channelOfPreAssayFailure(assay.failure) });
-    return refused("DERIVATION_REJECTED", undefined, { scope: "module-set", evidence: assay.failure });
+    catches.push({ defect: check.failure, method: channelOfPreCheckFailure(check.failure) });
+    return rejected("DERIVATION_REJECTED", undefined, { scope: "module-set", evidence: check.failure });
   }
   for (const record of derivations.filter(item => item.module)) Object.assign(record, {
     outcome: "pre-assayed", evidence: "complete declared module set: admitted examples and prior clause assays", dependencyResolutions,

@@ -140,8 +140,8 @@ export function exportServiceClassificationReport(surface) {
 /**
  * Read an admitted package manifest's public export map as package material.
  */
-export function exportSurfaceOfPackageManifest(admission) {
-  const exportsValue = admission.manifest["exports"];
+export function exportSurfaceOfPackageManifest(validation) {
+  const exportsValue = validation.manifest["exports"];
   const entries = [];
   if (exportsValue !== undefined) {
     if (typeof exportsValue === "string") {
@@ -154,8 +154,8 @@ export function exportSurfaceOfPackageManifest(admission) {
   entries.sort((left, right) => left.specifier.localeCompare(right.specifier));
   const surface = exportSurfaceSchemaContract.assert({
     kind: "metroplat.exports.surface",
-    source: admission.source,
-    packageName: admission.manifest.name,
+    source: validation.source,
+    packageName: validation.manifest.name,
     entries,
   }, "export surface");
   return Object.freeze({

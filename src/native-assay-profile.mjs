@@ -13,7 +13,7 @@ const profiles = new WeakMap();
 const plain = value => Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null;
 
 /** Snapshot source-free data without invoking getters or losing native values. */
-export function nativeAssayData(value) {
+export function nativeCheckData(value) {
   let entries = 0;
   const copy = (item, depth) => {
     if (++entries > 16384 || depth > 64) throw new TypeError("native assay data exceeds its structural bound");
@@ -38,8 +38,8 @@ export function nativeAssayData(value) {
 }
 
 /** Admit one bounded declarative native contract without acquiring a fixture. */
-export function admitNativeAssayProfile(profile) {
-  const value = nativeAssayData(profile), id = "urn:561:jsnode-native-assay-profile";
+export function validateNativeCheckProfile(profile) {
+  const value = nativeCheckData(profile), id = "urn:561:jsnode-native-assay-profile";
   schemaFromGraph({ root: id, schemas: [{ id, schema: { $id: id, ...profileSchema } }] }).assert(value);
   if (value.sourceClosure !== undefined) {
     const { identity, ...declaration } = value.sourceClosure;
@@ -71,7 +71,7 @@ function heldSourceFiles(files) {
     const fields = Object.getOwnPropertyDescriptors(entry.value);
     if (Reflect.ownKeys(fields).length !== 3 || !["path", "text", "source"].every(key => fields[key] && "value" in fields[key]))
       throw new TypeError("native retained sources need only path, text and source data");
-    const path = fields.path.value, text = fields.text.value, source = nativeAssayData(fields.source.value);
+    const path = fields.path.value, text = fields.text.value, source = nativeCheckData(fields.source.value);
     sourcePath(path);
     if (paths.has(path)) throw new TypeError("duplicate native retained source path");
     paths.add(path);
@@ -89,7 +89,7 @@ function heldSourceFiles(files) {
 /** Declare exact existing source paths and identities without carrying their
  * executable bytes into a source-free work order. No source is generated here.
  */
-export function nativeAssaySourceClosure(sourceFiles) {
+export function nativeCheckSourceClosure(sourceFiles) {
   const files = heldSourceFiles(sourceFiles);
   if (!files.length) throw new TypeError("a native source closure must retain at least one original module");
   const declaration = Object.freeze({ type: "JsnodeNativeSourceClosure", version: 1, readOnly: true,
@@ -98,21 +98,21 @@ export function nativeAssaySourceClosure(sourceFiles) {
 }
 
 /** The existing content-address owner identifies the complete native contract. */
-export function nativeAssayProfileIdentity(profile) {
-  return semanticId(admitNativeAssayProfile(profile));
+export function nativeCheckProfileIdentity(profile) {
+  return semanticId(validateNativeCheckProfile(profile));
 }
 
 /** Bind an already trusted fixture projector in-process. The executable port is
  * held privately; copying/serializing the returned declaration loses the port.
  * project receives immutable scenario data and returns one bounded test source.
  */
-export function bindNativeAssayProfile(profile, project, { sourceFiles = [] } = {}) {
+export function bindNativeCheckProfile(profile, project, { sourceFiles = [] } = {}) {
   if (typeof project !== "function") throw new TypeError("a native assay projection function must be supplied by the host");
-  const admitted = admitNativeAssayProfile(profile);
+  const validated = validateNativeCheckProfile(profile);
   const held = heldSourceFiles(sourceFiles);
-  if (held.length ? admitted.sourceClosure === undefined || semanticId(nativeAssaySourceClosure(held)) !== semanticId(admitted.sourceClosure)
-    : admitted.sourceClosure !== undefined) throw new TypeError("native source closure binding does not match its declared original sources");
-  const binding = Object.freeze({ profile: admitted, identity: semanticId(admitted) });
+  if (held.length ? validated.sourceClosure === undefined || semanticId(nativeCheckSourceClosure(held)) !== semanticId(validated.sourceClosure)
+    : validated.sourceClosure !== undefined) throw new TypeError("native source closure binding does not match its declared original sources");
+  const binding = Object.freeze({ profile: validated, identity: semanticId(validated) });
   profiles.set(binding, Object.freeze({ project, sourceFiles: held }));
   return binding;
 }
@@ -130,20 +130,20 @@ export function nativeBindingsFor(closure, supplied = []) {
     identities.add(binding.identity);bindings.push(binding);
   }
   for (const operation of closure.operations) if (operation.nativeProfile !== undefined) {
-    const identity = nativeAssayProfileIdentity(operation.nativeProfile);
+    const identity = nativeCheckProfileIdentity(operation.nativeProfile);
     if (!identities.has(identity)) throw new TypeError(`native assay binding unavailable for ${operation.name}: ${identity}`);
   }
-  retainedNativeSources(closure, bindings);
+  keptNativeSources(closure, bindings);
   return Object.freeze(bindings);
 }
 
 /** Retain only source closures selected by this order. Generated target paths
  * are disjoint; two profiles cannot supply different originals at one path.
  */
-export function retainedNativeSources(closure, bindings) {
+export function keptNativeSources(closure, bindings) {
   const generated = new Set(closure.operations.map(operation => operation.module)), held = new Map();
   const wanted = new Set(closure.operations.filter(operation => operation.nativeProfile !== undefined)
-    .map(operation => nativeAssayProfileIdentity(operation.nativeProfile)));
+    .map(operation => nativeCheckProfileIdentity(operation.nativeProfile)));
   for (const binding of bindings) if (wanted.has(binding.identity)) {
     const sources = profiles.get(binding)?.sourceFiles;
     if (!sources) throw new TypeError("native source closure has no trusted host binding");
@@ -161,11 +161,11 @@ export function retainedNativeSources(closure, bindings) {
 /** Project a single fixed-path test lot through the already bound host port.
  * All names remain subject to the existing independent TAP completion check.
  */
-export function projectNativeAssays(operation, cases, bindings) {
-  const profile = admitNativeAssayProfile(operation.nativeProfile), identity = semanticId(profile);
+export function projectNativeChecks(operation, cases, bindings) {
+  const profile = validateNativeCheckProfile(operation.nativeProfile), identity = semanticId(profile);
   const binding = bindings.find(item => item.identity === identity && profiles.has(item));
   if (!binding) throw new TypeError(`native assay binding unavailable for ${operation.name}`);
-  const request = nativeAssayData({ operation, profile, identity, cases });
+  const request = nativeCheckData({ operation, profile, identity, cases });
   const text = profiles.get(binding).project(request);
   if (typeof text !== "string" || text.trim() === "" || Buffer.byteLength(text, "utf8") > 1024 * 1024)
     throw new TypeError("native assay projection must synchronously return one bounded test source");

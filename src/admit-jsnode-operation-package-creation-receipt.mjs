@@ -4,16 +4,16 @@ import { freezeJson } from "@red-cup-engineering/json-engine";
 import { isJsonValue } from "@red-cup-engineering/json-engine";
 import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 
-class ReceiptRefusal extends Error {
-  constructor(code, message, refusedPath = null) {
+class RecordRejection extends Error {
+  constructor(code, message, rejectedPath = null) {
     super(message);
     this.code = code;
-    this.refusedPath = refusedPath;
+    this.refusedPath = rejectedPath;
   }
 }
 
-function refuse(code, message, refusedPath = null) {
-  throw new ReceiptRefusal(code, message, refusedPath);
+function refuse(code, message, rejectedPath = null) {
+  throw new RecordRejection(code, message, rejectedPath);
 }
 
 function isRecord(value) {
@@ -35,7 +35,7 @@ function digest(value, context) {
 
 function materializations(value) {
   if (!Array.isArray(value) || value.length === 0) refuse("INVALID_FILES", "files must be a nonempty array of TextFileMaterialization records");
-  const admitted = [];
+  const validated = [];
   let previousPath = null;
   for (const candidate of value) {
     if (!isRecord(candidate)) refuse("INVALID_FILE", "each file must be a TextFileMaterialization record");
@@ -49,13 +49,13 @@ function materializations(value) {
     }
     if (previousPath !== null && previousPath.localeCompare(filePath) >= 0) refuse("NONCANONICAL_FILE_ORDER", "file paths must be unique and strictly ordered", filePath);
     if (candidate.mode !== 0o644 && candidate.mode !== 0o755) refuse("INVALID_FILE_MODE", "file mode must be 0644 or 0755", filePath);
-    admitted.push({ ...candidate, path: filePath, digest: digest(candidate.digest, `file ${filePath} digest`) });
+    validated.push({ ...candidate, path: filePath, digest: digest(candidate.digest, `file ${filePath} digest`) });
     previousPath = filePath;
   }
-  return admitted;
+  return validated;
 }
 
-const assayFields = Object.freeze({
+const checkFields = Object.freeze({
   "staged-dependency-installation": ["type", "version", "name", "status"],
   syntax: ["type", "version", "name", "status"],
   tests: ["type", "version", "name", "status", "paths"],
@@ -66,7 +66,7 @@ const assayFields = Object.freeze({
   help: ["type", "version", "name", "status"],
 });
 
-function assays(value) {
+function checks(value) {
   if (!Array.isArray(value)) refuse("INVALID_ASSAYS", "assays must be an array");
   const required = ["syntax", "tests", "pack", "clean-installation", "import-face"];
   const names = value.map((candidate) => candidate?.name);
@@ -78,8 +78,8 @@ function assays(value) {
     refuse("INCOMPLETE_ASSAYS", "assays must carry required module evidence and, when a catalog command exists, command and help evidence");
   }
   return value.map((candidate) => {
-    if (!isRecord(candidate) || !Object.hasOwn(assayFields, candidate.name)) refuse("INVALID_ASSAY", "each assay must be a known JsnodeOperationPackageAssay record");
-    exactKeys(candidate, assayFields[candidate.name], `assay ${candidate.name}`);
+    if (!isRecord(candidate) || !Object.hasOwn(checkFields, candidate.name)) refuse("INVALID_ASSAY", "each assay must be a known JsnodeOperationPackageAssay record");
+    exactKeys(candidate, checkFields[candidate.name], `assay ${candidate.name}`);
     if (candidate.type !== "JsnodeOperationPackageAssay" || candidate.version !== 1 || candidate.status !== "passed") refuse("FAILED_ASSAY", `assay ${candidate.name} must be passed`);
     if (candidate.name === "tests" && (!Array.isArray(candidate.paths) || candidate.paths.length === 0 || candidate.paths.some((value) => typeof value !== "string"))) refuse("INVALID_ASSAY", "tests assay must identify its test paths");
     if (candidate.name === "pack") {
@@ -93,8 +93,8 @@ function assays(value) {
   });
 }
 
-function refusal(error) {
-  if (!(error instanceof ReceiptRefusal)) throw error;
+function rejection(error) {
+  if (!(error instanceof RecordRejection)) throw error;
   return freezeJson({
     type: "JsnodeOperationPackageCreationReceiptRefusal",
     version: 1,
@@ -110,7 +110,7 @@ function refusal(error) {
  * @param {object} candidate A JsnodeOperationPackageCreationReceipt candidate.
  * @returns {object} The admitted immutable receipt or a specific receipt-refusal record.
  */
-export function admitJsnodeOperationPackageCreationReceipt(candidate) {
+export function validateJsnodeOperationPackageCreationRecord(candidate) {
   try {
     if (!isJsonValue(candidate) || !isRecord(candidate)) refuse("INVALID_RECEIPT", "input must be a JSON record");
     exactKeys(candidate, ["type", "version", "packageName", "packageVersion", "destination", "filesDigest", "files", "assays"], "receipt");
@@ -122,9 +122,9 @@ export function admitJsnodeOperationPackageCreationReceipt(candidate) {
       ...candidate,
       filesDigest: digest(candidate.filesDigest, "filesDigest"),
       files: materializations(candidate.files),
-      assays: assays(candidate.assays),
+      assays: checks(candidate.assays),
     });
   } catch (error) {
-    return refusal(error);
+    return rejection(error);
   }
 }

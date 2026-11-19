@@ -26,7 +26,7 @@ async function checkPnpmContract(args, mode) {
   const release = mode === "--check-pnpm-release";
   const lockfile = release ? "release/pnpm-lock.yaml" : "pnpm-lock.yaml";
   const operands = args.filter(argument => argument !== mode);
-  const receipt = (status, details = {}) => {
+  const record = (status, details = {}) => {
     process.stdout.write(JSON.stringify({
       kind: "pnpm-importer-manifest-agreement/v1", importer: ".", scope: "literal-direct-declarations-only", status,
       ...(release ? { lockfile } : {}), ...details,
@@ -34,7 +34,7 @@ async function checkPnpmContract(args, mode) {
     return status === "agreement" ? 0 : status === "drift" ? 1 : 2;
   };
   if (args.length !== operands.length + 1 || operands.length > 1 || operands.some(arg => arg.startsWith("-")))
-    return receipt("unchecked", { reason: "invalid-arguments" });
+    return record("unchecked", { reason: "invalid-arguments" });
   const isRecord = value => value !== null && typeof value === "object" && !Array.isArray(value);
   const read = path => {
     const fd = openSync(path, constants.O_RDONLY | constants.O_NONBLOCK | constants.O_NOFOLLOW);
@@ -58,35 +58,35 @@ async function checkPnpmContract(args, mode) {
   let manifest, lock;
   try {
     manifest = JSON.parse(read(join(repository, "package.json")));
-  } catch { return receipt("unchecked", { reason: "unreadable-input" }); }
-  if (!isRecord(manifest)) return receipt("unchecked", { reason: "invalid-manifest" });
+  } catch { return record("unchecked", { reason: "unreadable-input" }); }
+  if (!isRecord(manifest)) return record("unchecked", { reason: "invalid-manifest" });
   if (release && (manifest.registryConsumption?.frozenLockfile !== "./" + lockfile ||
       manifest.exports?.["./frozen-lockfile"] !== "./" + lockfile))
-    return receipt("unchecked", { reason: "frozen-lock-product-not-declared" });
+    return record("unchecked", { reason: "frozen-lock-product-not-declared" });
   try {
     if (release && !lstatSync(join(repository, "release")).isDirectory()) throw new Error();
     lock = read(join(repository, lockfile));
-  } catch { return receipt("unchecked", { reason: "unreadable-input" }); }
+  } catch { return record("unchecked", { reason: "unreadable-input" }); }
   const requiresNativePolicy = manifest.pnpm !== undefined || manifest.peerDependencies !== undefined ||
     /^(?:overrides|catalogs|patchedDependencies)\s*:/mu.test(lock) || /^ +excludeLinksFromLockfile:\s*true\s*$/mu.test(lock);
-  if (requiresNativePolicy && !release) return receipt("unchecked", { reason: "requires-native-policy-check" });
+  if (requiresNativePolicy && !release) return record("unchecked", { reason: "requires-native-policy-check" });
   const knownLiteral = value => typeof value === "string" && /^[a-zA-Z0-9*^~.<>=| +_-]{1,160}$/u.test(value);
   for (const field of ["dependencies", "devDependencies", "optionalDependencies"]) {
     const declarations = manifest[field];
     if (declarations === undefined) continue;
     if (!isRecord(declarations) || Object.values(declarations).some(value => !knownLiteral(value)))
-      return receipt("unchecked", { reason: "requires-native-specifier-check" });
+      return record("unchecked", { reason: "requires-native-specifier-check" });
   }
   try {
     const { comparePnpmImporterManifest } = await import("../src/workspace/pnpm-lockfile.mjs");
     // Observed keys under native policy are diagnostics, not an install verdict.
-    if (requiresNativePolicy) return receipt("unchecked", {
+    if (requiresNativePolicy) return record("unchecked", {
       reason: "requires-native-policy-check",
       observedDifferences: comparePnpmImporterManifest(lock, manifest),
     });
     const differences = comparePnpmImporterManifest(lock, manifest, ".", { includeSelection: true });
-    return receipt(differences.length ? "drift" : "agreement", { differences });
-  } catch { return receipt("unchecked", { reason: "unreadable-or-unsupported-importer" }); }
+    return record(differences.length ? "drift" : "agreement", { differences });
+  } catch { return record("unchecked", { reason: "unreadable-or-unsupported-importer" }); }
 }
 
 async function syncRepositoryManifests() {

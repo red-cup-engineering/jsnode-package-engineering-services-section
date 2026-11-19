@@ -10,7 +10,7 @@
  */
 
 import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
-import { binSurfaceContract } from "./bins.mjs";
+import { binSurfaceValidator } from "./bins.mjs";
 import { exportSurfaceContract } from "./exports.mjs";
 
 export const packageSurfaceCommitmentSchema = {
@@ -52,6 +52,6 @@ export const packageSurfaceSchema = {
 export const packageSurfaceCommitmentContract = schemaFrom(packageSurfaceCommitmentSchema);
 export const packageSurfaceContract = schemaFrom(packageSurfaceSchema, [
   exportSurfaceContract,
-  binSurfaceContract,
+  binSurfaceValidator,
   packageSurfaceCommitmentContract,
 ]);

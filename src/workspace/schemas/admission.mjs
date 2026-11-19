@@ -13,7 +13,7 @@
 import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 
 /** A package manifest host mark admitted into the package phase. */
-export const packageManifestAdmissionSchema = {
+export const packageManifestValidationSchema = {
   $id: "metroplat/admission/package-manifest",
   type: "object",
   required: ["kind", "source", "manifest"],
@@ -48,7 +48,7 @@ export const packageManifestAdmissionSchema = {
 };
 
 /** A failed admission attempt, kept as data instead of control flow. */
-export const admissionFailureSchema = {
+export const validationFailureSchema = {
   $id: "metroplat/admission/failure",
   type: "object",
   required: ["kind", "source", "reason"],
@@ -62,11 +62,11 @@ export const admissionFailureSchema = {
   additionalProperties: false,
 };
 
-export const packageManifestAdmissionContract = schemaFrom(packageManifestAdmissionSchema);
-export const admissionFailureContract = schemaFrom(admissionFailureSchema);
+export const packageManifestValidationValidator = schemaFrom(packageManifestValidationSchema);
+export const validationFailureValidator = schemaFrom(validationFailureSchema);
 
 /** A `pnpm-workspace.yaml` host mark admitted into the package phase. */
-export const workspaceDeclarationAdmissionSchema = {
+export const workspaceDeclarationValidationSchema = {
   $id: "metroplat/admission/workspace-declaration",
   type: "object",
   required: ["kind", "source", "packages"],
@@ -83,7 +83,7 @@ export const workspaceDeclarationAdmissionSchema = {
   additionalProperties: false,
 };
 
-export const workspaceDeclarationAdmissionContract = schemaFrom(workspaceDeclarationAdmissionSchema);
+export const workspaceDeclarationValidationValidator = schemaFrom(workspaceDeclarationValidationSchema);
 
 const pnpmDependencyUseSchema = {
   type: "object",
@@ -115,7 +115,7 @@ const pnpmLockfileImporterSchema = {
  *  Only the importers section is admitted — the `packages:`/`snapshots:`
  *  registry-resolution sections are outside this codec's accepted
  *  representation (see `codecs/text/pnpm-lockfile`). */
-export const pnpmLockfileAdmissionSchema = {
+export const pnpmLockfileValidationSchema = {
   $id: "metroplat/admission/pnpm-lockfile",
   type: "object",
   required: ["kind", "source", "lockfileVersion", "importers"],
@@ -130,4 +130,4 @@ export const pnpmLockfileAdmissionSchema = {
   additionalProperties: false,
 };
 
-export const pnpmLockfileAdmissionContract = schemaFrom(pnpmLockfileAdmissionSchema);
+export const pnpmLockfileValidationValidator = schemaFrom(pnpmLockfileValidationSchema);

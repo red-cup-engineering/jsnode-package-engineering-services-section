@@ -17,8 +17,8 @@
 import { semanticId } from "@red-cup-engineering/semiotic-content-address-system";
 
 /** The carrier a market lot names, or the one a deterministic procedure is. */
-export function carrierOfLot(lot) {
-  const named = lot?.model ?? lot?.carrier ?? lot?.provider;
+export function carrierOfJob(job) {
+  const named = job?.model ?? job?.carrier ?? job?.provider;
   // Market lot display fields are not authenticated identities. At minimum,
   // blank or boundary-whitespace names cannot establish a distinct carrier.
   return typeof named === "string" && named.length > 0 && named.trim() === named
@@ -26,7 +26,7 @@ export function carrierOfLot(lot) {
 }
 
 /** One assay channel: method, carrier and the content address of the evidence it was given. */
-export function assayChannel({ method, carrier, evidence }) {
+export function checkChannel({ method, carrier, evidence }) {
   if (typeof method !== "string" || method.trim() !== method || !method ||
       typeof carrier !== "string" || carrier.trim() !== carrier || !carrier)
     throw new TypeError("an assay channel names a nonblank original method and carrier");
@@ -68,7 +68,7 @@ export function independenceFromWriter(channel, writer, { seenByWriter = false, 
 }
 
 /** Which channel a pre-assay failure belongs to: a clause assay, an admitted example, or the composition itself. */
-export function channelOfPreAssayFailure(failure) {
+export function channelOfPreCheckFailure(failure) {
   const failing = String(failure ?? "").split("\n").filter((line) => /^\s*not ok \d+ - /u.test(line)).map((line) => line.replace(/^\s*not ok \d+ - /u, ""));
   if (failing.some((name) => name.includes(": clause assay "))) return "clause-assays";
   if (failing.some((name) => /: /u.test(name) && !name.startsWith("test/"))) return "admitted-examples";
@@ -82,25 +82,25 @@ export function channelOfPreAssayFailure(failure) {
  * writer, the catches bound to channel ids, and how many distinct channels independent of the writer
  * examined the source.
  */
-export function proofingOfDerivation({ workOrder, assayLot, writerLots = [], examples = [], catches = [] }) {
-  const writerCarriers = [...new Set(writerLots.map(carrierOfLot))].sort();
+export function proofingOfDerivation({ workOrder, assayLot: checkJob, writerLots: writerJobs = [], examples = [], catches = [] }) {
+  const writerCarriers = [...new Set(writerJobs.map(carrierOfJob))].sort();
   // Multiple actual writer lots must never disappear into a made-up composite
   // carrier identity when independence is checked. Missing market provenance
   // is an unknown writer, not a free pass for a differently named assay.
   const sourceWriters = (writerCarriers.length ? writerCarriers : ["unnamed-carrier"])
-    .map(carrier => assayChannel({ method: "source-derivation", carrier, evidence: workOrder }));
-  const writer = assayChannel({ method: "source-derivation",
+    .map(carrier => checkChannel({ method: "source-derivation", carrier, evidence: workOrder }));
+  const writer = checkChannel({ method: "source-derivation",
     carrier: writerCarriers.length === 1 ? writerCarriers[0] : writerCarriers.join("+") || "unnamed-carrier",
     evidence: workOrder });
   const checks = [
-    { channel: assayChannel({ method: "admitted-examples", carrier: "work-order-author", evidence: examples }), seenByWriter: true },
+    { channel: checkChannel({ method: "admitted-examples", carrier: "work-order-author", evidence: examples }), seenByWriter: true },
     // A clause-assay method can run without an attributed market lot. Keep
     // its real detection channel with unknown carrier; the absence of a lot
     // denies *independence*, not the fact that Node observed a failing case.
-    { channel: assayChannel({ method: "clause-assays", carrier: carrierOfLot(assayLot), evidence: workOrder }), seenByWriter: false },
-    { channel: assayChannel({ method: "module-set-composition", carrier: "node-test-runner", evidence: { method: "compose-and-run" } }), seenByWriter: false },
-    { channel: assayChannel({ method: "delivery-admission", carrier: "jsnode-delivery-schema", evidence: { method: "admit-delivery" } }), seenByWriter: false },
-    { channel: assayChannel({ method: "fold-check", carrier: "jsnode-misfold-reader", evidence: { method: "read-misfolds" } }), seenByWriter: false },
+    { channel: checkChannel({ method: "clause-assays", carrier: carrierOfJob(checkJob), evidence: workOrder }), seenByWriter: false },
+    { channel: checkChannel({ method: "module-set-composition", carrier: "node-test-runner", evidence: { method: "compose-and-run" } }), seenByWriter: false },
+    { channel: checkChannel({ method: "delivery-admission", carrier: "jsnode-delivery-schema", evidence: { method: "admit-delivery" } }), seenByWriter: false },
+    { channel: checkChannel({ method: "fold-check", carrier: "jsnode-misfold-reader", evidence: { method: "read-misfolds" } }), seenByWriter: false },
   ];
   const channels = checks.map(({ channel, seenByWriter }) => Object.freeze({
     ...channel, ...independenceFromWriter(channel, writer, { seenByWriter, sourceWriters }),

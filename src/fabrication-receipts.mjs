@@ -1,7 +1,7 @@
 import { assayCasesOfDelivery, testsOfClosure } from "./derive-jsnode-package-from-closure.mjs";
 import { constitute } from "@red-cup-engineering/eavt-engineering-services-section";
 import { admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
-import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
+import { validateJsnodeOperationPackageCreationRecord } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { semanticId } from "@red-cup-engineering/semiotic-content-address-system";
 import { canonicalJson } from "@red-cup-engineering/json-engine/canonical-json";
 import { address as cellAddress, admitCell, cell, cellSet } from "@red-cup-engineering/signcell";
@@ -18,31 +18,31 @@ function immutable(value) {
   return value;
 }
 
-function receiptAdmissionError(code, message, refusalRecord) {
+function recordValidationError(code, message, rejectionRecord) {
   const error = new TypeError(message);
   error.code = code;
-  error.receiptRefusal = refusalRecord;
+  error.receiptRefusal = rejectionRecord;
   return error;
 }
 
 /** Reconstruct clause tests from the original order, never from a receipt's claim. */
-export function admitClauseAssayDerivation(order, configuration, derivation) {
+export function validateClauseCheckDerivation(order, configuration, derivation) {
   const first = derivation?.attempts?.[0];
   if (first?.phase !== "clause-assays" || first.outcome !== "derived"
       || derivation.attempts.slice(1).some(item => item.phase === "clause-assays")) {
-    throw receiptAdmissionError("MISSING_PRIOR_CLAUSE_ASSAYS", "clause assays must precede source attempts");
+    throw recordValidationError("MISSING_PRIOR_CLAUSE_ASSAYS", "clause assays must precede source attempts");
   }
   const original = order.projections.find(item => item.configuration?.operations)?.configuration;
-  if (!original) throw receiptAdmissionError("MISSING_WORK_ORDER_OPERATIONS", "clause assays require the original operation contract");
+  if (!original) throw recordValidationError("MISSING_WORK_ORDER_OPERATIONS", "clause assays require the original operation contract");
   const closure = { ...original, requirements: order.requirements, prohibitions: order.prohibitions, constraints: order.constraints };
-  let admitted;
-  try { admitted = assayCasesOfDelivery(JSON.stringify({ cases: first.cases, question: null }), closure); }
-  catch (error) { throw receiptAdmissionError("INVALID_CLAUSE_ASSAYS", error.message); }
-  const expected = testsOfClosure(closure, admitted.cases);
+  let validated;
+  try { validated = assayCasesOfDelivery(JSON.stringify({ cases: first.cases, question: null }), closure); }
+  catch (error) { throw recordValidationError("INVALID_CLAUSE_ASSAYS", error.message); }
+  const expected = testsOfClosure(closure, validated.cases);
   if (semanticId(expected) !== semanticId(configuration.tests)) {
-    throw receiptAdmissionError("CLAUSE_ASSAY_TEST_BINDING_MISMATCH", "realized tests must be exactly the projection of admitted examples and prior clause assays");
+    throw recordValidationError("CLAUSE_ASSAY_TEST_BINDING_MISMATCH", "realized tests must be exactly the projection of admitted examples and prior clause assays");
   }
-  return immutable({ cases: admitted.cases, tests: expected });
+  return immutable({ cases: validated.cases, tests: expected });
 }
 
 /**
@@ -55,76 +55,76 @@ export function admitClauseAssayDerivation(order, configuration, derivation) {
  * @returns {object} The receipt with its specification, creation, and realization records canonically admitted.
  * @throws {TypeError} When any record is absent, refused, or not bound to the born package.
  */
-export function admitMarkdownJsnodeOperationPackageFabricationReceipt(receipt) {
-  if (receipt?.type !== "MarkdownJsnodeOperationPackageFabricationReceipt" || receipt.version !== 1) {
-    throw receiptAdmissionError("MISSING_REALIZATION_RECEIPT", "fabrication receipt must be a complete MarkdownJsnodeOperationPackageFabricationReceipt");
+export function validateMarkdownJsnodeOperationPackageFabricationRecord(record) {
+  if (record?.type !== "MarkdownJsnodeOperationPackageFabricationReceipt" || record.version !== 1) {
+    throw recordValidationError("MISSING_REALIZATION_RECEIPT", "fabrication receipt must be a complete MarkdownJsnodeOperationPackageFabricationReceipt");
   }
-  const specification = receipt.artifactSpecification;
+  const specification = record.artifactSpecification;
   if (specification === null || typeof specification !== "object") {
-    throw receiptAdmissionError("MISSING_ARTIFACT_SPECIFICATION", "fabrication receipt has no artifact specification");
+    throw recordValidationError("MISSING_ARTIFACT_SPECIFICATION", "fabrication receipt has no artifact specification");
   }
   const { type, version, specificationDigest, ...specificationCandidate } = specification;
-  const admittedSpecification = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version, ...specificationCandidate }, { admittedDigest: specificationDigest });
-  if (admittedSpecification.type !== "ArtifactFabricationSpecification" || admittedSpecification.specificationDigest !== specificationDigest) {
-    throw receiptAdmissionError("INVALID_ARTIFACT_SPECIFICATION", "fabrication receipt has an unadmitted artifact specification", admittedSpecification);
+  const validatedSpecification = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version, ...specificationCandidate }, { admittedDigest: specificationDigest });
+  if (validatedSpecification.type !== "ArtifactFabricationSpecification" || validatedSpecification.specificationDigest !== specificationDigest) {
+    throw recordValidationError("INVALID_ARTIFACT_SPECIFICATION", "fabrication receipt has an unadmitted artifact specification", validatedSpecification);
   }
-  if (receipt.specificationDigest !== admittedSpecification.specificationDigest || receipt.sourceDigest !== admittedSpecification.source.provenance.digest) {
-    throw receiptAdmissionError("SPECIFICATION_BINDING_MISMATCH", "fabrication receipt does not bind its admitted specification");
+  if (record.specificationDigest !== validatedSpecification.specificationDigest || record.sourceDigest !== validatedSpecification.source.provenance.digest) {
+    throw recordValidationError("SPECIFICATION_BINDING_MISMATCH", "fabrication receipt does not bind its admitted specification");
   }
   // Historical v1 derivations remain readable as their original, weaker
   // evidence. Every new v2 derivation binds its pre-inference work order.
-  if ([2, 3].includes(receipt.derivation?.version)) {
-    const order = receipt.derivation.workOrderSpecification;
+  if ([2, 3].includes(record.derivation?.version)) {
+    const order = record.derivation.workOrderSpecification;
     if (order?.type !== "ArtifactFabricationSpecification" || ![1, 2].includes(order.version)) {
-      throw receiptAdmissionError("MISSING_WORK_ORDER_SPECIFICATION", "derived fabrication must retain the source-free admitted work order");
+      throw recordValidationError("MISSING_WORK_ORDER_SPECIFICATION", "derived fabrication must retain the source-free admitted work order");
     }
     const { type: orderType, version: orderVersion, specificationDigest: orderDigest, ...orderCandidate } = order;
-    const admittedOrder = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: orderVersion, ...orderCandidate }, { admittedDigest: orderDigest });
+    const validatedOrder = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: orderVersion, ...orderCandidate }, { admittedDigest: orderDigest });
     // Projecting away only generated sources and tests must recover exactly the
     // admitted order. All requirements, constraints, examples and dependencies
     // remain part of its identity; provider output cannot change them.
     const recoveredOrder = admitArtifactFabricationSpecification({
       type: "ArtifactFabricationSpecificationCandidate", version,
       ...specificationCandidate,
-      projections: admittedSpecification.projections.map((projection) => ({
+      projections: validatedSpecification.projections.map((projection) => ({
         ...projection, configuration: { ...projection.configuration, sources: [], tests: [] },
       })),
     }, { admittedDigest: orderDigest });
-    if (admittedOrder.type !== "ArtifactFabricationSpecification" || admittedOrder.specificationDigest !== orderDigest
-      || receipt.derivation.workOrderSpecificationDigest !== orderDigest
+    if (validatedOrder.type !== "ArtifactFabricationSpecification" || validatedOrder.specificationDigest !== orderDigest
+      || record.derivation.workOrderSpecificationDigest !== orderDigest
       || recoveredOrder.type !== "ArtifactFabricationSpecification" || recoveredOrder.specificationDigest !== orderDigest) {
-      throw receiptAdmissionError("WORK_ORDER_REALIZATION_BINDING_MISMATCH", "derived fabrication must preserve its admitted order apart from generated sources and tests");
+      throw recordValidationError("WORK_ORDER_REALIZATION_BINDING_MISMATCH", "derived fabrication must preserve its admitted order apart from generated sources and tests");
     }
   }
-  if (receipt.derivation?.version === 3) {
-    const configuration = admittedSpecification.projections.find(item => item.configuration?.operations)?.configuration;
-    admitClauseAssayDerivation(receipt.derivation.workOrderSpecification, configuration, receipt.derivation);
+  if (record.derivation?.version === 3) {
+    const configuration = validatedSpecification.projections.find(item => item.configuration?.operations)?.configuration;
+    validateClauseCheckDerivation(record.derivation.workOrderSpecification, configuration, record.derivation);
   }
-  const creation = admitJsnodeOperationPackageCreationReceipt(receipt.jsnodeOperationPackageCreationReceipt);
+  const creation = validateJsnodeOperationPackageCreationRecord(record.jsnodeOperationPackageCreationReceipt);
   if (creation.type !== "JsnodeOperationPackageCreationReceipt") {
-    throw receiptAdmissionError(creation.code, `fabrication creation receipt admission refused: ${creation.code}`, creation);
+    throw recordValidationError(creation.code, `fabrication creation receipt admission refused: ${creation.code}`, creation);
   }
-  const realization = receipt.artifactFabricationRealizationReceipt;
+  const realization = record.artifactFabricationRealizationReceipt;
   if (realization === null || typeof realization !== "object") {
-    throw receiptAdmissionError("MISSING_REALIZATION_RECEIPT", "fabrication receipt has no realization receipt");
+    throw recordValidationError("MISSING_REALIZATION_RECEIPT", "fabrication receipt has no realization receipt");
   }
   const { type: realizationType, version: realizationVersion, traceability, ...realizationCandidate } = realization;
-  const admittedRealization = admitArtifactFabricationRealizationReceipt(admittedSpecification, { type: "ArtifactFabricationRealizationReceiptCandidate", version: 1, ...realizationCandidate });
-  if (admittedRealization.type !== "ArtifactFabricationRealizationReceipt") {
-    throw receiptAdmissionError(admittedRealization.code, `fabrication realization receipt admission refused: ${admittedRealization.code}`, admittedRealization);
+  const validatedRealization = admitArtifactFabricationRealizationReceipt(validatedSpecification, { type: "ArtifactFabricationRealizationReceiptCandidate", version: 1, ...realizationCandidate });
+  if (validatedRealization.type !== "ArtifactFabricationRealizationReceipt") {
+    throw recordValidationError(validatedRealization.code, `fabrication realization receipt admission refused: ${validatedRealization.code}`, validatedRealization);
   }
   const creationDigest = semanticId(creation);
-  const evidence = [...admittedRealization.realizations, ...admittedRealization.acceptances].map(({ evidence: item }) => item);
+  const evidence = [...validatedRealization.realizations, ...validatedRealization.acceptances].map(({ evidence: item }) => item);
   if (evidence.length === 0 || !evidence.every((item) => item.locator === creation.destination && item.digest === creationDigest)) {
-    throw receiptAdmissionError("CREATION_REALIZATION_BINDING_MISMATCH", "fabrication realization evidence must identify the admitted creation receipt");
+    throw recordValidationError("CREATION_REALIZATION_BINDING_MISMATCH", "fabrication realization evidence must identify the admitted creation receipt");
   }
   return immutable({
-    ...receipt,
-    sourceDigest: admittedSpecification.source.provenance.digest,
-    specificationDigest: admittedSpecification.specificationDigest,
-    artifactSpecification: admittedSpecification,
+    ...record,
+    sourceDigest: validatedSpecification.source.provenance.digest,
+    specificationDigest: validatedSpecification.specificationDigest,
+    artifactSpecification: validatedSpecification,
     jsnodeOperationPackageCreationReceipt: creation,
-    artifactFabricationRealizationReceipt: admittedRealization,
+    artifactFabricationRealizationReceipt: validatedRealization,
   });
 }
 
@@ -148,7 +148,7 @@ const presentationSchema = {
 };
 
 /** Wire shape only. The original receipt and presentation are separately replayed. */
-export const fabricationReceiptCellProjectionSchema = retainedCarrier({
+export const fabricationRecordCellProjectionSchema = retainedCarrier({
   $schema: "https://json-schema.org/draft/2020-12/schema",
   $id: "https://schemas.561.group/jsnode/fabrication-receipt-cell-projection.schema.json",
   title: "Source-bearing JSNode fabrication receipt Cells",
@@ -168,11 +168,11 @@ function sourcePresentation(source) {
   if (source === undefined) return null;
   let value;
   try { value = retainedCarrier(source); }
-  catch (error) { throw receiptAdmissionError("INVALID_FABRICATION_SOURCE_PRESENTATION", error.message); }
+  catch (error) { throw recordValidationError("INVALID_FABRICATION_SOURCE_PRESENTATION", error.message); }
   if (value === null || typeof value !== "object" || Array.isArray(value) ||
       Object.keys(value).length === 0 || Object.keys(value).some(key =>
         !["locator", "occurrence"].includes(key) || typeof value[key] !== "string" || !value[key].trim())) {
-    throw receiptAdmissionError("INVALID_FABRICATION_SOURCE_PRESENTATION",
+    throw recordValidationError("INVALID_FABRICATION_SOURCE_PRESENTATION",
       "source presentation requires only a supplied nonblank locator and/or occurrence");
   }
   return value;
@@ -187,12 +187,12 @@ function fabricationRequest(value) {
     canonicalJson(value);
     return snapshot;
   }
-  catch (error) { throw receiptAdmissionError("INVALID_FABRICATION_RECEIPT_WIRE", error.message); }
+  catch (error) { throw recordValidationError("INVALID_FABRICATION_RECEIPT_WIRE", error.message); }
 }
 
 // Only inspect an already retained carrier whose original was admitted by
 // EAVT's JSON owner; the extra sign check refuses its lossy -0 encoding.
-function receiptWireValue(value) {
+function recordWireValue(value) {
   try {
     const pending = [value];
     while (pending.length) {
@@ -202,7 +202,7 @@ function receiptWireValue(value) {
         for (const child of Object.values(at)) pending.push(child);
     }
     return value;
-  } catch (error) { throw receiptAdmissionError("INVALID_FABRICATION_RECEIPT_WIRE", error.message); }
+  } catch (error) { throw recordValidationError("INVALID_FABRICATION_RECEIPT_WIRE", error.message); }
 }
 
 /**
@@ -213,21 +213,21 @@ function receiptWireValue(value) {
  * @param {{receipt: object, source?: {locator?: string, occurrence?: string}}} request Original receipt and optional actual source presentation.
  * @returns {object} The canonical JsnodeFabricationCellProjection, with reported content and unknown external receiving kept distinct.
  */
-export function projectFabricationReceiptCells(request) {
+export function projectFabricationRecordCells(request) {
   request = fabricationRequest(request);
   const input = request?.receipt;
   if (input === null || typeof input !== "object" || Array.isArray(input)) throw new TypeError("receipt must be an object");
   const source = sourcePresentation(request.source);
   // Admission's existing immutable result must not freeze or alias the
   // caller's mutable source. SignCell's carrier owns the exact snapshot.
-  const admitted = admitMarkdownJsnodeOperationPackageFabricationReceipt(receiptWireValue(input));
-  const specification = admitted.artifactSpecification;
-  const creation = admitted.jsnodeOperationPackageCreationReceipt;
-  const realization = admitted.artifactFabricationRealizationReceipt;
-  const receiptId = cellSemanticId(admitted);
+  const validated = validateMarkdownJsnodeOperationPackageFabricationRecord(recordWireValue(input));
+  const specification = validated.artifactSpecification;
+  const creation = validated.jsnodeOperationPackageCreationReceipt;
+  const realization = validated.artifactFabricationRealizationReceipt;
+  const recordId = cellSemanticId(validated);
   const candidate = { type: "JsnodeFabricationCandidate", version: 1,
     packageName: creation.packageName, packageVersion: creation.packageVersion,
-    filesDigest: creation.filesDigest, specificationDigest: admitted.specificationDigest };
+    filesDigest: creation.filesDigest, specificationDigest: validated.specificationDigest };
   const candidateId = cellSemanticId(candidate);
   const cells = [];
   const P = FABRICATION_CELL_PREDICATES;
@@ -238,11 +238,11 @@ export function projectFabricationReceiptCells(request) {
     ? bytesToHex(new TextEncoder().encode(JSON.stringify(value))) : null;
   const presentationBinding = { encoding: "utf8-json-string-hex",
     locator: literal(source?.locator), occurrence: literal(source?.occurrence),
-    receiptPath: literal(admitted.receiptPath) };
+    receiptPath: literal(validated.receiptPath) };
   const witness = pointers => ({
     type: "JsnodeFabricationReceiptContentWitness", version: 1,
-    receiptId, candidateId, source, receiptPath: admitted.receiptPath ?? null, presentationBinding,
-    sourceDigest: admitted.sourceDigest, specificationDigest: admitted.specificationDigest,
+    receiptId: recordId, candidateId, source, receiptPath: validated.receiptPath ?? null, presentationBinding,
+    sourceDigest: validated.sourceDigest, specificationDigest: validated.specificationDigest,
     creationReceiptDigest: semanticId(creation), pointers,
     scope: "admitted-receipt-content",
   });
@@ -254,7 +254,7 @@ export function projectFabricationReceiptCells(request) {
   const report = (predicate, object, pointer) => tell(candidateId, predicate, object, [pointer]);
   const reports = (predicate, values, pointer) => values.forEach((value, index) => report(predicate, value, `${pointer}/${index}`));
 
-  tell(receiptId, P.receipt, admitted, [""]);
+  tell(recordId, P.receipt, validated, [""]);
   tell(candidateId, P.candidate, candidate, ["/jsnodeOperationPackageCreationReceipt/packageName",
     "/jsnodeOperationPackageCreationReceipt/packageVersion", "/jsnodeOperationPackageCreationReceipt/filesDigest", "/specificationDigest"]);
   report(P.source, specification.source, "/artifactSpecification/source");
@@ -269,23 +269,23 @@ export function projectFabricationReceiptCells(request) {
   reports(P.realizationEvidence, realization.realizations, "/artifactFabricationRealizationReceipt/realizations");
   reports(P.acceptanceEvidence, realization.acceptances, "/artifactFabricationRealizationReceipt/acceptances");
   reports(P.traceability, realization.traceability, "/artifactFabricationRealizationReceipt/traceability");
-  if ([2, 3].includes(admitted.derivation?.version))
-    report(P.workOrder, admitted.derivation.workOrderSpecification, "/derivation/workOrderSpecification");
-  if (Array.isArray(admitted.derivation?.attempts))
-    reports(P.derivationAttempt, admitted.derivation.attempts, "/derivation/attempts");
-  if (admitted.derivation?.proofing !== undefined)
-    report(P.proofing, admitted.derivation.proofing, "/derivation/proofing");
-  if (admitted.jsnodeOperationPackageRegistryPublication !== undefined)
-    report(P.publication, admitted.jsnodeOperationPackageRegistryPublication, "/jsnodeOperationPackageRegistryPublication");
-  if (admitted.receiptPath !== undefined) report(P.receiptPath, admitted.receiptPath, "/receiptPath");
+  if ([2, 3].includes(validated.derivation?.version))
+    report(P.workOrder, validated.derivation.workOrderSpecification, "/derivation/workOrderSpecification");
+  if (Array.isArray(validated.derivation?.attempts))
+    reports(P.derivationAttempt, validated.derivation.attempts, "/derivation/attempts");
+  if (validated.derivation?.proofing !== undefined)
+    report(P.proofing, validated.derivation.proofing, "/derivation/proofing");
+  if (validated.jsnodeOperationPackageRegistryPublication !== undefined)
+    report(P.publication, validated.jsnodeOperationPackageRegistryPublication, "/jsnodeOperationPackageRegistryPublication");
+  if (validated.receiptPath !== undefined) report(P.receiptPath, validated.receiptPath, "/receiptPath");
 
   // These are explicit coordinates with no evidence, not denial. Neither
   // schema admission nor a reported acceptance record can fill them in.
   for (const role of ["independentlyReceived", "customerAccepted", "deployed"])
-    cells.push(cell(candidateId, P[role], admitted.specificationDigest));
+    cells.push(cell(candidateId, P[role], validated.specificationDigest));
 
-  const workOrder = admitted.workOrder ?? specification.source.provenance.locator ?? null;
-  const workOrderPointer = admitted.workOrder == null ? "/artifactSpecification/source/provenance/locator" : "/workOrder";
+  const workOrder = validated.workOrder ?? specification.source.provenance.locator ?? null;
+  const workOrderPointer = validated.workOrder == null ? "/artifactSpecification/source/provenance/locator" : "/workOrder";
   const legacyEntityCell = tell(candidateId, P.legacyEntity,
     { name: creation.packageName, version: creation.packageVersion, workOrder },
     ["/jsnodeOperationPackageCreationReceipt/packageName", "/jsnodeOperationPackageCreationReceipt/packageVersion", workOrderPointer]);
@@ -293,19 +293,19 @@ export function projectFabricationReceiptCells(request) {
   // and their evidence. No parallel list in the storage emitter can drift.
   const facts = [
     ["born-from-work-order", workOrder, [workOrderPointer]],
-    ["source-digest", admitted.sourceDigest, ["/sourceDigest"]],
-    ["specification-digest", admitted.specificationDigest, ["/specificationDigest"]],
-    ...([2, 3].includes(admitted.derivation?.version)
-      ? [["work-order-specification-digest", admitted.derivation.workOrderSpecificationDigest, ["/derivation/workOrderSpecificationDigest"]]] : []),
+    ["source-digest", validated.sourceDigest, ["/sourceDigest"]],
+    ["specification-digest", validated.specificationDigest, ["/specificationDigest"]],
+    ...([2, 3].includes(validated.derivation?.version)
+      ? [["work-order-specification-digest", validated.derivation.workOrderSpecificationDigest, ["/derivation/workOrderSpecificationDigest"]]] : []),
     ...realization.traceability.map((trace, index) => ["fabrication-trace", trace, [`/artifactFabricationRealizationReceipt/traceability/${index}`]]),
     ["files-digest", creation.filesDigest, ["/jsnodeOperationPackageCreationReceipt/filesDigest"]],
     ["has-quality", "fabricated-through-the-jsnode-line", ["/type", "/jsnodeOperationPackageCreationReceipt/type"]],
-    ...creation.assays.map((assay, index) => ["assay-passed", assay.name, [`/jsnodeOperationPackageCreationReceipt/assays/${index}`]]),
+    ...creation.assays.map((check, index) => ["assay-passed", check.name, [`/jsnodeOperationPackageCreationReceipt/assays/${index}`]]),
   ];
   const legacyCellAddresses = facts.filter(([, value]) => value !== null && value !== undefined)
     .map(([predicate, object, pointers]) => tell(candidateId, predicate, object, pointers));
   return retainedCarrier({ type: "JsnodeFabricationCellProjection", version: 1,
-    receiptId, candidateId, source, cells: cellSet(cells), legacyEntityCell, legacyCellAddresses });
+    receiptId: recordId, candidateId, source, cells: cellSet(cells), legacyEntityCell, legacyCellAddresses });
 }
 
 /**
@@ -315,11 +315,11 @@ export function projectFabricationReceiptCells(request) {
  * @param {{receipt: object, source?: {locator?: string, occurrence?: string}}} request Original source for replay.
  * @returns {object} The canonically replayed projection, or throws on mismatch.
  */
-export function admitFabricationReceiptCellProjection(projection, request) {
-  const expected = projectFabricationReceiptCells(request);
+export function validateFabricationRecordCellProjection(projection, request) {
+  const expected = projectFabricationRecordCells(request);
   let matches = false;
-  try { matches = cellSemanticId(receiptWireValue(fabricationRequest(projection))) === cellSemanticId(expected); } catch { /* An invalid carrier cannot replay. */ }
-  if (!matches) throw receiptAdmissionError("FABRICATION_CELL_BINDING_MISMATCH",
+  try { matches = cellSemanticId(recordWireValue(fabricationRequest(projection))) === cellSemanticId(expected); } catch { /* An invalid carrier cannot replay. */ }
+  if (!matches) throw recordValidationError("FABRICATION_CELL_BINDING_MISMATCH",
     "fabrication Cells do not replay from this exact admitted receipt and source presentation");
   return expected;
 }
@@ -331,16 +331,16 @@ export function admitFabricationReceiptCellProjection(projection, request) {
  * @param {object[]} rows Ordinary EAVT rows, possibly containing unrelated facts.
  * @returns {object[]} The canonical native Cell set.
  */
-export function readFabricationReceiptCellRows(rows) {
-  try { rows = receiptWireValue(fabricationRequest(rows)); }
-  catch (error) { throw receiptAdmissionError("FABRICATION_CELL_ROW_MISMATCH", error.message); }
+export function readFabricationRecordCellRows(rows) {
+  try { rows = recordWireValue(fabricationRequest(rows)); }
+  catch (error) { throw recordValidationError("FABRICATION_CELL_ROW_MISMATCH", error.message); }
   if (!Array.isArray(rows)) throw new TypeError("fabrication Cell receiving requires an EAVT row array");
   return cellSet(rows.filter(row => row?.a === FABRICATION_CELL_ATTRIBUTE).map(row => {
     let at;
     try { at = admitCell(row.v); }
-    catch (error) { throw receiptAdmissionError("FABRICATION_CELL_ROW_MISMATCH", error.message); }
+    catch (error) { throw recordValidationError("FABRICATION_CELL_ROW_MISMATCH", error.message); }
     if (!Number.isSafeInteger(row.t) || row.e !== cellAddress(at))
-      throw receiptAdmissionError("FABRICATION_CELL_ROW_MISMATCH", "the row must retain its native Cell address and safe trace ordinal");
+      throw recordValidationError("FABRICATION_CELL_ROW_MISMATCH", "the row must retain its native Cell address and safe trace ordinal");
     return at;
   }));
 }
@@ -352,15 +352,15 @@ export function readFabricationReceiptCellRows(rows) {
  * @param {{receipt: object, t: number, source?: {locator?: string, occurrence?: string}}} request Original fabrication report, genesis ordinal and optional source presentation.
  * @returns {object} WorldRowsFold with original fields and the same persisted native cellProjection.
  */
-export function foldFabricationReceiptIntoWorldRows(request) {
+export function foldFabricationRecordIntoWorldRows(request) {
   request = fabricationRequest(request);
   if (!Number.isSafeInteger(request?.t) || Object.is(request.t, -0))
-    throw receiptAdmissionError("INVALID_FABRICATION_TRACE_ORDINAL", "t must be a safe integer trace ordinal");
-  const projection = projectFabricationReceiptCells(request);
+    throw recordValidationError("INVALID_FABRICATION_TRACE_ORDINAL", "t must be a safe integer trace ordinal");
+  const projection = projectFabricationRecordCells(request);
   const byId = new Map(projection.cells.map(at => [cellAddress(at), at]));
   const lastOffset = projection.legacyCellAddresses.length + projection.cells.length;
   if (!Number.isSafeInteger(request.t + lastOffset))
-    throw receiptAdmissionError("FABRICATION_TRACE_ORDINAL_OVERFLOW", "the complete fabrication fold exceeds safe trace ordinals");
+    throw recordValidationError("FABRICATION_TRACE_ORDINAL_OVERFLOW", "the complete fabrication fold exceeds safe trace ordinals");
   const attributes = byId.get(projection.legacyEntityCell).object;
   const { address, genesis: genesisRow } = constitute({ kind: "jsnode-operation-package", attributes, t: request.t });
   const rows = [genesisRow];
@@ -371,8 +371,8 @@ export function foldFabricationReceiptIntoWorldRows(request) {
   }
   for (const at of projection.cells)
     rows.push({ e: cellAddress(at), a: FABRICATION_CELL_ATTRIBUTE, v: at, t: ++t });
-  const receipt = projection.cells.find(at => at.predicate === FABRICATION_CELL_PREDICATES.receipt).object;
+  const record = projection.cells.find(at => at.predicate === FABRICATION_CELL_PREDICATES.receipt).object;
   return { type: "WorldRowsFold", version: 1, address, rows,
-    traceability: receipt.artifactFabricationRealizationReceipt.traceability, cellProjection: projection };
+    traceability: record.artifactFabricationRealizationReceipt.traceability, cellProjection: projection };
 }
 

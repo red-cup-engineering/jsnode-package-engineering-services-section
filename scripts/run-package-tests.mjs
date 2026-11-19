@@ -38,10 +38,10 @@ if (flags[0] === "--check-receiving-enrollment") {
       if (entry && lstatSync(join(directory, entry[2]), { throwIfNoEntry: false })?.isFile())
         owns.set(entry[2], entry[1]);
     }
-    const admission = testPlan({ files: [...owns.keys()], manifest, profile: "receiving" });
-    planned = admission.tests.length;
-    if (admission.problems.length) throw new Error(admission.problems.join("; "));
-    for (const path of admission.tests) {
+    const validation = testPlan({ files: [...owns.keys()], manifest, profile: "receiving" });
+    planned = validation.tests.length;
+    if (validation.problems.length) throw new Error(validation.problems.join("; "));
+    for (const path of validation.tests) {
       const actual = execFileSync("git", ["-C", directory, "hash-object", "--no-filters", "--", path],
         { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
       if (actual !== owns.get(path)) throw new Error(`receiving program differs from the selected Git revision: ${path}`);

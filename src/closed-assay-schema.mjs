@@ -4,7 +4,7 @@ import { schemaFromGraph } from "@red-cup-engineering/json-schema-engineering-se
  * operation nor an earlier plan can supply a missing resource or change its
  * root, including the scope of local references and embedded identifiers.
  */
-export function closedAssaySchema(schema) {
+export function closedCheckSchema(schema) {
   const id = typeof schema === "object" && schema !== null && schema.$id !== undefined
     ? schema.$id : "urn:561:jsnode-plan:inline-schema";
   const root = typeof schema === "boolean" ? { $id: id, allOf: [schema] } : { ...schema, $id: id };

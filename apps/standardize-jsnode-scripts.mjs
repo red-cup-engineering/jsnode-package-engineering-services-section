@@ -29,7 +29,7 @@ const APPS_DIRECTORY = new URL(".", import.meta.url).pathname;
 export const DEFAULT_REPOSITORY_ROOT = resolve(APPS_DIRECTORY, "../../../../../../../../../../../../../../../../../../..");
 const SECTION_ROOT = resolve(APPS_DIRECTORY, "..");
 export const DEFAULT_RULE_PATH = resolve(SECTION_ROOT, "data/records/2026-09-04-jsnode-script-reprojection-rule.json");
-export const DEFAULT_READOUT_PATH = resolve(DEFAULT_REPOSITORY_ROOT, "lib/emsenn/services/561-group/services/561-group-services-section/data/records/2026-09-04-jsnode-script-discovery-readout.json");
+export const DEFAULT_REPORT_PATH = resolve(DEFAULT_REPOSITORY_ROOT, "lib/emsenn/services/561-group/services/561-group-services-section/data/records/2026-09-04-jsnode-script-discovery-readout.json");
 export const DEFAULT_TRACE_PATH = dataArtifactAddress({ root: resolve(DEFAULT_REPOSITORY_ROOT, "lib/emsenn/services/561-group/services/561-group-services-section"), tier: "log", encoding: "eavt", at: "2026-09-04", action: "standardization", subject: "standardization" }).path;
 
 /**
@@ -106,7 +106,7 @@ export function argumentsMigrationEqual(original, canonical) {
  * @param {{exportCount: number, descriptionPresent: boolean, residueEmpty: boolean, hasMainGuard: boolean}} predicate
  * @returns {boolean}
  */
-export function matchesReadoutCandidatePredicate(row, predicate) {
+export function matchesReportCandidatePredicate(row, predicate) {
   return (
     row.exportCount === predicate.exportCount &&
     row.hasDescription === predicate.descriptionPresent &&
@@ -305,7 +305,7 @@ async function existingTextByRelativePath({ files, scriptsRelativePath, original
 
 /** @param {object} record @param {object} predicate @returns {boolean} */
 function currentArgumentsMatch(record, predicate) {
-  return matchesReadoutCandidatePredicate({
+  return matchesReportCandidatePredicate({
     exportCount: record.exportCount, hasDescription: Boolean(record.description),
     residue: record.residue.length, hasMainGuard: record.hasMainGuard,
   }, predicate) && argumentsPassReadsStdin(record, predicate);
@@ -470,12 +470,12 @@ async function discoverScripts(root, scope) {
  * @returns {Promise<object>} A run summary: rule identity, counts by outcome, and rows appended.
  * @throws {TypeError} If the rule or readout record does not parse as JSON.
  */
-export async function standardizeJsnodeScripts({ rulePath = DEFAULT_RULE_PATH, readoutPath, root = DEFAULT_REPOSITORY_ROOT, scope, limit = Infinity, tracePath = DEFAULT_TRACE_PATH, apply = false } = {}) {
+export async function standardizeJsnodeScripts({ rulePath = DEFAULT_RULE_PATH, readoutPath: reportPath, root = DEFAULT_REPOSITORY_ROOT, scope, limit = Infinity, tracePath = DEFAULT_TRACE_PATH, apply = false } = {}) {
   const rule = JSON.parse((await readTextFile({ path: rulePath })).text);
   if (!Number.isSafeInteger(limit) && limit !== Infinity || limit < 1) throw new TypeError("limit must be a positive integer");
-  if (scope !== undefined && readoutPath !== undefined) throw new TypeError("choose scope or readout");
-  if (scope === undefined) readoutPath ??= DEFAULT_READOUT_PATH;
-  const readout = scope === undefined ? JSON.parse((await readTextFile({ path: readoutPath })).text) : { scripts: await discoverScripts(root, scope) };
+  if (scope !== undefined && reportPath !== undefined) throw new TypeError("choose scope or readout");
+  if (scope === undefined) reportPath ??= DEFAULT_REPORT_PATH;
+  const report = scope === undefined ? JSON.parse((await readTextFile({ path: reportPath })).text) : { scripts: await discoverScripts(root, scope) };
 
   let existingRows = [];
   try {
@@ -493,7 +493,7 @@ export async function standardizeJsnodeScripts({ rulePath = DEFAULT_RULE_PATH, r
   const candidates = [];
   const generatorId = rule.generator;
 
-  for (const [index, row] of readout.scripts.entries()) {
+  for (const [index, row] of report.scripts.entries()) {
     if (counts.readoutCandidates >= limit) break;
     counts.readoutCandidates += 1;
     const absolutePath = resolve(root, row.file);
@@ -539,7 +539,7 @@ export async function standardizeJsnodeScripts({ rulePath = DEFAULT_RULE_PATH, r
     type: "JsnodeScriptStandardizationRunSummary",
     version: 1,
     rule: rulePath,
-    readout: readoutPath,
+    readout: reportPath,
     trace: tracePath,
     apply,
     counts,

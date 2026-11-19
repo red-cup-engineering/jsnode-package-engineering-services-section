@@ -59,8 +59,8 @@ function contractTestSource(specification) {
 
 /** Projects authored behavioral tests plus one module/catalog operation contract. */
 export function projectJsnodeOperationTests(specification) {
-  const admitted = requireSpecification(specification);
-  const projections = admitted.tests.map((test) => file(test.path, test.text));
-  projections.push(file("test/operation-contracts.test.mjs", contractTestSource(admitted)));
+  const validated = requireSpecification(specification);
+  const projections = validated.tests.map((test) => file(test.path, test.text));
+  projections.push(file("test/operation-contracts.test.mjs", contractTestSource(validated)));
   return Object.freeze(projections.sort((left, right) => left.path.localeCompare(right.path)));
 }

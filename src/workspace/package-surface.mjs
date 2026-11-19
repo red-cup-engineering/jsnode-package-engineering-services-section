@@ -49,7 +49,7 @@ function entryTarget(entry) {
 }
 
 /** Project an admitted package export membrane through an observed source topology. */
-export function packageEndpointReadoutOf(
+export function packageEndpointReportOf(
   surface,
   read,
   options = {},
