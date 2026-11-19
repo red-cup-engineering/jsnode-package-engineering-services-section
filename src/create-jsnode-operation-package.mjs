@@ -12,7 +12,7 @@ import { inspectInstalledNpmPackage, inspectInstalledNpmPackageResolution } from
 import { projectJsnodeOperationPackage } from "./project-jsnode-operation-package.mjs";
 import { publishStagedDirectoryAtAbsentPath } from "@red-cup-engineering/computer-file-engineering-services-section/publish-staged-directory-at-absent-path";
 import { stageTextFileCreationProjections } from "./stage-text-file-creation-projections.mjs";
-import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
+import { validateTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { validateJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
@@ -139,7 +139,7 @@ export async function createJsnodeOperationPackage(request) {
 
     phase = "projection";
     const projected = projectJsnodeOperationPackage(specification);
-    const projection = admitTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: projected.files, filesDigest: projected.filesDigest });
+    const projection = validateTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: projected.files, filesDigest: projected.filesDigest });
     if (projection.type !== "TextFileCreationProjectionSet") refuse(projection.code, projection.message, projection.path);
 
     phase = "staging";

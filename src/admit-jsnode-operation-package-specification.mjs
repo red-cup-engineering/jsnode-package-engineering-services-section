@@ -3,11 +3,11 @@ import packageManifest from "../package.json" with { type: "json" };
 import { freezeJson } from "@red-cup-engineering/json-engine";
 import { isJsonValue } from "@red-cup-engineering/json-engine";
 import { validateNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
-import { admitNonemptySingleLineText } from "@red-cup-engineering/computer-text-content-engineering-services-section/admit-nonempty-single-line-text";
+import { validateNonemptySingleLineText } from "@red-cup-engineering/computer-text-content-engineering-services-section/admit-nonempty-single-line-text";
 import { formNpmScopedPackageName } from "@red-cup-engineering/npm-scoped-package-name-formation-service";
 import { readJavascriptFileExportDocumentation } from "@red-cup-engineering/jsdoc-engine";
 import { validateJavascriptExportDescription } from "@red-cup-engineering/jsdoc-engine/description";
-import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
+import { validateRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 import { projectJsnodeOperationSourceFromArguments } from "./project-jsnode-operation-source-from-arguments.mjs";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
 import { projectJsnodeModuleReferences } from "./project-jsnode-module-references.mjs";
@@ -38,7 +38,7 @@ function exactKeys(value, keys, context) {
 
 function safePackagePath(value, context) {
   try {
-    return admitRelativePosixFilepath(value);
+    return validateRelativePosixFilepath(value);
   } catch {
     refuse("UNSAFE_PATH", `${context} must remain within the package`, typeof value === "string" ? value : null);
   }
@@ -266,7 +266,7 @@ function operationExamples(value) {
     if (candidate.type !== "JavascriptNodeOperationExample") refuse("INVALID_EXAMPLE", "example.type must be JavascriptNodeOperationExample");
     let name;
     try {
-      name = admitNonemptySingleLineText(candidate.name);
+      name = validateNonemptySingleLineText(candidate.name);
     } catch {
       refuse("INVALID_EXAMPLE_NAME", "example.name must be nonempty single-line text");
     }
@@ -286,7 +286,7 @@ function packageExamples(value, operationsByPath) {
     if (!isRecord(candidate)) refuse("INVALID_EXAMPLE", "each example must be a JsnodeOperationPackageExample record");
     exactKeys(candidate, ["type", "name", "operation", "input", "output"], "example");
     if (candidate.type !== "JsnodeOperationPackageExample") refuse("INVALID_EXAMPLE", "example.type must be JsnodeOperationPackageExample");
-    const name = admitNonemptySingleLineText(candidate.name);
+    const name = validateNonemptySingleLineText(candidate.name);
     if (names.has(name)) refuse("DUPLICATE_EXAMPLE_NAME", `example name is duplicated: ${name}`);
     if (!operationsByPath.has(candidate.operation)) refuse("UNKNOWN_EXAMPLE_OPERATION", "example operation must name an admitted operation binding", candidate.operation);
     if (!isJsonValue(candidate.input) || !isJsonValue(candidate.output)) refuse("INVALID_EXAMPLE", "example input and output must be JSON values");
@@ -326,7 +326,7 @@ export function admitJsnodeOperationPackageSpecification(candidate) {
     const validatedVersion = exactVersion(candidate.packageVersion, "packageVersion");
     let license;
     try {
-      license = admitNonemptySingleLineText(candidate.license);
+      license = validateNonemptySingleLineText(candidate.license);
     } catch {
       refuse("INVALID_LICENSE", "license must be nonempty single-line text");
     }

@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { admitArtifactFabricationRealizationPlan, admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
+import { validateArtifactFabricationRealizationPlan, validateArtifactFabricationRealizationRecord, validateArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { createJsnodeOperationPackage } from "./create-jsnode-operation-package.mjs";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { fileURLToPath } from "node:url";
@@ -199,10 +199,10 @@ export async function deriveMarkdownJsnodeOperationModules(source, { infer, judg
     // Admission governs resource use: generated source is a realization of this
     // immutable order, never a retrospective addition to what authorized it.
     phase = "artifact-specification-admission";
-    const workOrderSpecification = admitArtifactFabricationSpecification(translated.artifactSpecificationCandidate);
+    const workOrderSpecification = validateArtifactFabricationSpecification(translated.artifactSpecificationCandidate);
     if (workOrderSpecification.type !== "ArtifactFabricationSpecification") return rejection(phase, workOrderSpecification);
     phase = "realization-plan-preflight";
-    const orderPlan = admitArtifactFabricationRealizationPlan(workOrderSpecification, realizationPlanCandidate(workOrderSpecification));
+    const orderPlan = validateArtifactFabricationRealizationPlan(workOrderSpecification, realizationPlanCandidate(workOrderSpecification));
     if (orderPlan.type !== "ArtifactFabricationRealizationPlan") return rejection(phase, orderPlan);
 
     if (translated.type === "MarkdownJsnodeOperationPackageClosureTranslation") {
@@ -220,7 +220,7 @@ export async function deriveMarkdownJsnodeOperationModules(source, { infer, judg
     if (translated.type !== "MarkdownJsnodeOperationPackageSpecificationTranslation") return rejection(phase, translated);
 
     phase = "artifact-specification-admission";
-    const specification = derivation === undefined ? workOrderSpecification : admitArtifactFabricationSpecification(translated.artifactSpecificationCandidate);
+    const specification = derivation === undefined ? workOrderSpecification : validateArtifactFabricationSpecification(translated.artifactSpecificationCandidate);
     if (specification.type !== "ArtifactFabricationSpecification") return rejection(phase, specification);
 
     phase = "jsnode-projection-selection";
@@ -228,7 +228,7 @@ export async function deriveMarkdownJsnodeOperationModules(source, { infer, judg
     if (projection.type === "MarkdownJsnodeOperationPackageFabricationRefusal") return immutable(projection);
 
     phase = "realization-plan-preflight";
-    const preflight = derivation === undefined ? orderPlan : admitArtifactFabricationRealizationPlan(specification, realizationPlanCandidate(specification));
+    const preflight = derivation === undefined ? orderPlan : validateArtifactFabricationRealizationPlan(specification, realizationPlanCandidate(specification));
     if (preflight.type !== "ArtifactFabricationRealizationPlan") return rejection(phase, preflight);
 
     phase = "jsnode-module-projection";
@@ -304,7 +304,7 @@ export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, 
     phase = "realization-receipt-admission";
     const creationDigest = semanticId(creationRecord);
     const evidence = { type: "ArtifactFabricationEvidence", locator: creationRecord.destination, digest: creationDigest };
-    const realizationRecord = admitArtifactFabricationRealizationReceipt(specification, realizationCandidate(specification, evidence));
+    const realizationRecord = validateArtifactFabricationRealizationRecord(specification, realizationCandidate(specification, evidence));
     if (realizationRecord.type !== "ArtifactFabricationRealizationReceipt") return materializedWithoutRecord(specification, creationRecord, registryPublication, realizationRecord);
 
     // FROG admits a born package only from this complete, admitted receipt.  Do

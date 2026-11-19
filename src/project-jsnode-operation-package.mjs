@@ -1,7 +1,7 @@
 import { relativeModuleSpecifier } from "./project-jsnode-module-paths.mjs";
 import { freezeJson } from "@red-cup-engineering/json-engine";
 import { serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
-import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
+import { validateTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { projectJsnodeOperationPackageReadme } from "./project-jsnode-operation-package-readme.mjs";
 import { projectJsnodeOperationTests } from "./project-jsnode-operation-tests.mjs";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
@@ -44,7 +44,7 @@ export function projectJsnodeOperationPackage(specification) {
     projectJsnodeOperationPackageReadme(specification),
   ].sort((left, right) => left.path.localeCompare(right.path));
   const filesDigest = sha256Digest(serializeLines(projected));
-  const validated = admitTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: projected, filesDigest });
+  const validated = validateTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: projected, filesDigest });
   if (validated.type !== "TextFileCreationProjectionSet") throw new TypeError(validated.message);
   return freezeJson({ type: "JsnodeOperationPackageProjection", version: 2, packageName: specification.packageName, packageVersion: specification.packageVersion, files: validated.files, filesDigest: validated.filesDigest });
 }
