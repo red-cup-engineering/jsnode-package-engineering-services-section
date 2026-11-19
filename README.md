@@ -1,0 +1,945 @@
+# JSNode fabrication
+
+## Quickstart
+
+The [runnable example](examples/quickstart.test.mjs) plans the native tests
+owned by a package, including files in nested folders and their declared
+requirements.
+
+Install the frozen closure with `pnpm install --frozen-lockfile`, then run
+`npm test`. Run `npm run test:consumer` for the example alone.
+
+## Native test reporters and receiving
+
+`run-package-tests` retains the caller's reporter destinations from both
+`NODE_OPTIONS` and command-line flags, then adds its own TAP file for the
+`package-test-run.v1` receipt. Node's single reporter with no destination keeps
+its implicit stdout binding. Already paired reporters keep their original
+destinations and ordering. Invalid original reporter/destination counts refuse
+before a receiving reporter is added or any test is launched. Other runtime
+options and the original `NODE_OPTIONS` text pass through unchanged.
+
+The public `./package-test-reporters` export supplies the same policy to
+receivers that need another reporter from that execution:
+
+```js
+import { composePackageTestReporters } from
+  "@red-cup-engineering/jsnode-package-engineering-services-section/package-test-reporters";
+import { standardTestArguments } from
+  "@red-cup-engineering/jsnode-package-engineering-services-section/standardize-package-tests";
+
+const original = standardTestArguments(manifest.scripts.test);
+if (original === null) throw new TypeError("A standard test command is required");
+const composed = composePackageTestReporters({
+  arguments: original,
+  nodeOptions: process.env.NODE_OPTIONS,
+  additionalReporters: [{ reporter: observationReporter, destination: eventFile }],
+});
+```
+
+`composed.arguments` is the complete argument array. When the original npm
+script already supplies `original`, append only `composed.appendedArguments`
+after `npm run test --`. Both arrays and the result object are frozen. The
+suffix contains any explicit default reporter/stdout binding or lone implicit
+stdout destination, followed by the added reporter/destination pairs. The
+helper never rewrites the original arguments or environment and does not
+interpret unrelated Node options. Node remains responsible for their validity.
+
+`standardTestArguments` decodes only the codemod's admitted simple command
+grammar, returning `null` for selectors or unsupported shell syntax. The
+reporter helper accepts decoded Node option tokens before the `--` delimiter
+and file selectors. It reads `NODE_OPTIONS` using Node's double-quote and
+backslash rules, which differ from shell quoting; single quotes there remain
+literal characters.
+
+The source tests compare actual native reporter output, retained preloads,
+once-only test execution, malformed configurations, and shell-decoded arguments.
+Machine assertions use a private TAP copy without replacing visible reporter
+output. See [Node's test reporters](https://nodejs.org/docs/latest-v24.x/api/test.html#test-reporters)
+and [NODE_OPTIONS](https://nodejs.org/docs/latest-v24.x/api/cli.html#node_optionsoptions).
+
+## Workspace scanner ownership
+
+The public `./workspace/scanner`, `./workspace/scanner/schema`, and
+`./workspace/scanner/service` exports now supply the original Fabrication
+workspace readers beside the package and workspace admissions they already
+consume. Fabrication's original exports delegate to these functions; CAIRN
+receives them directly.
+
+Filesystem access remains an explicit caller port. Declared workspaces retain
+their complete include/exclude glob patterns, deep members, and implicit root
+package. Unsupported glob syntax refuses at the supplied host boundary. The
+existing bounded traversal remains the fallback when no workspace declaration
+is admitted, preserving its depth and ignored-directory policy.
+
+<!-- 561-group-standards:badges:start -->
+[![Red Cup Engineering](https://img.shields.io/badge/561%20Group-Red%20Cup%20Engineering-c0392b)](https://github.com/red-cup-engineering)
+[![License: MIT](https://img.shields.io/badge/license-MIT-c0392b)](LICENSE)
+[![Indigenous data: CARE](https://img.shields.io/badge/Indigenous%20data-CARE-4b6f44)](https://github.com/red-cup-engineering/.github/blob/main/GOVERNANCE.md)
+[![Tips welcome](https://img.shields.io/badge/tips-welcome-d4a017)](https://github.com/561-group/.github/blob/main/TIPS.md)
+<!-- 561-group-standards:badges:end -->
+
+`projectJsnodeModules` projects ESM source modules, explicit JSON Schemas, and an
+optional catalog CLI from a module specification. Operations bind a name to an
+export from a source module. Multiple operations may use the same module; local
+helper imports remain local imports. No package, build, or per-function command
+wrapper is required by the module projection.
+
+The specification contract is
+`data/records/schema/jsnode-module-specification.schema.json`. See also the [package-form specification](content/text/documents/specifications/2026-10-28-jsnode-package-form-and-concurrent-boundaries.md), which distinguishes `src/`, `scripts/`, `bin/`, `lib/`, declared exports, published contents, and qualified concurrent effects. It is a proposed engineering specification with original-owner receiving requirements, not a claim that arbitrary JavaScript operations are concurrent games. Input and output
+schemas are supplied explicitly. Missing schemas remain unspecified; JSDoc does
+not establish a runtime data contract. NDJSON belongs to the optional command
+interface, while module functions receive and return JavaScript values.
+
+## Exact ECMAScript source and catalog admission
+
+Source-free ModuleDelivery admission uses the incumbent JavaScript syntax
+reader, rather than searching model-produced text for an export-shaped regular
+expression. A commented-out export, invalid syntax or a source body beyond
+the admitted one-module byte budget refuses **before package projection or
+an isolated source execution request**. An export declared by the original
+operation is checked against its actual ECMAScript ModuleExportName, including
+legal reserved names and dollar signs.
+
+The original module projector retains `default` as an actual ESM export and
+the optional catalog imports exact export names using quoted ModuleExportName
+syntax. The existing generated example/clause tests use the same convention.
+Native tests generate real modules, emitted catalog files and independent
+example tests for ordinary, reserved, default and dollar-bearing exports,
+execute them on Node 24 and verify that malformed code and export-shaped
+comments are refused. The source reader, projector and receiving tests share
+one original parser and do not create a duplicate language grammar.
+
+These are source/Code correctness observations. They do not attest the
+model provider, operating-system isolation, independent Work/SignChain,
+publication or a customer's accepted software.
+
+## Deterministic data modules from design records
+
+The same `projectJsnodeModules` producer accepts source-free `dataModules`.
+Each declaration names an ESM output path and one or more exports; each export
+contains its `name`, its strict JSON `value`, and its own `schema`. This lets an
+idle-game catalog, configuration model, or other declared design become an
+immutable executable module without a source-writing model or hand-maintained
+copy. Domain behavior stays with the existing engine consuming that data.
+
+```js
+import { projectJsnodeModules } from
+  "@red-cup-engineering/jsnode-package-engineering-services-section/project-jsnode-modules";
+
+const files = projectJsnodeModules({
+  dataModules: [{
+    path: "src/world-definitions.mjs",
+    exports: [{
+      name: "WORLD_DEFINITIONS",
+      value: [{ id: "trace-garden" }],
+      schema: {
+        type: "array", minItems: 1,
+        items: {
+          type: "object", additionalProperties: false, required: ["id"],
+          properties: { id: { type: "string", pattern: "^[a-z][a-z0-9-]*$" } },
+        },
+      },
+    }],
+  }],
+  operations: [],
+});
+```
+
+`sources` is optional; at least one authored source or data module is required.
+The data-only entry `projectJsnodeDataModules(dataModules)`, exported from
+`./project-jsnode-data-modules` and `./project-jsnode-modules`, returns the same
+frozen `TextFileCreationProjection[]` carrier. The producer performs no file,
+network, inference, install, or publication operation. A consumer writes the
+returned files through its existing generation process and compares complete
+generated bytes during its existing drift check.
+
+Each value and schema is snapshotted as strict JSON before admission. Finite
+numbers (including negative zero), strings, booleans, null, dense arrays and
+plain records are supported. Cycles, accessors, proxies, class instances,
+symbols, hidden/extra array members, undefined, nonfinite numbers and executable
+values are refused without calling `toJSON` or getters. Nesting is bounded to
+512 levels. Shared object references carry JSON value semantics; output is not
+a representation of input object identity or prototypes.
+
+Schema admission uses the existing `compileJsonSchema` evaluator on a closed
+static profile of its Draft 2020-12 and Draft 7 vocabularies. A reference must
+be a document-local JSON Pointer to a structural schema position admitted by
+the profile, such as `#/$defs/World` or `#/properties/id`. A reference cannot
+promote annotation data from `default`, `examples` or `const` into an unchecked
+schema. Embedded resource identifiers, named-anchor references and nonlocal
+references are outside this profile; another export or an ambient registry
+cannot satisfy a missing reference. Dynamic/recursive references, mixed
+dialects, dialect-inapplicable assertion keywords, `contentSchema`, custom
+vocabularies, unknown keywords and unknown formats are refused. This
+profile does not claim support for arbitrary JSON Schema extensions. Standard
+annotation values such as `default`, `examples` and `const` data are never
+mistaken for schema keyword locations. A schema refusal or nonconforming value
+rejects the entire projection before any output is returned.
+
+Modules and exports are ordered by code units; object member order is
+canonical and array order is preserved. Generated exports are deeply frozen
+and require no runtime supplier. Strings and hostile JSON member names,
+including `__proto__`, remain data. Export aliases keep legal names such as
+`Object` and `JSON` from shadowing the generated implementation. Reserved
+JavaScript bindings, duplicate names and output paths, traversal paths, and
+authored/data module collisions are refused. Data exports cannot be declared
+as callable operations or CLI entries. Authored operation modules can import
+the generated data through ordinary relative imports, and the existing source
+closure check verifies those links. `projectJsnodeModulePaths` includes authored
+helper modules, data modules, generated schemas, operation modules and any
+requested catalog path, so its file plan agrees with the emitted projection.
+
+The package admission, projection, and creation operations add optional npm
+packaging around that same module projection. A package specification with
+`cli: null` produces no CLI and injects no command runtime dependency. Legacy
+function-source work orders are normalized into module bindings. The creator
+checks declared examples, runs authored and generated contract tests, packs and
+clean-installs the result, and executes its exported functions and any requested
+catalog command before materializing an absent destination. Generated source-bearing
+contract tests snapshot their assertion and JSON functions and admitted examples
+before dynamically importing operation modules or the catalog. Import-time or
+invocation-time replacement of those shared functions cannot change the recorded
+example oracle. The creator receives authored tests and generated examples in
+separate native TAP runs. Authored suites retain their ordinary skip/TODO
+semantics; the generated run must complete every exact declared example once,
+with no suites, failures, skips, TODOs or cancellation. An authored same-name
+success cannot substitute for a missing generated case. Declared names that
+collide with enrolled native file-wrapper identities or another escaped name
+refuse completion because those observations are ambiguous. Both runs use the
+existing package-test report receiver, without changing the source-free assay
+contract. These are execution-completion observations, not hostile-code
+isolation or proof that the supplied examples establish every requirement.
+
+The Markdown translator accepts source fences, operation bindings, tests,
+examples, and the work order's requirements and traceability. Bindings carry
+`name`, `module`, `exportName`, `description`, and optional `inputSchema` and
+`outputSchema`. Examples refer to binding names, allowing two operations to
+share one source module. `JSNODE_PACKAGE_DIALECT_EXAMPLE` is executable through
+translation, admission, projection, and creation.
+
+The composed Markdown fabricator retains source-to-result receipts and its MCP
+interface. Registry publication remains a separate, explicitly requested effect.
+
+For sourced requirements targeting an existing consumer, `translate_work_order`
+also accepts the [source-free module order](examples/source-free-module-order.md).
+Its headings are the title, Requirements, Prohibitions, Laws, Standards,
+Open questions, Modules, Acceptance obligations, and Traceability, in that order.
+Modules contains one JSON fence with `operations`, `examples`, and exact
+`dependencies`. Acceptance obligations contains one JSON array of
+`{ id, kind, statement }` records supplied by the order's author. Traceability
+names the `jsnode-modules` projection and those explicit obligations. No package
+metadata, authored source, test source, CLI, destination, install or publication
+obligation is introduced. The example is a controlled contract, not live demand.
+Pass the returned `artifactSpecificationCandidate` unchanged to
+`derive_jsnode_modules`; translation proposes data, and the fabricator admits
+the canonical order before purchasing inference. Derivation and independent
+consumer receiving remain distinct. Package orders retain their own obligations.
+
+For an existing consumer, call fabrication MCP `derive_jsnode_modules` with
+`{ "workOrder": <ArtifactFabricationSpecificationCandidate> }`. The canonical
+order's artifact kind and sole projection ID are `jsnode-modules`; its target is
+`@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure`.
+The projection configuration contains only `operations`, `examples`, and exact
+`dependencies`. Operations require input and output schemas; examples contain
+`name`, `operation`, `input`, and `output`. The original requirements,
+prohibitions, law/standard constraints, receiving obligations and traceability
+remain part of that order.
+
+Admission returns a `JsnodeModuleProposal` binding the unchanged admitted order
+and realization plan to proposed modules/schemas, prior assay material,
+dependencies and supplier provenance. Module derivation requires no Markdown
+wrapper, authored source, tests, npm identity, CLI catalog, destination or
+registry. It creates no package and does not rewrite the order with its source.
+A legacy package order carries different obligations: translating it does not
+authorize silently discarding packaging requirements to obtain a module order.
+
+A proposal is not application or acceptance. Independently receive its behavior
+and authorize exact source transitions through the existing work carrier before
+applying it to a consumer. Source-free derivation requires exact dependencies
+already installed in a host-supplied project (`dependencyProjectRoot` in the code
+carrier; the native host defaults it to its bound repository). Installed package
+identity is inspected before inference and again before executing the hidden
+assays. The temporary assay links those packages; it does not install, pack or
+publish them. An unavailable context returns `ASSAY_CONTEXT_UNAVAILABLE` before
+either purchase. A context changed during inference returns
+`ASSAY_CONTEXT_CHANGED`, retaining the source delivery as unassayed without a
+negative supplier judgment. Behavioral evidence is no longer deferred to npm
+birth. Historical `deferred` records retain their original weaker meaning.
+Exact name/version observations do not prove immutable dependency contents or
+standards conformance; those remain distinct receiving obligations.
+Successful proposals await consumer receiving before their provider lots can be
+judged accepted. The separate Markdown package fabricator retains its package birth boundary.
+
+For the separate Markdown package dialect, a source-free v2 order omits `Sources` and `Tests`, and supplies explicit input
+and output schemas. The fabricator admits that order and its realization plan
+before calling a supplied inference carrier. A separate clause-assay delivery proposes case data from the requirements and
+prohibitions. SignStuff schema admission checks those data, and deterministic
+projection produces executable tests from the admitted examples and clause
+cases before source derivation. **Schema-negative clause assays** now allow a
+JSON operation to prove rejection of a value *outside* its declared input
+schema: the derived case sets `inputDomain: "outside-schema"`, supplies the
+out-of-domain `input`, sets `output: null`, and declares a named `throws`
+expectation. The receiver independently checks the original operation input
+schema and refuses a mislabeled valid input, missing expected error, or
+out-of-domain native host scenario **before requesting code**. The ordinary
+`inputDomain` default remains `admitted`, so existing schema-valid examples,
+negative cases and historical receipts continue to be read in their original
+mode. The generator's test emitter already projects those received cases into
+actual Node behavior assertions; the original host-owned isolated executor
+remains mandatory before any supplier source executes. Up to 128 cases may be
+proposed in one bounded delivery. These checks demonstrate a concrete expected
+failure path, not independent authentication of a claimed clause's meaning.
+
+The native TAP runner's exact name contract also rejects hash (`#`) and
+backslash (`\\`) in original example and derived clause-case labels, because Node
+escapes those characters when reporting TAP results. Nonprintable C1 controls
+are refused as well. Admission happens before implementation inference,
+avoiding paid source lots that cannot match the runner's literal receipt.
+This is a test-name compatibility gate, not a host isolation proof.
+
+When an **original Requirement/Prohibition explicitly calls for observable
+nonmutation or stable results for equivalent repeated inputs**, a successful,
+schema-admitted JSON clause case may additionally declare
+`checks: { "inputUnchanged": true, "stableReplay": true }`, selecting either
+or both flags. `inputUnchanged` requires an array/object input; throwing
+cases, outside-schema cases and native host scenarios cannot carry these
+checks. The original deterministic projector captures the initial input,
+asserts the expected first result, checks the original input is unchanged,
+then invokes the export on a fresh equivalent input and compares results; when
+both flags are requested it also checks the replay input stayed unchanged.
+The same source/derived tests are replayed by the incumbent v3 fabrication
+receipt reader. An output-only test that passed a mutating or stateful
+implementation is now distinguishable from an explicitly checked one.
+This is a finite observational contract, not a general proof of purity,
+idempotence, freedom from external effects, or actual buyer acceptance.
+The source writer sees the original order and
+examples, but not the extra cases. Each declared module is derived once with all
+its specified exports. An unresolved question or failed assay returns a refusal;
+the fabricator does not buy a repair or retry a rejected candidate. The Group host
+composes the same inference market used by its inference MCP surface into its
+fabrication surface when both are enabled.
+
+New source-free `JsnodeClosureDerivation@3` receipts retain `workOrderSpecification` and
+`workOrderSpecificationDigest` separately from the specification containing
+derived source and tests. Receiving re-admits the order and checks that removing
+only generated source and tests from the realization recovers that exact order.
+The receipt also binds the prior clause cases to the deterministically projected
+tests and checks their derivation order. Clause-ID coverage is not proof that
+every natural-language obligation is satisfied. The EAVT fold carries the
+order's digest to the consumer. Historical v1 and v2 derivation
+receipts retain their original evidence; v1 does not witness pre-inference
+admission, and neither historical version proves the v3 clause-assay binding. These receipts establish their stated bindings and assays, rather
+than organizational acceptance or deployment.
+
+
+### Retain fabrication evidence as native Cells
+
+`projectFabricationReceiptCells({receipt, source?})`, exported through
+`./fabrication-receipts`, projects an originally admitted receipt into native
+SignCells. It retains the complete receipt and exposes its source, requirements,
+constraints, exact candidate files, complete assay records, original work order,
+derivation attempts and traceability. Every reported claim keeps its receipt
+identity and original JSON pointers. `source` may supply a real `locator` and/or
+`occurrence`; omission preserves content identity without inventing an event or
+clock. Independently received, customer accepted and deployed coordinates stay
+unwitnessed.
+
+Requests and received rows enter through SignCell's inert carrier admission
+before field access. Literal path and occurrence identifiers also retain their
+UTF-8 JSON-string hexadecimal observation basis in each positive witness, so
+native Unicode normalization cannot merge distinct supplied presentations.
+
+The complete receipt must also fit the existing EAVT JSON wire. Native-only
+values such as BigInt, byte arrays and undefined refuse before projection;
+nonfinite numbers and negative zero also refuse. Negative zero would lose its
+sign in that encoder. Unknown JSON fields remain intact. A refused receipt
+returns no fold, so a caller cannot append legacy facts before discovering a
+non-JSON source value in a later Cell. SignCell's broader native carrier is
+unchanged.
+
+`admitFabricationReceiptCellProjection(projection, {receipt, source?})` replays
+the projection against that original source. The exported JSON Schema describes
+wire shape and references SignCell's Cell schema; shape alone cannot admit an
+invented acceptance witness or substituted candidate.
+
+The existing `foldFabricationReceiptIntoWorldRows` keeps its original world
+facts, derives them from this same Cell mapping, and appends complete native
+Cell rows under `jsnode-fabrication:cell`. Consequently the ordinary receipt
+emitter persists the evidence without a second ledger. Read those rows with
+`readFabricationReceiptCellRows`; it checks Cell addresses and preserves opposing
+witnesses through the native join. Numeric EAVT `t` remains a safe trace ordinal,
+not an absolute observation timestamp. Both v2 and v3 derivations preserve the
+original work-order digest. See the [source and receiving contract](content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md).
+
+
+## Select independent execution methods
+
+The native `fabrication-derive-jsnode-modules` and
+`fabrication-fabricate-jsnode-operation-package` operations, and their MCP
+projections, accept optional `inferenceMethods.assays` and
+`inferenceMethods.source`. Each stage may select its own `workPlacement`,
+`considerationPolicy`, `agentBounds`, and `requiredQualityTiers` using the
+existing market contracts. Inspect the current supplier configuration identity
+before placing work; a catalog entry does not demonstrate usable delivery or
+available quota.
+
+For example, these are request bounds, not a complete work order or a provider
+recommendation:
+
+```json
+{
+  "path": "path/to/original-work-order.md",
+  "inferenceMethods": {
+    "assays": { "agentBounds": { "maximumRequests": 1, "maximumOutputTokens": 2048 } },
+    "source": { "agentBounds": { "maximumRequests": 1, "maximumOutputTokens": 4096 } }
+  }
+}
+```
+
+Optional `reasoning_effort`, nonnegative `reasoning_budget`, and the closed
+`chat_template_kwargs` are admitted supplier-specific chat controls. Use them
+only when the selected supplier/model documents their meanings. No reasoning
+control is selected by default. The fixed host placement, consideration, and
+execution bounds take precedence over caller choices; native customer admission
+still governs purchases. Method choices cannot replace the order, generated
+prompt, output schema, task classification, model ownership, or authority.
+Requests require text output rather than a descriptive “code” capability label;
+the consumer admits the candidate data and assays the code locally.
+
+These declarations describe source capability. Confirm the installed native or
+MCP catalog accepts this input before invoking it on a serving node. Record the
+original order, each stage's lot, measured consumption, and separate delivery
+judgments. An output limit reached with reasoning alone is a failed artifact
+delivery, not evidence that a larger budget will realize the work. A refused
+source does not invalidate a separately admitted assay delivery, and neither
+admits application to a production consumer.
+
+## Source-free connected module fabrication
+
+### Host-isolated pre-assay (required for source-free derivation)
+
+The module fabricator **does not spawn Node on supplier-generated code**. Its
+`deriveJsnodeModules` / `deriveJsnodePackageFromClosure` operations require a
+host-composed function named `isolatedAssayExecutor`. Without it they return
+`ISOLATED_ASSAY_UNAVAILABLE` *before purchasing inference*. It is not a
+customer-supplied serialization field or an alternative generic shell runner.
+
+The existing fabricator now passes one connected, bounded request containing
+projected `src/` modules and deterministic `test/` files, exact declared
+dependency locations, test paths and test names. The request explicitly
+requires no network or writable host workspace and a 30-second maximum.
+The effectful execution provider must impose those conditions in a real
+isolated Guix/LAGOON runtime: mount the admitted dependencies read-only, give
+only an ephemeral writable scratch tree, omit credentials/network, cap CPU,
+RAM and process count, and terminate the complete process group on completion
+or failure. Return a bounded `{ isolated: true, status, stdout, stderr,
+signal?, timedOut?, truncated? }` from the host's verified execution—not
+from an arbitrary model-supplied object. The boolean is a host-observation
+claim, **not itself a proof of sandbox security**.
+
+The pure recipient rejects abnormal/partial execution, missing expected
+tests, test skips, and the Node early-exit-zero false positive. As a
+**Fabrication Friday proofing requirement**, the source-owned Node TAP
+reporter must additionally produce exactly one root `1..N` plan, exactly
+`N` consecutively numbered root results (nested/indented results do not
+qualify), distinct names matching the original work order, and the
+consistent terminal passed/failed/skipped/cancelled/TODO counters after the
+root plan. A root bailout or malformed extra root result refuses the
+observation even when the remaining summary appears complete. Both captured
+stdout and stderr are bounded by actual **UTF-8 bytes**, not JavaScript
+string-character counts. A structurally plausible but incomplete log is
+`ASSAY_INCOMPLETE`; a bounded-host/byte violation is
+`ASSAY_EXECUTION_REFUSED`. The original receiving operation now also emits
+one stable source-qualified `reason` on refusal: bad/missing/repeated
+root plan, mismatched plan count, missing or misnumbered root result,
+unexpected/failed name, root bailout, malformed root result, premature plan,
+inconsistent or premature runner counters,
+unqualified host result, or captured output too large. The **same single
+parser** backs both the original boolean `testRunCompletedAllAssays` and
+the detailed receiving refusal, so clients do not maintain competing
+assay-completion or proof vocabularies. These reasons let the next
+Engineering pass select the correct original proof/host defect without
+misclassifying it as failed customer code or automatically purchasing
+another generated source.
+
+The connected module caller retains a source writer even when that delivery
+has no market lot. Its unknown carrier cannot establish independence from a
+named clause-assay carrier; the other modules' named lots do not erase that
+missing provenance. These remain unverified market-lot declarations, and
+the source proofing record does not assert independent receiving.
+
+These checks are *necessary observations of
+one isolated attempt*, not a proof that a provider is authentic, that
+independent semantic validation succeeded, that a BOINC replication quorum
+was met, or that a customer accepted the output.
+
+The existing proof receiver and all its native regressions are exercised
+by the original package's tests; its focused, dependency-free
+`assay-proof-native` workflow runs the **actual original proof-stage
+source** and `test/assay-completion.test.mjs` on independent Node 24.
+This does not replace the original full fabrication suite, the separate
+host isolation proof, the qualified source/design revision proof gate, or
+downstream Work/customer receiving. A controlled local Node runner exists
+solely in `test/fixtures/` for fixed test source; it is **not** a production
+execution alternative. Host integration and real negative controls remain
+required before treating untrusted generated source as safely executable.
+
+### Native host factories and existing source context
+
+A `jsnode-modules` operation can declare `nativeProfile` instead of runtime
+`inputSchema`/`outputSchema`. A native profile is source-free data: its stable
+`id`, original source `locator` and SHA-256 `digest`, explicit native `contract`,
+and the `scenarioSchema`/`observationSchema` of its receiver-owned fixture. The
+examples and independently derived clause cases describe that fixture's
+scenarios and observations. They do not serialize factory arguments, function
+ports, `BigInt`, byte arrays, live handles or object identity. The source writer
+receives the native contract and the original complete order. A native export
+cannot acquire the optional JSON CLI command face.
+
+The inference request retains those exact schema documents in its complete
+work order. Its native `input`/`output` slots are a closed transport envelope,
+not relocated copies of the scenario/observation schemas. Before inference,
+each native schema is compiled in its own explicit schema universe, as in
+planning; after delivery, every native input and every returned observation
+is admitted against that same independent contract before fixture projection
+or source writing. Local references, nested identifiers and identifiers reused
+by separate contracts retain their original meanings. Neither another
+operation nor the ambient schema registry can satisfy a missing reference.
+A refusal case still requires `output: null`, and its input must be admitted.
+Envelope validity alone never admits a native case. JSON operation carrier
+schemas and their existing unary test projection are unchanged.
+
+The trusted host imports `bindNativeAssayProfile` from the existing
+`derive-jsnode-package-from-closure` entry and supplies
+`nativeAssayBindings: [bindNativeAssayProfile(profile, projectFixture)]` beside
+its `isolatedAssayExecutor`. The private binding captures an immutable profile
+using the existing content-address owner. A JSON copy carries only the
+declaration and cannot acquire the executable projector. An absent, changed,
+duplicate or copied binding refuses before inference. A profile identity binds
+the declaration; it does not authenticate its stated source or grant authority.
+The host remains responsible for selecting the original qualified fixture.
+
+`projectFixture` receives frozen `{operation, profile, identity, cases}` data.
+Each case includes its original scenario, observation or expected error, and
+the exact `testName` checked by the existing TAP recipient. The projector must
+synchronously return one bounded Node test-source string. It constructs actual
+native values and filesystem lifecycle observations inside the existing
+isolated runner. Its executable bytes are held by the host, not the work order
+or source-writing supplier. The producer projects the complete test lot once,
+before source delivery, and reuses those exact bytes for pre-assay. Success and
+source refusal retain the profile identity and test-source digest. These
+receipts do not upgrade source-reported inference lot identities to independent
+authentication.
+
+An existing consumer may also retain original sibling ESM modules, rather than
+asking the writer to generate them. The host holds bounded records
+`{path, text, source: {locator, digest}}`; `nativeAssaySourceClosure(records)`
+projects their read-only paths and source identities for `profile.sourceClosure`.
+Bind the matching bytes with
+`bindNativeAssayProfile(profile, projectFixture, {sourceFiles: records})`.
+Paths remain confined beneath `src/`, byte digests must agree, and the profile's
+closure identity must match the held originals. Generated targets cannot
+overwrite retained files. The original module projector validates the complete
+generated-plus-retained import closure; the existing isolated pre-assay stages
+both under its read-only workspace policy. Retained originals are excluded from
+the generated proposal and source-delivery records. Missing imports, changed
+bytes, path escapes, conflicting originals and overlap refuse. No second source
+resolver, filesystem walker or sandbox is introduced.
+
+This profile supports module fabrication into an existing owner. The package
+birth/JSON operation-package profile remains unchanged. Producer unit tests use
+the existing explicitly controlled literal-source fixture; real generated code
+still requires the selected isolated host and an actual inference delivery.
+
+
+
+A `jsnode-modules` order declares every operation, its module, schemas, examples,
+exact dependencies, clauses and independent receiving obligations. The native
+`fabrication-derive-jsnode-modules` operation admits that order before inference.
+The original native TAP receiver requires one **exact, unique runner-name
+namespace** across authored examples and independently derived clause cases.
+The original Work planner and direct source-free fabricator now refuse
+control-character, multiline and oversized example names **before buying an
+assay inference request**. The original clause-case receiver also refuses a
+collision with any authored example after forming full native test names:
+an example called `clause assay negative` and an independent case called
+`negative` address the same `operation: clause assay negative` TAP result.
+That disagreement refuses **before buying implementation inference** and
+the existing v3 fabrication-receipt reader refuses to replay a forged or
+unreceivable case set. The original complete TAP host receiver still checks
+the exact executed count, identities, zero skips and complete accounting;
+early structural admission is not an isolation proof or substantive
+requirement coverage.
+
+Clause assays are derived first and hidden from source suppliers. Each declared
+module is supplied once; relative imports may use the other declared modules.
+The existing module projector validates the complete source/import closure, then
+one temporary consumer executes every admitted example and prior clause assay.
+An incomplete or failing composition is refused as a whole, without automatic
+repair purchases or attributing an interaction failure to one arbitrary supplier.
+The result retains the original order, source lots and assay evidence; it remains
+a proposal for an independent receiver, not accepted or deployed software.
+
+The bounded workspace lockfile codec accepts a document ending at its importer
+section. End of input terminates dependency and importer walks; it is never a
+blank line to skip. `cutPnpmLockfile` preserves every unnamed importer and the
+existing registry closure.
+
+## Strict PNPM importer source admission
+
+The original Code PNPM v9 importer decoder refuses duplicate importer
+coordinates, duplicate dependencies within a field, and unresolved empty
+specifier/version entries rather than allowing a later row to overwrite
+one source of resolution evidence. Its existing typed importer result remains
+unchanged for valid locks. Organizing's importer-scoped resolution consumer
+uses this provider rather than independent lexical guesses. Source edition
+0.2.4 needs immutable package publication and a selected consumer lock before
+it can be called installed.
+
+
+## Native package check receiving
+
+The native syntax and test commands require a successful child-process outcome,
+including no launch error or terminating signal. Status zero alone is not
+execution evidence. The test command also receives its actual Node TAP copy:
+one root header and terminal plan, complete root outcomes, and consistent
+test, suite, pass, fail, cancellation, skip and TODO counters. Missing or
+contradictory evidence fails the package check and remains in the report.
+
+Registered test results use global ordinals. Native wrappers for files that
+perform top-level assertions may carry their original enrolled file index;
+that exception is admitted once only for the exact unannotated enrolled file
+identity. Skips, TODOs, nested suites and explicitly filtered empty runs retain
+their native accounting. Options that reorder or shard the enrolled file list
+have not been qualified with assertion-only file wrappers. These checks prove
+the stated execution/report completeness, not that arbitrary test source
+adequately exercises its requirements.
+
+## From the copy in red-cup-engineering/javascript-engineering-services-section
+
+`projectJsnodeModules` projects ESM source modules, explicit JSON Schemas, and an
+optional catalog CLI from a module specification. Operations bind a name to an
+export from a source module. Multiple operations may use the same module; local
+helper imports remain local imports. No package, build, or per-function command
+wrapper is required by the module projection.
+
+The specification contract is
+`data/records/schema/jsnode-module-specification.schema.json`. Input and output
+schemas are supplied explicitly. Missing schemas remain unspecified; JSDoc does
+not establish a runtime data contract. NDJSON belongs to the optional command
+interface, while module functions receive and return JavaScript values.
+
+The package admission, projection, and creation operations add optional npm
+packaging around that same module projection. A package specification with
+`cli: null` produces no CLI and injects no command runtime dependency. Legacy
+function-source work orders are normalized into module bindings. The creator
+checks declared examples, runs authored and generated contract tests, packs and
+clean-installs the result, and executes its exported functions and any requested
+catalog command before materializing an absent destination.
+
+The Markdown translator accepts source fences, operation bindings, tests,
+examples, and the work order's requirements and traceability. Bindings carry
+`name`, `module`, `exportName`, `description`, and optional `inputSchema` and
+`outputSchema`. Examples refer to binding names, allowing two operations to
+share one source module. `JSNODE_PACKAGE_DIALECT_EXAMPLE` is executable through
+translation, admission, projection, and creation.
+
+The composed Markdown fabricator retains source-to-result receipts and its MCP
+interface. Registry publication remains a separate, explicitly requested effect.
+
+For sourced requirements targeting an existing consumer, `translate_work_order`
+also accepts the [source-free module order](examples/source-free-module-order.md).
+Its headings are the title, Requirements, Prohibitions, Laws, Standards,
+Open questions, Modules, Acceptance obligations, and Traceability, in that order.
+Modules contains one JSON fence with `operations`, `examples`, and exact
+`dependencies`. Acceptance obligations contains one JSON array of
+`{ id, kind, statement }` records supplied by the order's author. Traceability
+names the `jsnode-modules` projection and those explicit obligations. No package
+metadata, authored source, test source, CLI, destination, install or publication
+obligation is introduced. The example is a controlled contract, not live demand.
+Pass the returned `artifactSpecificationCandidate` unchanged to
+`derive_jsnode_modules`; translation proposes data, and the fabricator admits
+the canonical order before purchasing inference. Derivation and independent
+consumer receiving remain distinct. Package orders retain their own obligations.
+
+For an existing consumer, call fabrication MCP `derive_jsnode_modules` with
+`{ "workOrder": <ArtifactFabricationSpecificationCandidate> }`. The canonical
+order's artifact kind and sole projection ID are `jsnode-modules`; its target is
+`@red-cup-engineering/jsnode-package-engineering-services-section/derive-jsnode-package-from-closure`.
+The projection configuration contains only `operations`, `examples`, and exact
+`dependencies`. Operations require input and output schemas; examples contain
+`name`, `operation`, `input`, and `output`. The original requirements,
+prohibitions, law/standard constraints, receiving obligations and traceability
+remain part of that order.
+
+Admission returns a `JsnodeModuleProposal` binding the unchanged admitted order
+and realization plan to proposed modules/schemas, prior assay material,
+dependencies and supplier provenance. Module derivation requires no Markdown
+wrapper, authored source, tests, npm identity, CLI catalog, destination or
+registry. It creates no package and does not rewrite the order with its source.
+A legacy package order carries different obligations: translating it does not
+authorize silently discarding packaging requirements to obtain a module order.
+
+A proposal is not application or acceptance. Independently receive its behavior
+and authorize exact source transitions through the existing work carrier before
+applying it to a consumer. Source-free derivation requires exact dependencies
+already installed in a host-supplied project (`dependencyProjectRoot` in the code
+carrier; the native host defaults it to its bound repository). Installed package
+identity is inspected before inference and again before executing the hidden
+assays. The temporary assay links those packages; it does not install, pack or
+publish them. An unavailable context returns `ASSAY_CONTEXT_UNAVAILABLE` before
+either purchase. A context changed during inference returns
+`ASSAY_CONTEXT_CHANGED`, retaining the source delivery as unassayed without a
+negative supplier judgment. Behavioral evidence is no longer deferred to npm
+birth. Historical `deferred` records retain their original weaker meaning.
+Exact name/version observations do not prove immutable dependency contents or
+standards conformance; those remain distinct receiving obligations.
+Successful proposals await consumer receiving before their provider lots can be
+judged accepted. The separate Markdown package fabricator retains its package birth boundary.
+
+For the separate Markdown package dialect, a source-free v2 order omits `Sources` and `Tests`, and supplies explicit input
+and output schemas. The fabricator admits that order and its realization plan
+before calling a supplied inference carrier. A separate clause-assay delivery proposes case data from the requirements and
+prohibitions. SignStuff schema admission checks those data, and deterministic
+projection produces executable tests from the admitted examples and clause
+cases before source derivation. The source writer sees the original order and
+examples, but not the extra cases. Each declared module is derived once with all
+its specified exports. An unresolved question or failed assay returns a refusal;
+the fabricator does not buy a repair or retry a rejected candidate. The Group host
+composes the same inference market used by its inference MCP surface into its
+fabrication surface when both are enabled.
+
+New source-free `JsnodeClosureDerivation@3` receipts retain `workOrderSpecification` and
+`workOrderSpecificationDigest` separately from the specification containing
+derived source and tests. Receiving re-admits the order and checks that removing
+only generated source and tests from the realization recovers that exact order.
+The receipt also binds the prior clause cases to the deterministically projected
+tests and checks their derivation order. Clause-ID coverage is not proof that
+every natural-language obligation is satisfied. The EAVT fold carries the
+order's digest to the consumer. Historical v1 and v2 derivation
+receipts retain their original evidence; v1 does not witness pre-inference
+admission, and neither historical version proves the v3 clause-assay binding. These receipts establish their stated bindings and assays, rather
+than organizational acceptance or deployment.
+
+
+## Select independent execution methods
+
+The native `fabrication-derive-jsnode-modules` and
+`fabrication-fabricate-jsnode-operation-package` operations, and their MCP
+projections, accept optional `inferenceMethods.assays` and
+`inferenceMethods.source`. Each stage may select its own `workPlacement`,
+`considerationPolicy`, `agentBounds`, and `requiredQualityTiers` using the
+existing market contracts. Inspect the current supplier configuration identity
+before placing work; a catalog entry does not demonstrate usable delivery or
+available quota.
+
+For example, these are request bounds, not a complete work order or a provider
+recommendation:
+
+```json
+{
+  "path": "path/to/original-work-order.md",
+  "inferenceMethods": {
+    "assays": { "agentBounds": { "maximumRequests": 1, "maximumOutputTokens": 2048 } },
+    "source": { "agentBounds": { "maximumRequests": 1, "maximumOutputTokens": 4096 } }
+  }
+}
+```
+
+Optional `reasoning_effort`, nonnegative `reasoning_budget`, and the closed
+`chat_template_kwargs` are admitted supplier-specific chat controls. Use them
+only when the selected supplier/model documents their meanings. No reasoning
+control is selected by default. The fixed host placement, consideration, and
+execution bounds take precedence over caller choices; native customer admission
+still governs purchases. Method choices cannot replace the order, generated
+prompt, output schema, task classification, model ownership, or authority.
+Requests require text output rather than a descriptive “code” capability label;
+the consumer admits the candidate data and assays the code locally.
+
+These declarations describe source capability. Confirm the installed native or
+MCP catalog accepts this input before invoking it on a serving node. Record the
+original order, each stage's lot, measured consumption, and separate delivery
+judgments. An output limit reached with reasoning alone is a failed artifact
+delivery, not evidence that a larger budget will realize the work. A refused
+source does not invalidate a separately admitted assay delivery, and neither
+admits application to a production consumer.
+
+## Source-free connected module fabrication
+
+A `jsnode-modules` order declares every operation, its module, schemas, examples,
+exact dependencies, clauses and independent receiving obligations. The native
+`fabrication-derive-jsnode-modules` operation admits that order before inference.
+Clause assays are derived first and hidden from source suppliers. Each declared
+module is supplied once; relative imports may use the other declared modules.
+The existing module projector validates the complete source/import closure, then
+one temporary consumer executes every admitted example and prior clause assay.
+An incomplete or failing composition is refused as a whole, without automatic
+repair purchases or attributing an interaction failure to one arbitrary supplier.
+The result retains the original order, source lots and assay evidence; it remains
+a proposal for an independent receiver, not accepted or deployed software.
+
+## Projected catalog runtime
+
+New catalog-bearing package specifications select
+`@red-cup-engineering/node-js-function-engineering-services-section@0.5.2-dev.0`
+as a runtime dependency. That owner supplies the public module interpreter and
+`run-javascript-node-operation-module` bin. Projected declarations remain data;
+they gain neither a private interpreter nor a package-local executable wrapper.
+Generated tests use the same canonical interpreter, while creation receives the
+installed bin and compares its raw NDJSON values with the imported operations.
+No House resolver or source-tree package discovery is used.
+
+The historical `@red-cup-engineering/javascript-node-services-section` and
+former `@red-cup-engineering/javascript-node-operation-engineering-services-section`
+also provide that bin name. An authored app specification selecting either in a
+dependency map is refused rather than silently discarding requirements or
+allowing an install-order-dependent runner. Migrate its required APIs explicitly,
+or select `cli: null` for a module-only package. Module-only specifications keep
+their authored dependency selections unchanged and acquire no automatic runtime.
+Historical guard-to-declaration conversion remains supported.
+
+The runtime version comes from this package's exact runtime dependency declaration,
+not a second hardcoded version or an installed-package lookup. The fabrication
+package and its generated catalogs therefore select the same qualified Function
+runtime. Parser, module analysis and command execution use their current owners;
+no historical JavaScriptNode facade is required. Source and native archive
+receiving do not establish issued registry availability. A source snapshot can
+qualify local staged installation without publishing or activating its artifacts;
+issued-artifact integrity and the complete transitive lock remain separate gates.
+
+### Source and installed receiving test profiles
+
+`run-package-tests [node flags]` runs every discovered source-owned test. An
+explicit `receivingTests` subset does not filter or invalidate this source plan.
+Use `run-package-tests --receiving [node flags]` to run the separately authored
+installed-carrier obligations in their declared order. The selector must be the
+first argument; later arguments remain native Node flags and operands unchanged.
+Every report names its `profile` (`source` or `receiving`). These are distinct
+claims, not interchangeable coverage measurements.
+
+Receiving requires a nonempty array of distinct safe package-relative paths,
+all present in the carrier. Programs may be examples rather than `*.test.*`.
+Missing, duplicate or unsafe entries refuse before execution. Segments use ASCII
+letters, digits, dots, underscores and hyphens; root option-like names beginning
+with a hyphen refuse rather than relying on Node child-process option parsing. `testRequires`
+applies to selected programs in either profile; an entirely unavailable plan
+refuses. Installed carriers may retain requirements for omitted source-only
+tests, but source mode still diagnoses unknown requirement paths. Neither mode
+silently converts incomplete native execution into success. An unenrolled empty
+source package retains its historical empty-plan behavior.
+
+This package chooses to ship its entire source plan as receiving tests;
+`sync-package-manifest --receiving-tests` remains an explicit way to make that
+choice, not a requirement imposed on all consumers.
+
+### Parser-owned source sites and atomic relocation
+
+The fabrication source uses the genuine JavaScript parser service directly, including its binding-aware module-reference sites. Package-owned relocation is an atomic transformation of caller-supplied file mappings; it does not restore the retired JavaScriptNode syntax facade or persist a separately applicable edit plan. See `content/text/documents/specifications/jsnode-module-reference-projection.md` for the supported profile and refusal behavior.
+
+The development parser and export-documentation dependency selections are source prerequisites. Selected native source and packed-consumer qualification does not establish registry issuance, the complete installed dependency graph, or activation. The existing pnpm lock remains unreconciled; frozen installation is not qualified by these source checks.
+
+### Catalog command evaluation boundaries
+
+A projected catalog declares each command as an asynchronous callable that imports its exact authored module and selects its exact export only when invoked. The existing Function operation interpreter still admits input before the call, awaits its result, validates output, and reports import or execution failures as refused operations with a nonzero process result. The selected callable receives the original value and context with detached invocation semantics; native ESM caching controls module evaluation.
+
+Help, an unknown command, or invoking another command does not evaluate an unrelated operation module. This is not a claim that metadata is dependency-free: declared schema imports and schema admission remain eager. Projection still checks the complete declared source graph and export bindings; deferral does not admit missing projected modules. It does not make absent runtime suppliers available or waive installation/receiving gates. Creation constructs explicit request data and delegates admission immediately to the actual Execute owner before native effects; the removed JavaScriptNode admission facade is not restored. Invalid creation input yields its existing typed phase refusal. The dependency-free selected creation command is received through real staging, native tests, packing, clean installation, inspection and absent-destination publication. Issued-registry fabrication and publication are not established by this local source/archive qualification.
+
+
+## Current whole-source native receiving
+
+Derivation reads export evidence from the existing JavaScript parser owner. The actual standardization application owns its bounded single-function extraction from parser and ExportDoc facts, including explicit residue and the authored rule's before/after testing and rollback gates; it does not restore the removed general JavaScriptNode syntax facade. The comment CLI uses Node's strict argument parser. The receipt emitter uses the current Function runtime, and fabrication command data is admitted by the current Execute owner. Planner program capture/conditional execution tests use the existing nested javascript-module-closure-service.
+
+All direct supplier selections identify the actual source/archive cohort, including the genuine current Publisher carrier. This does not reconcile their transitive historical manifests or assert registry availability. The original complete source test plan remains distinct from the authored Section receiving profile. Real-registry and unavailable-platform tests retain their original qualification conditions; no publication or host mutation is inferred from controlled fixture tests.
+
+The retained shared-account work-order fixture is historical test evidence, not a new implementation assignment. Fixed-commit source locators retain their historical path; only the live projection target follows the current package owner. Historical digest comparison explicitly replays that single target rename while preserving the original digest and all authored requirement assertions.
+
+### Staged catalog runtime receiving
+
+The existing staged tests can be selected explicitly with
+`JSNODE_STAGING_REGISTRY=<read-only-snapshot-url> node scripts/run-package-tests.mjs --test-concurrency=1`.
+Explicit registry selection runs the installation cases and fails on missing
+carriers rather than silently skipping. The native source receiving used the
+existing registry snapshot assembler and read service with the authentic seven
+carriers in the Function runtime closure: Function 0.5.2-dev.0, JSON 0.4.3-dev.0,
+SignCell 0.17.5, SignCraft 0.9.6-dev.2, SignGraph 0.10.1, SignChain 0.6.4 and
+Metrologic 0.22.2. No carrier manifest was pruned or assigned a substitute version.
+The original Markdown package-birth cases exercised native packing, clean
+installation, generated tests, CLI/module agreement and receipt binding with
+publication omitted or false. This qualifies that staged source-artifact
+scenario, not issuance on the house registry or this generator's entire frozen
+transitive dependency graph.
+
+### Native npm owner uptake
+
+The npm packing, name admission and export-documentation suppliers are selected
+at their current proper-owner prerequisites. The npm package's complete runtime
+graph was installed from authentic source archives through the existing read-only
+registry snapshot, then replayed with `npm ci` into a second empty consumer and
+cache. Its complete shipped fifteen-program receiving profile passed in both
+installations. This generator receives those actual installed suppliers rather
+than a local manifest override. The claim is a native source-artifact runtime
+graph, not the generator's unresolved full development lock or house-registry
+issuance. No publication or held upstream integration is authorized by it.
+
+Publisher and installed-package inspection now select the current source
+prerequisites received through a genuine Linux npm runtime graph and a fresh
+`npm ci` replay of the same consumer lock. The publisher's five authored packed
+programs and inspection's four authored programs passed in both installations.
+This does not turn Publisher's intentionally unmet proposed native-module
+qualification assertions into supported behavior, or certify optional bound
+worker profiles, issuer-registry bytes, deployment, or this repository's stale
+development lock.
+
+### Generated operation contract invocation
+
+Generated package contract tests select each imported export and invoke it as a
+detached function, matching the projected catalog callable. The internal export
+lookup table is never supplied as `this`. Native receiving exercises both
+module-only and catalog projections: a detached operation is accepted, while an
+operation that only satisfies the example when bound to an artificial receiver
+is rejected. This qualifies generated source behavior, not package issuance.
+
+Example inputs and expected outputs in generated contracts are decoded as JSON,
+not interpreted as JavaScript object-literal syntax. Own members such as
+`__proto__`, including nested members, remain data with ordinary JSON object
+prototypes. The original package-order admission and complete package projection
+are received through the generated package's own `npm test` script, including a
+negative control that omits an expected own output member. This requires no
+installation or registry access and does not assert packed-package receiving.
+
+To inspect the package checkout's PNPM declaration agreement without
+installing anything, run
+`node scripts/sync-package-manifest.mjs --check-pnpm-root [REPOSITORY]`.
+This reads the root manifest and PNPM v9 importer and emits JSON with status
+`agreement` (exit 0), `drift` (exit 1), or `unchecked` (exit 2). Inputs
+requiring native policy or YAML handling are unchecked, not proof of drift.
+The CI preflight uses this same command. Agreement covers literal direct
+declarations only, not dependency resolution, integrity or registry stock.
+
+### Receiving enrollment before acquisition
+
+Run `node scripts/run-package-tests.mjs --check-receiving-enrollment` from this tracked package checkout, or set `PACKAGE_TEST_DIRECTORY` to the tracked consumer package directory when using this runner on another package. This checks that every explicit `receivingTests` program is present in the Git revision and selected by npm's offline, lifecycle-disabled packlist. It does not install dependencies, execute test programs, inspect an issued archive, or qualify behavior. The existing `--receiving` run against installed bytes is still required for receiving evidence. Repair missing or excluded programs against the package's current requirements; do not remove enrollment merely to pass preflight.
+
+A source preflight also checks that every selected program still has its
+committed bytes. Installed-mode qualification is stricter than an ordinary
+source run: filtered, skipped, TODO, or empty behavioral results do not carry a
+successful receiving receipt. Run the dependency-free behavioral contract with
+`node --test test/package-receiving.test.mjs`. Fabrication and downstream
+qualification remain separate from this package-runner contract.
+
+### Committing a manifest rewrite
+
+`sync-package-manifest --write [REPOSITORY]` edits working files only. Its JSON
+receipt's `writtenManifestPaths` contains the exact repository-relative literal
+paths written, in sorted order. `--check` and an idempotent write both return
+an empty list. Planning reads the entire selected repository before starting
+any write; a missing tracked input or refused test plan leaves earlier manifests
+untouched. The write phase is not an atomic filesystem transaction. Use this list, not the staged index or a recursive dirty-path
+query, when passing the rewrite to the Group's [exact-file Git commit
+service](https://github.com/red-cup-engineering/committing-git-paths-service).
+Pass the array to its `commitGitPaths({ repository, paths, message })` API, or
+skip committing when it is empty. A write receipt is not a commit or permission
+to publish; call the owning Git service against the same unchanged worktree.
+Run `npm run test:manifest-custody` against an installed TypeScript supplier
+for the real CLI behavior.

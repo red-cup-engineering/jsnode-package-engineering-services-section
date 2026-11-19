@@ -1,0 +1,114 @@
+{
+  "oldViem": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/viem",
+  "oldViemVersion": "2.55.4",
+  "viemExactReuse": [
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/viem/node_modules/@noble/curves",
+      "name": "@noble/curves",
+      "version": "1.9.1",
+      "required": "1.9.1",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@noble/hashes",
+      "name": "@noble/hashes",
+      "version": "1.8.0",
+      "required": "1.8.0",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@scure/bip32",
+      "name": "@scure/bip32",
+      "version": "1.7.0",
+      "required": "1.7.0",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@scure/bip39",
+      "name": "@scure/bip39",
+      "version": "1.6.0",
+      "required": "1.6.0",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/viem/node_modules/abitype",
+      "name": "abitype",
+      "version": "1.2.3",
+      "required": "1.2.3",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/isows",
+      "name": "isows",
+      "version": "1.0.7",
+      "required": "1.0.7",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/viem/node_modules/ws",
+      "name": "ws",
+      "version": "8.21.0",
+      "required": "8.21.0",
+      "satisfies": true
+    }
+  ],
+  "oxAvailableSuppliers": [
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/ox/node_modules/abitype",
+      "name": "abitype",
+      "version": "1.3.0",
+      "required": "^1.2.3",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@scure/bip32",
+      "name": "@scure/bip32",
+      "version": "1.7.0",
+      "required": "^1.7.0",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@scure/bip39",
+      "name": "@scure/bip39",
+      "version": "1.6.0",
+      "required": "^1.6.0",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/ox/node_modules/@noble/curves",
+      "name": "@noble/curves",
+      "version": "1.9.1",
+      "required": "1.9.1",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@noble/hashes",
+      "name": "@noble/hashes",
+      "version": "1.8.0",
+      "required": "^1.8.0",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/ox/node_modules/eventemitter3",
+      "name": "eventemitter3",
+      "version": "5.0.1",
+      "required": "5.0.1",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/ox/node_modules/@noble/ciphers",
+      "name": "@noble/ciphers",
+      "version": "1.3.0",
+      "required": "^1.3.0",
+      "satisfies": true
+    },
+    {
+      "root": "/home/emsenn/info/lib/phezi-ochage/services/561-group/services/engineering-services-section/services/github-engineering-services-section/node_modules/@adraffy/ens-normalize",
+      "name": "@adraffy/ens-normalize",
+      "version": "1.11.1",
+      "required": "^1.11.0",
+      "satisfies": true
+    }
+  ],
+  "rangeAdmissionProvider": "existing semver package satisfies; no new parser"
+}

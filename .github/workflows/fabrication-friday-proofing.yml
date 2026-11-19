@@ -1,0 +1,30 @@
+name: Fabrication Friday source receiving
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+concurrency:
+  group: fabrication-friday-${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+permissions:
+  contents: read
+jobs:
+  native-source-receiving:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Require declared receiving programs in Git and the npm packlist
+        run: node scripts/run-package-tests.mjs --check-receiving-enrollment
+      - name: Check committed root manifest and lock specifiers before installing
+        run: node scripts/sync-package-manifest.mjs --check-pnpm-root
+      - name: Do not acquire dependencies without the replacement fabrication procedure
+        run: |
+          echo '::error::The offline package contract is not the installed fabrication, source-derived manifest, and downstream package proof. Qualify that procedure and the frozen closure before enabling acquisition.'
+          exit 1

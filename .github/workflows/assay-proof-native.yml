@@ -1,0 +1,107 @@
+name: JSNode proof-stage native receiving
+on:
+  pull_request:
+    paths:
+      - 'src/package-*.mjs'
+      - 'src/sync-package-manifest.mjs'
+      - 'scripts/sync-package-manifest.mjs'
+      - 'test/sync-package-manifest-custody.test.mjs'
+      - 'pnpm-lock.yaml'
+      - 'src/workspace/pnpm-lockfile.mjs'
+      - 'test/pnpm-root-lock-receiving.test.mjs'
+      - 'scripts/run-package-tests.mjs'
+      - 'package.json'
+      - 'test/package-receiving.test.mjs'
+      - '.npmignore'
+      - '.github/workflows/assay-proof-native.yml'
+  push:
+    branches: [main, 'fix/**']
+    paths:
+      - 'src/package-*.mjs'
+      - 'src/sync-package-manifest.mjs'
+      - 'scripts/sync-package-manifest.mjs'
+      - 'test/sync-package-manifest-custody.test.mjs'
+      - 'pnpm-lock.yaml'
+      - 'src/workspace/pnpm-lockfile.mjs'
+      - 'test/pnpm-root-lock-receiving.test.mjs'
+      - 'scripts/run-package-tests.mjs'
+      - 'package.json'
+      - 'test/package-receiving.test.mjs'
+      - '.npmignore'
+      - '.github/workflows/assay-proof-native.yml'
+permissions:
+  contents: read
+jobs:
+  source-proof:
+    name: JSNode source checks (no package acquisition)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Verify receiving programs are committed and selected by npm
+        run: node scripts/run-package-tests.mjs --check-receiving-enrollment
+      - name: Execute the contract from the local npm artifact
+        run: |
+          set -euo pipefail
+          scratch="$(mktemp -d)"
+          trap 'rm -rf "$scratch"' EXIT
+          archive="$(npm pack . --silent --offline --ignore-scripts --cache "$scratch/cache" --pack-destination "$scratch")"
+          [[ "$archive" =~ ^[a-z0-9][a-z0-9._-]*\.tgz$ ]]
+          mkdir "$scratch/carrier"
+          tar --extract --gzip --file "$scratch/$archive" --directory "$scratch/carrier" --strip-components=1 --no-same-owner --no-same-permissions
+          (cd "$scratch/carrier"; node scripts/run-package-tests.mjs --receiving)
+  manifest-custody:
+    name: JSNode manifest custody (pinned public parser, no Group dependencies)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TYPESCRIPT_VERSION: '5.9.3'
+      TYPESCRIPT_INTEGRITY: 'sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=='
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Require the fixture parser to match the committed supplier selection
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFileSync } from 'node:fs';
+          const { TYPESCRIPT_VERSION: version, TYPESCRIPT_INTEGRITY: integrity } = process.env;
+          const manifest = JSON.parse(readFileSync('package.json', 'utf8'));
+          assert.equal(manifest.dependencies.typescript, version);
+          const lock = readFileSync('pnpm-lock.yaml', 'utf8');
+          const lines = lock.split('\n');
+          const entry = lines.indexOf(`  typescript@${version}:`);
+          assert.notEqual(entry, -1, 'TypeScript lock selection is missing');
+          assert.equal(lines[entry + 1]?.trim(), `resolution: {integrity: ${integrity}}`);
+          NODE
+      - name: Receive the native CLI from the packed artifact
+        run: |
+          set -euo pipefail
+          scratch="$(mktemp -d)"
+          trap 'rm -rf "$scratch"' EXIT
+          curl --fail --silent --show-error --proto '=https' --tlsv1.2 --max-time 45 \
+            --output "$scratch/typescript.tgz" "https://registry.npmjs.org/typescript/-/typescript-${TYPESCRIPT_VERSION}.tgz"
+          node --input-type=module - "$scratch/typescript.tgz" <<'NODE'
+          import assert from 'node:assert/strict';
+          import { createHash } from 'node:crypto';
+          import { readFileSync } from 'node:fs';
+          const actual = 'sha512-' + createHash('sha512').update(readFileSync(process.argv[2])).digest('base64');
+          assert.equal(actual, process.env.TYPESCRIPT_INTEGRITY, 'TypeScript archive does not match the committed supplier');
+          NODE
+          archive="$(npm pack . --silent --offline --ignore-scripts --cache "$scratch/cache" --pack-destination "$scratch")"
+          [[ "$archive" =~ ^[a-z0-9][a-z0-9._-]*\.tgz$ ]]
+          mkdir -p "$scratch/carrier/node_modules/typescript"
+          tar --extract --gzip --file "$scratch/$archive" --directory "$scratch/carrier" --strip-components=1 \
+            --no-same-owner --no-same-permissions
+          tar --extract --gzip --file "$scratch/typescript.tgz" --directory "$scratch/carrier/node_modules/typescript" \
+            --strip-components=1 --no-same-owner --no-same-permissions
+          (cd "$scratch/carrier"; npm run test:manifest-custody)

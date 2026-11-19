@@ -1,0 +1,89 @@
+{
+  "kind": "561.fabrication-qualification.v1",
+  "localDate": "2026-10-26",
+  "repository": "red-cup-engineering/jsnode-package-engineering-services-section",
+  "base": "2f4d07de3b92b54bdc7acc95914dfd70fa31a812",
+  "scope": "Schema-admitted deterministic data modules and truthful native package-check receiving",
+  "source": [
+    {
+      "path": "README.md",
+      "sha256": "92c5a69fedf01dc5eead59b141ad511a6c479d7bea1eb057245be3076128b7bc"
+    },
+    {
+      "path": "package.json",
+      "sha256": "5ceb89956f19ec1becf2858afc6b55e255a7b2c4edf9d7d82924b92ef09589fd"
+    },
+    {
+      "path": "scripts/check-package-syntax.mjs",
+      "sha256": "4c2b09f36c79ef160358a3bc90f270c766bfa7d5207c1c9e4f5e4fc4d91937ae"
+    },
+    {
+      "path": "scripts/run-package-tests.mjs",
+      "sha256": "c93386da31999e505f19387a4442e3cf29425a9d2dc19aa53fc3627b76e89d77"
+    },
+    {
+      "path": "src/package-check-outcome.mjs",
+      "sha256": "3c34b5eb6f7f36b61466f76cc59a0a7c12207df6975aa8e5a66121eb359a0828"
+    },
+    {
+      "path": "src/project-jsnode-data-modules.mjs",
+      "sha256": "570d815765dc96779f7e41b6e3b9949848a07503f0c749e186616e97138cf2b4"
+    },
+    {
+      "path": "src/project-jsnode-module-paths.mjs",
+      "sha256": "a897842b6ae4cb5fea0631a74178417b49e912ff550b1529b257c810b1a44fbe"
+    },
+    {
+      "path": "src/project-jsnode-modules.mjs",
+      "sha256": "4cd08c942a099ca6c1c01dd65ad03657f86b0ecc23476295fba4811f7d0cfa10"
+    },
+    {
+      "path": "data/records/schema/jsnode-module-specification.schema.json",
+      "sha256": "b65d4c5678351a8716d7cd4d1381dd9786f86bfcb3b6b518266d07c42b596020"
+    },
+    {
+      "path": "data/records/jsnode-package-cli.specification.json",
+      "sha256": "6088ed72855594ba25b9b7856d9dfcb2ff860dbf0d3bc7443d2dea2a2bed3659"
+    },
+    {
+      "path": "test/project-jsnode-data-modules.test.mjs",
+      "sha256": "3ee788cf41143be89cafea2ad85b5953648ebc9f2e365231f0ab067e6f0d683a"
+    },
+    {
+      "path": "test/native-check-receiving.test.mjs",
+      "sha256": "903f369a64415f926812e89e4154ceba222a7c89cf92af25ee292bc8b497180e"
+    }
+  ],
+  "toolchain": {
+    "node": "24.22.1"
+  },
+  "command": "node --test --test-reporter=tap test/native-check-receiving.test.mjs test/project-jsnode-data-modules.test.mjs test/project-jsnode-modules.test.mjs test/planner-module-closure.test.mjs test/connected-module-fabrication.test.mjs",
+  "result": {
+    "tests": 27,
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0
+  },
+  "independentReview": {
+    "assaySourceSeparateFromImplementation": true,
+    "counterexamplesRepaired": [
+      "annotation reference escaped schema admission",
+      "draft-inapplicable dependency assertion ignored",
+      "inconsistent module output ordering",
+      "child execution refusal with status zero",
+      "incomplete native TAP interpreted as success"
+    ]
+  },
+  "environment": {
+    "source": "task-owned development checkout",
+    "execution": "Node child processes permitted; temporary/output storage moved to task-owned memory filesystem after shared disk exhaustion",
+    "earlierSandboxResults": "Not used as acceptance: EPERM was present despite status zero."
+  },
+  "log": "changed-obligations.tap",
+  "limitations": [
+    "The complete original package test plan is a distinct run.",
+    "This receipt establishes source and bounded native qualification, not package registry publication or service activation."
+  ]
+}
