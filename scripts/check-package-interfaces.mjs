@@ -12,16 +12,16 @@
  * importing package up to the repository root, at its installed version; one found nowhere is a diagnostic.
  * Classes are the composition gate's break classes (guix-machine-release-service assembly-breaks BREAK_CLASSES).
  */
-import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { nestedRootsOf, ownedFiles, packageRoots } from "../src/package-tree.mjs";
 import { formatManifestLike } from "../src/sync-package-manifest.mjs";
 import { PACKAGE_INTERFACE_CLASSES, exportAdditions, houseImportsOfFiles, packageInterfaceFindings } from "../src/workspace/package-interfaces.mjs";
+import { execGitSync } from '@red-cup-engineering/git-engine/git-process';
 
 const mode = process.argv.includes("--write") ? "write" : "check";
 const repository = resolve(process.argv.slice(2).find((argument) => !argument.startsWith("--")) ?? ".");
-const tracked = execFileSync("git", ["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
+const tracked = execGitSync(["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
 const roots = packageRoots(tracked);
 
 const packages = [], imports = [];

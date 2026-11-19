@@ -98,7 +98,8 @@
     "@red-cup-engineering/yaml-engine": "^0.1.0",
     "typescript": "5.9.3",
     "@red-cup-engineering/semiotic-content-address-system": "0.1.7-dev.1",
-    "@red-cup-engineering/typed-content": "0.1.0-dev.0"
+    "@red-cup-engineering/typed-content": "0.1.0-dev.0",
+    "@red-cup-engineering/git-engine": "^0.1.11-dev.0"
   },
   "engines": {
     "node": ">=24"

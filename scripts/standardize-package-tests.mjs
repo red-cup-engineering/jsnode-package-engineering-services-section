@@ -3,7 +3,6 @@
 // directory is in. Dry run by default: prints the report as JSON. --write rewrites each changed package.json in
 // its own formatting. The devDependency on @red-cup-engineering/jsnode-package-engineering-services-section is declared workspace:*, as
 // every house dependency is: house packages are composed in workspaces, not installed standalone.
-import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { packageRoots } from "../src/package-tree.mjs";
@@ -11,11 +10,12 @@ import { formatManifestLike } from "../src/sync-package-manifest.mjs";
 import { standardizePackageTests } from "../src/standardize-package-tests.mjs";
 import { testPlan } from "../src/package-test-plan.mjs";
 import { packageFiles } from "../src/package-files.mjs";
+import { execGitSync } from '@red-cup-engineering/git-engine/git-process';
 
 const argv = process.argv.slice(2);
 const write = argv.includes("--write");
-const repository = execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
-const tracked = execFileSync("git", ["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
+const repository = execGitSync(["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+const tracked = execGitSync(["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
 const roots = packageRoots(tracked);
 const manifests = new Map(roots.map((root) => [root, join(repository, root, "package.json")]));
 const range = "workspace:*";
@@ -30,7 +30,7 @@ for (const root of roots) {
   const plan = testPlan({ files, manifest });
   // Git-ignored paths may still be selected by the original node command. Do not crawl or enroll them:
   // an incomplete listing means wildcard/default selection cannot be proven safe to replace.
-  const ignored = execFileSync("git", ["-C", join(repository, root), "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory", "--", "."], { encoding: "utf8", maxBuffer: 1 << 30 });
+  const ignored = execGitSync(["-C", join(repository, root), "ls-files", "-z", "--others", "--ignored", "--exclude-standard", "--directory", "--", "."], { encoding: "utf8", maxBuffer: 1 << 30 });
   const result = standardizePackageTests(manifest, plan, { range, selectionComplete: ignored.length === 0 });
   if (plan.problems.length || result.changed || result.kept) {
     report.packages.push({ root, name: manifest.name ?? null, tests: plan.tests.length, problems: plan.problems, test: result.test, check: result.check, newlyRun: result.newlyRun, kept: result.kept });
