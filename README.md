@@ -943,3 +943,11 @@ skip committing when it is empty. A write receipt is not a commit or permission
 to publish; call the owning Git service against the same unchanged worktree.
 Run `npm run test:manifest-custody` against an installed TypeScript supplier
 for the real CLI behavior.
+
+## Deriving public behavior tests for an existing module
+
+Run `project-jsnode-example-tests specifications/*.examples.json` from the consumer package. Each specification produces `test/<name>-examples.test.mjs`, executable with `node --test`. Use `--check` to detect stale or missing generated files.
+
+The specification names a package-relative JavaScript module, its callable export, and examples with JSON inputs. Each example expects an `output` or a named error in `throws`. Set the top-level `x-javascript-arguments` to `"positional"` to pass each item of the input array as an argument. By default the callable receives one input. An optional `outputPath` observes a property of the returned object, including public getters. A `mutateInput` list replaces existing caller-owned JSON members after the call and before observing its result. Both use arrays of property names or numeric indices.
+
+The public `./project-jsnode-example-tests` export provides the pure `projectExistingModuleExampleTests(specification)` projection. Its result contains the generated file's `path` and `text`. See [the projector's own examples](examples/project-existing-module-examples.json).
