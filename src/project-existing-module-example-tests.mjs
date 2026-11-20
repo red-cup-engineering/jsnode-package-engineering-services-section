@@ -1,5 +1,7 @@
 import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 import { isJsonValue } from "@red-cup-engineering/json-engine";
+import { admitCell, cell, evidenced, sidesOf, specialize, told } from "@red-cup-engineering/signcell";
+import { canonicalEqual } from "@red-cup-engineering/semiotic-content-address-system";
 import { projectJsnodeExampleTests } from "./project-jsnode-example-tests.mjs";
 
 function requireFields(record, allowed, required) {
@@ -54,8 +56,23 @@ function admitExample(example, positional, names) {
   }
 }
 
-/** Project an existing callable's declared public behavior into a Node test source. */
-export function projectExistingModuleExampleTests(specification) {
+// These specialize an expectation about a call. Its witnesses attest the
+// specification; it takes a separate execution to observe the actual outcome.
+const returns = "jsnode.example.returns";
+const refuses = "jsnode.example.throws";
+
+function declaredCell(example, operation, source) {
+  if (example && Object.hasOwn(example, "predicate")) return admitCell(example);
+  requireFields(example, ["name", "input", "output", "throws", "outputPath", "mutateInput"], ["name", "input"]);
+  const field = Object.hasOwn(example, "throws") ? "throws" : "output";
+  if (!Object.hasOwn(example, field)) throw new TypeError("An example must specify output or throws");
+  const { [field]: expected, ...call } = example;
+  const general = cell({ operation, ...call }, "jsnode.example.expects", expected);
+  return evidenced(specialize(() => field === "throws" ? refuses : returns, general), { for: [source] });
+}
+
+/** Admit declared behavior once for both documentation and native tests. */
+export function admitExistingModuleExamples(specification) {
   if (!isJsonValue(specification)) throw new TypeError("Expected a JSON example specification");
   const fields = ["name", "module", "exportName", "examples"];
   requireFields(specification, [...fields, "x-javascript-arguments"], fields);
@@ -68,6 +85,27 @@ export function projectExistingModuleExampleTests(specification) {
   if (mode !== undefined && mode !== "positional") throw new TypeError("Expected positional or absent x-javascript-arguments");
   if (!Array.isArray(examples) || !examples.length) throw new TypeError("Expected one or more public behavior examples");
   const names = new Set();
-  for (const example of examples) admitExample(example, mode === "positional", names);
-  return projectJsnodeExampleTests(specification, examples, [], true);
+  const operation = { module, exportName, ...(mode && { "x-javascript-arguments": mode }) };
+  const declarations = examples.map(example => declaredCell(example, operation, { specification: name, ...operation }));
+  const observations = declarations.map(declaration => {
+    requireFields(declaration.subject, ["operation", "name", "input", "outputPath", "mutateInput"], ["operation", "name", "input"]);
+    const { operation: target, ...call } = declaration.subject;
+    if (!canonicalEqual(target, operation)) throw new TypeError("Example names a different operation");
+    const [held, denied] = sidesOf(declaration);
+    const [supported, opposed] = told(declaration);
+    if (!held || denied || !supported || opposed) throw new TypeError("An example needs unopposed supporting testimony");
+    if (declaration.predicate !== returns && declaration.predicate !== refuses) throw new TypeError("Unknown example predicate");
+    const observation = declaration.predicate === returns
+      ? { ...call, output: declaration.object }
+      : { ...call, throws: declaration.object };
+    admitExample(observation, mode === "positional", names);
+    return observation;
+  });
+  return { ...specification, examples: observations, declarations };
+}
+
+/** Project executable observations of the admitted example declarations. */
+export function projectExistingModuleExampleTests(specification) {
+  const admitted = admitExistingModuleExamples(specification);
+  return projectJsnodeExampleTests(admitted, admitted.examples, [], true);
 }

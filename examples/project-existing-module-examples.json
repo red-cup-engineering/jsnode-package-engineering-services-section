@@ -28,6 +28,9 @@
         "examples": [{"name": "conflicting expectations", "input": null, "output": 1, "throws": "TypeError"}]
       },
       "throws": "TypeError"
-    }
+    },
+    {"name": "a witnessed declaration may expect a null result", "input": {"name": "score", "module": "src/score.mjs", "exportName": "score", "examples": [{"subject": {"operation": {"module": "src/score.mjs", "exportName": "score"}, "name": "an empty score", "input": []}, "predicate": "jsnode.example.returns", "object": null, "for": ["game rules"], "against": []}]}, "outputPath": ["path"], "output": "test/score-examples.test.mjs"},
+    {"name": "opposed testimony cannot become an executable promise", "input": {"name": "score", "module": "src/score.mjs", "exportName": "score", "examples": [{"subject": {"operation": {"module": "src/score.mjs", "exportName": "score"}, "name": "an empty score", "input": []}, "predicate": "jsnode.example.returns", "object": null, "for": ["game rules"], "against": ["amended rules"]}]}, "throws": "TypeError"},
+    {"name": "a declaration about one export cannot specify another", "input": {"name": "score", "module": "src/score.mjs", "exportName": "reset", "examples": [{"subject": {"operation": {"module": "src/score.mjs", "exportName": "score"}, "name": "an empty score", "input": []}, "predicate": "jsnode.example.returns", "object": null, "for": ["game rules"], "against": []}]}, "throws": "TypeError"}
   ]
 }

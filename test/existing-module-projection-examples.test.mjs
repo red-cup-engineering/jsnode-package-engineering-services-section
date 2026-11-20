@@ -20,3 +20,14 @@ test("existing-module-projection: a caller mutation must address a member in the
 test("existing-module-projection: a refusal and a returned value are exclusive observations", async () => {
   await assert.rejects(async () => await fabricatedOperation({"name":"observe","module":"src/observe.mjs","exportName":"observe","examples":[{"name":"conflicting expectations","input":null,"output":1,"throws":"TypeError"}]}), { name: "TypeError" });
 });
+test("existing-module-projection: a witnessed declaration may expect a null result", async () => {
+  const submitted = {"name":"score","module":"src/score.mjs","exportName":"score","examples":[{"subject":{"operation":{"module":"src/score.mjs","exportName":"score"},"name":"an empty score","input":[]},"predicate":"jsnode.example.returns","object":null,"for":["game rules"],"against":[]}]};
+  const result = await fabricatedOperation(submitted);
+  assert.deepStrictEqual(result["path"], "test/score-examples.test.mjs");
+});
+test("existing-module-projection: opposed testimony cannot become an executable promise", async () => {
+  await assert.rejects(async () => await fabricatedOperation({"name":"score","module":"src/score.mjs","exportName":"score","examples":[{"subject":{"operation":{"module":"src/score.mjs","exportName":"score"},"name":"an empty score","input":[]},"predicate":"jsnode.example.returns","object":null,"for":["game rules"],"against":["amended rules"]}]}), { name: "TypeError" });
+});
+test("existing-module-projection: a declaration about one export cannot specify another", async () => {
+  await assert.rejects(async () => await fabricatedOperation({"name":"score","module":"src/score.mjs","exportName":"reset","examples":[{"subject":{"operation":{"module":"src/score.mjs","exportName":"score"},"name":"an empty score","input":[]},"predicate":"jsnode.example.returns","object":null,"for":["game rules"],"against":[]}]}), { name: "TypeError" });
+});
