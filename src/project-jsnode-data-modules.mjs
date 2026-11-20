@@ -196,16 +196,10 @@ export function projectJsnodeDataModules(dataModules) {
     }).sort((left, right) => compare(left.name, right.name));
     const text = [
       "/** Generated from schema-admitted dataModules. Do not edit. */",
-      "function __freezeGeneratedData(value) {",
-      "  if (value !== null && typeof value === \"object\") {",
-      "    for (const child of Object.values(value)) __freezeGeneratedData(child);",
-      "    Object.freeze(value);",
-      "  }",
-      "  return value;",
-      "}",
+      'import { deepFreeze } from "@red-cup-engineering/signcell/values";',
       // Export aliases do not create local bindings. Data named Object, JSON,
       // or __freezeGeneratedData cannot shadow the generated implementation.
-      ...exports.map((entry, index) => `const __data${index} = __freezeGeneratedData(JSON.parse(${JSON.stringify(json(entry.value))}));`),
+      ...exports.map((entry, index) => `const __data${index} = deepFreeze(JSON.parse(${JSON.stringify(json(entry.value))}));`),
       `export { ${exports.map((entry, index) => `__data${index} as ${entry.name}`).join(", ")} };`,
       "",
     ].join("\n");
