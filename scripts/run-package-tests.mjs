@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { execGitSync } from "@red-cup-engineering/git-engine/git-process";
 // run-package-tests: run the current package's test plan with node --test. Arguments are node flags
 // (--test-concurrency=1, --test-timeout=15000, --max-old-space-size=256 …) passed through as given. A test
 // whose declared requirement this environment does not meet is not run: it is named on stderr as a `requires`
@@ -27,10 +28,10 @@ if (flags[0] === "--check-receiving-enrollment") {
   let planned = 0;
   try {
     if (flags.length !== 1) throw new Error("enrollment preflight does not accept Node test flags");
-    const committedManifest = execFileSync("git", ["-C", directory, "show", "HEAD:./package.json"],
+    const committedManifest = execGitSync(["-C", directory, "show", "HEAD:./package.json"],
       { maxBuffer: 2 ** 24, stdio: ["ignore", "pipe", "pipe"] });
     if (!committedManifest.equals(manifestBytes)) throw new Error("package.json differs from the selected Git revision");
-    const tracked = execFileSync("git", ["-C", directory, "ls-tree", "-r", "-z", "HEAD", "--", "."],
+    const tracked = execGitSync(["-C", directory, "ls-tree", "-r", "-z", "HEAD", "--", "."],
       { encoding: "utf8", maxBuffer: 2 ** 24, stdio: ["ignore", "pipe", "pipe"] });
     const owns = new Map();
     for (const record of tracked.split("\0")) {
@@ -42,7 +43,7 @@ if (flags[0] === "--check-receiving-enrollment") {
     planned = admission.tests.length;
     if (admission.problems.length) throw new Error(admission.problems.join("; "));
     for (const path of admission.tests) {
-      const actual = execFileSync("git", ["-C", directory, "hash-object", "--no-filters", "--", path],
+      const actual = execGitSync(["-C", directory, "hash-object", "--no-filters", "--", path],
         { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
       if (actual !== owns.get(path)) throw new Error(`receiving program differs from the selected Git revision: ${path}`);
     }

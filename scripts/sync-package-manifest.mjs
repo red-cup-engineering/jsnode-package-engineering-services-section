@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { execGitSync } from "@red-cup-engineering/git-engine/git-process";
 /**
  * sync-package-manifest: every package manifest of a repository with its house wiring set to what its code
  * uses (src/sync-package-manifest.mjs over src/package-imports.mjs).
@@ -14,7 +15,7 @@
  * package used but undeclared takes the range the repository already declares it with, `workspace:*` when the
  * repository itself defines it, and is otherwise reported unresolved.
  */
-import { execFileSync } from "node:child_process";
+
 import { constants, openSync, closeSync, fstatSync, lstatSync, readSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 const argv = process.argv.slice(2);
@@ -102,7 +103,7 @@ async function syncRepositoryManifests() {
   const adding = process.argv.includes("--add");
   const enrolling = process.argv.includes("--receiving-tests");
   const repository = resolve(process.argv.slice(2).find((argument) => !argument.startsWith("--")) ?? ".");
-  const tracked = execFileSync("git", ["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
+  const tracked = execGitSync(["-C", repository, "ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 30 }).split("\0").filter(Boolean);
   const roots = packageRoots(tracked);
   const sources = new Map(roots.map(root => {
     const path = root === "." ? "package.json" : `${root}/package.json`;
