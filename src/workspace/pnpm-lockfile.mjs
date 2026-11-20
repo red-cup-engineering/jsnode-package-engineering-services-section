@@ -1,3 +1,4 @@
+import { isRecord } from "@red-cup-engineering/signcell/values";
 /**
  * codecs/text/pnpm-lockfile — the `importers:` subtree of a pnpm-lock.yaml v9
  * document, decoded to a normal form.
@@ -304,8 +305,8 @@ export function cutPnpmLockfile(base, source, importers) {
  * errors that may contain credential-bearing URLs.
  */
 export async function pnpmImporterManifestAgreement(manifest, lockText, importerPath = ".") {
-  const record = value => value !== null && typeof value === "object" && !Array.isArray(value);
-  if (!record(manifest) || typeof lockText !== "string" || typeof importerPath !== "string" || !importerPath)
+  
+  if (!isRecord(manifest) || typeof lockText !== "string" || typeof importerPath !== "string" || !importerPath)
     throw new TypeError("pnpm agreement requires a manifest, lock text and exact importer key");
   const result = (ok, issues) => Object.freeze({
     kind: "pnpm-importer-manifest-agreement/v1", importerPath,
@@ -318,12 +319,12 @@ export async function pnpmImporterManifestAgreement(manifest, lockText, importer
   const { decodeYaml } = await import("@red-cup-engineering/yaml-engine");
   try { lock = decodeYaml(lockText); }
   catch { return result(null, [{ reason: "unreadable-lockfile" }]); }
-  if (!record(lock) || String(lock.lockfileVersion) !== "9.0" || !record(lock.importers))
+  if (!isRecord(lock) || String(lock.lockfileVersion) !== "9.0" || !isRecord(lock.importers))
     return result(null, [{ reason: "unsupported-lockfile-shape" }]);
   if (!Object.hasOwn(lock.importers, importerPath))
     return result(false, [{ reason: "missing-importer" }]);
   const importer = lock.importers[importerPath];
-  if (!record(importer)) return result(null, [{ reason: "unreadable-importer" }]);
+  if (!isRecord(importer)) return result(null, [{ reason: "unreadable-importer" }]);
   // These can change PNPM's effective declarations. Leave their interpretation
   // to the native manager rather than rejecting a potentially valid graph.
   if (manifest.pnpm !== undefined || Object.keys(manifest.peerDependencies ?? {}).length ||
@@ -333,7 +334,7 @@ export async function pnpmImporterManifestAgreement(manifest, lockText, importer
   const expected = new Map(), recorded = new Map();
   for (const field of ["devDependencies", "dependencies", "optionalDependencies"]) {
     const declarations = manifest[field] ?? {}, entries = importer[field] ?? {};
-    if (!record(declarations) || !record(entries)) return result(null, [{ field, reason: "invalid-dependency-field" }]);
+    if (!isRecord(declarations) || !isRecord(entries)) return result(null, [{ field, reason: "invalid-dependency-field" }]);
     for (const [name, specification] of Object.entries(declarations)) {
       if (typeof specification !== "string") return result(null, [{ field, name, reason: "invalid-specifier" }]);
       // Git equivalence, catalog substitution and local/workspace selection
@@ -343,7 +344,7 @@ export async function pnpmImporterManifestAgreement(manifest, lockText, importer
       expected.set(name, { field, specification });
     }
     for (const [name, entry] of Object.entries(entries)) {
-      if (!record(entry) || typeof entry.specifier !== "string" || typeof entry.version !== "string" || !entry.version)
+      if (!isRecord(entry) || typeof entry.specifier !== "string" || typeof entry.version !== "string" || !entry.version)
         return result(null, [{ field, name, reason: "invalid-lock-dependency" }]);
       if (recorded.has(name)) return result(null, [{ field, name, reason: "duplicate-lock-dependency" }]);
       recorded.set(name, { field, specification: entry.specifier });

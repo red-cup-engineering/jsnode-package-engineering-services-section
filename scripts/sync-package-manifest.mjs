@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { isRecord } from "@red-cup-engineering/signcell/values";
 import { execGitSync } from "@red-cup-engineering/git-engine/git-process";
 /**
  * sync-package-manifest: every package manifest of a repository with its house wiring set to what its code
@@ -36,7 +37,7 @@ async function checkPnpmContract(args, mode) {
   };
   if (args.length !== operands.length + 1 || operands.length > 1 || operands.some(arg => arg.startsWith("-")))
     return receipt("unchecked", { reason: "invalid-arguments" });
-  const isRecord = value => value !== null && typeof value === "object" && !Array.isArray(value);
+  
   const read = path => {
     const fd = openSync(path, constants.O_RDONLY | constants.O_NONBLOCK | constants.O_NOFOLLOW);
     try {

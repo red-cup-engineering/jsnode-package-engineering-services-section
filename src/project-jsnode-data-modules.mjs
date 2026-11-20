@@ -1,3 +1,4 @@
+import { isRecord } from "@red-cup-engineering/signcell/values";
 /** Deterministic source fabrication for schema-admitted, immutable JSON data. */
 import { types } from "node:util";
 import { compileJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
@@ -16,7 +17,7 @@ const plain = value => {
   const prototype = Object.getPrototypeOf(value);
   return prototype === Object.prototype || prototype === null;
 };
-const record = value => value !== null && typeof value === "object" && !Array.isArray(value);
+
 const compare = (left, right) => left < right ? -1 : left > right ? 1 : 0;
 
 /** Snapshot strict JSON without invoking accessors, toJSON, or proxy traps.
@@ -94,12 +95,12 @@ function schemaDialect(value) {
   throw new TypeError(`unsupported data module schema dialect ${String(value)}`);
 }
 function admitStaticSchemaProfile(schema) {
-  const dialect = schemaDialect(record(schema) ? schema.$schema : undefined);
+  const dialect = schemaDialect(isRecord(schema) ? schema.$schema : undefined);
   const locations = new Set(), references = [];
   const visit = (item, location) => {
     locations.add(location);
     if (typeof item === "boolean") return;
-    if (!record(item)) throw new TypeError(`invalid data module schema at ${location}`);
+    if (!isRecord(item)) throw new TypeError(`invalid data module schema at ${location}`);
     for (const [keyword, value] of Object.entries(item)) {
       if ((dialect === "2020-12" ? draftSevenOnly : draftModernOnly).has(keyword))
         throw new TypeError(`unsupported ${dialect} data module schema keyword ${keyword} at ${location}`);
@@ -115,13 +116,13 @@ function admitStaticSchemaProfile(schema) {
         if (keyword === "items" && Array.isArray(value)) value.forEach((child, index) => visit(child, `${location}/${keyword}/${index}`));
         else visit(value, `${location}/${keyword}`);
       } else if (schemaMaps.has(keyword)) {
-        if (!record(value)) throw new TypeError(`invalid schema map at ${location}/${keyword}`);
+        if (!isRecord(value)) throw new TypeError(`invalid schema map at ${location}/${keyword}`);
         for (const [name, child] of Object.entries(value)) visit(child, `${location}/${keyword}/${pointerToken(name)}`);
       } else if (schemaLists.has(keyword)) {
         if (!Array.isArray(value)) throw new TypeError(`invalid schema list at ${location}/${keyword}`);
         value.forEach((child, index) => visit(child, `${location}/${keyword}/${index}`));
       } else if (keyword === "dependencies") {
-        if (!record(value)) throw new TypeError(`invalid dependencies schema at ${location}`);
+        if (!isRecord(value)) throw new TypeError(`invalid dependencies schema at ${location}`);
         for (const [name, child] of Object.entries(value)) if (!Array.isArray(child)) visit(child, `${location}/dependencies/${pointerToken(name)}`);
       } else throw new TypeError(`unsupported data module schema keyword ${keyword} at ${location}`);
     }
@@ -147,7 +148,7 @@ function admitStaticSchemaProfile(schema) {
 }
 
 function fields(value, expected, location) {
-  if (!record(value) || Object.keys(value).sort(compare).join("\0") !== expected.slice().sort(compare).join("\0"))
+  if (!isRecord(value) || Object.keys(value).sort(compare).join("\0") !== expected.slice().sort(compare).join("\0"))
     throw new TypeError(`${location} requires exactly ${expected.join(", ")}`);
 }
 function identifier(name) {

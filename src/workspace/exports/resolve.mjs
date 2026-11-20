@@ -1,3 +1,4 @@
+import { isRecord } from "@red-cup-engineering/signcell/values";
 /**
  * @packageDocumentation
  *
@@ -28,13 +29,13 @@ const validTarget = target => {
   return target;
 };
 
-const isConditionObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+
 
 /** A map normalized to subpath keys: a string, array or condition object stands for ".". */
 function subpathMap(exportsValue) {
   if (exportsValue === undefined || exportsValue === null) return {};
   if (typeof exportsValue === "string" || Array.isArray(exportsValue)) return { ".": exportsValue };
-  if (!isConditionObject(exportsValue)) return {};
+  if (!isRecord(exportsValue)) return {};
   const keys = Object.keys(exportsValue);
   if (keys.some(key => key.startsWith(".")) && keys.some(key => !key.startsWith("."))) {
     fail("ERR_INVALID_PACKAGE_CONFIG", "exports cannot mix subpath and condition keys");
@@ -79,7 +80,7 @@ function targetOf(value, conditions, replacement) {
     if (last instanceof Error) throw last;
     return last;
   }
-  if (isConditionObject(value)) {
+  if (isRecord(value)) {
     checkConditionKeys(value);
     for (const [condition, nested] of Object.entries(value)) {
       if (condition !== "default" && !conditions.includes(condition)) continue;
@@ -167,7 +168,7 @@ export function exportTargets(exportsValue) {
       if (!viable && lastError) throw lastError;
       return viable;
     }
-    if (isConditionObject(value)) {
+    if (isRecord(value)) {
       checkConditionKeys(value);
       let viable = false;
       for (const [condition, nested] of Object.entries(value)) viable = walk(subpath, nested, [...conditions, condition]) || viable;
