@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { makeTemporaryDirectory } from "@red-cup-engineering/computer-file-engineering-services-section/temporary-directory";
 import { execGitSync } from "@red-cup-engineering/git-engine/git-process";
 // run-package-tests: run the current package's test plan with node --test. Arguments are node flags
 // (--test-concurrency=1, --test-timeout=15000, --max-old-space-size=256 …) passed through as given. A test
@@ -10,8 +11,8 @@ import { execGitSync } from "@red-cup-engineering/git-engine/git-process";
 // requirements, even when the runnable programs passed. Source runs may
 // still report partial progress successfully.
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, lstatSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { existsSync, lstatSync, readFileSync, rmSync } from "node:fs";
+
 import { join, resolve } from "node:path";
 import { testPlan, unmetRequirements } from "../src/package-test-plan.mjs";
 import { packageFiles, packageResolvesFrom } from "../src/package-files.mjs";
@@ -49,7 +50,9 @@ if (flags[0] === "--check-receiving-enrollment") {
     }
 
     stage = "pack";
-    const cache = mkdtempSync(join(tmpdir(), "package-enrollment-"));
+    const temporaryDirectory2 = makeTemporaryDirectory("package-enrollment");
+    try {
+const cache = temporaryDirectory2.path;
     try {
       const packed = JSON.parse(execFileSync("npm",
         ["pack", ".", "--dry-run", "--json", "--offline", "--ignore-scripts", "--workspaces=false", "--cache", cache],
@@ -66,7 +69,11 @@ if (flags[0] === "--check-receiving-enrollment") {
     }
     process.stdout.write(JSON.stringify({ kind: "package-receiving-enrollment.v1", ok: true,
       package: manifest.name, planned, testsExecuted: false }) + "\n");
-  } catch (error) {
+  
+    } finally {
+      temporaryDirectory2.remove();
+    }
+} catch (error) {
     const detail = error.stderr?.toString().trim() || error.message;
     process.stderr.write(`run-package-tests: ${stage} receiving enrollment: ${detail}\n`);
     process.stdout.write(JSON.stringify({ kind: "package-receiving-enrollment.v1", ok: false,
@@ -115,7 +122,9 @@ if (profile === "receiving") {
 
 // Retain the caller's combined inherited/CLI reporter bindings, then append a
 // private TAP copy. Invalid original bindings remain invalid before additions.
-const scratch = mkdtempSync(join(tmpdir(), "run-package-tests-"));
+const temporaryDirectory = makeTemporaryDirectory("run-package-tests");
+try {
+const scratch = temporaryDirectory.path;
 const tap = join(scratch, "report.tap");
 // Its own test run, even when started from inside another (node --test marks a child with NODE_TEST_CONTEXT).
 const { NODE_TEST_CONTEXT, ...environment } = process.env;
@@ -146,3 +155,7 @@ if (error !== null) process.stderr.write(`run-package-tests: ${error}\n`);
 const passed = error === null && received.counts.failed === 0;
 const failureStatus = Number.isInteger(result.status) && result.status > 0 && result.status <= 255 ? result.status : 1;
 report(received.counts, passed ? 0 : failureStatus, error);
+
+} finally {
+  temporaryDirectory.remove();
+}
