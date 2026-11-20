@@ -1,13 +1,12 @@
 import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import test from 'node:test';
 import { projectJsnodeModules } from '@red-cup-engineering/jsnode-package-engineering-services-section/project-jsnode-modules';
 
 test('an authored game entry can import an immutable module generated from its design', async t => {
-  const output = await mkdtemp(join(tmpdir(), 'jsnode-game-design-'));
+  const output = await mkdtemp(join(process.cwd(), '.jsnode-game-design-'));
   t.after(() => rm(output, { recursive: true, force: true }));
   const design = {
     name: 'WORLDS', value: [{ id: 'garden', resources: ['water'] }],

@@ -12,7 +12,7 @@ permissions:
 jobs:
   native-source-receiving:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -20,11 +20,24 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
-      - name: Require declared receiving programs in Git and the npm packlist
-        run: node scripts/run-package-tests.mjs --check-receiving-enrollment
-      - name: Check committed root manifest and lock specifiers before installing
-        run: node scripts/sync-package-manifest.mjs --check-pnpm-root
-      - name: Do not acquire dependencies without the replacement fabrication procedure
+      - name: Install the frozen development and runtime closure
+        run: corepack pnpm@11.28.5 install --frozen-lockfile --ignore-scripts --registry=https://registry.npmjs.org
+      - name: Verify the projected package and source enrollment
         run: |
-          echo '::error::The offline package contract is not the installed fabrication, source-derived manifest, and downstream package proof. Qualify that procedure and the frozen closure before enabling acquisition.'
-          exit 1
+          node scripts/sync-package-manifest.mjs --check-pnpm-root
+          node scripts/run-package-tests.mjs --check-receiving-enrollment
+          npm run check:generated
+          npm test
+      - name: Exercise the installed package as a downstream developer
+        run: |
+          consumer="$RUNNER_TEMP/jsnode-consumer"
+          mkdir "$consumer"
+          archive=$(npm pack --ignore-scripts --silent --pack-destination "$consumer")
+          cp .npmrc "$consumer/.npmrc"
+          cd "$consumer"
+          git init --quiet
+          echo '{"private":true,"type":"module"}' > package.json
+          npm install --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org "./$archive"
+          cd node_modules/@red-cup-engineering/jsnode-package-engineering-services-section
+          node scripts/run-package-tests.mjs --receiving
+          npm run check:generated
