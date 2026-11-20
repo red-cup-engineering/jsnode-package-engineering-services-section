@@ -116,6 +116,12 @@ publication or a customer's accepted software.
 
 ## Deterministic data modules from design records
 
+The installed archive can check its compiler, lock reader and persisted
+fabrication records with `npm test -- --receiving` from its package directory.
+For the 0.6.6-dev.0 source edition, supply the matching Git Engine archive
+(0.1.11-dev.0). The published Git Engine 0.1.10 lacks the `execGitSync`
+export used by the test runner and package inspection commands.
+
 The same `projectJsnodeModules` producer accepts source-free `dataModules`.
 Each declaration names an ESM output path and one or more exports; each export
 contains its `name`, its strict JSON `value`, and its own `schema`. This lets an
