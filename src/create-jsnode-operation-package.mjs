@@ -1,5 +1,6 @@
+import { makeTemporaryDirectory } from "@red-cup-engineering/computer-file-engineering-services-section/temporary-directory";
 import { receivePackageTestReport } from "./package-check-outcome.mjs";
-import { lstat, mkdtemp, readFile, realpath, rm, writeFile } from "node:fs/promises";
+import { lstat, readFile, realpath, rm, writeFile } from "node:fs/promises";
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
 import { freezeJson } from "@red-cup-engineering/json-engine";
 import { admitJsnodeOperationPackageCreationReceipt } from "./admit-jsnode-operation-package-creation-receipt.mjs";
@@ -104,6 +105,7 @@ export async function createJsnodeOperationPackage(request) {
   let assayRoot = null;
   let installRoot = null;
   let npmCache = null;
+  const temporaryDirectories = [];
   try {
     if (request === null || typeof request !== "object" || Array.isArray(request)) refuse("INVALID_REQUEST", "input must be a JsnodeOperationPackageCreationRequest");
     if (Object.keys(request).sort().join(",") !== "destination,registry,specification,type,version") {
@@ -152,9 +154,8 @@ export async function createJsnodeOperationPackage(request) {
     });
     if (stage.type !== "TextFileCreationStageRead") refuse(stage.code, stage.message, stage.path);
 
-    assayRoot = await mkdtemp(path.join("/tmp", "jsnode-package-assay-"));
-    installRoot = await mkdtemp(path.join("/tmp", "jsnode-package-install-"));
-    npmCache = await mkdtemp(path.join("/tmp", "jsnode-package-npm-cache-"));
+    for (const name of ["jsnode-package-assay", "jsnode-package-install", "jsnode-package-npm-cache"]) temporaryDirectories.push(makeTemporaryDirectory(name));
+    [assayRoot, installRoot, npmCache] = temporaryDirectories.map(directory => directory.path);
     const environment = processEnvironment({
       npm_config_cache: npmCache,
       ...houseScopeRegistryEnvironment(registry),
@@ -343,9 +344,10 @@ export async function createJsnodeOperationPackage(request) {
   } catch (error) {
     return creationRefusal(error, phase);
   } finally {
+    for (const directory of temporaryDirectories.reverse()) directory.remove();
     if (stage?.stageDirectory) await rm(stage.stageDirectory, { recursive: true, force: true });
-    if (assayRoot) await rm(assayRoot, { recursive: true, force: true });
-    if (installRoot) await rm(installRoot, { recursive: true, force: true });
-    if (npmCache) await rm(npmCache, { recursive: true, force: true });
+
+
+
   }
 }
