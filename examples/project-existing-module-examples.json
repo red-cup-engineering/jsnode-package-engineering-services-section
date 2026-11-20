@@ -1,0 +1,33 @@
+{
+  "name": "existing-module-projection",
+  "module": "src/project-existing-module-example-tests.mjs",
+  "exportName": "projectExistingModuleExampleTests",
+  "examples": [
+    {
+      "name": "a public operation's examples project to its named Node test file",
+      "input": {
+        "name": "restore-flight", "module": "src/flight.mjs", "exportName": "openFlight",
+        "x-javascript-arguments": "positional",
+        "examples": [{"name": "restored turns", "input": [42, {"turn": 3}], "outputPath": ["turn"], "output": 3}]
+      },
+      "outputPath": ["path"],
+      "output": "test/restore-flight-examples.test.mjs"
+    },
+    {
+      "name": "a caller mutation must address a member in the supplied input",
+      "input": {
+        "name": "observe", "module": "src/observe.mjs", "exportName": "observe",
+        "examples": [{"name": "missing member", "input": {"turn": 3}, "mutateInput": [{"path": ["phase"], "value": 4}], "output": 3}]
+      },
+      "throws": "TypeError"
+    },
+    {
+      "name": "a refusal and a returned value are exclusive observations",
+      "input": {
+        "name": "observe", "module": "src/observe.mjs", "exportName": "observe",
+        "examples": [{"name": "conflicting expectations", "input": null, "output": 1, "throws": "TypeError"}]
+      },
+      "throws": "TypeError"
+    }
+  ]
+}

@@ -31,13 +31,38 @@ const jsonValueExpression = value => {
     : json;
 };
 
+const refusal = (call, name) =>
+  `  await assert.rejects(async () => await ${call}, { name: ${JSON.stringify(name)} });`;
+
+// The existing-module specification admits each path before this projection.
+// Bracket expressions keep every segment a literal, including quoted names.
+const select = (root, segments) => root + segments.map(key => `[${JSON.stringify(key)}]`).join("");
+
+function existingModuleObservation(example, positional) {
+  const invoke = (input) => `${BINDING}(${positional ? "..." : ""}${input})`;
+  const input = jsonValueExpression(example.input);
+  if (Object.hasOwn(example, "throws")) return [refusal(invoke(input), example.throws)];
+  if (!example.mutateInput && !example.outputPath) {
+    return [`  assert.deepStrictEqual(await ${invoke(input)}, ${jsonValueExpression(example.output)});`];
+  }
+  return [
+    `  const submitted = ${input};`,
+    `  const result = await ${invoke("submitted")};`,
+    ...(example.mutateInput ?? []).map(({path, value}) =>
+      `  ${select("submitted", path)} = ${jsonValueExpression(value)};`),
+    `  assert.deepStrictEqual(${select("result", example.outputPath ?? [])}, ${jsonValueExpression(example.output)});`,
+  ];
+}
+
 /** Tests derived from original qualified examples and independently assayed clause cases. */
-export function projectJsnodeExampleTests(operation, examples, derivedCases = []) {
+export function projectJsnodeExampleTests(operation, examples, derivedCases = [], existingModule = false) {
   const relative = path.posix.relative("test", operation.module);
   const importPath = relative.startsWith(".") ? relative : `./${relative}`;
   const cases = examples.map(example => [
     `test(${JSON.stringify(`${operation.name}: ${example.name}`)}, async () => {`,
-    `  assert.deepStrictEqual(await ${BINDING}(${jsonValueExpression(example.input)}), ${jsonValueExpression(example.output)});`,
+    ...(existingModule
+      ? existingModuleObservation(example, operation["x-javascript-arguments"] === "positional")
+      : [`  assert.deepStrictEqual(await ${BINDING}(${jsonValueExpression(example.input)}), ${jsonValueExpression(example.output)});`]),
     "});",
   ].join("\n"));
   for (const item of derivedCases) {
@@ -68,7 +93,7 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     cases.push([
       `test(${JSON.stringify(operation.name + ": clause assay " + item.name)}, async () => {`,
       ...(item.throws === null ? success : [
-        `  await assert.rejects(async () => await ${BINDING}(${inputExpression}), { name: ${JSON.stringify(item.throws)} });`,
+        refusal(`${BINDING}(${inputExpression})`, item.throws),
       ]),
       "});",
     ].join("\n"));
@@ -77,7 +102,8 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     type: "JavascriptNodeOperationTestSource",
     path: testPathOf(operation),
     text: [
-      "// Derived from the work order's admitted examples, before the operation's source was derived.",
+      existingModule ? "// Generated from the existing module's public behavior specification."
+        : "// Derived from the work order's admitted examples, before the operation's source was derived.",
       'import nativeAssert from "node:assert/strict";',
       'import test from "node:test";',
       // ESM static imports execute before module-local code. A candidate may

@@ -52,7 +52,9 @@
     "./standardize-package-tests": "./src/standardize-package-tests.mjs",
     "./workspace/scanner": "./src/workspace/scanner/index.mjs",
     "./workspace/scanner/schema": "./src/workspace/scanner/schema.mjs",
-    "./workspace/scanner/service": "./src/workspace/scanner/service.mjs"
+    "./workspace/scanner/service": "./src/workspace/scanner/service.mjs",
+    "./project-jsnode-example-tests": "./src/project-existing-module-example-tests.mjs",
+    "./cli/project-jsnode-example-tests": "./bin/project-jsnode-example-tests"
   },
   "files": [
     "apps",
@@ -65,13 +67,14 @@
     "examples",
     "content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
     "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
-    "content/text/documents/specifications/jsnode-module-reference-projection.md"
+    "content/text/documents/specifications/jsnode-module-reference-projection.md",
+    "bin"
   ],
   "scripts": {
     "test": "node scripts/run-package-tests.mjs",
     "check": "node scripts/check-package-syntax.mjs && npm run check:generated",
-    "generate": "node scripts/project-jsnode-package-cli.mjs",
-    "check:generated": "node scripts/project-jsnode-package-cli.mjs --check",
+    "generate": "node scripts/project-jsnode-package-cli.mjs && node bin/project-jsnode-example-tests examples/project-existing-module-examples.json",
+    "check:generated": "node scripts/project-jsnode-package-cli.mjs --check && node bin/project-jsnode-example-tests --check examples/project-existing-module-examples.json",
     "sync:manifest": "node scripts/sync-package-manifest.mjs --check --receiving-tests",
     "check:interfaces": "node scripts/check-package-interfaces.mjs --check"
   },
@@ -110,7 +113,8 @@
     "check-package-interfaces": "./scripts/check-package-interfaces.mjs",
     "run-package-tests": "./scripts/run-package-tests.mjs",
     "check-package-syntax": "./scripts/check-package-syntax.mjs",
-    "standardize-package-tests": "./scripts/standardize-package-tests.mjs"
+    "standardize-package-tests": "./scripts/standardize-package-tests.mjs",
+    "project-jsnode-example-tests": "./bin/project-jsnode-example-tests"
   },
   "funding": {
     "type": "individual",
