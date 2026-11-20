@@ -1,0 +1,45 @@
+name: Receive an installed Group package
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/receive-installed-package.yml'
+permissions:
+  contents: read
+jobs:
+  receiving:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Exercise every enrolled test against the independently installed archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          scratch=$(mktemp -d)
+          mkdir "$scratch/consumer" "$scratch/tools"
+          npm pack --offline --ignore-scripts --json --pack-destination "$scratch" > "$scratch/pack.json"
+          artifact=$(node -p 'require(process.argv[1])[0].filename' "$scratch/pack.json")
+          name=$(node -p 'require(process.argv[1])[0].name' "$scratch/pack.json")
+          for root in "$scratch/consumer" "$scratch/tools"; do
+            printf '%s\n' '{"private":true}' > "$root/package.json"
+          done
+          (cd "$scratch/consumer" && npm install --registry=https://registry.561.group/ --ignore-scripts --no-audit --no-fund "$scratch/$artifact")
+          (cd "$scratch/tools" && npm install --registry=https://registry.561.group/ --ignore-scripts --no-audit --no-fund \
+            @red-cup-engineering/jsnode-package-engineering-services-section@0.6.6-dev.0)
+          node --input-type=commonjs - "$scratch" <<'NODE'
+          const dir = process.argv[2];
+          const [archive] = require(dir + "/pack.json");
+          const installed = require(dir + "/consumer/package-lock.json").packages["node_modules/" + archive.name];
+          require("node:assert/strict").equal(installed.integrity, archive.integrity);
+          NODE
+          runner="$scratch/tools/node_modules/.bin/run-package-tests"
+          "$runner" --check-receiving-enrollment
+          PACKAGE_TEST_DIRECTORY="$scratch/consumer/node_modules/$name" "$runner" --receiving --test-concurrency=2
