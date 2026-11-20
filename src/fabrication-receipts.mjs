@@ -1,6 +1,6 @@
 import { assayCasesOfDelivery, testsOfClosure } from "./derive-jsnode-package-from-closure.mjs";
 import { constitute } from "@red-cup-engineering/eavt-engineering-services-section";
-import { validateArtifactFabricationRealizationRecord, validateArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
+import { admitArtifactFabricationRealizationReceipt, admitArtifactFabricationSpecification } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { validateJsnodeOperationPackageCreationRecord } from "./admit-jsnode-operation-package-creation-receipt.mjs";
 import { semanticId } from "@red-cup-engineering/semiotic-content-address-system";
 import { canonicalJson } from "@red-cup-engineering/json-engine/canonical-json";
@@ -64,7 +64,7 @@ export function validateMarkdownJsnodeOperationPackageFabricationRecord(record) 
     throw recordValidationError("MISSING_ARTIFACT_SPECIFICATION", "fabrication receipt has no artifact specification");
   }
   const { type, version, specificationDigest, ...specificationCandidate } = specification;
-  const validatedSpecification = validateArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version, ...specificationCandidate }, { admittedDigest: specificationDigest });
+  const validatedSpecification = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version, ...specificationCandidate }, { admittedDigest: specificationDigest });
   if (validatedSpecification.type !== "ArtifactFabricationSpecification" || validatedSpecification.specificationDigest !== specificationDigest) {
     throw recordValidationError("INVALID_ARTIFACT_SPECIFICATION", "fabrication receipt has an unadmitted artifact specification", validatedSpecification);
   }
@@ -79,11 +79,11 @@ export function validateMarkdownJsnodeOperationPackageFabricationRecord(record) 
       throw recordValidationError("MISSING_WORK_ORDER_SPECIFICATION", "derived fabrication must retain the source-free admitted work order");
     }
     const { type: orderType, version: orderVersion, specificationDigest: orderDigest, ...orderCandidate } = order;
-    const validatedOrder = validateArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: orderVersion, ...orderCandidate }, { admittedDigest: orderDigest });
+    const validatedOrder = admitArtifactFabricationSpecification({ type: "ArtifactFabricationSpecificationCandidate", version: orderVersion, ...orderCandidate }, { admittedDigest: orderDigest });
     // Projecting away only generated sources and tests must recover exactly the
     // admitted order. All requirements, constraints, examples and dependencies
     // remain part of its identity; provider output cannot change them.
-    const recoveredOrder = validateArtifactFabricationSpecification({
+    const recoveredOrder = admitArtifactFabricationSpecification({
       type: "ArtifactFabricationSpecificationCandidate", version,
       ...specificationCandidate,
       projections: validatedSpecification.projections.map((projection) => ({
@@ -109,7 +109,7 @@ export function validateMarkdownJsnodeOperationPackageFabricationRecord(record) 
     throw recordValidationError("MISSING_REALIZATION_RECEIPT", "fabrication receipt has no realization receipt");
   }
   const { type: realizationType, version: realizationVersion, traceability, ...realizationCandidate } = realization;
-  const validatedRealization = validateArtifactFabricationRealizationRecord(validatedSpecification, { type: "ArtifactFabricationRealizationReceiptCandidate", version: 1, ...realizationCandidate });
+  const validatedRealization = admitArtifactFabricationRealizationReceipt(validatedSpecification, { type: "ArtifactFabricationRealizationReceiptCandidate", version: 1, ...realizationCandidate });
   if (validatedRealization.type !== "ArtifactFabricationRealizationReceipt") {
     throw recordValidationError(validatedRealization.code, `fabrication realization receipt admission refused: ${validatedRealization.code}`, validatedRealization);
   }

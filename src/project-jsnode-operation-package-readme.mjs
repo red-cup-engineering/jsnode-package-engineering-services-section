@@ -1,4 +1,4 @@
-import { validateTextFileCreationProjection } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection";
+import { admitTextFileCreationProjection } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection";
 
 function requireSpecification(value) {
   if (value?.type !== "JsnodeOperationPackageSpecification" || value.version !== 2) {
@@ -26,7 +26,7 @@ function renderReadme(specification) {
 /** Projects README documentation from admitted module bindings and examples. */
 export function projectJsnodeOperationPackageReadme(specification) {
   const validated = requireSpecification(specification);
-  const projection = validateTextFileCreationProjection({ type: "TextFileCreationProjection", version: 1, path: "README.md", text: renderReadme(validated), mode: 0o644 });
+  const projection = admitTextFileCreationProjection({ type: "TextFileCreationProjection", version: 1, path: "README.md", text: renderReadme(validated), mode: 0o644 });
   if (projection.type !== "TextFileCreationProjection") throw new TypeError(`admitted help produced ${projection.code}: ${projection.message}`);
   return projection;
 }

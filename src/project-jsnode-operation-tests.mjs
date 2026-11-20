@@ -1,5 +1,5 @@
 import { relativeModuleSpecifier } from "./project-jsnode-module-paths.mjs";
-import { validateTextFileCreationProjection } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection";
+import { admitTextFileCreationProjection } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection";
 
 function requireSpecification(value) {
   if (value?.type !== "JsnodeOperationPackageSpecification" || value.version !== 2) {
@@ -9,7 +9,7 @@ function requireSpecification(value) {
 }
 
 function file(path, text) {
-  const projection = validateTextFileCreationProjection({ type: "TextFileCreationProjection", version: 1, path, text, mode: 0o644 });
+  const projection = admitTextFileCreationProjection({ type: "TextFileCreationProjection", version: 1, path, text, mode: 0o644 });
   if (projection.type !== "TextFileCreationProjection") throw new TypeError(`admitted test produced ${projection.code}: ${projection.message}`);
   return projection;
 }

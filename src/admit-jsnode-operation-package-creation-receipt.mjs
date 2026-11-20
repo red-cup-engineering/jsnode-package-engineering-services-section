@@ -2,7 +2,7 @@
 import path, { isAbsolute as isAbsoluteFilepath } from "node:path";
 import { freezeJson } from "@red-cup-engineering/json-engine";
 import { isJsonValue } from "@red-cup-engineering/json-engine";
-import { validateRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
+import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
 
 class RecordRejection extends Error {
   constructor(code, message, rejectedPath = null) {
@@ -43,7 +43,7 @@ function materializations(value) {
     if (candidate.type !== "TextFileMaterialization" || candidate.version !== 1) refuse("INVALID_FILE", "file type and version must be TextFileMaterialization@1");
     let filePath;
     try {
-      filePath = validateRelativePosixFilepath(candidate.path);
+      filePath = admitRelativePosixFilepath(candidate.path);
     } catch {
       refuse("INVALID_FILE_PATH", "file path must be a normalized relative POSIX filepath", typeof candidate.path === "string" ? candidate.path : null);
     }

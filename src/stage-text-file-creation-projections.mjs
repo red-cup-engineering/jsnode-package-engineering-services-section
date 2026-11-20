@@ -10,7 +10,7 @@ import path from "node:path";
 import { readFileText } from "@red-cup-engineering/computer-file-engineering-services-section/read-file";
 import { writeFileText } from "@red-cup-engineering/computer-file-engineering-services-section/write-file";
 import { serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
-import { validateTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
+import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
 class StagingRejection extends Error {
@@ -60,7 +60,7 @@ async function actualFiles(root) {
 async function readStage(stageDirectory, expected) {
   const observedFiles = await actualFiles(stageDirectory);
   const observedDigest = sha256Digest(serializeLines(observedFiles));
-  const observed = validateTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: observedFiles, filesDigest: observedDigest });
+  const observed = admitTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: observedFiles, filesDigest: observedDigest });
   if (observed.type !== "TextFileCreationProjectionSet") refuse(observed.code, observed.message, observed.path);
   if (serializeLines(observed.files) !== serializeLines(expected.files)) {
     refuse("STAGE_CONTENT_MISMATCH", "staged paths, text, or modes differ from their projections", stageDirectory);
@@ -96,7 +96,7 @@ function rejection(code, message, rejectedPath = null) {
  * @returns {Promise<object>}
  */
 export async function stageTextFileCreationProjections({ parentDirectory, files, filesDigest }) {
-  const set = validateTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files, filesDigest });
+  const set = admitTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files, filesDigest });
   if (set.type !== "TextFileCreationProjectionSet") return rejection(set.code, set.message, set.path);
 
   const stageDirectory = await mkdtemp(path.join(parentDirectory, ".text-file-creation-stage-"));

@@ -1,6 +1,6 @@
 /** Pure source-addressable JSNode module planning, shared with derivation. */
 import { projectJsnodeExampleTests } from "./project-jsnode-example-tests.mjs";
-import { validateArtifactFabricationSpecification, validateArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
+import { admitArtifactFabricationSpecification, admitArtifactFabricationRealizationPlan } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { validateNpmPackageVersion } from "@red-cup-engineering/npm-package-version-admission-service";
 import { projectJsnodeModulePaths } from "./project-jsnode-module-paths.mjs";
 import { validateNativeCheckProfile, nativeCheckData, nativeBindingsFor, projectNativeChecks } from "./native-assay-profile.mjs";
@@ -42,7 +42,7 @@ export function moduleFabricationPlan(candidate) {
     cause, ...(workOrder ? { workOrderSpecificationDigest: workOrder.specificationDigest, source: workOrder.source } : {}),
   });
   try {
-    workOrder = validateArtifactFabricationSpecification(candidate);
+    workOrder = admitArtifactFabricationSpecification(candidate);
     if (workOrder.type !== "ArtifactFabricationSpecification") return refuse(workOrder);
     phase = "module-meaning-closure-admission";
     const projection = workOrder.projections[0];
@@ -79,7 +79,7 @@ export function moduleFabricationPlan(candidate) {
       validateNpmPackageVersion(version);
     }
     phase = "realization-plan-preflight";
-    const plan = validateArtifactFabricationRealizationPlan(workOrder, {
+    const plan = admitArtifactFabricationRealizationPlan(workOrder, {
       type: "ArtifactFabricationRealizationPlanCandidate", version: 1,
       artifactId: workOrder.artifact.id, specificationDigest: workOrder.specificationDigest,
       projectionIds: [projection.id], acceptanceObligationIds: workOrder.acceptanceObligations.map(item => item.id),
