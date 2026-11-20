@@ -68,7 +68,8 @@
     "content/text/documents/specifications/project-jsnode-operation-source-from-arguments.md",
     "content/text/documents/specifications/source-bearing-fabrication-receipt-cells.md",
     "content/text/documents/specifications/jsnode-module-reference-projection.md",
-    "bin"
+    "bin",
+    "test"
   ],
   "scripts": {
     "test": "node scripts/run-package-tests.mjs",
@@ -87,9 +88,9 @@
     "@red-cup-engineering/eavt-engineering-services-section": "^0.15.1",
     "@red-cup-engineering/execute-javascript-node-command-service": "^0.4.3",
     "@red-cup-engineering/inspect-installed-npm-package-service": "^0.3.5",
-    "@red-cup-engineering/javascript-parser-service": "^0.2.0",
+    "@red-cup-engineering/javascript-parser-service": "^0.2.0 || 0.2.2-dev.0",
     "@red-cup-engineering/json-engine": "^0.5.0",
-    "@red-cup-engineering/json-schema-engineering-services-section": "^0.5.7",
+    "@red-cup-engineering/json-schema-engineering-services-section": "^0.5.7 || 0.5.14-dev.0",
     "@red-cup-engineering/jsonl-engineering-services-section": "^0.1.4",
     "@red-cup-engineering/node-js-function-engineering-services-section": "^0.5.4",
     "@red-cup-engineering/npm-package-engineering-services-section": "^0.2.4",
@@ -97,13 +98,13 @@
     "@red-cup-engineering/npm-scoped-package-name-formation-service": "^0.3.2",
     "@red-cup-engineering/npm-workspace-publication-computer-code-development-systems-engineering-services-section": "^0.19.1",
     "@red-cup-engineering/jsdoc-engine": "^0.1.0",
-    "@red-cup-engineering/signcell": "0.18.0-dev.0 || 0.18.1-dev.0",
+    "@red-cup-engineering/signcell": "0.18.1-dev.0 || ^0.18.1",
     "@red-cup-engineering/uri-engineering-services-section": "^0.1.7",
     "@red-cup-engineering/yaml-engine": "^0.1.0",
     "typescript": "5.9.3",
-    "@red-cup-engineering/semiotic-content-address-system": "0.1.7-dev.1 || 0.1.8-dev.0",
-    "@red-cup-engineering/typed-content": "0.1.0-dev.0 || 0.1.1-dev.0",
-    "@red-cup-engineering/git-engine": "^0.1.11-dev.0"
+    "@red-cup-engineering/semiotic-content-address-system": "0.1.8-dev.0 || ^0.1.8",
+    "@red-cup-engineering/typed-content": "0.1.0-dev.0 || 0.1.1-dev.0 || 0.1.0",
+    "@red-cup-engineering/git-engine": "^0.1.10 || 0.1.11-dev.0"
   },
   "engines": {
     "node": ">=24"
@@ -125,6 +126,8 @@
   },
   "receivingTests": [
     "test/package-receiving.test.mjs",
-    "test/pnpm-root-lock-receiving.test.mjs"
+    "test/pnpm-root-lock-receiving.test.mjs",
+    "test/fabrication-cell-readback.test.mjs",
+    "test/existing-module-projection-examples.test.mjs"
   ]
 }
