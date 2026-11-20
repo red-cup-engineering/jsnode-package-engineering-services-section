@@ -1,15 +1,30 @@
 name: Receive an installed Group package
 on:
   workflow_call:
+    inputs:
+      bare-cedar-fog:
+        description: Use the Group's held runner for a trusted private repository
+        type: boolean
+        default: false
   workflow_dispatch:
   pull_request:
     paths:
       - '.github/workflows/receive-installed-package.yml'
+      - '.github/tests/**'
 permissions:
   contents: read
 jobs:
   receiving:
-    runs-on: ubuntu-latest
+    # A refused held request produces no runs-on value and cannot reserve a machine.
+    runs-on: >-
+      ${{ !inputs.bare-cedar-fog && 'ubuntu-latest' ||
+          fromJSON('{"true":["self-hosted","bare-cedar-fog"]}')[format('{0}',
+            github.event.repository.private == true &&
+            (github.event_name == 'pull_request' &&
+             github.event.pull_request.head.repo.full_name == github.repository &&
+             contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association) ||
+             contains(fromJSON('["push","workflow_dispatch"]'), github.event_name) &&
+             github.ref == format('refs/heads/{0}', github.event.repository.default_branch)))] }}
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -24,6 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           scratch=$(mktemp -d)
+          trap 'rm -rf -- "$scratch"' EXIT
           mkdir "$scratch/consumer" "$scratch/tools"
           npm pack --offline --ignore-scripts --json --pack-destination "$scratch" > "$scratch/pack.json"
           artifact=$(node -p 'require(process.argv[1])[0].filename' "$scratch/pack.json")
@@ -40,6 +56,21 @@ jobs:
           const installed = require(dir + "/consumer/package-lock.json").packages["node_modules/" + archive.name];
           require("node:assert/strict").equal(installed.integrity, archive.integrity);
           NODE
+          # Install the owner's test providers beside the verified production
+          # archive once its independently resolved dependency graph exists.
+          node --input-type=commonjs - "$scratch/consumer" "$name" <<'NODE'
+          const { readFileSync, writeFileSync } = require("node:fs");
+          const { join } = require("node:path");
+          const [root, name] = process.argv.slice(2);
+          const installed = JSON.parse(readFileSync(join(root, "node_modules", name, "package.json")));
+          const file = join(root, "package.json");
+          const manifest = JSON.parse(readFileSync(file));
+          if (installed.devDependencies) {
+            manifest.devDependencies = installed.devDependencies;
+            writeFileSync(file, JSON.stringify(manifest));
+          }
+          NODE
+          (cd "$scratch/consumer" && npm install --include=dev --registry=https://registry.561.group/ --ignore-scripts --no-audit --no-fund)
           runner="$scratch/tools/node_modules/.bin/run-package-tests"
           "$runner" --check-receiving-enrollment
           PACKAGE_TEST_DIRECTORY="$scratch/consumer/node_modules/$name" "$runner" --receiving --test-concurrency=2
