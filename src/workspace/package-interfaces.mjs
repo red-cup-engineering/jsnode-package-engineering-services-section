@@ -23,9 +23,9 @@ import { exportKeyForSubpath, exportTargets, resolveExportSubpath } from "./expo
 
 /** Every finding class this checker can emit: break classes guix-machine-release-service's BREAK_CLASSES also names. */
 export const PACKAGE_INTERFACE_CLASSES = Object.freeze(["export-target-missing", "export-into-retired-tree", "unexported-interface"]);
-const [TARGET_MISSING, INTO_REMOVED, UNEXPORTED] = PACKAGE_INTERFACE_CLASSES;
+const [TARGET_MISSING, INTO_RETIRED, UNEXPORTED] = PACKAGE_INTERFACE_CLASSES;
 
-const REMOVED = new Set(["legacy", "test"]);
+const RETIRED = new Set(["legacy", "test"]);
 const SUBPATH_FILES = (rest) => [`src/${rest}.mjs`, `src/${rest}/index.mjs`, `scripts/${rest}.mjs`, `${rest}.mjs`, `${rest}/index.mjs`, `lib/${rest}.mjs`];
 
 /** The package name and subpath of a bare specifier: `@scope/name/sub` → `{ name: "@scope/name", subpath: "./sub" }`. */
@@ -88,8 +88,8 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
     for (const { subpath, conditions, target } of exportTargets(pkg.manifest.exports)) {
       if (conditions.includes("types") && !/\.m?js$/u.test(target)) continue;
       const path = normalTarget(target);
-      if (path.split("/").some((segment) => REMOVED.has(segment))) {
-        findings.push({ class: INTO_REMOVED, package: pkg.name, dir: pkg.dir, subpath, conditions, target });
+      if (path.split("/").some((segment) => RETIRED.has(segment))) {
+        findings.push({ class: INTO_RETIRED, package: pkg.name, dir: pkg.dir, subpath, conditions, target });
       }
       const present = target.includes("*") ? patternFiles(target, pkg.files) : pkg.files.has(path);
       if (present) continue;
@@ -140,22 +140,22 @@ export function packageInterfaceFindings({ packages, imports, resolved = new Map
  */
 export function exportAdditions(findings, packages) {
   const byName = new Map(packages.map((pkg) => [pkg.name, pkg]));
-  const additions = new Map(), rejections = [], rejected = new Set();
+  const additions = new Map(), refusals = [], refused = new Set();
   for (const finding of findings) {
     if (finding.class !== UNEXPORTED || !finding.providerSource.repository || finding.excludedBy) continue;
     const key = `${finding.provider}\0${finding.subpath}`;
-    if (additions.has(key) || rejected.has(key) || finding.subpath === ".") continue;
+    if (additions.has(key) || refused.has(key) || finding.subpath === ".") continue;
     const pkg = byName.get(finding.provider);
     // An import-unavailable condition is not an undeclared interface. Adding an
     // unconditional exact key would overwrite it or shadow its pattern for require.
     if (exportKeyForSubpath(pkg.manifest.exports, finding.subpath) !== undefined) {
-      rejected.add(key);
-      rejections.push({ provider: finding.provider, subpath: finding.subpath, reason: "existing-export-declaration" });
+      refused.add(key);
+      refusals.push({ provider: finding.provider, subpath: finding.subpath, reason: "existing-export-declaration" });
       continue;
     }
     const candidates = SUBPATH_FILES(finding.subpath.slice(2)).filter((file) => pkg.files.has(file));
-    if (candidates.length !== 1) { rejected.add(key); rejections.push({ provider: finding.provider, subpath: finding.subpath, reason: candidates.length ? "ambiguous-target" : "no-target-file", candidates }); continue; }
+    if (candidates.length !== 1) { refused.add(key); refusals.push({ provider: finding.provider, subpath: finding.subpath, reason: candidates.length ? "ambiguous-target" : "no-target-file", candidates }); continue; }
     additions.set(key, { package: pkg.name, dir: pkg.dir, subpath: finding.subpath, target: `./${candidates[0]}` });
   }
-  return { additions: [...additions.values()], refusals: rejections };
+  return { additions: [...additions.values()], refusals };
 }

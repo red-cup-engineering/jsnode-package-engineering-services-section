@@ -10,16 +10,16 @@
 import path from "node:path";
 
 import {
-  validationFailure,
-  validatePackageManifest,
+  admissionFailure,
+  admitPackageManifest,
 
 } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/package-manifest";
 import {
-  validatePnpmLockfile,
+  admitPnpmLockfile,
 
 } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/lockfile";
 import {
-  validateWorkspaceDeclaration,
+  admitWorkspaceDeclaration,
 
 } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/workspace-declaration";
 import { binSurfaceOfPackageManifest } from "@red-cup-engineering/jsnode-package-engineering-services-section/workspace/bins";
@@ -45,12 +45,12 @@ function scanPackageRootMaterial(root, options) {
     mark = options.readFileUtf8(source);
   } catch (error) {
     const reason = error instanceof Error ? error.message : "unreadable package manifest";
-    return packageRootScan(absoluteRoot, source, validationFailure(source, reason));
+    return packageRootScan(absoluteRoot, source, admissionFailure(source, reason));
   }
-  return packageRootScan(absoluteRoot, source, validatePackageManifest(mark, source));
+  return packageRootScan(absoluteRoot, source, admitPackageManifest(mark, source));
 }
 
-function requirePackageManifestValidation(result) {
+function requirePackageManifestAdmission(result) {
   if (result.kind === "metroplat.admission.package-manifest") return result;
   throw new TypeError(`scanPackagePublicationStatus: package manifest admission failed at ${result.source}: ${result.reason}`);
 }
@@ -113,10 +113,10 @@ export function scanPackageRoot(root, options) {
 /** Read one package root's emitted targets and prove its package publication status. */
 export function scanPackagePublicationStatus(root, options) {
   const scan = scanPackageRootMaterial(root, options);
-  const validation = requirePackageManifestValidation(scan.admission);
-  const surface = packageSurfaceOf(exportSurfaceOfPackageManifest(validation), binSurfaceOfPackageManifest(validation));
+  const admission = requirePackageManifestAdmission(scan.admission);
+  const surface = packageSurfaceOf(exportSurfaceOfPackageManifest(admission), binSurfaceOfPackageManifest(admission));
   const proof = publicationStatusProofOf(surface, publicationArtifactTargetPathsOf(surface).map((target) => artifactFact(scan.root, target, options)));
-  const policy = publicationReleasePolicyOf(validation, proof);
+  const policy = publicationReleasePolicyOf(admission, proof);
   return Object.freeze({
     kind: "metroplat.workspace-scanner.package-publication-status",
     root: scan.root,
@@ -162,9 +162,9 @@ export function scanWorkspaceDeclaration(root, options) {
   try {
     mark = options.readFileUtf8(source);
   } catch (error) {
-    return validationFailure(source, error instanceof Error ? error.message : "unreadable workspace declaration");
+    return admissionFailure(source, error instanceof Error ? error.message : "unreadable workspace declaration");
   }
-  return validateWorkspaceDeclaration(mark, source);
+  return admitWorkspaceDeclaration(mark, source);
 }
 
 /** Read one workspace root's `pnpm-lock.yaml` host mark. */
@@ -174,9 +174,9 @@ export function scanLockfile(root, options) {
   try {
     mark = options.readFileUtf8(source);
   } catch (error) {
-    return validationFailure(source, error instanceof Error ? error.message : "unreadable pnpm lockfile");
+    return admissionFailure(source, error instanceof Error ? error.message : "unreadable pnpm lockfile");
   }
-  return validatePnpmLockfile(mark, source);
+  return admitPnpmLockfile(mark, source);
 }
 
 /** Resolve package manifests using the admitted workspace's complete glob declaration.

@@ -113,9 +113,9 @@ export function testPlan({ files, manifest = {}, nestedRoots, profile = "source"
   // Validate declarations, but only selected programs can execute or contribute a receipt.
   const known = profile === "source" ? [...sourceTests, ...receivingTests]
     : [...receivingTests, ...Object.keys(manifest.testRequires ?? {}).map(posix)];
-  const validated = admitTestRequires(manifest.testRequires, known);
-  const requirements = Object.fromEntries(Object.entries(validated.requirements).filter(([path]) => tests.includes(path)));
-  const problems = [...enrollmentProblems, ...validated.problems];
+  const admitted = admitTestRequires(manifest.testRequires, known);
+  const requirements = Object.fromEntries(Object.entries(admitted.requirements).filter(([path]) => tests.includes(path)));
+  const problems = [...enrollmentProblems, ...admitted.problems];
   const check = own.filter((path) => CHECKED_FILE.test(path)).sort();
   return Object.freeze({ profile, files: Object.freeze(files.map(posix)), tests: Object.freeze(tests), requirements: Object.freeze(requirements), check: Object.freeze(check), problems: Object.freeze(problems) });
 }

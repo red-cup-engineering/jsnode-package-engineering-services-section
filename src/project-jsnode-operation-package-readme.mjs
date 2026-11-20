@@ -25,8 +25,8 @@ function renderReadme(specification) {
 
 /** Projects README documentation from admitted module bindings and examples. */
 export function projectJsnodeOperationPackageReadme(specification) {
-  const validated = requireSpecification(specification);
-  const projection = admitTextFileCreationProjection({ type: "TextFileCreationProjection", version: 1, path: "README.md", text: renderReadme(validated), mode: 0o644 });
+  const admitted = requireSpecification(specification);
+  const projection = admitTextFileCreationProjection({ type: "TextFileCreationProjection", version: 1, path: "README.md", text: renderReadme(admitted), mode: 0o644 });
   if (projection.type !== "TextFileCreationProjection") throw new TypeError(`admitted help produced ${projection.code}: ${projection.message}`);
   return projection;
 }

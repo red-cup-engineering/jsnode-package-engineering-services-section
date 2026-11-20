@@ -7,7 +7,7 @@
 // This parses the runner's TAP observations, not supplier output as truth.
 // Ordinary stdout from a module is emitted as prefixed TAP comments.
 // This is test-completeness checking, NOT an OS isolation boundary.
-export function validatedCheckNames(closure, derivedCases = []) {
+export function admittedAssayNames(closure, derivedCases = []) {
   return Object.freeze(closure.operations.flatMap(operation => [
     ...closure.examples.filter(item => item.operation === operation.name)
       .map(item => operation.name + ": " + item.name),
@@ -24,17 +24,17 @@ export function validatedCheckNames(closure, derivedCases = []) {
 // Node's TAP reporter escapes # and \ in test names (as \# and \\).
 // Those labels cannot match source-owned exact names: reject them before
 // buying a source attempt rather than reporting false incompletion.
-const safeCheckName = name => typeof name === "string" &&
+const safeAssayName = name => typeof name === "string" &&
   name.trim().length > 0 && name.length <= 512 &&
   !/[\\#\u0000-\u001f\u007f-\u009f\u2028\u2029]/u.test(name);
 
 /** Admit one exact native runner name set without running, spending or writing. */
-export function assertValidatedCheckNames(closure, derivedCases = []) {
+export function assertAdmittedAssayNames(closure, derivedCases = []) {
   if (!Array.isArray(closure?.operations) || !Array.isArray(closure?.examples) ||
       !Array.isArray(derivedCases) ||
-      closure.operations.some(item => !safeCheckName(item?.name)) ||
+      closure.operations.some(item => !safeAssayName(item?.name)) ||
       [...closure.examples, ...derivedCases].some(item =>
-        !safeCheckName(item?.operation) || !safeCheckName(item?.name)))
+        !safeAssayName(item?.operation) || !safeAssayName(item?.name)))
     throw new TypeError("original assay names require bounded, printable, source-owned words");
   // The name projector filters by operation. Without this source admission,
   // a foreign example or an independently authored negative assay silently
@@ -44,8 +44,8 @@ export function assertValidatedCheckNames(closure, derivedCases = []) {
   if ([...closure.examples, ...derivedCases].some(item =>
       !declaredOperations.has(item.operation)))
     throw new TypeError("original assay references an undeclared operation");
-  const names = validatedCheckNames(closure, derivedCases);
-  if (!names.length || names.some(name => !safeCheckName(name)) ||
+  const names = admittedAssayNames(closure, derivedCases);
+  if (!names.length || names.some(name => !safeAssayName(name)) ||
       new Set(names).size !== names.length)
     throw new TypeError("original example and clause-assay runner names must be distinct and printable");
   return names;
@@ -56,7 +56,7 @@ export function assertValidatedCheckNames(closure, derivedCases = []) {
 // readings certify a sandbox, a mathematical theorem, a buyer or payment.
 function tapCompletionProblem(tap, expectedNames) {
   if (typeof tap !== "string" || !Array.isArray(expectedNames) ||
-      expectedNames.length === 0 || expectedNames.some(name => !safeCheckName(name)) ||
+      expectedNames.length === 0 || expectedNames.some(name => !safeAssayName(name)) ||
       new Set(expectedNames).size !== expectedNames.length)
     return "INVALID_ADMITTED_ASSAYS";
   const lines = tap.replaceAll("\r\n", "\n").split("\n");
@@ -118,7 +118,7 @@ function tapCompletionProblem(tap, expectedNames) {
   return null;
 }
 
-export function testRunCompletedAllChecks(tap, expectedNames) {
+export function testRunCompletedAllAssays(tap, expectedNames) {
   return tapCompletionProblem(tap, expectedNames) === null;
 }
 
@@ -129,7 +129,7 @@ export function testRunCompletedAllChecks(tap, expectedNames) {
  * observations, not the existence of a sandbox. The host, not source text or
  * a customer-supplied JSON field, must own and attest process isolation.
  */
-export function receiveIsolatedCheckOutcome(run, expectedNames) {
+export function receiveIsolatedAssayOutcome(run, expectedNames) {
   if (!run || run.isolated !== true ||
       !Number.isInteger(run.status) ||
       typeof run.stdout !== "string" || typeof run.stderr !== "string" ||

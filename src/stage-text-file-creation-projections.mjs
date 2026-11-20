@@ -13,16 +13,16 @@ import { serializeLines } from "@red-cup-engineering/jsonl-engineering-services-
 import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
-class StagingRejection extends Error {
-  constructor(code, message, rejectedPath = null) {
+class StagingRefusal extends Error {
+  constructor(code, message, refusedPath = null) {
     super(message);
     this.code = code;
-    this.refusedPath = rejectedPath;
+    this.refusedPath = refusedPath;
   }
 }
 
-function refuse(code, message, rejectedPath = null) {
-  throw new StagingRejection(code, message, rejectedPath);
+function refuse(code, message, refusedPath = null) {
+  throw new StagingRefusal(code, message, refusedPath);
 }
 
 // Walks a staged directory depth-first in canonical (locale-sorted) order, strictly UTF-8 decoding
@@ -82,8 +82,8 @@ async function readStage(stageDirectory, expected) {
   });
 }
 
-function rejection(code, message, rejectedPath = null) {
-  return Object.freeze({ type: "TextFileCreationStagingRefusal", version: 1, code, message, path: rejectedPath });
+function refusal(code, message, refusedPath = null) {
+  return Object.freeze({ type: "TextFileCreationStagingRefusal", version: 1, code, message, path: refusedPath });
 }
 
 /**
@@ -97,7 +97,7 @@ function rejection(code, message, rejectedPath = null) {
  */
 export async function stageTextFileCreationProjections({ parentDirectory, files, filesDigest }) {
   const set = admitTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files, filesDigest });
-  if (set.type !== "TextFileCreationProjectionSet") return rejection(set.code, set.message, set.path);
+  if (set.type !== "TextFileCreationProjectionSet") return refusal(set.code, set.message, set.path);
 
   const stageDirectory = await mkdtemp(path.join(parentDirectory, ".text-file-creation-stage-"));
   try {
@@ -109,7 +109,7 @@ export async function stageTextFileCreationProjections({ parentDirectory, files,
     return await readStage(stageDirectory, set);
   } catch (error) {
     await rm(stageDirectory, { recursive: true, force: true });
-    if (error instanceof StagingRejection) return rejection(error.code, error.message, error.refusedPath);
-    return rejection("STAGING_FAILED", error.message, stageDirectory);
+    if (error instanceof StagingRefusal) return refusal(error.code, error.message, error.refusedPath);
+    return refusal("STAGING_FAILED", error.message, stageDirectory);
   }
 }

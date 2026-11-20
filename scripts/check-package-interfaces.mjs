@@ -54,7 +54,7 @@ for (const { importer, specifier } of imports) {
 }
 
 const { findings, diagnostics } = packageInterfaceFindings({ packages, imports, resolved });
-const { additions, refusals: rejections } = exportAdditions(findings, packages);
+const { additions, refusals } = exportAdditions(findings, packages);
 const written = [];
 if (mode === "write") {
   for (const [dir, rows] of Map.groupBy(additions, (row) => row.dir)) {
@@ -63,7 +63,7 @@ if (mode === "write") {
     const exportsMap = typeof manifest.exports === "object" && manifest.exports !== null && !Array.isArray(manifest.exports)
       && Object.keys(manifest.exports).every((key) => key.startsWith(".")) ? manifest.exports
       : manifest.exports === undefined ? {} : null;
-    if (exportsMap === null) { rejections.push(...rows.map((row) => ({ provider: row.package, subpath: row.subpath, reason: "exports-not-a-subpath-map" }))); continue; }
+    if (exportsMap === null) { refusals.push(...rows.map((row) => ({ provider: row.package, subpath: row.subpath, reason: "exports-not-a-subpath-map" }))); continue; }
     for (const row of rows) exportsMap[row.subpath] = row.target;
     writeFileSync(file, formatManifestLike(text, { ...manifest, exports: exportsMap }));
     written.push(...rows);
@@ -72,7 +72,7 @@ if (mode === "write") {
 const byClass = Object.fromEntries(PACKAGE_INTERFACE_CLASSES.map((name) => [name, findings.filter((row) => row.class === name)]));
 process.stdout.write(JSON.stringify({
   kind: "check-package-interfaces", mode, repository, packages: packages.length, imports: imports.length,
-  findings: byClass, diagnostics, ...(mode === "write" ? { added: written, refused: rejections } : { proposed: additions, refused: rejections }),
+  findings: byClass, diagnostics, ...(mode === "write" ? { added: written, refused: refusals } : { proposed: additions, refused: refusals }),
 }, null, 2) + "\n");
 const added = mode === "write" ? new Set(written.map((row) => `${row.package}\0${row.subpath}`)) : new Set();
 const open = findings.filter((row) => !(row.class === "unexported-interface" && added.has(`${row.provider}\0${row.subpath}`)));

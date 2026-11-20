@@ -101,7 +101,7 @@ export function misfoldsOfModule(text, fileName, exportNames) {
 }
 
 /** A refusal reason for a module's misfolds, or undefined when it folded. */
-export function misfoldRejection(misfolds) {
+export function misfoldRefusal(misfolds) {
   if (misfolds.length === 0) return undefined;
   return "misfold: " + misfolds.map((item) => `${item.export} is a ${item.kind} of ${item.dependency}, deposited beside the capability it should use`).join("; ");
 }

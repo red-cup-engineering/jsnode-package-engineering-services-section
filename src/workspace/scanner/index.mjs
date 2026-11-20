@@ -2,8 +2,8 @@ import path from "node:path";
 
 
 import {
-  workspacePackageRootScanValidator,
-  workspaceScanValidator,
+  workspacePackageRootScanContract,
+  workspaceScanContract,
 
 } from "./schema.mjs";
 
@@ -27,17 +27,17 @@ export function workspaceScannerShouldSkip(name, ignore = new Set()) {
   return workspaceScannerIgnoredDirectories.includes(name) || ignore.has(name);
 }
 
-export function packageRootScan(root, source, validation) {
-  return workspacePackageRootScanValidator.assert(Object.freeze({
+export function packageRootScan(root, source, admission) {
+  return workspacePackageRootScanContract.assert(Object.freeze({
     kind: "metroplat.workspace.package-root",
     root,
     source,
-    admission: validation,
+    admission,
   }), "workspace package-root scan");
 }
 
 export function workspaceScan(root, packages) {
-  return workspaceScanValidator.assert(Object.freeze({
+  return workspaceScanContract.assert(Object.freeze({
     kind: "metroplat.workspace.scan",
     root,
     packages: Object.freeze([...packages]),

@@ -44,7 +44,7 @@ export function projectJsnodeOperationPackage(specification) {
     projectJsnodeOperationPackageReadme(specification),
   ].sort((left, right) => left.path.localeCompare(right.path));
   const filesDigest = sha256Digest(serializeLines(projected));
-  const validated = admitTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: projected, filesDigest });
-  if (validated.type !== "TextFileCreationProjectionSet") throw new TypeError(validated.message);
-  return freezeJson({ type: "JsnodeOperationPackageProjection", version: 2, packageName: specification.packageName, packageVersion: specification.packageVersion, files: validated.files, filesDigest: validated.filesDigest });
+  const admitted = admitTextFileCreationProjectionSet({ type: "TextFileCreationProjectionSet", version: 1, files: projected, filesDigest });
+  if (admitted.type !== "TextFileCreationProjectionSet") throw new TypeError(admitted.message);
+  return freezeJson({ type: "JsnodeOperationPackageProjection", version: 2, packageName: specification.packageName, packageVersion: specification.packageVersion, files: admitted.files, filesDigest: admitted.filesDigest });
 }

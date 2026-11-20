@@ -10,13 +10,13 @@
  */
 import { decodeYaml } from "@red-cup-engineering/yaml-engine";
 import {
-  validationFailureValidator,
-  workspaceDeclarationValidationValidator,
+  admissionFailureContract,
+  workspaceDeclarationAdmissionContract,
 
 } from "./schemas/admission.mjs";
 
-function workspaceDeclarationValidationFailure(source, reason) {
-  return validationFailureValidator.assert({
+function workspaceDeclarationAdmissionFailure(source, reason) {
+  return admissionFailureContract.assert({
     kind: "metroplat.admission.failure",
     source,
     reason,
@@ -28,21 +28,21 @@ function workspaceDeclarationValidationFailure(source, reason) {
  * host input: an unreadable document or a missing/invalid `packages` list
  * returns an admission failure record rather than throwing.
  */
-export function validateWorkspaceDeclaration(mark, source = "pnpm-workspace.yaml") {
+export function admitWorkspaceDeclaration(mark, source = "pnpm-workspace.yaml") {
   let value;
   try {
     value = decodeYaml(mark);
   } catch (error) {
-    return workspaceDeclarationValidationFailure(source, error instanceof Error ? error.message : "unreadable workspace declaration");
+    return workspaceDeclarationAdmissionFailure(source, error instanceof Error ? error.message : "unreadable workspace declaration");
   }
 
   const packages = value["packages"];
   if (!Array.isArray(packages) || packages.length === 0 || !packages.every((entry) => typeof entry === "string" && entry.length > 0)) {
-    return workspaceDeclarationValidationFailure(source, "workspace declaration requires a non-empty packages: list of strings");
+    return workspaceDeclarationAdmissionFailure(source, "workspace declaration requires a non-empty packages: list of strings");
   }
 
   try {
-    return workspaceDeclarationValidationValidator.assert({
+    return workspaceDeclarationAdmissionContract.assert({
       kind: "metroplat.admission.workspace-declaration",
       source,
       packages,
@@ -50,13 +50,13 @@ export function validateWorkspaceDeclaration(mark, source = "pnpm-workspace.yaml
       ...(typeof value["preferWorkspacePackages"] === "boolean" ? { preferWorkspacePackages: value["preferWorkspacePackages"] } : {}),
     }, "workspace declaration admission");
   } catch (error) {
-    return workspaceDeclarationValidationFailure(source, error instanceof Error ? error.message : "invalid workspace declaration admission");
+    return workspaceDeclarationAdmissionFailure(source, error instanceof Error ? error.message : "invalid workspace declaration admission");
   }
 }
 
 /** Admit a workspace declaration or throw with the carried failure reason. */
 export function requireWorkspaceDeclaration(mark, source = "pnpm-workspace.yaml") {
-  const validated = validateWorkspaceDeclaration(mark, source);
-  if (validated.kind === "metroplat.admission.failure") throw new TypeError(`${source}: ${validated.reason}`);
-  return validated;
+  const admitted = admitWorkspaceDeclaration(mark, source);
+  if (admitted.kind === "metroplat.admission.failure") throw new TypeError(`${source}: ${admitted.reason}`);
+  return admitted;
 }

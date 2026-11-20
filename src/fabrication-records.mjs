@@ -7,10 +7,10 @@ const SKIP = new Set(["node_modules", ".git", "dist"]);
 
 /** Walk a root for fabrication receipts and translator-accepted JSNode work orders, bounded by depth and count. */
 export function listFabricationRecords(root, { maxDepth = 48, limit = 200 } = {}) {
-  const records = [];
+  const receipts = [];
   const workOrders = [];
   const walk = (dir, depth) => {
-    if (depth > maxDepth || records.length + workOrders.length >= limit) return;
+    if (depth > maxDepth || receipts.length + workOrders.length >= limit) return;
     let entries;
     try { entries = readdirSync(dir, { withFileTypes: true }); } catch { return; }
     for (const entry of entries) {
@@ -21,10 +21,10 @@ export function listFabricationRecords(root, { maxDepth = 48, limit = 200 } = {}
       }
       if (entry.name.endsWith("fabrication-receipt.json") && path.includes("/data/records/")) {
         try {
-          const record = JSON.parse(readFileSync(path, "utf8"));
-          const creation = record.jsnodeOperationPackageCreationReceipt ?? {};
-          records.push({ path, sourceDigest: record.sourceDigest, specificationDigest: record.specificationDigest, packageName: creation.packageName, packageVersion: creation.packageVersion, destination: creation.destination });
-        } catch { records.push({ path, unreadable: true }); }
+          const receipt = JSON.parse(readFileSync(path, "utf8"));
+          const creation = receipt.jsnodeOperationPackageCreationReceipt ?? {};
+          receipts.push({ path, sourceDigest: receipt.sourceDigest, specificationDigest: receipt.specificationDigest, packageName: creation.packageName, packageVersion: creation.packageVersion, destination: creation.destination });
+        } catch { receipts.push({ path, unreadable: true }); }
       } else if (entry.name.endsWith(".md") && path.includes("/specifications/")) {
         const text = readFileSync(path, "utf8");
         const translation = translateMarkdownJsnodeOperationPackageSpecification({
@@ -33,11 +33,11 @@ export function listFabricationRecords(root, { maxDepth = 48, limit = 200 } = {}
           source: { type: "MarkdownDocumentSource", path, text },
         });
         if (translation.type === "MarkdownJsnodeOperationPackageSpecificationTranslationRefusal") continue;
-        const origin = translation.artifactSpecificationCandidate.source.provenance;
+        const provenance = translation.artifactSpecificationCandidate.source.provenance;
         workOrders.push({
           path,
           artifactId: translation.artifactSpecificationCandidate.source.identity.id,
-          specificationDigest: origin.digest,
+          specificationDigest: provenance.digest,
           bytes: Buffer.byteLength(text, "utf8"),
           translationType: translation.type,
         });
@@ -45,5 +45,5 @@ export function listFabricationRecords(root, { maxDepth = 48, limit = 200 } = {}
     }
   };
   walk(resolve(root), 0);
-  return { kind: "jsnode.fabrication-records", root: resolve(root), receipts: records, workOrders };
+  return { kind: "jsnode.fabrication-records", root: resolve(root), receipts, workOrders };
 }

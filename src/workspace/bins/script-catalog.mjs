@@ -11,13 +11,13 @@
  */
 
 import {
-  packageScriptCatalogValidator,
+  packageScriptCatalogContract,
 
 } from "../schemas/bins.mjs";
 
 /** Read an admitted package manifest's `scripts` map as package material. */
-export function packageScriptCatalogOfPackageManifest(validation) {
-  const scriptsValue = validation.manifest["scripts"];
+export function packageScriptCatalogOfPackageManifest(admission) {
+  const scriptsValue = admission.manifest["scripts"];
   const entries = [];
   if (scriptsValue !== null && typeof scriptsValue === "object" && !Array.isArray(scriptsValue)) {
     for (const [name, command] of Object.entries(scriptsValue)) {
@@ -28,10 +28,10 @@ export function packageScriptCatalogOfPackageManifest(validation) {
   }
   entries.sort((left, right) => left.name.localeCompare(right.name));
 
-  return packageScriptCatalogValidator.assert({
+  return packageScriptCatalogContract.assert({
     kind: "metroplat.bins.script-catalog",
-    source: validation.source,
-    packageName: validation.manifest.name,
+    source: admission.source,
+    packageName: admission.manifest.name,
     entries,
   }, "package script catalog");
 }

@@ -11,7 +11,7 @@
 
 
 import {
-  binSurfaceValidator as binSurfaceSchemaContract,
+  binSurfaceContract as binSurfaceSchemaContract,
 
 } from "../schemas/bins.mjs";
 
@@ -39,11 +39,11 @@ function entryOf(command, target) {
 /**
  * Read an admitted package manifest's public bin map as package material.
  */
-export function binSurfaceOfPackageManifest(validation) {
-  const binValue = validation.manifest["bin"];
+export function binSurfaceOfPackageManifest(admission) {
+  const binValue = admission.manifest["bin"];
   const entries = [];
   if (typeof binValue === "string" && binValue.length > 0) {
-    entries.push(entryOf(validation.manifest.name, binValue));
+    entries.push(entryOf(admission.manifest.name, binValue));
   } else if (binValue !== null && typeof binValue === "object" && !Array.isArray(binValue)) {
     for (const [command, target] of Object.entries(binValue)) {
       if (typeof target === "string" && target.length > 0) entries.push(entryOf(command, target));
@@ -53,8 +53,8 @@ export function binSurfaceOfPackageManifest(validation) {
   entries.sort((left, right) => left.command.localeCompare(right.command));
   return binSurfaceSchemaContract.assert({
     kind: "metroplat.bins.surface",
-    source: validation.source,
-    packageName: validation.manifest.name,
+    source: admission.source,
+    packageName: admission.manifest.name,
     entries,
   }, "bin surface");
 }

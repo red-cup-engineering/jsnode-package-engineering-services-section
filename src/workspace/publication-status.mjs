@@ -9,9 +9,9 @@ import { publicationFilesExclusionsOf } from './publication-files.mjs';
  */
 
 import {
-  publicationArtifactTargetValidator,
-  publicationReleasePolicyValidator,
-  publicationStatusProofValidator,
+  publicationArtifactTargetContract,
+  publicationReleasePolicyContract,
+  publicationStatusProofContract,
 
 } from "./schemas/publication-status.mjs";
 
@@ -25,7 +25,7 @@ function withFact(
   facts,
 ) {
   const fact = facts.get(target.target);
-  return publicationArtifactTargetValidator.assert(Object.freeze({
+  return publicationArtifactTargetContract.assert(Object.freeze({
     kind: "metroplat.publication-status.artifact-target",
     ...target,
     exists: fact?.exists ?? false,
@@ -110,7 +110,7 @@ export function publicationStatusProofOf(
       .filter((target) => target.obligation === "bin" && target.exists && target.executable !== true)
       .map((target) => target.target),
   );
-  return publicationStatusProofValidator.assert(Object.freeze({
+  return publicationStatusProofContract.assert(Object.freeze({
     kind: "metroplat.publication-status.proof",
     source: surface.source,
     packageName: surface.packageName,
@@ -127,22 +127,22 @@ function stringArrayField(value) {
   return Object.freeze(value.filter((entry) => typeof entry === "string" && entry.length > 0));
 }
 
-function manifestScripts(validation) {
-  const scripts = validation.manifest.scripts;
+function manifestScripts(admission) {
+  const scripts = admission.manifest.scripts;
   if (scripts === undefined || scripts === null || typeof scripts !== "object" || Array.isArray(scripts)) return Object.freeze([]);
   return Object.freeze(Object.keys(scripts).sort());
 }
 
-function manifestFiles(validation) {
-  return stringArrayField((validation.manifest)["files"]);
+function manifestFiles(admission) {
+  return stringArrayField((admission.manifest)["files"]);
 }
 
 function proofTargets(proof) {
   return proof.targets;
 }
 
-function excludedPublicationTargets(validation, proof) {
-  return publicationFilesExclusionsOf(validation.manifest, proofTargets(proof).map(target => target.target));
+function excludedPublicationTargets(admission, proof) {
+  return publicationFilesExclusionsOf(admission.manifest, proofTargets(proof).map(target => target.target));
 }
 
 function isTypeScriptRuntimeTarget(target) {
@@ -160,12 +160,12 @@ function unsupportedNodeRuntimeTargets(proof) {
   ].sort());
 }
 
-function releasePolicyObligations(validation, proof) {
+function releasePolicyObligations(admission, proof) {
   const obligations = [];
-  const excludedTargets = excludedPublicationTargets(validation, proof);
+  const excludedTargets = excludedPublicationTargets(admission, proof);
   const unsupportedTargets = unsupportedNodeRuntimeTargets(proof);
   if (!proof.ok) obligations.push("Repair missing or non-executable emitted artifact targets before any release artifact can be used.");
-  if (validation.manifest.private === true) obligations.push("Package manifest is private; do not publish to the public npm registry.");
+  if (admission.manifest.private === true) obligations.push("Package manifest is private; do not publish to the public npm registry.");
   if (excludedTargets.length > 0) obligations.push(`Package files allowlist excludes public artifact targets: ${excludedTargets.join(", ")}.`);
   if (unsupportedTargets.length > 0) obligations.push(`Installed Node.js packages cannot execute TypeScript runtime targets: ${unsupportedTargets.join(", ")}.`);
   return Object.freeze(obligations);
@@ -175,30 +175,30 @@ function releasePolicyObligations(validation, proof) {
  * Read an admitted manifest plus artifact proof as an explicit release policy.
  */
 export function publicationReleasePolicyOf(
-  validation,
+  admission,
   proof,
 ) {
-  if (validation.manifest.name !== proof.packageName) {
-    throw new TypeError(`publicationReleasePolicyOf: package names differ: ${validation.manifest.name} and ${proof.packageName}`);
+  if (admission.manifest.name !== proof.packageName) {
+    throw new TypeError(`publicationReleasePolicyOf: package names differ: ${admission.manifest.name} and ${proof.packageName}`);
   }
-  const includedFiles = manifestFiles(validation);
-  const scripts = manifestScripts(validation);
+  const includedFiles = manifestFiles(admission);
+  const scripts = manifestScripts(admission);
   const localArtifactOk = proof.ok
-    && excludedPublicationTargets(validation, proof).length === 0
+    && excludedPublicationTargets(admission, proof).length === 0
     && unsupportedNodeRuntimeTargets(proof).length === 0;
-  return publicationReleasePolicyValidator.assert(Object.freeze({
+  return publicationReleasePolicyContract.assert(Object.freeze({
     kind: "metroplat.publication-status.release-policy",
-    source: validation.source,
-    packageName: validation.manifest.name,
-    private: validation.manifest.private === true,
+    source: admission.source,
+    packageName: admission.manifest.name,
+    private: admission.manifest.private === true,
     artifactProof: proof,
     includedFiles,
     scripts,
     localArtifactOk,
-    npmPublishable: localArtifactOk && validation.manifest.private !== true,
-    obligations: releasePolicyObligations(validation, proof),
+    npmPublishable: localArtifactOk && admission.manifest.private !== true,
+    obligations: releasePolicyObligations(admission, proof),
     evidence: Object.freeze([
-      validation.source,
+      admission.source,
       "src/workspace/publication-status:publicationStatusProofOf",
       "src/workspace/publication-status:publicationReleasePolicyOf",
     ]),

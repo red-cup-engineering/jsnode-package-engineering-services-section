@@ -2,7 +2,7 @@
 import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 import { DEFINITIONALLY_EXACT_PARAMETERS } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 
-class TranslationRejection extends Error {
+class TranslationRefusal extends Error {
   constructor(code, message, sourceSpan = null) {
     super(message);
     this.code = code;
@@ -11,7 +11,7 @@ class TranslationRejection extends Error {
 }
 
 function refuse(code, message, sourceSpan = null) {
-  throw new TranslationRejection(code, message, sourceSpan);
+  throw new TranslationRefusal(code, message, sourceSpan);
 }
 
 function frozen(value) {
@@ -403,7 +403,7 @@ export function translateMarkdownJsnodeOperationPackageSpecification(request) {
     const artifactSpecificationCandidate = { type: "ArtifactFabricationSpecificationCandidate", version: claimed ? 2 : 1, source: { type: "ArtifactFabricationSource", version: 1, identity: { type: "ArtifactFabricationSourceIdentity", id: artifactId }, provenance: { type: "ArtifactFabricationSourceProvenance", locator: source.path, digest, sourceSpan: span(1, lines.length) } }, artifact: { type: "FabricatedArtifactIdentity", version: 1, id: artifactId, kind: "jsnode-operation-package" }, ...(claimed ? { claims: claimList } : {}), requirements, prohibitions, openQuestions, constraints: constraintsValue, projections: [projection], acceptanceObligations: [obligation], traceability: traceabilityValue };
     return frozen({ type: "MarkdownJsnodeOperationPackageSpecificationTranslation", version: 1, artifactSpecificationCandidate, jsnodeOperationPackageSpecificationCandidate });
   } catch (error) {
-    if (error instanceof TranslationRejection) return frozen({ type: "MarkdownJsnodeOperationPackageSpecificationTranslationRefusal", version: 1, code: error.code, message: error.message, sourceSpan: error.sourceSpan });
+    if (error instanceof TranslationRefusal) return frozen({ type: "MarkdownJsnodeOperationPackageSpecificationTranslationRefusal", version: 1, code: error.code, message: error.message, sourceSpan: error.sourceSpan });
     throw error;
   }
 }

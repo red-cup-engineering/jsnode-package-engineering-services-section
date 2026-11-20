@@ -92,9 +92,9 @@ export const publicationReleasePolicySchema = {
   additionalProperties: false,
 };
 
-export const publicationArtifactTargetValidator = schemaFrom(publicationArtifactTargetSchema);
-export const publicationStatusProofValidator = schemaFrom(publicationStatusProofSchema, [
+export const publicationArtifactTargetContract = schemaFrom(publicationArtifactTargetSchema);
+export const publicationStatusProofContract = schemaFrom(publicationStatusProofSchema, [
   packageSurfaceContract,
-  publicationArtifactTargetValidator,
+  publicationArtifactTargetContract,
 ]);
-export const publicationReleasePolicyValidator = schemaFrom(publicationReleasePolicySchema, [publicationStatusProofValidator]);
+export const publicationReleasePolicyContract = schemaFrom(publicationReleasePolicySchema, [publicationStatusProofContract]);
