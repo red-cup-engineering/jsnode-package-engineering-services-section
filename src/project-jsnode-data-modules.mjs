@@ -1,3 +1,4 @@
+import { compareText } from "@red-cup-engineering/semiotic-content-address-system";
 import { isRecord } from "@red-cup-engineering/signcell/values";
 /** Deterministic source fabrication for schema-admitted, immutable JSON data. */
 import { types } from "node:util";
@@ -18,7 +19,7 @@ const plain = value => {
   return prototype === Object.prototype || prototype === null;
 };
 
-const compare = (left, right) => left < right ? -1 : left > right ? 1 : 0;
+
 
 /** Snapshot strict JSON without invoking accessors, toJSON, or proxy traps.
  * Repeated references are JSON values, not shared object identities; cycles
@@ -50,7 +51,7 @@ function snapshot(value) {
         throw new TypeError(`JSON arrays must be dense and have no extra members: ${location}`);
       result = Array.from({ length }, (_, index) => copy(descriptors[index].value, `${location}/${index}`, depth + 1));
     } else {
-      result = Object.fromEntries(keys.sort(compare).map(key => [key, copy(descriptors[key].value, `${location}/${key}`, depth + 1)]));
+      result = Object.fromEntries(keys.sort(compareText).map(key => [key, copy(descriptors[key].value, `${location}/${key}`, depth + 1)]));
     }
     active.delete(item);
     return Object.freeze(result);
@@ -148,7 +149,7 @@ function admitStaticSchemaProfile(schema) {
 }
 
 function fields(value, expected, location) {
-  if (!isRecord(value) || Object.keys(value).sort(compare).join("\0") !== expected.slice().sort(compare).join("\0"))
+  if (!isRecord(value) || Object.keys(value).sort(compareText).join("\0") !== expected.slice().sort(compareText).join("\0"))
     throw new TypeError(`${location} requires exactly ${expected.join(", ")}`);
 }
 function identifier(name) {
@@ -162,7 +163,7 @@ function json(value) {
   if (typeof value === "number" && Object.is(value, -0)) return "-0";
   if (value === null || typeof value !== "object") return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map(json).join(",")}]`;
-  return `{${Object.keys(value).sort(compare).map(key => `${JSON.stringify(key)}:${json(value[key])}`).join(",")}}`;
+  return `{${Object.keys(value).sort(compareText).map(key => `${JSON.stringify(key)}:${json(value[key])}`).join(",")}}`;
 }
 /** Project source-free schema-admitted data to standalone immutable ESM files.
  * @param {Array} dataModules Declarations containing path and named exports,
@@ -193,7 +194,7 @@ export function projectJsnodeDataModules(dataModules) {
       const result = compileJsonSchema(entry.schema).validate(entry.value);
       if (!result.valid) throw new TypeError(`data export ${entry.name} fails its declared schema: ${result.issues.map(issue => `${issue.path || "/"} ${issue.message}`).join("; ")}`);
       return entry;
-    }).sort((left, right) => compare(left.name, right.name));
+    }).sort((left, right) => compareText(left.name, right.name));
     const text = [
       "/** Generated from schema-admitted dataModules. Do not edit. */",
       'import { deepFreeze } from "@red-cup-engineering/signcell/values";',
@@ -205,5 +206,5 @@ export function projectJsnodeDataModules(dataModules) {
     ].join("\n");
     return Object.freeze({ type: "TextFileCreationProjection", version: 1, path: module.path, text, mode: 0o644 });
   });
-  return Object.freeze(files.sort((left, right) => compare(left.path, right.path)));
+  return Object.freeze(files.sort((left, right) => compareText(left.path, right.path)));
 }
