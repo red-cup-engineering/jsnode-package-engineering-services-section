@@ -1,6 +1,6 @@
 import { compareText } from "@red-cup-engineering/semiotic-content-address-system";
 import { isRecord } from "@red-cup-engineering/signcell/values";
-/** Deterministic source fabrication for schema-admitted, immutable JSON data. */
+/** Deterministic source fabrication for schema-validated, immutable JSON data. */
 import { types } from "node:util";
 import { compileJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
 import { confined } from "./project-jsnode-module-paths.mjs";
@@ -61,7 +61,7 @@ function snapshot(value) {
 
 // This fabrication profile is deliberately closed. The existing evaluator
 // treats unknown words as annotations; a typo or unsupported assertion must
-// not silently disappear while a producer claims to have admitted a design.
+// not silently disappear while a producer claims to have validated a design.
 const annotations = new Set([
   "$schema", "$id", "$anchor", "$comment", "title", "description", "default",
   "examples", "deprecated", "readOnly", "writeOnly", "contentEncoding", "contentMediaType",
@@ -129,8 +129,7 @@ function admitStaticSchemaProfile(schema) {
     }
   };
   visit(schema, "");
-  // This is an admission boundary, not another reference resolver. The
-  // existing supplier resolves and evaluates each accepted pointer. Restrict
+  // The JSON Schema validator resolves and evaluates each accepted pointer. Restrict
   // references to structural schema positions already checked above, so a
   // reference cannot promote an unchecked default/example/const into a schema.
   for (const reference of references) {
@@ -144,7 +143,7 @@ function admitStaticSchemaProfile(schema) {
     const normalized = fragment === "" ? "" : "/" + fragment.slice(1).split("/")
       .map(token => pointerToken(token.replaceAll("~1", "/").replaceAll("~0", "~"))).join("/");
     if (!locations.has(normalized))
-      throw new TypeError(`data module schema reference targets an unadmitted schema location: ${reference}`);
+      throw new TypeError(`data module schema reference targets a location outside the validated schema: ${reference}`);
   }
 }
 
@@ -157,7 +156,7 @@ function identifier(name) {
     throw new TypeError("data export name must be a non-reserved JavaScript binding");
 }
 // JSON.stringify deliberately rewrites -0 and orders integer-looking keys by
-// their numeric value. Serialize the admitted value directly so every key uses
+// their numeric value. Serialize the validated value directly so every key uses
 // the same code-unit order and every finite number retains its JSON meaning.
 function json(value) {
   if (typeof value === "number" && Object.is(value, -0)) return "-0";
@@ -165,7 +164,7 @@ function json(value) {
   if (Array.isArray(value)) return `[${value.map(json).join(",")}]`;
   return `{${Object.keys(value).sort(compareText).map(key => `${JSON.stringify(key)}:${json(value[key])}`).join(",")}}`;
 }
-/** Project source-free schema-admitted data to standalone immutable ESM files.
+/** Project source-free schema-validated data to standalone immutable ESM files.
  * @param {Array} dataModules Declarations containing path and named exports,
  * each export containing its name, JSON value and self-contained JSON schema.
  * @returns {ReadonlyArray} Deterministic TextFileCreationProjection records.
@@ -196,7 +195,7 @@ export function projectJsnodeDataModules(dataModules) {
       return entry;
     }).sort((left, right) => compareText(left.name, right.name));
     const text = [
-      "/** Generated from schema-admitted dataModules. Do not edit. */",
+      "/** Generated from schema-validated dataModules. Do not edit. */",
       'import { deepFreeze } from "@red-cup-engineering/signcell/values";',
       // Export aliases do not create local bindings. Data named Object, JSON,
       // or __freezeGeneratedData cannot shadow the generated implementation.

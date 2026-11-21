@@ -4,7 +4,7 @@
   "exportName": "projectExistingModuleExampleTests",
   "examples": [
     {
-      "name": "a public operation's examples project to its named Node test file",
+      "name": "examples generate a Node test file for the named operation",
       "input": {
         "name": "restore-flight", "module": "src/flight.mjs", "exportName": "openFlight",
         "x-javascript-arguments": "positional",
@@ -22,12 +22,15 @@
       "throws": "TypeError"
     },
     {
-      "name": "a refusal and a returned value are exclusive observations",
+      "name": "an example cannot both return a value and throw",
       "input": {
         "name": "observe", "module": "src/observe.mjs", "exportName": "observe",
         "examples": [{"name": "conflicting expectations", "input": null, "output": 1, "throws": "TypeError"}]
       },
       "throws": "TypeError"
-    }
+    },
+    {"name": "a SignCell example can specify a null result", "input": {"name": "score", "module": "src/score.mjs", "exportName": "score", "examples": [{"subject": {"operation": {"module": "src/score.mjs", "exportName": "score"}, "name": "an empty score", "input": []}, "predicate": "jsnode.example.returns", "object": null, "for": ["game rules"], "against": []}]}, "outputPath": ["path"], "output": "test/score-examples.test.mjs"},
+    {"name": "conflicting evidence invalidates an example", "input": {"name": "score", "module": "src/score.mjs", "exportName": "score", "examples": [{"subject": {"operation": {"module": "src/score.mjs", "exportName": "score"}, "name": "an empty score", "input": []}, "predicate": "jsnode.example.returns", "object": null, "for": ["game rules"], "against": ["amended rules"]}]}, "throws": "TypeError"},
+    {"name": "a declaration about one export cannot specify another", "input": {"name": "score", "module": "src/score.mjs", "exportName": "reset", "examples": [{"subject": {"operation": {"module": "src/score.mjs", "exportName": "score"}, "name": "an empty score", "input": []}, "predicate": "jsnode.example.returns", "object": null, "for": ["game rules"], "against": []}]}, "throws": "TypeError"}
   ]
 }
