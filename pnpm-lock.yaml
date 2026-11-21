@@ -50,6 +50,9 @@ importers:
       '@red-cup-engineering/jsonl-engineering-services-section':
         specifier: ^0.1.4
         version: 0.1.6
+      '@red-cup-engineering/markdown-engineering-services-section':
+        specifier: 0.5.13
+        version: 0.5.13
       '@red-cup-engineering/node-js-function-engineering-services-section':
         specifier: ^0.5.4
         version: 0.5.5

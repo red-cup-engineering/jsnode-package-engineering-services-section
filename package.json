@@ -107,7 +107,7 @@
     "@red-cup-engineering/semiotic-content-address-system": "0.1.8-dev.0 || ^0.1.8",
     "@red-cup-engineering/typed-content": "0.1.0-dev.0 || 0.1.1-dev.0 || 0.1.0",
     "@red-cup-engineering/git-engine": "0.1.11-dev.0 || ^0.1.11",
-    "@red-cup-engineering/markdown-engineering-services-section": "0.6.0-dev.0"
+    "@red-cup-engineering/markdown-engineering-services-section": "0.5.13"
   },
   "engines": {
     "node": ">=24"
