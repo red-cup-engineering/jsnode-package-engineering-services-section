@@ -26,9 +26,9 @@ function select({ inputs = {}, event = 'pull_request', privateRepo = true, head 
   return JSON.parse(JSON.stringify(result, data.replacer))
 }
 
-test('the sole optional runner input is boolean and defaults to the hosted machine', () => {
+test('the optional runner input is boolean and defaults to the hosted machine', () => {
   const inputs = workflow.on.workflow_call.inputs
-  deepStrictEqual(Object.keys(inputs), ['bare-cedar-fog'])
+  deepStrictEqual(Object.keys(inputs).sort(), ['bare-cedar-fog', 'package-directory'])
   equal(inputs['bare-cedar-fog'].type, 'boolean')
   equal(inputs['bare-cedar-fog'].default, false)
   equal(select(), 'ubuntu-latest')

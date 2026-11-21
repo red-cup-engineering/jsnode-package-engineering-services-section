@@ -2,6 +2,10 @@ name: Receive an installed Group package
 on:
   workflow_call:
     inputs:
+      package-directory:
+        description: Package to pack and receive, relative to the caller checkout
+        type: string
+        default: '.'
       bare-cedar-fog:
         description: Use the Group's held runner for a trusted private repository
         type: boolean
@@ -34,8 +38,31 @@ jobs:
         with:
           node-version: '24'
           package-manager-cache: false
+      - name: Locate the selected source package
+        id: source
+        shell: bash
+        env:
+          PACKAGE_DIRECTORY: ${{ inputs.package-directory || '.' }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, realpathSync, statSync } from 'node:fs';
+          import { isAbsolute, join, resolve, sep } from 'node:path';
+          const root = realpathSync('.');
+          const path = process.env.PACKAGE_DIRECTORY;
+          if (isAbsolute(path)) throw new Error('package-directory must be relative to the checkout');
+          const directory = realpathSync(resolve(root, path));
+          if (directory !== root && !directory.startsWith(root + sep)) {
+            throw new Error('package-directory is outside the caller checkout');
+          }
+          const manifest = realpathSync(join(directory, 'package.json'));
+          if (!manifest.startsWith(root + sep) || !statSync(manifest).isFile()) {
+            throw new Error('package-directory must select a package in the caller checkout');
+          }
+          appendFileSync(process.env.GITHUB_OUTPUT, 'directory=' + JSON.stringify(directory) + '\n');
+          NODE
       - name: Exercise every enrolled test against the independently installed archive
         shell: bash
+        working-directory: ${{ fromJSON(steps.source.outputs.directory) }}
         env:
           POLICY_EDITION: 0.19.6-dev.1
           POLICY_SHA512: c036fcfa0f01f591f9d9580f2e5e9d0884695c1e9e2909d1e7503f573efc412d01688fca6fe63a5816d3a038ef7af3ac67bda66e356ceb1be51488bcbbfe655d
@@ -46,7 +73,7 @@ jobs:
           scratch=$(mktemp -d)
           trap 'rm -rf -- "$scratch"' EXIT
           mkdir "$scratch/consumer" "$scratch/tools" "$scratch/policy"
-          npm pack --offline --ignore-scripts --json --pack-destination "$scratch" > "$scratch/pack.json"
+          npm pack . --offline --ignore-scripts --json --pack-destination "$scratch" > "$scratch/pack.json"
           artifact=$(node -p 'require(process.argv[1])[0].filename' "$scratch/pack.json")
           name=$(node -p 'require(process.argv[1])[0].name' "$scratch/pack.json")
           policy=npm-workspace-publication-computer-code-development-systems-engineering-services-section

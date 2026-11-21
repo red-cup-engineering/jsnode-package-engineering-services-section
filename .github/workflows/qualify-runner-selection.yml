@@ -19,4 +19,4 @@ jobs:
           node-version: '24'
           package-manager-cache: false
       - run: npm ci --prefix .github/tests --ignore-scripts --no-audit --no-fund
-      - run: node --test .github/tests/runner-selection.test.mjs
+      - run: node --test .github/tests/*.test.mjs
