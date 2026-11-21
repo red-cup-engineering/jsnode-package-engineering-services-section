@@ -1,7 +1,7 @@
 import { canonicalJson } from "@red-cup-engineering/json-engine";
 import { admitTextFileCreationProjection } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection";
 import { renderMarkdownSectionDocument } from "@red-cup-engineering/markdown-engineering-services-section/render-markdown-section-document";
-import { admitExistingModuleExamples } from "./project-existing-module-example-tests.mjs";
+import { validateExistingModuleExamples } from "./project-existing-module-example-tests.mjs";
 
 function inline(text) {
   const runs = text.match(/`+/g) ?? [];
@@ -16,7 +16,7 @@ function heading(text) {
 
 /** Render the same witnessed calls and expected outcomes used to generate native tests. */
 export function projectExistingModuleExampleDocumentation(specification) {
-  const { name, module, exportName, examples, declarations } = admitExistingModuleExamples(specification);
+  const { name, module, exportName, examples, declarations } = validateExistingModuleExamples(specification);
   const sections = [{ level: 1, title: name[0].toUpperCase() + name.slice(1).replaceAll("-", " "), body: "Behavior specified for " + inline(module + "#" + exportName) + "." }];
   for (const [index, example] of examples.entries()) {
     const lines = ["Input " + inline(canonicalJson(example.input))];

@@ -1,10 +1,8 @@
 /**
- * Render the source-free JSNode meaning closure's executable example assays.
+ * Generate Node.js tests for a module's specified behavior.
  *
- * The original moduleFabricationPlan has already admitted the operation's
- * module/export binding, its schemas, examples and independent clause cases.
- * This pure projector constructs a test SOURCE, never executes it or grants a
- * model, filesystem, Code, supplier or independent receiving effect.
+ * The module plan has already validated the export, schemas, examples and
+ * independent test cases. This function generates test source without running it.
  *
  * ECMAScript ModuleExportName is not a local BindingIdentifier. "class",
  * "default", "await", and source-defined quoted names are legal ESM exports
@@ -15,12 +13,11 @@
 import path from "node:path";
 
 const testPathOf = operation => `test/${operation.name}-examples.test.mjs`;
-const BINDING = "fabricatedOperation";
 
 /** Preserve an ordinary JSON "__proto__" data member in generated JS syntax.
  * A direct object-literal key is a prototype setter; a computed key is an
  * ordinary data property. One JSON serialization snapshot governs the edit,
- * preserving all unaffected source bytes and historical assay receipts.
+ * preserving all unaffected source bytes and recorded test hashes.
  * Never defer interpretation to runtime JSON.parse after candidate import:
  * untrusted source could replace that global and forge both test operands.
  */
@@ -31,17 +28,17 @@ const jsonValueExpression = value => {
     : json;
 };
 
-const refusal = (call, name) =>
+const expectRejection = (call, name) =>
   `  await assert.rejects(async () => await ${call}, { name: ${JSON.stringify(name)} });`;
 
-// The existing-module specification admits each path before this projection.
+// The existing-module schema validates each path before generating code.
 // Bracket expressions keep every segment a literal, including quoted names.
 const select = (root, segments) => root + segments.map(key => `[${JSON.stringify(key)}]`).join("");
 
-function existingModuleObservation(example, positional) {
-  const invoke = (input) => `${BINDING}(${positional ? "..." : ""}${input})`;
+function existingModuleObservation(example, positional, functionName) {
+  const invoke = (input) => `${functionName}(${positional ? "..." : ""}${input})`;
   const input = jsonValueExpression(example.input);
-  if (Object.hasOwn(example, "throws")) return [refusal(invoke(input), example.throws)];
+  if (Object.hasOwn(example, "throws")) return [expectRejection(invoke(input), example.throws)];
   if (!example.mutateInput && !example.outputPath) {
     return [`  assert.deepStrictEqual(await ${invoke(input)}, ${jsonValueExpression(example.output)});`];
   }
@@ -54,15 +51,18 @@ function existingModuleObservation(example, positional) {
   ];
 }
 
-/** Tests derived from original qualified examples and independently assayed clause cases. */
+/** Generate tests for the supplied examples and independent requirement checks. */
 export function projectJsnodeExampleTests(operation, examples, derivedCases = [], existingModule = false) {
+  // Source-free generation is content-addressed. Preserve its published source bytes.
+  const functionName = existingModule ? "operationUnderTest" : "fabricatedOperation";
+  const moduleName = existingModule ? "moduleUnderTest" : "moduleUnderAssay";
   const relative = path.posix.relative("test", operation.module);
   const importPath = relative.startsWith(".") ? relative : `./${relative}`;
   const cases = examples.map(example => [
     `test(${JSON.stringify(`${operation.name}: ${example.name}`)}, async () => {`,
     ...(existingModule
-      ? existingModuleObservation(example, operation["x-javascript-arguments"] === "positional")
-      : [`  assert.deepStrictEqual(await ${BINDING}(${jsonValueExpression(example.input)}), ${jsonValueExpression(example.output)});`]),
+      ? existingModuleObservation(example, operation["x-javascript-arguments"] === "positional", functionName)
+      : [`  assert.deepStrictEqual(await ${functionName}(${jsonValueExpression(example.input)}), ${jsonValueExpression(example.output)});`]),
     "});",
   ].join("\n"));
   for (const item of derivedCases) {
@@ -74,18 +74,18 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     // the source clause and schema. They are emitted as actual behavior
     // observations, never as a claim that a type implies purity.
     const success = item.checks === undefined ? [
-      `  assert.deepStrictEqual(await ${BINDING}(${inputExpression}), ${outputExpression});`,
+      `  assert.deepStrictEqual(await ${functionName}(${inputExpression}), ${outputExpression});`,
     ] : [
       `  const assayInput = ${inputExpression};`,
       // Static supplier imports can replace global structuredClone before a
       // generated test runs. Two separately emitted literals cannot alias.
       `  const originalInput = ${inputExpression};`,
-      `  const firstOutput = await ${BINDING}(assayInput);`,
+      `  const firstOutput = await ${functionName}(assayInput);`,
       `  assert.deepStrictEqual(firstOutput, ${outputExpression});`,
       ...(item.checks.inputUnchanged ? ["  assert.deepStrictEqual(assayInput, originalInput);"] : []),
       ...(item.checks.stableReplay ? [
         `  const replayInput = ${inputExpression};`,
-        `  const replayOutput = await ${BINDING}(replayInput);`,
+        `  const replayOutput = await ${functionName}(replayInput);`,
         "  assert.deepStrictEqual(replayOutput, firstOutput);",
         ...(item.checks.inputUnchanged ? ["  assert.deepStrictEqual(replayInput, originalInput);"] : []),
       ] : []),
@@ -93,7 +93,7 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
     cases.push([
       `test(${JSON.stringify(operation.name + ": clause assay " + item.name)}, async () => {`,
       ...(item.throws === null ? success : [
-        refusal(`${BINDING}(${inputExpression})`, item.throws),
+        expectRejection(`${functionName}(${inputExpression})`, item.throws),
       ]),
       "});",
     ].join("\n"));
@@ -116,9 +116,9 @@ export function projectJsnodeExampleTests(operation, examples, derivedCases = []
       '  deepStrictEqual: nativeAssert.deepStrictEqual.bind(nativeAssert),',
       '  rejects: nativeAssert.rejects.bind(nativeAssert),',
       '});',
-      `const moduleUnderAssay = await import(${JSON.stringify(importPath)});`,
-      `const ${BINDING} = moduleUnderAssay[${JSON.stringify(operation.exportName)}];`,
-      `if (typeof ${BINDING} !== "function") throw new TypeError("Missing callable source export");`,
+      `const ${moduleName} = await import(${JSON.stringify(importPath)});`,
+      `const ${functionName} = ${moduleName}[${JSON.stringify(operation.exportName)}];`,
+      `if (typeof ${functionName} !== "function") throw new TypeError("Missing callable source export");`,
       "",
       ...cases,
       "",

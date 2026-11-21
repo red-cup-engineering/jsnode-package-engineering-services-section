@@ -1,8 +1,8 @@
 {
   "name": "@red-cup-engineering/jsnode-package-engineering-services-section",
-  "version": "0.6.6-dev.0",
+  "version": "0.6.6-dev.1",
   "type": "module",
-  "description": "Shared JSNode module and schema projection with an optional package catalog and fabrication boundary.",
+  "description": "Generate Node.js modules, schemas, example tests and operation catalogs from package specifications.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/red-cup-engineering/jsnode-package-engineering-services-section.git"

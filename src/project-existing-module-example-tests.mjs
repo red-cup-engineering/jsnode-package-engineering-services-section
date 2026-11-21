@@ -12,14 +12,14 @@ function requireFields(record, allowed, required) {
   }
 }
 
-function admitPath(path, label) {
+function validatePath(path, label) {
   if (!Array.isArray(path) || !path.length || !path.every(segment =>
     typeof segment === "string" || (Number.isSafeInteger(segment) && segment >= 0))) {
     throw new TypeError(`${label} must name a property with string or nonnegative integer path segments`);
   }
 }
 
-function admitExample(example, positional, names) {
+function validateExample(example, positional, names) {
   requireFields(example, ["name", "input", "output", "throws", "outputPath", "mutateInput"], ["name", "input"]);
   if (typeof example.name !== "string" || !example.name.trim() || names.has(example.name)) {
     throw new TypeError("Each example needs a distinct nonempty name");
@@ -29,12 +29,12 @@ function admitExample(example, positional, names) {
   if (Object.hasOwn(example, "throws")) {
     if (typeof example.throws !== "string" || !example.throws.trim()
         || ["output", "outputPath", "mutateInput"].some(key => Object.hasOwn(example, key))) {
-      throw new TypeError("A refusal example expects an error name only");
+      throw new TypeError("An example with throws must specify only the expected error name");
     }
     return;
   }
   if (!Object.hasOwn(example, "output")) throw new TypeError("An example must specify output or throws");
-  if (Object.hasOwn(example, "outputPath")) admitPath(example.outputPath, "outputPath");
+  if (Object.hasOwn(example, "outputPath")) validatePath(example.outputPath, "outputPath");
   if (!Object.hasOwn(example, "mutateInput")) return;
   if (!Array.isArray(example.mutateInput) || !example.mutateInput.length) {
     throw new TypeError("mutateInput requires one or more replacements");
@@ -43,7 +43,7 @@ function admitExample(example, positional, names) {
   const submitted = structuredClone(example.input);
   for (const replacement of example.mutateInput) {
     requireFields(replacement, ["path", "value"], ["path", "value"]);
-    admitPath(replacement.path, "mutateInput.path");
+    validatePath(replacement.path, "mutateInput.path");
     let target = submitted;
     for (const [index, key] of replacement.path.entries()) {
       if (target === null || typeof target !== "object" || !Object.hasOwn(target, key)
@@ -59,7 +59,7 @@ function admitExample(example, positional, names) {
 // These specialize an expectation about a call. Its witnesses attest the
 // specification; it takes a separate execution to observe the actual outcome.
 const returns = "jsnode.example.returns";
-const refuses = "jsnode.example.throws";
+const throwsError = "jsnode.example.throws";
 
 function declaredCell(example, operation, source) {
   if (example && Object.hasOwn(example, "predicate")) return admitCell(example);
@@ -68,11 +68,11 @@ function declaredCell(example, operation, source) {
   if (!Object.hasOwn(example, field)) throw new TypeError("An example must specify output or throws");
   const { [field]: expected, ...call } = example;
   const general = cell({ operation, ...call }, "jsnode.example.expects", expected);
-  return evidenced(specialize(() => field === "throws" ? refuses : returns, general), { for: [source] });
+  return evidenced(specialize(() => field === "throws" ? throwsError : returns, general), { for: [source] });
 }
 
 /** Admit declared behavior once for both documentation and native tests. */
-export function admitExistingModuleExamples(specification) {
+export function validateExistingModuleExamples(specification) {
   if (!isJsonValue(specification)) throw new TypeError("Expected a JSON example specification");
   const fields = ["name", "module", "exportName", "examples"];
   requireFields(specification, [...fields, "x-javascript-arguments"], fields);
@@ -93,19 +93,24 @@ export function admitExistingModuleExamples(specification) {
     if (!canonicalEqual(target, operation)) throw new TypeError("Example names a different operation");
     const [held, denied] = sidesOf(declaration);
     const [supported, opposed] = told(declaration);
-    if (!held || denied || !supported || opposed) throw new TypeError("An example needs unopposed supporting testimony");
-    if (declaration.predicate !== returns && declaration.predicate !== refuses) throw new TypeError("Unknown example predicate");
+    if (!held || denied || !supported || opposed) throw new TypeError("An example requires supporting evidence and no opposing evidence");
+    if (declaration.predicate !== returns && declaration.predicate !== throwsError) throw new TypeError("Unknown example predicate");
     const observation = declaration.predicate === returns
       ? { ...call, output: declaration.object }
       : { ...call, throws: declaration.object };
-    admitExample(observation, mode === "positional", names);
+    validateExample(observation, mode === "positional", names);
     return observation;
   });
   return { ...specification, examples: observations, declarations };
 }
 
-/** Project executable observations of the admitted example declarations. */
-export function projectExistingModuleExampleTests(specification) {
-  const admitted = admitExistingModuleExamples(specification);
-  return projectJsnodeExampleTests(admitted, admitted.examples, [], true);
+/** Generate Node.js tests from validated example declarations. */
+export function generateExistingModuleExampleTests(specification) {
+  const validated = validateExistingModuleExamples(specification);
+  return projectJsnodeExampleTests(validated, validated.examples, [], true);
 }
+
+export {
+  validateExistingModuleExamples as admitExistingModuleExamples,
+  generateExistingModuleExampleTests as projectExistingModuleExampleTests,
+};
