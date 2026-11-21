@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '24'
       - name: Install the frozen development and runtime closure
-        run: corepack pnpm@11.28.5 install --frozen-lockfile --ignore-scripts --registry=https://registry.npmjs.org
+        run: corepack pnpm@11.28.5 install --frozen-lockfile --ignore-scripts
       - name: Verify the projected package and source enrollment
         run: |
           node scripts/sync-package-manifest.mjs --check-pnpm-root
@@ -37,7 +37,7 @@ jobs:
           cd "$consumer"
           git init --quiet
           echo '{"private":true,"type":"module"}' > package.json
-          npm install --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org "./$archive"
+          npm install --ignore-scripts --no-audit --no-fund "./$archive"
           cd node_modules/@red-cup-engineering/jsnode-package-engineering-services-section
           node scripts/run-package-tests.mjs --receiving
           npm run check:generated

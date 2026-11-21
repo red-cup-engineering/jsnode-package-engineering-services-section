@@ -36,19 +36,38 @@ jobs:
           package-manager-cache: false
       - name: Exercise every enrolled test against the independently installed archive
         shell: bash
+        env:
+          POLICY_EDITION: 0.19.6-dev.1
+          POLICY_SHA512: c036fcfa0f01f591f9d9580f2e5e9d0884695c1e9e2909d1e7503f573efc412d01688fca6fe63a5816d3a038ef7af3ac67bda66e356ceb1be51488bcbbfe655d
+          HOUSE_REGISTRY: https://registry.561.group/
+          UPSTREAM_REGISTRY: https://registry.npmjs.org/
         run: |
           set -euo pipefail
           scratch=$(mktemp -d)
           trap 'rm -rf -- "$scratch"' EXIT
-          mkdir "$scratch/consumer" "$scratch/tools"
+          mkdir "$scratch/consumer" "$scratch/tools" "$scratch/policy"
           npm pack --offline --ignore-scripts --json --pack-destination "$scratch" > "$scratch/pack.json"
           artifact=$(node -p 'require(process.argv[1])[0].filename' "$scratch/pack.json")
           name=$(node -p 'require(process.argv[1])[0].name' "$scratch/pack.json")
+          policy=npm-workspace-publication-computer-code-development-systems-engineering-services-section
+          curl --fail --silent --show-error --proto '=https' \
+            "${HOUSE_REGISTRY}@red-cup-engineering/$policy/-/$policy-$POLICY_EDITION.tgz" -o "$scratch/policy.tgz"
+          printf '%s  %s\n' "$POLICY_SHA512" "$scratch/policy.tgz" | sha512sum --check --status
+          tar -xzf "$scratch/policy.tgz" -C "$scratch/policy"
+          node --input-type=module - "$scratch/policy/package/src/npm-publication-target.mjs" "$name" > "$scratch/routes" <<'NODE'
+          import { pathToFileURL } from 'node:url';
+          const [policy, name] = process.argv.slice(2);
+          const { npmReceivingRegistryArguments } = await import(pathToFileURL(policy));
+          const routes = npmReceivingRegistryArguments(name, process.env.HOUSE_REGISTRY, process.env.UPSTREAM_REGISTRY,
+            { allowUnscoped: true });
+          process.stdout.write(routes.join('\0') + '\0');
+          NODE
+          mapfile -d '' -t routes < "$scratch/routes"
           for root in "$scratch/consumer" "$scratch/tools"; do
             printf '%s\n' '{"private":true}' > "$root/package.json"
           done
-          (cd "$scratch/consumer" && npm install --registry=https://registry.561.group/ --ignore-scripts --no-audit --no-fund "$scratch/$artifact")
-          (cd "$scratch/tools" && npm install --registry=https://registry.561.group/ --ignore-scripts --no-audit --no-fund \
+          (cd "$scratch/consumer" && npm install "${routes[@]}" --ignore-scripts --no-audit --no-fund "$scratch/$artifact")
+          (cd "$scratch/tools" && npm install "${routes[@]}" --ignore-scripts --no-audit --no-fund \
             @red-cup-engineering/jsnode-package-engineering-services-section@0.6.6-dev.0)
           node --input-type=commonjs - "$scratch" <<'NODE'
           const dir = process.argv[2];
@@ -70,7 +89,7 @@ jobs:
             writeFileSync(file, JSON.stringify(manifest));
           }
           NODE
-          (cd "$scratch/consumer" && npm install --include=dev --registry=https://registry.561.group/ --ignore-scripts --no-audit --no-fund)
+          (cd "$scratch/consumer" && npm install --include=dev "${routes[@]}" --ignore-scripts --no-audit --no-fund)
           runner="$scratch/tools/node_modules/.bin/run-package-tests"
           "$runner" --check-receiving-enrollment
           PACKAGE_TEST_DIRECTORY="$scratch/consumer/node_modules/$name" "$runner" --receiving --test-concurrency=2
