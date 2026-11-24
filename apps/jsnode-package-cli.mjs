@@ -18,15 +18,15 @@ async function operation4(value, context) {
   const operation = (await import("../src/translate-markdown-jsnode-operation-package-specification.mjs"))["translateMarkdownJsnodeOperationPackageSpecification"];
   return operation(value, context);
 }
-import operation0InputSchema from "../data/records/schema/admit-jsnode-operation-package-specification.input.schema.json" with { type: "json" };
-import operation0OutputSchema from "../data/records/schema/admit-jsnode-operation-package-specification.output.schema.json" with { type: "json" };
-import operation1InputSchema from "../data/records/schema/project-jsnode-operation-package.input.schema.json" with { type: "json" };
-import operation1OutputSchema from "../data/records/schema/project-jsnode-operation-package.output.schema.json" with { type: "json" };
-import operation2InputSchema from "../data/records/schema/create-jsnode-operation-package.input.schema.json" with { type: "json" };
-import operation2OutputSchema from "../data/records/schema/create-jsnode-operation-package.output.schema.json" with { type: "json" };
-import operation3InputSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };
-import operation4InputSchema from "../data/records/schema/translate-markdown-jsnode-operation-package-specification.input.schema.json" with { type: "json" };
-import operation4OutputSchema from "../data/records/schema/translate-markdown-jsnode-operation-package-specification.output.schema.json" with { type: "json" };
+import operation0InputSchema from "../data/records/schemas/admit-jsnode-operation-package-specification.input.schema.json" with { type: "json" };
+import operation0OutputSchema from "../data/records/schemas/admit-jsnode-operation-package-specification.output.schema.json" with { type: "json" };
+import operation1InputSchema from "../data/records/schemas/project-jsnode-operation-package.input.schema.json" with { type: "json" };
+import operation1OutputSchema from "../data/records/schemas/project-jsnode-operation-package.output.schema.json" with { type: "json" };
+import operation2InputSchema from "../data/records/schemas/create-jsnode-operation-package.input.schema.json" with { type: "json" };
+import operation2OutputSchema from "../data/records/schemas/create-jsnode-operation-package.output.schema.json" with { type: "json" };
+import operation3InputSchema from "../data/records/schemas/jsnode-module-specification.schema.json" with { type: "json" };
+import operation4InputSchema from "../data/records/schemas/translate-markdown-jsnode-operation-package-specification.input.schema.json" with { type: "json" };
+import operation4OutputSchema from "../data/records/schemas/translate-markdown-jsnode-operation-package-specification.output.schema.json" with { type: "json" };
 
 export const catalog = Object.freeze({
   name: "jsnode-package",

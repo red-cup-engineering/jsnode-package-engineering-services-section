@@ -6,7 +6,7 @@ import { semanticId } from "@red-cup-engineering/semiotic-content-address-system
 import { schemaFromGraph } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
 import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 import { confined } from "./project-jsnode-module-paths.mjs";
-import moduleSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };
+import moduleSchema from "../data/records/schemas/jsnode-module-specification.schema.json" with { type: "json" };
 
 const profileSchema = moduleSchema.properties.operations.items.properties.nativeProfile;
 const profiles = new WeakMap();

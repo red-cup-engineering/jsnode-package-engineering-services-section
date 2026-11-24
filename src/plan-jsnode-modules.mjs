@@ -10,7 +10,7 @@ import { assertAdmittedAssayNames } from "./assay-completion.mjs";
 // The module projector already owns operation names, export bindings and paths.
 // A meaning closure supplies examples and exact dependencies, never source,
 // tests, an npm identity, a destination, or a publication instruction.
-import moduleSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };
+import moduleSchema from "../data/records/schemas/jsnode-module-specification.schema.json" with { type: "json" };
 export const JSNODE_MODULE_MEANING_CLOSURE_SCHEMA = Object.freeze({
   type: "object", additionalProperties: false,
   required: ["operations", "examples", "dependencies"],

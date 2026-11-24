@@ -63,7 +63,7 @@
     "scripts",
     "src",
     "package.json",
-    "data/records/schema",
+    "data/records/schemas",
     "data/records/jsnode-package-cli.specification.json",
     "data/records/2026-09-04-jsnode-script-reprojection-rule.json",
     "examples",

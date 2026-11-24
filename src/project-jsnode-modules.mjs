@@ -8,7 +8,7 @@ import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service"
 import { readJavaScriptModuleExportNames } from "@red-cup-engineering/javascript-parser-service/module-export-names";
 import { readJavaScriptModuleRequestSites } from "@red-cup-engineering/javascript-parser-service/module-reference-sites";
 
-import specificationSchema from "../data/records/schema/jsnode-module-specification.schema.json" with { type: "json" };
+import specificationSchema from "../data/records/schemas/jsnode-module-specification.schema.json" with { type: "json" };
 const specificationContract = compileJsonSchema(specificationSchema);
 
 function textFile(path, text, mode = 0o644) {

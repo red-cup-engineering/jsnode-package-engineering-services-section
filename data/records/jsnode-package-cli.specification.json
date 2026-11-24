@@ -49,39 +49,39 @@
       "module": "src/admit-jsnode-operation-package-specification.mjs",
       "exportName": "admitJsnodeOperationPackageSpecification",
       "description": "Admit a package specification.",
-      "inputSchemaPath": "data/records/schema/admit-jsnode-operation-package-specification.input.schema.json",
-      "outputSchemaPath": "data/records/schema/admit-jsnode-operation-package-specification.output.schema.json"
+      "inputSchemaPath": "data/records/schemas/admit-jsnode-operation-package-specification.input.schema.json",
+      "outputSchemaPath": "data/records/schemas/admit-jsnode-operation-package-specification.output.schema.json"
     },
     {
       "name": "project",
       "module": "src/project-jsnode-operation-package.mjs",
       "exportName": "projectJsnodeOperationPackage",
       "description": "Project package files.",
-      "inputSchemaPath": "data/records/schema/project-jsnode-operation-package.input.schema.json",
-      "outputSchemaPath": "data/records/schema/project-jsnode-operation-package.output.schema.json"
+      "inputSchemaPath": "data/records/schemas/project-jsnode-operation-package.input.schema.json",
+      "outputSchemaPath": "data/records/schemas/project-jsnode-operation-package.output.schema.json"
     },
     {
       "name": "create",
       "module": "src/create-jsnode-operation-package.mjs",
       "exportName": "createJsnodeOperationPackage",
       "description": "Create the specified package.",
-      "inputSchemaPath": "data/records/schema/create-jsnode-operation-package.input.schema.json",
-      "outputSchemaPath": "data/records/schema/create-jsnode-operation-package.output.schema.json"
+      "inputSchemaPath": "data/records/schemas/create-jsnode-operation-package.input.schema.json",
+      "outputSchemaPath": "data/records/schemas/create-jsnode-operation-package.output.schema.json"
     },
     {
       "name": "project-modules",
       "module": "src/project-jsnode-modules.mjs",
       "exportName": "projectJsnodeModules",
       "description": "Project shared JSNode modules and an optional catalog CLI.",
-      "inputSchemaPath": "data/records/schema/jsnode-module-specification.schema.json"
+      "inputSchemaPath": "data/records/schemas/jsnode-module-specification.schema.json"
     },
     {
       "name": "translate-markdown",
       "module": "src/translate-markdown-jsnode-operation-package-specification.mjs",
       "exportName": "translateMarkdownJsnodeOperationPackageSpecification",
       "description": "Translate a Markdown work order into a package specification.",
-      "inputSchemaPath": "data/records/schema/translate-markdown-jsnode-operation-package-specification.input.schema.json",
-      "outputSchemaPath": "data/records/schema/translate-markdown-jsnode-operation-package-specification.output.schema.json"
+      "inputSchemaPath": "data/records/schemas/translate-markdown-jsnode-operation-package-specification.input.schema.json",
+      "outputSchemaPath": "data/records/schemas/translate-markdown-jsnode-operation-package-specification.output.schema.json"
     }
   ],
   "cli": {
@@ -126,7 +126,7 @@
     "node:test",
     "node:url",
     "typescript",
-    "../data/records/schema/jsnode-module-specification.schema.json",
+    "../data/records/schemas/jsnode-module-specification.schema.json",
     "../package.json"
   ]
 }
