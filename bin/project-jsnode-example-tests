@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+import { lstat, mkdir, readFile, realpath } from "node:fs/promises";
+import { dirname, relative } from "node:path";
+import { parseArgs } from "node:util";
+import { parse } from "@red-cup-engineering/json-engine";
+import { writeTextAtomically } from "@red-cup-engineering/computer-file-engineering-services-section/atomic-text";
+import { admitRelativePosixFilepath } from "@red-cup-engineering/computer-filepath-engineering-services-section/admit-relative-posix-filepath";
+import { generateExistingModuleExampleTests } from "../src/project-existing-module-example-tests.mjs";
+
+const { values, positionals } = parseArgs({ allowPositionals: true, options: { check: { type: "boolean" }, markdown: { type: "boolean" } } });
+if (!positionals.length) throw new TypeError("Usage: project-jsnode-example-tests [--check] [--markdown] <package-relative-spec.json> ...");
+const root = await realpath(".");
+async function packageFile(path) {
+  const actual = await realpath(admitRelativePosixFilepath(path));
+  admitRelativePosixFilepath(relative(root, actual));
+  return actual;
+}
+function missing(error) {
+  if (error.code !== "ENOENT") throw error;
+  return null;
+}
+const outputs = new Map();
+for (const filepath of positionals) {
+  const specification = parse(await readFile(await packageFile(filepath), "utf8"));
+  const files = [generateExistingModuleExampleTests(specification)];
+  if (values.markdown) {
+    const { projectExistingModuleExampleDocumentation } = await import("../src/project-existing-module-example-documentation.mjs");
+    files.push(projectExistingModuleExampleDocumentation(specification));
+  }
+  await packageFile(specification.module);
+  for (const file of files) {
+    if (outputs.has(file.path)) throw new TypeError(`Duplicate generated path: ${file.path}`);
+    outputs.set(file.path, file);
+  }
+}
+for (const { path, text } of outputs.values()) {
+  const directory = dirname(path);
+  if (!values.check) await mkdir(directory, { recursive: true });
+  const exists = await packageFile(directory).catch(missing);
+  const target = exists && await lstat(path).catch(missing);
+  if (target && !target.isFile()) throw new TypeError(`Expected a regular generated file: ${path}`);
+  if (target && await readFile(path, "utf8") === text) continue;
+  if (values.check) {
+    console.error(`Stale or missing generated file: ${path}`);
+    process.exitCode = 1;
+  } else {
+    await writeTextAtomically(path, text);
+  }
+}
