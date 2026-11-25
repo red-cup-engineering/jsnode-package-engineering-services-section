@@ -9,10 +9,10 @@ import { completeClosureTranslation, translateMarkdownJsnodeOperationPackageSpec
 import { admitJsnodeOperationPackageSpecification } from "./admit-jsnode-operation-package-specification.mjs";
 import { projectJsnodeOperationModules } from "./project-jsnode-operation-package.mjs";
 import { deriveJsnodePackageFromClosure } from "./derive-jsnode-package-from-closure.mjs";
-import { writeTextFile } from "@red-cup-engineering/computer-file-engineering-services-section/write-text-file";
+import { put } from "@red-cup-engineering/semiotic-eavt-engineering-services-section/store";
+import { nowInstantText } from "@red-cup-engineering/time-data-engine";
 import { admitMarkdownJsnodeOperationPackageFabricationReceipt } from "@red-cup-engineering/jsnode-package-engineering-services-section/fabrication-receipts";
 import { semanticId } from "@red-cup-engineering/semiotic-content-address-system";
-import { dataKindDirectory } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 
 const DEFAULT_JOURNAL_ROOT_SUFFIX = "lib/emsenn/services/561-group/services/engineering-services-section";
 
@@ -28,17 +28,6 @@ function defaultJournalRoot() {
 export function operationNameFromDestination(destination) {
   const leaf = path.basename(destination);
   return leaf.endsWith("-service") ? leaf.slice(0, -"-service".length) : leaf;
-}
-
-/**
- * Computes the absolute path at which one fabrication's disk receipt is written: a record of its kind, `<destination>/data/records/fabrication-receipt-records/<YYYY-MM-DD>-<operation-name>-fabrication-receipt.json`.
- * @param {string} destination An absolute path to a born package directory.
- * @param {Date} recordedAt The instant the receipt is recorded, used only for its UTC calendar date.
- * @returns {string} The absolute receipt file path.
- */
-export function fabricationReceiptDiskPath(destination, recordedAt) {
-  const date = recordedAt.toISOString().slice(0, 10);
-  return path.join(dataKindDirectory(destination, "record", "fabrication-receipt"), `${date}-${operationNameFromDestination(destination)}-fabrication-receipt.json`);
 }
 
 /**
@@ -311,7 +300,7 @@ export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, 
     // not write a creation-only projection: realization evidence must reach the
     // receiver with its specification and traceability intact.
     phase = "receipt-write";
-    const receiptPath = fabricationReceiptDiskPath(creationReceipt.destination, new Date());
+    const dataRoot = nearestServicesSectionCarryingData(creationReceipt.destination);
     const receipt = admitMarkdownJsnodeOperationPackageFabricationReceipt({
     type: "MarkdownJsnodeOperationPackageFabricationReceipt",
     version: 1,
@@ -322,16 +311,20 @@ export async function fabricateMarkdownJsnodeOperationPackage(request, { infer, 
     jsnodeOperationPackageRegistryPublication: registryPublication,
     artifactFabricationRealizationReceipt: realizationReceipt,
     ...(derivation === undefined ? {} : { derivation: { type: "JsnodeClosureDerivation", version: 3, workOrderSpecification, workOrderSpecificationDigest: workOrderSpecification.specificationDigest, tests: "admitted examples and separately derived requirement/prohibition assays, before source; hidden from source derivation", attempts: derivation.derivations, proofing: derivation.proofing } }),
-    receiptPath,
     });
+    // The fabrication is one event in the one store: a package was born from a specification.
     try {
-      await writeTextFile({ path: receiptPath, text: `${JSON.stringify(receipt, null, 2)}\n` });
+      put(dataRoot, "fabrication", {
+        event: "fabricated", time: nowInstantText(), subject: creationReceipt.packageName, status: "accepted",
+        digest: semanticId(receipt), sourceDigest: receipt.sourceDigest, specificationDigest: receipt.specificationDigest,
+        packageName: creationReceipt.packageName, packageVersion: creationReceipt.packageVersion, destination: creationReceipt.destination,
+      });
     } catch (error) {
-      const unwritten = new Error(`fabrication receipt could not be written to ${receiptPath}: ${error.message}`);
+      const unwritten = new Error(`fabrication could not be recorded under ${dataRoot}: ${error.message}`);
       unwritten.code = "RECEIPT_UNWRITTEN";
       throw unwritten;
     }
-    await judgeDerived("accepted", `born and assayed; receipt ${receiptPath}`);
+    await judgeDerived("accepted", `born and assayed; recorded under ${dataRoot}`);
     return receipt;
   } catch (error) {
     return refusal(phase, error);

@@ -1,6 +1,7 @@
-/** Translatable JSNode work-order specifications and the receipts their fabrication left. */
+/** Translatable JSNode work-order specifications and the fabrications recorded in the one store. */
 import { readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { each } from "@red-cup-engineering/semiotic-eavt-engineering-services-section/store";
 import { translateMarkdownJsnodeOperationPackageSpecification } from "./translate-markdown-jsnode-operation-package-specification.mjs";
 
 const SKIP = new Set(["node_modules", ".git", "dist"]);
@@ -16,16 +17,14 @@ export function listFabricationRecords(root, { maxDepth = 48, limit = 200 } = {}
     for (const entry of entries) {
       const path = join(dir, entry.name);
       if (entry.isDirectory()) {
+        if (path.endsWith("/data/records/fabrication-records")) {
+          for (const { record } of each(resolve(path, "../../.."), "fabrication")) receipts.push({ path, ...record });
+          continue;
+        }
         if (!SKIP.has(entry.name) && !(entry.name === "legacy" && dir.endsWith("/lib"))) walk(path, depth + 1);
         continue;
       }
-      if (entry.name.endsWith("fabrication-receipt.json") && path.includes("/data/records/")) {
-        try {
-          const receipt = JSON.parse(readFileSync(path, "utf8"));
-          const creation = receipt.jsnodeOperationPackageCreationReceipt ?? {};
-          receipts.push({ path, sourceDigest: receipt.sourceDigest, specificationDigest: receipt.specificationDigest, packageName: creation.packageName, packageVersion: creation.packageVersion, destination: creation.destination });
-        } catch { receipts.push({ path, unreadable: true }); }
-      } else if (entry.name.endsWith(".md") && path.includes("/specifications/")) {
+      if (entry.name.endsWith(".md") && path.includes("/specifications/")) {
         const text = readFileSync(path, "utf8");
         const translation = translateMarkdownJsnodeOperationPackageSpecification({
           type: "MarkdownJsnodeOperationPackageSpecificationTranslationRequest",
