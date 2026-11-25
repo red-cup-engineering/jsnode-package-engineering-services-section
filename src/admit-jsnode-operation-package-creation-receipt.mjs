@@ -28,7 +28,7 @@ function exactKeys(value, keys, context) {
   }
 }
 
-function digest(value, context) {
+function admitSha256Digest(value, context) {
   if (typeof value !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(value)) refuse("INVALID_DIGEST", `${context} must be a lowercase SHA-256 digest`);
   return value;
 }
@@ -49,7 +49,7 @@ function materializations(value) {
     }
     if (previousPath !== null && previousPath.localeCompare(filePath) >= 0) refuse("NONCANONICAL_FILE_ORDER", "file paths must be unique and strictly ordered", filePath);
     if (candidate.mode !== 0o644 && candidate.mode !== 0o755) refuse("INVALID_FILE_MODE", "file mode must be 0644 or 0755", filePath);
-    admitted.push({ ...candidate, path: filePath, digest: digest(candidate.digest, `file ${filePath} digest`) });
+    admitted.push({ ...candidate, path: filePath, digest: admitSha256Digest(candidate.digest, `file ${filePath} digest`) });
     previousPath = filePath;
   }
   return admitted;
@@ -84,7 +84,7 @@ function assays(value) {
     if (candidate.name === "tests" && (!Array.isArray(candidate.paths) || candidate.paths.length === 0 || candidate.paths.some((value) => typeof value !== "string"))) refuse("INVALID_ASSAY", "tests assay must identify its test paths");
     if (candidate.name === "pack") {
       if (typeof candidate.filename !== "string" || candidate.filename.length === 0) refuse("INVALID_ASSAY", "pack assay must identify its tarball filename");
-      digest(candidate.digest, "pack assay digest");
+      admitSha256Digest(candidate.digest, "pack assay digest");
     }
     if (["clean-installation", "import-face", "command-face"].includes(candidate.name)) {
       for (const [key, entry] of Object.entries(candidate)) if (["javascriptFiles", "reachableJavascriptFiles", "examples"].includes(key) && (!Number.isInteger(entry) || entry < 0)) refuse("INVALID_ASSAY", `assay ${candidate.name}.${key} must be a nonnegative integer`);
@@ -120,7 +120,7 @@ export function admitJsnodeOperationPackageCreationReceipt(candidate) {
     if (typeof candidate.destination !== "string" || !isAbsoluteFilepath(candidate.destination) || path.resolve(candidate.destination) !== candidate.destination) refuse("INVALID_DESTINATION", "destination must be an absolute normalized path");
     return freezeJson({
       ...candidate,
-      filesDigest: digest(candidate.filesDigest, "filesDigest"),
+      filesDigest: admitSha256Digest(candidate.filesDigest, "filesDigest"),
       files: materializations(candidate.files),
       assays: assays(candidate.assays),
     });
