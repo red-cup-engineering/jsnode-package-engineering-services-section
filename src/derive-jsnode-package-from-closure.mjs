@@ -21,13 +21,13 @@
  * Every attempt is recorded with the lot the market sold it under, so the fabrication receipt binds
  * the provider, and the caller judges the accepted lot once the whole pipeline has assayed it.
  */
+import { sha256Digest } from "@red-cup-engineering/semiotic-content-address-system";
 import path from "node:path";
 import { parseJsonValue } from "@red-cup-engineering/json-engine";
 import { parseJavaScript } from "@red-cup-engineering/javascript-parser-service";
 import { readJavaScriptModuleExportNames } from "@red-cup-engineering/javascript-parser-service/module-export-names";
 import { inspectInstalledNpmPackageResolution } from "@red-cup-engineering/inspect-installed-npm-package-service";
 import { schemaFrom } from "@red-cup-engineering/json-schema-engineering-services-section/contracts";
-import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 import { bindOperationMeaningClosure } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
 import { channelOfPreAssayFailure, proofingOfDerivation } from "./assay-channels.mjs";

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
+import { sha256Digest } from "@red-cup-engineering/semiotic-content-address-system";
 import { DEFINITIONALLY_EXACT_PARAMETERS } from "@red-cup-engineering/computer-data-engineering-services-section/artifact-fabrication";
 
 class TranslationRefusal extends Error {

@@ -5,13 +5,13 @@
 // read or write goes through @red-cup-engineering/computer-file-engineering-services-section, and only directory walking
 // (mkdtemp/mkdir/readdir/lstat/rm) calls node:fs directly, since file-services owns file content,
 // not directories.
+import { sha256Digest } from "@red-cup-engineering/semiotic-content-address-system";
 import { lstat, mkdir, mkdtemp, readdir, rm } from "node:fs/promises";
 import path from "node:path";
 import { readFileText } from "@red-cup-engineering/computer-file-engineering-services-section/read-file";
 import { writeFileText } from "@red-cup-engineering/computer-file-engineering-services-section/write-file";
 import { serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
 import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
-import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
 class StagingRefusal extends Error {
   constructor(code, message, refusedPath = null) {

@@ -1,3 +1,4 @@
+import { sha256Digest } from "@red-cup-engineering/semiotic-content-address-system";
 import { makeTemporaryDirectory } from "@red-cup-engineering/computer-file-engineering-services-section/temporary-directory";
 import { receivePackageTestReport } from "./package-check-outcome.mjs";
 import { lstat, readFile, realpath, rm, writeFile } from "node:fs/promises";
@@ -15,7 +16,6 @@ import { publishStagedDirectoryAtAbsentPath } from "@red-cup-engineering/compute
 import { stageTextFileCreationProjections } from "./stage-text-file-creation-projections.mjs";
 import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/computer-file-engineering-services-section/admit-text-file-creation-projection-set";
 import { validateJsonSchema } from "@red-cup-engineering/json-schema-engineering-services-section/validation";
-import { sha256Digest, sha256Hex } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
 // The house npm scopes routed to the canonical registry (~/.npmrc's own @scope:registry lines); every other package name (a bare "rrule", say) is third-party and must resolve from npm's own default registry (npmjs), per house working discipline's "third-party packages resolve from npmjs; house scopes must resolve from the canonical registry".
 const HOUSE_NPM_SCOPES = ["@561-group", "@causeway-services", "@coesite-operations", "@emsenn", "@lenticule-science", "@red-cup-engineering"];

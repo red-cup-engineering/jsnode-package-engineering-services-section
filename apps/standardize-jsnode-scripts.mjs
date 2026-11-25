@@ -13,7 +13,7 @@ import { constitute, decode, encode } from "@red-cup-engineering/eavt-engineerin
 import { dataArtifactAddress } from "@red-cup-engineering/eavt-engineering-services-section/data-artifact-address";
 import { executeJavascriptNodeCommand } from "@red-cup-engineering/execute-javascript-node-command-service";
 import { canonicalChecked } from "@red-cup-engineering/json-engine";
-import { makeNiUri } from "@red-cup-engineering/uri-engineering-services-section/ni-uri";
+import { makeNiUri } from "@red-cup-engineering/semiotic-content-address-system";
 import { walkPosixPaths } from "@red-cup-engineering/computer-filepath-engineering-services-section/walk-posix-paths";
 import { isDeadOperationRuntimeImport, projectJsnodeOperationSourceFromArguments } from "../src/project-jsnode-operation-source-from-arguments.mjs";
 import { readScriptStandardizationArguments } from "../src/read-script-standardization-arguments.mjs";

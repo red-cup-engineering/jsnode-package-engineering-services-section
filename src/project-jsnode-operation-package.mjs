@@ -1,3 +1,4 @@
+import { sha256Digest } from "@red-cup-engineering/semiotic-content-address-system";
 import { relativeModuleSpecifier } from "./project-jsnode-module-paths.mjs";
 import { freezeJson } from "@red-cup-engineering/json-engine";
 import { serializeLines } from "@red-cup-engineering/jsonl-engineering-services-section";
@@ -5,7 +6,6 @@ import { admitTextFileCreationProjectionSet } from "@red-cup-engineering/compute
 import { projectJsnodeOperationPackageReadme } from "./project-jsnode-operation-package-readme.mjs";
 import { projectJsnodeOperationTests } from "./project-jsnode-operation-tests.mjs";
 import { projectJsnodeModules } from "./project-jsnode-modules.mjs";
-import { sha256Digest } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/integrity";
 
 /** Projects an admitted operation specification without npm packaging or installation. */
 export function projectJsnodeOperationModules(specification) {
