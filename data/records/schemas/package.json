@@ -1,0 +1,41 @@
+{
+  "name": "@causeway-services/tti-rich-news-publication-operations",
+  "type": "module",
+  "dependencies": {
+    "@causeway-services/turntide-witness-journal-binding-service": "0.0.0",
+    "@coesite-operations/union-report-team": "0.1.5",
+    "@red-cup-engineering/computer-data-engine": "0.10.0",
+    "@red-cup-engineering/deterministic-report-graphic-service": "0.1.2",
+    "@red-cup-engineering/discord-rest-transport-service": "0.1.0",
+    "@red-cup-engineering/notebooklm-services-section": "0.3.7",
+    "@red-cup-engineering/semantic-content-identify-service": "0.2.8",
+    "@red-cup-engineering/witness-journal-document-service": "0.1.0"
+  },
+  "bin": {
+    "solicit-state-of-harmonious-union-report": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/contract-state-reporting.mjs",
+    "invoke-state-of-harmonious-union-report": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/contract-state-reporting.mjs",
+    "verify-state-of-harmonious-union-reporting-service": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/verify-state-of-harmonious-union-reporting-service.mjs",
+    "advance-hourly-report": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/advance-hourly-report.mjs",
+    "install-hourly-report-recurrence": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/install-hourly-report-recurrence.mjs"
+  },
+  "files": [
+    "src",
+    "content/configurations",
+    "content/contracts"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "version": "0.2.0",
+  "exports": {
+    "./src/advance-hourly-report.mjs": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/advance-hourly-report.mjs",
+    "./src/hourly-reporting-state.mjs": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/hourly-reporting-state.mjs",
+    "./src/state-reporting.mjs": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/state-reporting.mjs",
+    "./state-reporting": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/state-reporting.mjs",
+    "./advance-hourly-report": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/advance-hourly-report.mjs",
+    "./hourly-reporting-state": "../../../../../../../../../../../../../../../lib/legacy/2026-10-24-coesite-operations-legacy-code/lib/legacy/restored-from-main/2026-09-19-af9cf06/services/community-operations-services-section/services/state-of-harmonious-union-reporting-service/src/hourly-reporting-state.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  }
+}
